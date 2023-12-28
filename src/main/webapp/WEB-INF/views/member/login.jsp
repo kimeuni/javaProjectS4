@@ -14,7 +14,7 @@
 		margin: 0 auto;
 		margin-top: 130px;
 		margin-bottom: 130px;
-		height: 400px;
+		min-height: 400px;
 		border-radius: 30px;
 	}
 	#login-inner-div{ 
@@ -70,6 +70,6 @@
 		</div>
 	</section>
 </main>
-<%-- <jsp:include page="/WEB-INF/views/include/footer.jsp" /> --%>
+<jsp:include page="/WEB-INF/views/include/footer.jsp" />
 </body>
 </html>

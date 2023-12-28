@@ -45,6 +45,6 @@
 	</section>
 	<div style="height: 1000px;"></div>
 </main>
-<%-- <jsp:include page="/WEB-INF/views/include/footer.jsp" /> --%>
+<jsp:include page="/WEB-INF/views/include/footer.jsp" />
 </body>
 </html>

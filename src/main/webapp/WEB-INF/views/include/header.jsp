@@ -48,13 +48,16 @@
 		color: #fff;
         border-bottom: 0.7px solid white;
 	}
-	header.act .gnb-inner a:hover{
+	header.act #gnb-btm-nav-align span a:hover,header.act #header-search-span a:hover{
 		color: #fff;
 	}
 	
 	
 	
-	.gnb-inner a:hover{
+	#header-btm-ul a:hover{
+		color: pink;
+	}
+	#gnb-btm-nav-align span a:hover, #header-search-span a:hover{
 		color: #000;
 	}
 	/* 1번째 nav */
@@ -87,14 +90,16 @@
 	#header-btm-ul{
 		height : 80px;
 		display: inline-block;
+		padding-left: 25px;
 	}
 	#header-btm-ul li {
 		display: inline-block;
 		padding: 0px 10px;
 	}
 	#header-search-span{
+		display: inline-block;
 		text-align: right;
-		margin-left: 330px;
+		/* margin-left: 220px; */
 	}
 	#header-search-span input[type="text"]{
 		border: none;
@@ -103,6 +108,7 @@
         background-color: rgba(0,0,0,0);
         padding: 5px 0px;
         margin: 0px 5px;
+        font-size : 0.8em;
         font-weight: bolder;
         outline: none;
         border-bottom: 0.7px solid black;
@@ -110,13 +116,20 @@
 	#gnb-btm-nav-align a {
 		text-decoration: none;
 	}
+	#gub-ul-nav-div{
+		display: inline-block;
+		width: 780px;
+		text-align: left;
+	}
 </style>
 <script>
 	$(window).scroll(function() {
-		if($(window).scrollTop() > 50) {
+		if($(window).scrollTop() > 25) {
 			$('header').addClass('act');
+			$("#logo-img").attr("src","${ctp}/data/images/다모아로고2.png")
 		} else {
 			$('header').removeClass('act');
+			$("#logo-img").attr("src","${ctp}/data/images/다모아로고1.png")
 		}
 	});
 </script>
@@ -127,7 +140,7 @@
 				<c:if test="${sMid == null}">  
 					<ul class="header-top-ul">
 						<li><a href="${ctp}/member/login">로그인</a></li>
-						<li><a href="">회원가입</a></li>
+						<li><a href="${ctp}/member/join">회원가입</a></li>
 					</ul>
 				</c:if>
 				<!-- 로그인 시 -->
@@ -143,14 +156,17 @@
 		<div class="gnb-inner">
 			<div id="gnb-btm-nav-size">
 				<div id="gnb-btm-nav-align">
-					<span>로고</span>
-					<ul id="header-btm-ul">
-						<li><a href="">중고거래</a></li>
-						<li><a href="">커뮤니티</a></li>
-						<li><a href="">모아모아</a></li>
-						<li><a href="">공지사항</a></li>
-						<li><a href="">문의사항</a></li>
-					</ul>
+					<span><a href="http://localhost:9090/javaProjectS4/"><img src="${ctp}/data/images/다모아로고1.png" height="60px" id="logo-img"></a></span>
+					<div id="gub-ul-nav-div">
+						<ul id="header-btm-ul">
+							<li><a href="">중고거래</a></li>
+							<li><a href="">커뮤니티</a></li>
+							<li><a href="">모아모아</a></li>
+							<li><a href="">이벤트</a></li>
+							<li><a href="">공지사항</a></li>
+							<li><a href="">문의사항</a></li>
+						</ul>
+					</div>
 					<span id="header-search-span">
 			            <input type="text" name="searchN" id="searchN" value="${search}"  />
 			            <a href="javascript:mainSearch()" style="padding: 10px;"><i class="fa-solid fa-magnifying-glass" ></i></a>

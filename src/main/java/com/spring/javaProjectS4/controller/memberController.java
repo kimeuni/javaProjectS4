@@ -8,8 +8,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping("/member")
 public class memberController {
 
+	// 로그인 화면 이동
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String loginGet() {
 		return "member/login";
+	}
+	
+	// 회원가입 화면 이동
+	@RequestMapping(value = "/join", method = RequestMethod.GET)
+	public String joinGet() {
+		return "member/join";
 	}
 }
