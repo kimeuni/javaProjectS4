@@ -22,24 +22,18 @@
 	</bean>
 	
 	<!-- MyBatis SessionFactory 설정 -->
-	<!-- 
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" /> 
 		<property name="mapperLocations" value="classpath:mappers/**/*Mapper.xml" /> 
 	</bean>
-	 -->
 	
 	<!-- SqlSessionTemplate 설정 -->
-	<!-- 
 	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
 		<constructor-arg index="0" ref="sqlSessionFactory" />
 	</bean>
-	 -->
 	 
 	<!-- 가공처리할 SessionFactory객체에 매퍼의 정보를 주입하기위한 DAO객체 위치를 설정 -->
-	<!-- 
 	<mybatis-spring:scan base-package="com.spring.javaProjectS4.dao"/>
-	 -->
 	 
 	<!-- mail처리를 위한 Bean등록하기 -->
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">

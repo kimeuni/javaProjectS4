@@ -32,6 +32,8 @@
     	.form-check-str{
     		font-size: 12px;
     		color: red;
+    		text-align: left;
+    		margin-left : 50px;
     	}
     	#join-div input[type="radio"]{
 			margin-top: 20px;
@@ -54,9 +56,54 @@
 			border: 2px solid #402F1D;
 			color: #402F1D;
 		}
+		.join-mid-no{
+			border-color: red;
+			outline-color: red; /* 클릭시 선 생기는 거 색 변경 */
+		}
     </style>
     <script>
     	'use script'
+    	
+    	// 아이디
+    	$(function() {
+    		$("#mid").on("keyup", midCheck)
+    	});
+    	
+    	function midCheck(){
+    		let mid = $("#mid").val();
+    		
+    		let str = '';
+    		$.ajax({
+				url : "${ctp}/member/joinMidCheck",
+				type : "post",
+				data : {mid : mid},
+				success : function(res){
+					if(res == "0"){
+						str = '아이디를 입력해주세요.';
+						$("#demo_id").html(str);
+						$("#mid").addClass("join-mid-no")
+					}
+					else if(res == "1"){
+						str = '아이디는 5~16자의 영문 소문자,숫자와 특수기호(_)만 사용 가능합니다.';
+						$("#demo_id").html(str);
+						$("#mid").addClass("join-mid-no")
+					}
+					else if(res == "2"){
+						str = '존재하는 아이디 입니다.';
+						$("#demo_id").html(str);
+						$("#mid").addClass("join-mid-no")
+					}
+					else if(res == "3"){
+						str = '';
+						$("#demo_id").html(str);
+						$("#mid").removeClass("join-mid-no")
+					}
+				},
+				error : function(){
+					console.log("전송오류 (join.jsp)");
+				}
+			});
+    	}
     </script>
 </head>
 <body>
