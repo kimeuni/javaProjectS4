@@ -4,4 +4,10 @@
 	<select id="getMemberMidCheck" resultType="com.spring.javaProjectS4.vo.MemberVO">
 		select * from memberS where mid = #{mid};
 	</select>
+	<select id="getMemberNickNameCheck" resultType="com.spring.javaProjectS4.vo.MemberVO">
+		select * from memberS where nickName = #{nickName};
+	</select>
+	<select id="getMemberEmailCheck" resultType="com.spring.javaProjectS4.vo.MemberVO">
+		select * from memberS where email = #{email};
+	</select>
 </mapper>

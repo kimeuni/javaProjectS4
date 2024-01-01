@@ -1,5 +1,7 @@
 package com.spring.javaProjectS4.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,16 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public MemberVO getMemberMidCheck(String mid) {
 		return memberDAO.getMemberMidCheck(mid);
+	}
+
+	@Override
+	public MemberVO getMemberNickNameCheck(String nickName) {
+		return memberDAO.getMemberNickNameCheck(nickName);
+	}
+
+	@Override
+	public List<MemberVO> getMemberEmailCheck(String email) {
+		return memberDAO.getMemberEmailCheck(email);
 	}
 
 	

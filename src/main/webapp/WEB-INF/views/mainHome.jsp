@@ -31,6 +31,11 @@
 		color: gray;
 		
 	}
+	#damoa-ct-img{
+		position: absolute;
+		top: 0px;
+		right: 0px;
+	}
 </style>
 <body>
 <jsp:include page="/WEB-INF/views/include/header.jsp"/>
@@ -41,6 +46,7 @@
 				<div>일상의 보물을<br/> 모두 모아</div>
 			</div>
 			<div id="soge-sub-title">일상의 행복을 모두 모아 <br/> '다모아'에서 함께 나누어 보세요.</div>
+			<div id="damoa-ct-img"><img src="${ctp}/data/images/다모아 캐릭터.png" height="655px;"/></div>
 		</div>
 	</section>
 	<div style="height: 1000px;"></div>

@@ -7,6 +7,8 @@
     <meta charset="UTF-8">
     <title>회원가입</title>
     <jsp:include page="/WEB-INF/views/include/bs4.jsp" />
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script src="${ctp}/js/woo.js"></script>
     <style>
     	#join-div{
 			max-width: 600px;
@@ -28,12 +30,15 @@
 			height: 45px;
 			margin-top: 20px;
 			padding: 0px 10px;
+			border-radius: 10px;
+			border-style: solid;
     	}
     	.form-check-str{
     		font-size: 12px;
     		color: red;
     		text-align: left;
     		margin-left : 50px;
+    		margin-right: 50px;
     	}
     	#join-div input[type="radio"]{
 			margin-top: 20px;
@@ -56,53 +61,436 @@
 			border: 2px solid #402F1D;
 			color: #402F1D;
 		}
-		.join-mid-no{
+		.join-no{
+			border-style: solid;
 			border-color: red;
 			outline-color: red; /* 클릭시 선 생기는 거 색 변경 */
+		}
+		#join-div #join-email-div input[type="button"],#join-div #join-address-div input[type="button"]{
+			width: 100px;
+			height: 45px;
+			margin-top: 20px;
+			background: #402F1D;
+			color: #fff;
+			font-size: 0.8em;
+			border-radius: 10px;
+			font-weight: bold;
+		}
+		#join-div #join-email-div input[type="text"],#join-div #join-address-div input[type="text"]{
+			width: 300px;
+			height: 45px;
+			margin-top: 20px;
+			padding: 0px 10px;
+		}
+		#spinner-border{
+			margin: 20px 50px 0px 50px;
+			width: 400px;
+			text-align: center;
+		}
+		#join-div #join-mail-code-input input[type="text"]{
+			width: 190px;
+			height: 45px;
+			margin-top: 20px;
+			padding: 0px 10px;
+		}
+		#join-mail-code-input{
+			text-align: left;
+			padding: 0px 45px;
 		}
     </style>
     <script>
     	'use script'
+    	let midCheckOk = false;
+    	let pwdCheckOk = false;
+    	let pwdOkCheckOk = false;
+    	let nameCheckOk = false;
+    	let nickNameCheckOk = false;
+    	let emailCheckOk = false;
+    	
+    	let str = '';
+
+    	// 타이머
+    	let time = 60000;
+    	let min = 1;
+    	let sec = 60;
+    	
+    	$("#timer").html("남은시간 : "+min+":00초");
+    	
+    	function codeTimer(){
+    		playTime=setInterval(function() {
+    			time = time-1000;
+    			min = time/(60*1000);
+    			
+    			console.log(min + "_" + sec);
+    			
+    			if(sec > 0){ //sec=60 에서 1씩 빼서 출력해준다.
+    				sec=sec-1;
+    				// 초가 1~9일경우 앞에 0추가
+    				if(sec.toString().length == 1){
+				    	$("#timer").html("남은시간 : "+Math.floor(min)+":0"+sec+"초");
+    				}
+    				else{
+				    	$("#timer").html("남은시간 : "+Math.floor(min)+":"+sec+"초");
+    				}
+    			}
+    			if(sec == 0){
+    				sec = 60;
+			    	$("#timer").html("남은시간 : "+Math.floor(min)+":00초");
+			    	
+			    	// 3분이 지나면 메일코드 세션 삭제하러가기
+			    	if(min <=0){
+			    		clearInterval(playTime)
+			    		$.ajax({
+			    			url : "${ctp}/member/mailCodeDelete",
+			    			type : "post",
+			    			success :function(){
+			    				str = '인증번호가 만료되었습니다. 인증번호를 다시 발급해주세요.';
+			    				$("#demo_codeW").html(str);
+								$("#codeW").addClass("join-no");	
+								$("#timer").html("남은시간 : 0:00초");
+			    			},
+			    			error : function(){
+			    				alert("전송오류(join.jsp)");
+			    			}
+			    		});
+			    	}
+    			}
+    		},1000);
+    	}
     	
     	// 아이디
     	$(function() {
     		$("#mid").on("keyup", midCheck)
+    		$("#mid").removeClass("join-no");
     	});
     	
     	function midCheck(){
     		let mid = $("#mid").val();
+    		let ragMid = /^[\w]{5,16}$/; // 정규식
     		
-    		let str = '';
-    		$.ajax({
-				url : "${ctp}/member/joinMidCheck",
-				type : "post",
-				data : {mid : mid},
-				success : function(res){
-					if(res == "0"){
-						str = '아이디를 입력해주세요.';
-						$("#demo_id").html(str);
-						$("#mid").addClass("join-mid-no")
+    		if(mid.trim() == ""){
+    			str = '아이디를 입력해주세요.';
+				$("#demo_id").html(str);
+				$("#mid").addClass("join-no");	
+				midCheckOk = false;
+    		}
+    		else if(!ragMid.test(mid)){
+    			str = '아이디는 5~16자의 영문 소문자,숫자와 특수기호(_)만 사용 가능합니다.';
+				$("#demo_id").html(str);
+				$("#mid").addClass("join-no");
+				midCheckOk = false;
+    		}
+    		else{
+	    		$.ajax({
+					url : "${ctp}/member/midCheck",
+					type : "post",
+					data : {mid : mid},
+					success : function(res){
+						if(res == "1"){
+							str = '존재하는 아이디 입니다.';
+							$("#demo_id").html(str);
+							$("#mid").addClass("join-no")
+							midCheckOk = false;
+						}
+						else if(res == "2"){
+							str = '';
+							$("#demo_id").html(str);
+							$("#mid").removeClass("join-no")
+							midCheckOk = true;
+						}
+					},
+					error : function(){
+						console.log("전송오류 (join.jsp)");
 					}
-					else if(res == "1"){
-						str = '아이디는 5~16자의 영문 소문자,숫자와 특수기호(_)만 사용 가능합니다.';
-						$("#demo_id").html(str);
-						$("#mid").addClass("join-mid-no")
-					}
-					else if(res == "2"){
-						str = '존재하는 아이디 입니다.';
-						$("#demo_id").html(str);
-						$("#mid").addClass("join-mid-no")
-					}
-					else if(res == "3"){
-						str = '';
-						$("#demo_id").html(str);
-						$("#mid").removeClass("join-mid-no")
-					}
-				},
-				error : function(){
-					console.log("전송오류 (join.jsp)");
-				}
-			});
+				});
+    		}
+    	}
+    	
+    	// 비밀번호
+    	$(function() {
+    		$("#pwd").on("keyup", pwdCheck);
+    	});
+    	
+    	function pwdCheck(){
+    		let pwd = $("#pwd").val();
+    		let regPwd = /^(?=.*[a-zA-Z0-9])(?=.*[~!@#$%^&*()_+[\]{}?]).{8,16}$/;
+    		
+    		if(pwd.trim() == ""){
+    			str = '비밀번호를 입력해주세요.';
+    			$("#demo_pwd").html(str);
+    			$("#pwd").addClass("join-no");
+    			pwdCheckOk = false;
+    		}
+    		else if(!regPwd.test(pwd)){
+    			str = '비밀번호는 8~16자의 영문 대소문자, 숫자,특수문자(~!@#$%^&*()_+[]{}?)를 각각 1자이상 포함되어야 합니다.'
+    			$("#demo_pwd").html(str);
+    			$("#pwd").addClass("join-no");
+    			pwdCheckOk = false;
+    		}
+    		else{
+				str = '';
+				$("#demo_pwd").html(str);
+				$("#pwd").removeClass("join-no");
+				pwdCheckOk = true;
+    		}
+    	}
+    	
+    	// 비밀번호 확인
+    	$(function() {
+    		$("#pwdCk").on("keyup", pwdOkCheck);
+    	});
+    	
+    	function pwdOkCheck(){
+    		let pwdCk = $("#pwdCk").val();
+    		let pwd = $("#pwd").val();
+    		let regPwd = /^(?=.*[a-zA-Z0-9])(?=.*[~!@#$%^&*()_+[\]{}?]).{8,16}$/;
+    		
+    		if(pwdCk.trim() == ""){
+    			str = '비밀번호를 입력해주세요.';
+    			$("#demo_pwdCk").html(str);
+    			$("#pwdCk").addClass("join-no");
+    			pwdOkCheckOk = false;
+    		}
+    		else if(pwdCk != pwd){
+    			str = '작성하신 비밀번호와 같지 않습니다.'
+    			$("#demo_pwdCk").html(str);
+    			$("#pwdCk").addClass("join-no");
+    			pwdOkCheckOk = false;
+    		}
+    		else if(!regPwd.test(pwdCk)){
+    			str = '작성하신 비밀번호와 같지 않습니다.'
+    			$("#demo_pwdCk").html(str);
+    			$("#pwdCk").addClass("join-no");
+    			pwdOkCheckOk = false;
+    		}
+    		else{
+				str = '';
+				$("#demo_pwdCk").html(str);
+				$("#pwdCk").removeClass("join-no");
+				pwdOkCheckOk = true;
+    		}
+    	}
+    	
+    	// 성명
+    	$(function() {
+    		$("#name").on("keyup", nameCheck);
+    	});
+    	
+    	function nameCheck(){
+    		let name = $("#name").val();
+    		let regName = /^[가-힣]{2,10}$/;
+    		
+    		if(name.trim() == ""){
+    			str = '성명을 입력해주세요.';
+    			$("#demo_name").html(str);
+    			$("#name").addClass("join-no");
+    			nameCheckOk = false;
+    		}
+    		else if(!regName.test(name)){
+    			str = '성명은 2~10글자의 한글로만 사용 가능합니다.'
+    			$("#demo_name").html(str);
+    			$("#name").addClass("join-no");
+    			nameCheckOk = false;
+    		}
+    		else{
+				str = '';
+				$("#demo_name").html(str);
+				$("#name").removeClass("join-no");
+				nameCheckOk = true;
+    		}
+    	}
+    	
+    	// 닉네임
+    	$(function() {
+    		$("#nickName").on("keyup", nickNameCheck);
+    	});
+    	
+    	function nickNameCheck(){
+    		let nickName = $("#nickName").val();
+    		let regNickName = /^[a-zA-Z가-힣0-9]{2,8}$/
+    		
+    		if(nickName.trim() == ""){
+    			str = '닉네임을 입력해주세요.';
+    			$("#demo_nickName").html(str);
+    			$("#nickName").addClass("join-no");
+    			nickNameCheckOk = false;
+    		}
+    		else if(!regNickName.test(nickName)){
+    			str = '닉네임은 2~8글자의 영문대소문자 한글 숫자로만 사용 가능합니다.'
+    			$("#demo_nickName").html(str);
+    			$("#nickName").addClass("join-no");
+    			nickNameCheckOk = false;
+    		}
+    		else{
+    			$.ajax({
+    				url : "${ctp}/member/nickNameCheck",
+    				type : "post",
+    				data : {nickName : nickName},
+    				success : function(res){
+    					if(res == "1"){
+    						str = '존재하는 닉네임입니다.';
+    						$("#demo_nickName").html(str);
+    		    			$("#nickName").addClass("join-no");
+    		    			nickNameCheckOk = false;
+    					}
+    					else if(res == "2"){
+    						str = '';
+    						$("#demo_nickName").html(str);
+    		    			$("#nickName").removeClass("join-no");
+    		    			nickNameCheckOk = true;
+    					}
+    				},
+    				error : function(){
+    					alert("전송오류(join.jsp)")
+    				}
+    			});
+    		}
+    	}
+
+    	
+    	// 메일 유효성 검사
+    	$(function() {
+    		$("#email").on("keyup", emailCheck);
+    	});
+    	
+    	function emailCheck(){
+    		let email = $("#email").val();
+    		let regEmail = /^[\w]+@[a-z]+\.[a-z]{2,3}$/
+    		
+    		if(email.trim() == ""){
+    			str = '이메일을 작성해주세요.';
+    			$("#demo_email").html(str);
+    			$("#email").addClass("join-no");
+    			emailCheckOk = false;
+    		}
+    		else if(!regEmail.test(email)){
+    			str = '이메일 형식이 맞춰서 작성해주세요.';
+    			$("#demo_email").html(str);
+    			$("#email").addClass("join-no");
+    			emailCheckOk = false;
+    		}
+    		else {
+    			str = '';
+    			$("#demo_email").html(str);
+    			$("#email").removeClass("join-no");
+    			emailCheckOk = true;
+    		}
+    	}
+    	
+    	// 메일 인증코드 전송 가릴 부분
+    	$(function() {
+    		$("#spinner-border").hide();
+    		$("#join-mail-code-input").hide();
+    	});
+    	
+    	// 메일 인증코드 전송(버튼 누를 시)
+    	function codeMail(){
+    		let email = $("#email").val();
+    		
+    		if(emailCheckOk == false){
+    			str = '이메일을 형식에 맞춰 작성 후 인증번호를 발급 받아주세요.';
+    			$("#demo_email").html(str);
+	   			$("#email").addClass("join-no");
+    		}
+    		else if(min != 0 && sec != 60){
+    			// 타이머가 끝나지 않았을 경우 (세션이 삭제 안된 경우) 코드입력 부분으로 포커스
+    			$("#codeW").focus();
+    		}
+    		else {
+    			// 이메일 전송을 누를 시에 타이머 <분,초> 설정 및 클래스 등 설정 (인증번호 전송을 여러번 눌렀을 시.. 초기화..)
+        		time = 60000; //3분
+    	    	min = 1;
+    	    	sec = 60;
+				str = '';
+    			$("#demo_codeW").html(str);
+	   			$("#codeW").removeClass("join-no");
+    	    	
+	    		$("#join-mail-code-input").hide();
+    			$("#spinner-border").show();
+    			emailCodeCheckOk = false;
+    			
+    			$.ajax({
+    				url : "${ctp}/member/emailCode",
+    				type : "post",
+    				data : {email : email},
+    				success : function(res){
+    					if(res == "1"){
+    						str = '존재하지 않는 메일입니다. 다시 확인해주세요.';
+    		    			$("#demo_email").html(str);
+    		    			$("#email").addClass("join-no");
+    		    			$("#spinner-border").hide();
+    					}
+    					else if(res == "2"){
+							str = '입력하신 메일로 인증번호가 전송되었습니다.';
+    		    			$("#demo_email").html(str);
+    		    			$("#email").removeClass("join-no");
+    		    			$("#spinner-border").hide();
+    		    			$("#join-mail-code-input").show();
+    		    			codeTimer()
+    					}
+    				},
+    				error : function(){
+    					alert("전송오류(join.jsp)")
+   		    			$("#spinner-border").hide();
+    				}
+    			});
+    		}
+    	}
+    	
+    	// 메일 인증번호 확인
+    	function codeCheckOk(){
+    		let codeW = $("#codeW").val();
+    		let query = {
+   				codeW : codeW
+    		}
+    		
+    		alert("${sMailCode}" + "_" + codeW)
+    		if(codeW.trim() == ""){
+    			str = '인증번호를 입력해주세요.';
+    			$("#demo_codeW").html(str);
+    			$("#codeW").addClass("join-no");
+    			$("#codeW").focus();
+    		}
+    		else{
+	    		$.ajax({
+	    			url : "${ctp}/member/emailCodeOk",
+	    			type : "post",
+	    			data : query,
+	    			success : function(res){
+	    				if(res == "1"){
+	    					clearInterval(playTime);
+	    					str = '메일인증 확인 되었습니다.';
+			    			$("#demo_codeW").html(str);
+			    			$("#codeW").removeClass("join-no");
+	    					$("#codeW").attr("readonly",true);
+	    					emailCheckOk = true;
+	    				}
+	    				else if(res == "2"){
+	    					str = '인증번호를 다시 확인해주세요.';
+			    			$("#demo_codeW").html(str);
+			    			$("#codeW").addClass("join-no");
+			    			$("#codeW").focus();
+	    				}
+	    			},
+	    			error : function(){
+	    				alert("전송오류(join.jsp)");
+	    			}
+	    		});
+    		}
+    		
+    	}
+    	
+    	// 회원가입하기
+    	function joinOk(){
+    		alert(midCheckOk + "_" + pwdCheckOk + "_" + pwdOkCheckOk + "_" + nameCheckOk + "_" + nickNameCheckOk + "_" + emailCheckOk + "_")
+    	
+    		if(midCheckOk != true){
+    			str = '아이디를 확인해주세요.';
+    			$("#demo_id").html(str);
+    			$("#mid").focus();
+    			$("#mid").addClass("join-no");	
+    			return false;
+    		}
     	}
     </script>
 </head>
@@ -116,30 +504,48 @@
 			
 			<div>
 				<input type="text" name="mid" id="mid" required placeholder="아이디(필수)" />
-				<div id="demo_id" class="form-check-str">dd</div>
+				<div id="demo_id" class="form-check-str"></div>
 			</div>
 			<div>
 				<input type="password" name="pwd" id="pwd" required placeholder="비밀번호(필수)" />
-				<div id="demo_pwd" class="form-check-str">dd</div>
+				<div id="demo_pwd" class="form-check-str"></div>
 			</div>
 			<div>
 				<input type="password" name="pwdCk" id="pwdCk" required placeholder="비밀번호 확인(필수)" />
-				<div id="demo_pwdCk" class="form-check-str">dd</div>
+				<div id="demo_pwdCk" class="form-check-str"></div>
 			</div>
 			<div>
 				<input type="text" name="name" id="name" required placeholder="성명(필수)" />
-				<div id="demo_name" class="form-check-str">dd</div>
+				<div id="demo_name" class="form-check-str"></div>
 			</div>
 			<div>
 				<input type="text" name="nickName" id="nickName" required placeholder="닉네임(필수)" />
-				<div id="demo_nickName" class="form-check-str">dd</div>
+				<div id="demo_nickName" class="form-check-str"></div>
 			</div>
 			<div id="join-email-div">
 				<input type="text" name="email" id="email" required placeholder="이메일(필수)" />
-				<div id="demo_email" class="form-check-str">dd</div>
+				<input type="button" value="인증번호" class="codeCheckBtn" onclick="codeMail()"/>
+				<div id="demo_email" class="form-check-str"></div>
+				<div id="spinner-border">
+					<div class="spinner-border"></div>
+				</div>
+				<div id="join-mail-code-input">
+					<input type="text" name="codeW" id="codeW" placeholder="인증코드를 입력하세요." />
+					<input type="button" value="인증확인" class="codeCheckBtn" onclick="codeCheckOk()"/>
+					<span id="timer"></span>
+					<div id="demo_codeW" class="form-check-str"></div>
+				</div>
 			</div>
-			<div>
-				<!-- 주소 -->
+			<div id="join-address-div">
+		        <input type="text" name="postcode" id="sample6_postcode" readonly placeholder="우편번호(필수)" >
+	        	<input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기" />
+         	</div>
+	        <input type="text" name="roadAddress" id="sample6_address" readonly placeholder="기본주소(필수)">
+	        <div>
+	        	<input type="text" name="detailAddress" id="sample6_detailAddress" placeholder="상세주소">
+		        <div> 
+		        	<input type="text" name="extraAddress" id="sample6_extraAddress" placeholder="참고항목" />
+		        </div>
 			</div>
 			<div>
 				<input type="radio" name="gender" id="gender1" checked value="남자"/><label for="gender1">남자</label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
@@ -149,7 +555,7 @@
 				<input type="checkbox" id="adYN" name="adYN" value="Y"/>&nbsp;<label for="adYN"><span style="color:red;">(선택)</span> 정보/이벤트 메일 수신에 동의합니다.</label>
 			</div>
 			<div>
-				<input type="button" value="회원가입" onclick="" />
+				<input type="button" value="회원가입" onclick="joinOk()" />
 			</div>
 		</div>
 	</section>
