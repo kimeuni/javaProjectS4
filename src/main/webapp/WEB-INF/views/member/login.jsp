@@ -8,12 +8,16 @@
 <title>로그인</title>
 <jsp:include page="/WEB-INF/views/include/bs4.jsp"></jsp:include>
 <style>
+	section{
+   		max-width: 1024px;
+		margin: 0 auto;
+   	}
 	#login-div{
 		max-width: 600px;
 		border: 1px solid;
 		margin: 0 auto;
-		margin-top: 130px;
-		margin-bottom: 130px;
+		margin-top: 80px;
+		margin-bottom: 80px;
 		min-height: 400px;
 		border-radius: 30px;
 	}
@@ -48,9 +52,65 @@
 		background: #EBDDCC;
 		border: 2px solid #402F1D;
 		color: #402F1D;
-		
+	}
+	#demo-login-check{
+		color: red;
+		font-size: 12px;
+		text-align: left;
 	}
 </style>
+<script>
+	'use strict'
+	
+	let str = '';
+	
+	function loginOk(){
+		let mid = $("#mid").val();
+		let pwd = $("#pwd").val();
+		let idSave;
+    	if(document.getElementsByName("idSave")[0].checked) idSave = "save"; 
+		
+		if(mid.trim() == ""){
+			str = '아이디를 입력해주세요.';
+			$("#demo-login-check").html(str);
+			return false
+		}
+		else if(pwd.trim() == ""){
+			str = '비밀번호를 입력해주세요.';
+			$("#demo-login-check").html(str);
+			return false
+		}
+		else{
+			let query = {
+				mid : mid,
+				pwd : pwd,
+				idSave : idSave
+			}
+			
+			$.ajax({
+				url : "${ctp}/member/login",
+				type : "post",
+				data : query,
+				success : function(res){
+					if(res == "1"){
+						str = '아이디 또는 비밀번호를 잘못 입력했습니다.<br/> 입력하신 내용을 다시 확인해주세요.';
+						$("#demo-login-check").html(str);
+					}
+					else if(res == "2"){
+						location.href='${ctp}/damoa';
+					}
+					else if(res == "3"){
+						// 나중에 관리자 화면으로 이동하도록 주소 바꾸기
+						location.href='${ctp}/damoa';
+					}
+				},
+				error : function(){
+					alert("전송오류(login.jsp)")
+				}
+			});
+		}
+	}
+</script>
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/include/header.jsp" />
@@ -64,8 +124,9 @@
 				<div id="login-save-checkbox">
 					<input type="checkbox" name="idSave" id="idSave" value="save" /><label for="idSave">아이디 저장</label>
 				</div>
+				<div id="demo-login-check">dd</div>
 				<input type="button" value="로그인" onclick="loginOk()"/>
-				<div><a href=""><i class="fa-solid fa-key"></i> 아이디/비밀번호를 잊으셨나요?</a></div>
+				<div><a href="idFind"><i class="fa-solid fa-key"></i> 아이디/비밀번호를 잊으셨나요?</a></div>
 			</div>
 		</div>
 	</section>

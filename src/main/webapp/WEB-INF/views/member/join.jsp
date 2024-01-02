@@ -10,6 +10,10 @@
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script src="${ctp}/js/woo.js"></script>
     <style>
+    	section{
+    		max-width: 1024px;
+    		margin: 0 auto;
+    	}
     	#join-div{
 			max-width: 600px;
 			border: 1px solid;
@@ -36,6 +40,13 @@
     	.form-check-str{
     		font-size: 12px;
     		color: red;
+    		text-align: left;
+    		margin-left : 50px;
+    		margin-right: 50px;
+    	}
+    	.form-check-str-Ok{
+    		font-size: 12px;
+    		color: green;
     		text-align: left;
     		margin-left : 50px;
     		margin-right: 50px;
@@ -76,6 +87,16 @@
 			border-radius: 10px;
 			font-weight: bold;
 		}
+		#join-div #join-email-div .codeCheckBtn input[type="button"]{
+			width: 80px;
+			height: 45px;
+			margin-top: 20px;
+			background: #402F1D;
+			color: #fff;
+			font-size: 0.8em;
+			border-radius: 10px;
+			font-weight: bold;
+		}
 		#join-div #join-email-div input[type="text"],#join-div #join-address-div input[type="text"]{
 			width: 300px;
 			height: 45px;
@@ -97,6 +118,16 @@
 			text-align: left;
 			padding: 0px 45px;
 		}
+		.form-check-code-str{
+			font-size: 12px;
+    		color: red;
+    		text-align: left;
+		}
+		.form-check-code-str-Ok{
+			font-size: 12px;
+    		color: green;
+    		text-align: left;
+		}
     </style>
     <script>
     	'use script'
@@ -106,36 +137,34 @@
     	let nameCheckOk = false;
     	let nickNameCheckOk = false;
     	let emailCheckOk = false;
+    	let emailCodeCheckOk = false;
     	
     	let str = '';
+    	let timerSw = 0;
 
     	// 타이머
     	let time = 60000;
     	let min = 1;
     	let sec = 60;
     	
-    	$("#timer").html("남은시간 : "+min+":00초");
-    	
     	function codeTimer(){
     		playTime=setInterval(function() {
     			time = time-1000;
     			min = time/(60*1000);
     			
-    			console.log(min + "_" + sec);
-    			
     			if(sec > 0){ //sec=60 에서 1씩 빼서 출력해준다.
     				sec=sec-1;
     				// 초가 1~9일경우 앞에 0추가
     				if(sec.toString().length == 1){
-				    	$("#timer").html("남은시간 : "+Math.floor(min)+":0"+sec+"초");
+				    	$("#timer").html("남은시간 : "+Math.floor(min)+":0"+sec);
     				}
     				else{
-				    	$("#timer").html("남은시간 : "+Math.floor(min)+":"+sec+"초");
+				    	$("#timer").html("남은시간 : "+Math.floor(min)+":"+sec);
     				}
     			}
     			if(sec == 0){
     				sec = 60;
-			    	$("#timer").html("남은시간 : "+Math.floor(min)+":00초");
+			    	$("#timer").html("남은시간 : "+Math.floor(min)+":00");
 			    	
 			    	// 3분이 지나면 메일코드 세션 삭제하러가기
 			    	if(min <=0){
@@ -144,10 +173,12 @@
 			    			url : "${ctp}/member/mailCodeDelete",
 			    			type : "post",
 			    			success :function(){
-			    				str = '인증번호가 만료되었습니다. 인증번호를 다시 발급해주세요.';
+			    				str = '인증번호가 만료되었습니다. 인증번호를 다시 발급받아 주세요.';
 			    				$("#demo_codeW").html(str);
 								$("#codeW").addClass("join-no");	
-								$("#timer").html("남은시간 : 0:00초");
+								$("#timer").html("시간초과");
+								$("#email").attr("readonly",false);
+								timerSw = 0;
 			    			},
 			    			error : function(){
 			    				alert("전송오류(join.jsp)");
@@ -356,6 +387,8 @@
     	function emailCheck(){
     		let email = $("#email").val();
     		let regEmail = /^[\w]+@[a-z]+\.[a-z]{2,3}$/
+   			$("#demo_email").addClass("form-check-str");
+    		$("#demo_email").removeClass("form-check-str-Ok");
     		
     		if(email.trim() == ""){
     			str = '이메일을 작성해주세요.';
@@ -377,7 +410,7 @@
     		}
     	}
     	
-    	// 메일 인증코드 전송 가릴 부분
+    	// 메일 인증코드 전송전 가릴 부분
     	$(function() {
     		$("#spinner-border").hide();
     		$("#join-mail-code-input").hide();
@@ -388,25 +421,30 @@
     		let email = $("#email").val();
     		
     		if(emailCheckOk == false){
+    			$("#demo_email").addClass("form-check-str");
+        		$("#demo_email").removeClass("form-check-str-Ok");
     			str = '이메일을 형식에 맞춰 작성 후 인증번호를 발급 받아주세요.';
     			$("#demo_email").html(str);
 	   			$("#email").addClass("join-no");
     		}
-    		else if(min != 0 && sec != 60){
+    		else if(timerSw == 1){
     			// 타이머가 끝나지 않았을 경우 (세션이 삭제 안된 경우) 코드입력 부분으로 포커스
     			$("#codeW").focus();
     		}
     		else {
     			// 이메일 전송을 누를 시에 타이머 <분,초> 설정 및 클래스 등 설정 (인증번호 전송을 여러번 눌렀을 시.. 초기화..)
-        		time = 60000; //3분
+	    		timerSw = 1; //타이머를 누를 시 스위치 1로 변환
+
+    			time = 60000; //3분
     	    	min = 1;
     	    	sec = 60;
 				str = '';
     			$("#demo_codeW").html(str);
 	   			$("#codeW").removeClass("join-no");
-    	    	
+	   			
 	    		$("#join-mail-code-input").hide();
     			$("#spinner-border").show();
+    			$("#timer").html("남은시간 : 3:00");
     			emailCodeCheckOk = false;
     			
     			$.ajax({
@@ -415,17 +453,24 @@
     				data : {email : email},
     				success : function(res){
     					if(res == "1"){
+    						$("#demo_email").addClass("form-check-str");
+    			    		$("#demo_email").removeClass("form-check-str-Ok");
     						str = '존재하지 않는 메일입니다. 다시 확인해주세요.';
     		    			$("#demo_email").html(str);
     		    			$("#email").addClass("join-no");
     		    			$("#spinner-border").hide();
+    		    			emailCodeCheckOk = false;
     					}
     					else if(res == "2"){
 							str = '입력하신 메일로 인증번호가 전송되었습니다.';
+							$("#email").attr("readonly",true);
+    		    			$("#demo_email").removeClass("form-check-str");
+    		    			$("#demo_email").addClass("form-check-str-Ok");
     		    			$("#demo_email").html(str);
     		    			$("#email").removeClass("join-no");
     		    			$("#spinner-border").hide();
     		    			$("#join-mail-code-input").show();
+    		    			emailCodeCheckOk = false;
     		    			codeTimer()
     					}
     				},
@@ -444,7 +489,6 @@
    				codeW : codeW
     		}
     		
-    		alert("${sMailCode}" + "_" + codeW)
     		if(codeW.trim() == ""){
     			str = '인증번호를 입력해주세요.';
     			$("#demo_codeW").html(str);
@@ -459,17 +503,28 @@
 	    			success : function(res){
 	    				if(res == "1"){
 	    					clearInterval(playTime);
+			    			$("#demo_codeW").removeClass("form-check-code-str");
+			    			$("#demo_codeW").addClass("form-check-code-str-Ok");
 	    					str = '메일인증 확인 되었습니다.';
 			    			$("#demo_codeW").html(str);
 			    			$("#codeW").removeClass("join-no");
 	    					$("#codeW").attr("readonly",true);
-	    					emailCheckOk = true;
+	    					$("#email").attr("readonly",true);
+	    					emailCodeCheckOk = true;
 	    				}
 	    				else if(res == "2"){
+	    					str = '인증번호가 만료되었습니다. 인증번호를 다시 발급받아 주세요.';
+			    			$("#demo_codeW").html(str);
+			    			$("#codeW").addClass("join-no");
+			    			$("#codeW").focus();
+			    			emailCodeCheckOk = false;
+	    				}
+	    				else if(res == "3"){
 	    					str = '인증번호를 다시 확인해주세요.';
 			    			$("#demo_codeW").html(str);
 			    			$("#codeW").addClass("join-no");
 			    			$("#codeW").focus();
+			    			emailCodeCheckOk = false;
 	    				}
 	    			},
 	    			error : function(){
@@ -477,19 +532,95 @@
 	    			}
 	    		});
     		}
-    		
     	}
+    	
+    	// 클릭시, 우편번호 들어가기
+    	$(function() {
+    		$("#sample6_postcode").on("click", function() {
+    			sample6_execDaumPostcode()
+    		});
+    	});
+    	$(function() {
+    		$("#sample6_address").on("click", function() {
+    			sample6_execDaumPostcode()
+    		});
+    	});
+    	
     	
     	// 회원가입하기
     	function joinOk(){
-    		alert(midCheckOk + "_" + pwdCheckOk + "_" + pwdOkCheckOk + "_" + nameCheckOk + "_" + nickNameCheckOk + "_" + emailCheckOk + "_")
-    	
+    		let adr = $("#sample6_postcode").val();
+    		
     		if(midCheckOk != true){
     			str = '아이디를 확인해주세요.';
     			$("#demo_id").html(str);
     			$("#mid").focus();
     			$("#mid").addClass("join-no");	
     			return false;
+    		}
+    		else if(pwdCheckOk != true){
+    			str = '비밀번호를 확인해주세요.';
+    			$("#demo_pwd").html(str);
+    			$("#pwd").focus();
+    			$("#pwd").addClass("join-no");	
+    			return false;
+    		}
+    		else if(pwdOkCheckOk != true){
+    			str = '비밀번호를 확인해주세요.';
+    			$("#demo_pwdCk").html(str);
+    			$("#pwdCk").focus();
+    			$("#pwdCk").addClass("join-no");	
+    			return false;
+    		}
+    		else if(nameCheckOk != true){
+    			str = '성명을 확인해주세요.';
+    			$("#demo_name").html(str);
+    			$("#name").focus();
+    			$("#name").addClass("join-no");	
+    			return false;
+    		}
+    		else if(nickNameCheckOk != true){
+    			str = '닉네임을 확인해주세요.';
+    			$("#demo_nickName").html(str);
+    			$("#nickName").focus();
+    			$("#nickName").addClass("join-no");	
+    			return false;
+    		}
+    		else if(emailCheckOk != true){
+    			str = '이메일을 확인해주세요.';
+    			$("#demo_email").html(str);
+    			$("#email").focus();
+    			$("#email").addClass("join-no");	
+    			return false;
+    		}
+    		else if(emailCodeCheckOk != true){
+    			str = '인증번호를 인증해주세요.';
+    			$("#demo_email").html(str);
+    			$("#email").focus();
+    			$("#email").addClass("join-no");	
+    			$("#demo_email").addClass("form-check-str");
+    			$("#demo_email").removeClass("form-check-str-Ok");
+    			return false;
+    		}
+    		else if(adr.trim() == ""){
+    			str = '주소을 확인해주세요.';
+    			$("#demo_address").html(str);
+    			$("#sample6_postcode").focus();
+    			$("#sample6_postcode").addClass("join-no");	
+    			$("#sample6_address").addClass("join-no");	
+    			return false;
+    		}
+    		else { 
+    			alert(emailCheckOk);
+    			
+    			// 전송전에 '주소'를 하나로 묶어서 전송처리 준비
+            	let postcode = joinForm.postcode.value;
+            	let roadAddress = joinForm.roadAddress.value;
+            	let detailAddress = joinForm.detailAddress.value;
+            	let extraAddress = joinForm.extraAddress.value;
+            	joinForm.address.value = postcode + "/" + roadAddress + "/" + detailAddress + "/" + extraAddress;
+            	
+            	joinForm.submit();
     		}
     	}
     </script>
@@ -502,61 +633,67 @@
 			<div><img src="${ctp}/data/images/다모아로고1.png" width="180px"></div>
 			<h3>기본정보</h3>
 			
-			<div>
-				<input type="text" name="mid" id="mid" required placeholder="아이디(필수)" />
-				<div id="demo_id" class="form-check-str"></div>
-			</div>
-			<div>
-				<input type="password" name="pwd" id="pwd" required placeholder="비밀번호(필수)" />
-				<div id="demo_pwd" class="form-check-str"></div>
-			</div>
-			<div>
-				<input type="password" name="pwdCk" id="pwdCk" required placeholder="비밀번호 확인(필수)" />
-				<div id="demo_pwdCk" class="form-check-str"></div>
-			</div>
-			<div>
-				<input type="text" name="name" id="name" required placeholder="성명(필수)" />
-				<div id="demo_name" class="form-check-str"></div>
-			</div>
-			<div>
-				<input type="text" name="nickName" id="nickName" required placeholder="닉네임(필수)" />
-				<div id="demo_nickName" class="form-check-str"></div>
-			</div>
-			<div id="join-email-div">
-				<input type="text" name="email" id="email" required placeholder="이메일(필수)" />
-				<input type="button" value="인증번호" class="codeCheckBtn" onclick="codeMail()"/>
-				<div id="demo_email" class="form-check-str"></div>
-				<div id="spinner-border">
-					<div class="spinner-border"></div>
+			<form name="joinForm" method="post">
+				<div>
+					<input type="text" name="mid" id="mid" required placeholder="아이디(필수)" />
+					<div id="demo_id" class="form-check-str"></div>
 				</div>
-				<div id="join-mail-code-input">
-					<input type="text" name="codeW" id="codeW" placeholder="인증코드를 입력하세요." />
-					<input type="button" value="인증확인" class="codeCheckBtn" onclick="codeCheckOk()"/>
-					<span id="timer"></span>
-					<div id="demo_codeW" class="form-check-str"></div>
+				<div>
+					<input type="password" name="pwd" id="pwd" required placeholder="비밀번호(필수)" />
+					<div id="demo_pwd" class="form-check-str"></div>
 				</div>
-			</div>
-			<div id="join-address-div">
-		        <input type="text" name="postcode" id="sample6_postcode" readonly placeholder="우편번호(필수)" >
-	        	<input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기" />
-         	</div>
-	        <input type="text" name="roadAddress" id="sample6_address" readonly placeholder="기본주소(필수)">
-	        <div>
-	        	<input type="text" name="detailAddress" id="sample6_detailAddress" placeholder="상세주소">
-		        <div> 
-		        	<input type="text" name="extraAddress" id="sample6_extraAddress" placeholder="참고항목" />
-		        </div>
-			</div>
-			<div>
-				<input type="radio" name="gender" id="gender1" checked value="남자"/><label for="gender1">남자</label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-				<input type="radio" name="gender" id="gender2" value="여자"/><label for="gender2">여자</label>
-			</div>
-			<div>
-				<input type="checkbox" id="adYN" name="adYN" value="Y"/>&nbsp;<label for="adYN"><span style="color:red;">(선택)</span> 정보/이벤트 메일 수신에 동의합니다.</label>
-			</div>
-			<div>
-				<input type="button" value="회원가입" onclick="joinOk()" />
-			</div>
+				<div>
+					<input type="password" name="pwdCk" id="pwdCk" required placeholder="비밀번호 확인(필수)" />
+					<div id="demo_pwdCk" class="form-check-str"></div>
+				</div>
+				<div>
+					<input type="text" name="name" id="name" required placeholder="성명(필수)" />
+					<div id="demo_name" class="form-check-str"></div>
+				</div>
+				<div>
+					<input type="text" name="nickName" id="nickName" required placeholder="닉네임(필수)" />
+					<div id="demo_nickName" class="form-check-str"></div>
+				</div>
+				<div id="join-email-div">
+					<input type="text" name="email" id="email" required placeholder="이메일(필수)" />
+					<input type="button" value="인증번호" class="codeCheckBtn" onclick="codeMail()"/>
+					<div id="demo_email" class="form-check-str"></div>
+					<div id="spinner-border">
+						<div class="spinner-border"></div>
+					</div>
+					<div id="join-mail-code-input">
+						<input type="text" name="codeW" id="codeW" placeholder="인증코드를 입력하세요." />
+						<span class="codeCheckBtn">
+							<input type="button" value="인증확인" onclick="codeCheckOk()"/>
+						</span>
+						<span id="timer"></span>
+						<div id="demo_codeW" class="form-check-code-str"></div>
+					</div>
+				</div>
+				<div id="join-address-div">
+			        <input type="text" name="postcode" id="sample6_postcode" readonly placeholder="우편번호(필수)" >
+		        	<input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기" />
+	         	</div>
+		        <input type="text" name="roadAddress" id="sample6_address" readonly placeholder="기본주소(필수)">
+		        <div>
+		        	<input type="text" name="detailAddress" id="sample6_detailAddress" placeholder="상세주소">
+			        <div> 
+			        	<input type="text" name="extraAddress" id="sample6_extraAddress" placeholder="참고항목" />
+			        </div>
+			        <div id="demo_address" class="form-check-str"></div>
+				</div>
+				<div>
+					<input type="radio" name="gender" id="gender1" checked value="남자"/><label for="gender1">남자</label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+					<input type="radio" name="gender" id="gender2" value="여자"/><label for="gender2">여자</label>
+				</div>
+				<div>
+					<input type="checkbox" id="adYN" name="adYN" value="Y"/>&nbsp;<label for="adYN"><span style="color:red;">(선택)</span> 정보/이벤트 메일 수신에 동의합니다.</label>
+				</div>
+				<div>
+					<input type="button" value="회원가입" onclick="joinOk()" />
+				</div>
+				<input type="hidden" name="address" id="address" />
+			</form>
 		</div>
 	</section>
 </main>

@@ -28,5 +28,10 @@ public class MemberServiceImpl implements MemberService {
 		return memberDAO.getMemberEmailCheck(email);
 	}
 
+	@Override
+	public int setMemberJoin(MemberVO vo) {
+		return memberDAO.setMemberJoin(vo);
+	}
+
 	
 }

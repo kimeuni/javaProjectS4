@@ -157,7 +157,7 @@
 			<div id="gnb-btm-nav-size">
 				<div id="gnb-btm-nav-align">
 					<span><a href="http://localhost:9090/javaProjectS4/"><img src="${ctp}/data/images/다모아로고1.png" height="60px" id="logo-img"></a></span>
-					<div id="gub-ul-nav-div">
+					<nav id="gub-ul-nav-div">
 						<ul id="header-btm-ul">
 							<li><a href="">중고거래</a></li>
 							<li><a href="">커뮤니티</a></li>
@@ -166,7 +166,7 @@
 							<li><a href="">공지사항</a></li>
 							<li><a href="">문의사항</a></li>
 						</ul>
-					</div>
+					</nav>
 					<span id="header-search-span">
 			            <input type="text" name="searchN" id="searchN" value="${search}"  />
 			            <a href="javascript:mainSearch()" style="padding: 10px;"><i class="fa-solid fa-magnifying-glass" ></i></a>

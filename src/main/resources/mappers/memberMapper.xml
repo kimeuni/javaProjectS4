@@ -10,4 +10,8 @@
 	<select id="getMemberEmailCheck" resultType="com.spring.javaProjectS4.vo.MemberVO">
 		select * from memberS where email = #{email};
 	</select>
+	
+	<insert id="setMemberJoin">
+		insert into memberS values(default,#{vo.mid},#{vo.pwd},#{vo.name},#{vo.nickName},#{vo.address},#{vo.email},#{vo.gender},default,default,default,default,default,#{vo.adYN});
+	</insert>
 </mapper>

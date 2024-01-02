@@ -12,4 +12,6 @@ public interface MemberService {
 
 	public List<MemberVO> getMemberEmailCheck(String email);
 
+	public int setMemberJoin(MemberVO vo);
+
 }

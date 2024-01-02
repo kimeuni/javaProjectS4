@@ -14,4 +14,6 @@ public interface MemberDAO {
 
 	public List<MemberVO> getMemberEmailCheck(@Param("email") String email);
 
+	public int setMemberJoin(@Param("vo") MemberVO vo);
+
 }
