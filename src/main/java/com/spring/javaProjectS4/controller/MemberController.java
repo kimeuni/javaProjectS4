@@ -10,7 +10,9 @@ import java.util.UUID;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.RandomStringUtils;
@@ -49,16 +51,27 @@ public class MemberController {
 	
 	// 로그인 화면 이동
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String loginGet() {
+	public String loginGet(HttpServletRequest request,Model model) {
+		Cookie[] cookies = request.getCookies();
+		String cMid = "";
+		if(cookies != null){
+			for(int i=0; i<cookies.length; i++){
+				if(cookies[i].getName().equals("cMid")){
+					cMid = cookies[i].getValue();
+					model.addAttribute("cMid", cMid);
+				}
+			}
+		}
 		return "member/login";
 	}
 	
 	// 로그인 처리
 	@ResponseBody
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public String loginPost(@RequestParam(name="mid", defaultValue = "", required = false) String mid, 
+	public String loginPost(HttpServletRequest request, HttpServletResponse response,
+			@RequestParam(name="mid", defaultValue = "", required = false) String mid, 
 			@RequestParam(name="pwd", defaultValue = "", required = false) String pwd,
-			@RequestParam(name="idSave", defaultValue = "No", required = false) String idSave,
+			@RequestParam(name="idSave", defaultValue = "NO", required = false) String idSave,
 			HttpSession session) {
 		
 		MemberVO vo = memberService.getMemberMidCheck(mid);
@@ -78,6 +91,26 @@ public class MemberController {
 				session.setAttribute("sNickName", vo.getNickName());
 				session.setAttribute("sToken", vo.getToken());
 				
+				if(idSave.equals("save")) {
+					Cookie cookie = new Cookie("cMid", mid);
+					cookie.setMaxAge(60*60*24*5);
+					cookie.setPath("/");
+					
+					response.addCookie(cookie);
+				}
+				// 아이디 저장 체크 x시 쿠기 삭제
+				else if(idSave.equals("NO")) {
+					Cookie[] cookies = request.getCookies();
+					for(int i=0; i<cookies.length; i++) {
+						if(cookies[i].getName().equals("cMid")) {
+							cookies[i].setMaxAge(0);
+							cookies[i].setPath("/");
+							
+							response.addCookie(cookies[i]);
+						}
+					}
+				}
+				
 				return "3";
 			}
 		}
@@ -93,6 +126,26 @@ public class MemberController {
 		session.setAttribute("sMid", mid);
 		session.setAttribute("sNickName", vo.getNickName());
 		session.setAttribute("sToken", vo.getToken());
+		
+		if(idSave.equals("save")) {
+			Cookie cookie = new Cookie("cMid", mid);
+			cookie.setMaxAge(60*60*24*5);
+			cookie.setPath("/");
+			
+			response.addCookie(cookie);
+		}
+		// 아이디 저장 체크 x시 쿠기 삭제
+		else if(idSave.equals("NO")) {
+			Cookie[] cookies = request.getCookies();
+			for(int i=0; i<cookies.length; i++) {
+				if(cookies[i].getName().equals("cMid")) {
+					cookies[i].setMaxAge(0);
+					cookies[i].setPath("/");
+					
+					response.addCookie(cookies[i]);
+				}
+			}
+		}
 		
 		return "2";
 	}

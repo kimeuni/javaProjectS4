@@ -185,10 +185,10 @@
 		<div id="login-div">
 			<div id="login-inner-div">
 				<h2>회원 로그인</h2>
-				<input type="text" name="mid" id="mid" required autofocus placeholder="아이디"/>
+				<input type="text" name="mid" id="mid" value="${cMid}" required autofocus placeholder="아이디"/>
 				<input type="password" name="pwd" id="pwd" placeholder="비밀번호" />
 				<div id="login-save-checkbox">
-					<input type="checkbox" name="idSave" id="idSave" value="save" /><label for="idSave">아이디 저장</label>
+					<input type="checkbox" name="idSave" id="idSave" value="save" ${cMid!=null ? 'checked' : '' } /><label for="idSave">아이디 저장</label>
 				</div>
 				<div id="demo-login-check"></div>
 				<input type="button" value="로그인" onclick="loginOk()"/>
