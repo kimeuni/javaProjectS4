@@ -16,4 +16,16 @@ public interface MemberDAO {
 
 	public int setMemberJoin(@Param("vo") MemberVO vo);
 
+	public void setKakaoMemberInput1(@Param("mid") String mid,@Param("pwd") String pwd,@Param("nickName") String nickName,@Param("email") String email);
+
+	public MemberVO getMemberEmailTokenCheck(@Param("email") String email,@Param("token") String token);
+
+	public int setKakaoFirstUpdatInfor(@Param("mid") String mid,@Param("address") String address,@Param("gender") String gender,@Param("email") String email,@Param("adYN") String adYN);
+
+	public void setKakaoMemberInput2(@Param("mid") String mid,@Param("pwd") String pwd,@Param("name") String name,@Param("email") String email,@Param("nickName") String newNickName);
+
+	public MemberVO getMemberMidEmailCheck(@Param("mid") String mid,@Param("email") String email);
+
+	public void setMemberPwdUpdate(@Param("mid") String mid,@Param("pwd") String pwd);
+
 }

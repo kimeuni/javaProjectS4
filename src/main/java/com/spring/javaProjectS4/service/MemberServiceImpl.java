@@ -33,5 +33,35 @@ public class MemberServiceImpl implements MemberService {
 		return memberDAO.setMemberJoin(vo);
 	}
 
+	@Override
+	public void setKakaoMemberInput1(String mid, String pwd, String nickName, String email) {
+		memberDAO.setKakaoMemberInput1( mid,  pwd,  nickName,  email);
+	}
+
+	@Override
+	public MemberVO getMemberEmailTokenCheck(String email, String token) {
+		return memberDAO.getMemberEmailTokenCheck(email, token);
+	}
+
+	@Override
+	public int setKakaoFirstUpdatInfor(String mid, String address, String gender, String email, String adYN) {
+		return memberDAO.setKakaoFirstUpdatInfor( mid, address, gender, email, adYN);
+	}
+
+	@Override
+	public void setKakaoMemberInput2(String mid, String pwd, String name, String email, String newNickName) {
+		memberDAO.setKakaoMemberInput2(mid, pwd, name, email, newNickName);
+	}
+
+	@Override
+	public MemberVO getMemberMidEmailCheck(String mid, String email) {
+		return memberDAO.getMemberMidEmailCheck(mid,email);
+	}
+
+	@Override
+	public void setMemberPwdUpdate(String mid, String pwd) {
+		memberDAO.setMemberPwdUpdate(mid,pwd);
+	}
+
 	
 }

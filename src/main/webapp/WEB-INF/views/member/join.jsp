@@ -611,8 +611,6 @@
     			return false;
     		}
     		else { 
-    			alert(emailCheckOk);
-    			
     			// 전송전에 '주소'를 하나로 묶어서 전송처리 준비
             	let postcode = joinForm.postcode.value;
             	let roadAddress = joinForm.roadAddress.value;

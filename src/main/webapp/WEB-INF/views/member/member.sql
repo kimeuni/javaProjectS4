@@ -14,7 +14,8 @@ create table memberS(
 	adminYN char(1) default 'N', 				/* 관리자 확인 (일반회월:N / 관리자:Y) */
 	startDate datetime default now(), 			/* 계정 생성일 */
 	lastDate datetime default now(), 			/* 마지막 접속일 */
-	adYN char(1) not null,						/* 이메일 광고 수신 유무 (광고o : Y / 광고x : N) */ 
+	adYN char(1) not null default 'Y',			/* 이메일 광고 수신 유무 (광고o : Y / 광고x : N) */ 
+	token varchar(10) not null default 'damoa', /* 카카오 유저, 일반 유저 확인(일반회원가입:damoa /카카오회원가입:kakao) */
 	primary key(idx),
 	unique key(mid)
 );

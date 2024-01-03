@@ -26,6 +26,14 @@ public class MessageController {
 			model.addAttribute("msg", "회원가입에 실패하였습니다. " + temp + "를 확인하세요.");
 			model.addAttribute("url","member/join");
 		}
+		else if(msgFalg.equals("midSameSearch")) {
+			model.addAttribute("msg", "동일한 아이디가 존재합니다.");
+			model.addAttribute("url","member/login");
+		}
+		else if(msgFalg.equals("kakaoLoginNo")) {
+			model.addAttribute("msg", "문제가 발생하였습니다. 다시 로그인해주세요.");
+			model.addAttribute("url","member/login");
+		}
 			
 		return "include/message";
 	}

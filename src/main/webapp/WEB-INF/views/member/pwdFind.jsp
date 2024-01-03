@@ -25,8 +25,14 @@
     	}
     	#demo-pwdFind{
     		min-height: 25px;
+    		text-align: left;
+    		padding: 0px 65px;
+    	}
+    	.demo-pwdFind-str{
     		color: red;
-    		font-size: 12px;
+    	}
+    	.demo-pwdFind-str-ok{
+    		color: green;
     	}
     	#pwdFind-div input[type="text"]{
     		border : 0px;
@@ -70,10 +76,78 @@
     		margin-top: 10px;
     		margin-bottom: 10px;
     	}
+    	.spinner-border{
+			margin-top: 10px;
+			margin-bottom: 20px;
+    		width: 45px; 
+    		height: 45px; 
+    	}
     </style>
     <script>
     	'use strict'
     	
+    	let str = '';
+    	
+    	// 로딩화면 숨기기
+    	$(function() {
+	    	$(".spinner-border").hide();
+    	});
+    	
+    	// 아이디 찾기
+    	function pwdFind(){
+    		let mid = $("#mid").val();
+    		let email = $("#email").val();
+    		
+    		$("#demo-pwdFind").addClass("demo-pwdFind-str");
+    		
+    		if(mid.trim() == ""){
+    			str = '아이디를 입력해주세요.';
+    			$("#demo-pwdFind").html(str);
+    			return false
+    		}
+    		else if(email.trim() == ""){
+    			str = '이메일을 입력해주세요.';
+    			$("#demo-pwdFind").html(str);
+    			return false
+    		}
+    		else{
+    			// 로딩 보이기, 버튼 감추기
+    			$(".spinner-border").show();
+        		$("#pwdFindBtn").hide();
+    			
+        		let query = {
+        			mid : mid,
+        			email, email
+        		}
+        		
+    			$.ajax({
+    				url : "${ctp}/member/pwdFind",
+    				type : "post",
+    				data : query,
+    				success : function(res){
+    					if(res == "1"){
+				    		$("#demo-pwdFind").removeClass("demo-pwdFind-str");
+				    		$("#demo-pwdFind").addClass("demo-pwdFind-str-ok");
+    						str = '이메일을 확인해주세요.';
+			    			$("#demo-pwdFind").html(str);
+			    			$(".spinner-border").hide();
+			        		$("#pwdFindBtn").show();
+    					}
+    					else if(res == "2"){
+    						str = '아이디 혹은 이메일을 다시 확인해주세요.';
+			    			$("#demo-pwdFind").html(str);
+			    			$(".spinner-border").hide();
+			        		$("#pwdFindBtn").show();
+    					}
+    				},
+    				error : function(){
+    					alert("전송오류(pwdFind.jsp)")
+		    			$(".spinner-border").hide();
+		        		$("#pwdFindBtn").show();
+    				}
+    			});
+    		}
+    	}
     </script>
 </head>
 <body>
@@ -92,11 +166,12 @@
 					<i class="fa-solid fa-envelope"></i>
 					<input type="text" name="email" id="email" placeholder="이메일" required/>
 				</div>
-				<div id="demo-pwdFind"></div>
-				<input type="button" value="임시 비밀번호 발급" id="pwdFindBtn" onclick=""/>
+				<div id="demo-pwdFind" class="demo-pwdFind-str"></div>
+				<input type="button" value="임시 비밀번호 발급" id="pwdFindBtn" onclick="pwdFind()"/>
+				<div class="spinner-border"></div>
 				<div style="text-align:left">
 					<i class="fa-solid fa-check"></i>가입하신 이메일 주소로 임시 비밀번호를 발급해드립니다.<br/>
-					<i class="fa-solid fa-check"></i>아이디, 비밀번호 찾기가 어려울 경우 고객센터로 문의해주세요.
+					<i class="fa-solid fa-check"></i>아이디, 비밀번호 찾기가 어려울 경우 고객센터로 문의해주세요.<br/>
 				</div>
 				<div id="move-jsp">
 					<a href="login">로그인</a> |

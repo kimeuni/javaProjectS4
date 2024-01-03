@@ -10,8 +10,27 @@
 	<select id="getMemberEmailCheck" resultType="com.spring.javaProjectS4.vo.MemberVO">
 		select * from memberS where email = #{email};
 	</select>
+	<select id="getMemberEmailTokenCheck" resultType="com.spring.javaProjectS4.vo.MemberVO">
+		select * from memberS where token = #{token} and email = #{email};
+	</select>
+	<select id="getMemberMidEmailCheck" resultType="com.spring.javaProjectS4.vo.MemberVO">
+		select * from memberS where mid = #{mid} and email = #{email};
+	</select>
 	
 	<insert id="setMemberJoin">
-		insert into memberS values(default,#{vo.mid},#{vo.pwd},#{vo.name},#{vo.nickName},#{vo.address},#{vo.email},#{vo.gender},default,default,default,default,default,#{vo.adYN});
+		insert into memberS values(default,#{vo.mid},#{vo.pwd},#{vo.name},#{vo.nickName},#{vo.address},#{vo.email},#{vo.gender},default,default,default,default,default,#{vo.adYN},default);
 	</insert>
+	<insert id="setKakaoMemberInput1">
+		insert into memberS (mid, pwd, name, nickName, address, email, gender,token) values(#{mid},#{pwd},#{nickName},#{nickName},'',#{email},'','kakao');
+	</insert>
+	<insert id="setKakaoMemberInput2">
+		insert into memberS (mid, pwd, name, nickName, address, email, gender,token) values(#{mid},#{pwd},#{name},#{nickName},'',#{email},'','kakao');
+	</insert>
+	
+	<update id="setKakaoFirstUpdatInfor">
+		update memberS set mid = #{mid}, address = #{address}, gender = #{gender}, adYN = #{adYN} where email = #{email} and token = 'kakao';
+	</update>
+	<update id="setMemberPwdUpdate">
+		update memberS set pwd = #{pwd} where mid = #{mid};
+	</update>
 </mapper>

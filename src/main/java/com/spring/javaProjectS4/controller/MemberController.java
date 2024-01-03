@@ -1,5 +1,10 @@
 package com.spring.javaProjectS4.controller;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.List;
 import java.util.UUID;
 
@@ -8,6 +13,7 @@ import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -30,7 +36,7 @@ import com.spring.javaProjectS4.vo.MemberVO;
 
 @Controller
 @RequestMapping("/member")
-public class memberController {
+public class MemberController {
 
 	@Autowired
 	MemberService memberService;
@@ -55,8 +61,6 @@ public class memberController {
 			@RequestParam(name="idSave", defaultValue = "No", required = false) String idSave,
 			HttpSession session) {
 		
-		System.out.println("mid" + mid + "_" + "pwd" + pwd + "_" + "idSave" + idSave);
-		
 		MemberVO vo = memberService.getMemberMidCheck(mid);
 		
 		// 아이디 공백
@@ -72,6 +76,7 @@ public class memberController {
 				// 쿠기 저장 및 세션 저장
 				session.setAttribute("sMid", mid);
 				session.setAttribute("sNickName", vo.getNickName());
+				session.setAttribute("sToken", vo.getToken());
 				
 				return "3";
 			}
@@ -85,10 +90,137 @@ public class memberController {
 		}
 		// 모든 검사가 끝나고 해당사항이 없으면..
 		// 쿠기 저장 및 세션 저장
-		
-		
+		session.setAttribute("sMid", mid);
+		session.setAttribute("sNickName", vo.getNickName());
+		session.setAttribute("sToken", vo.getToken());
 		
 		return "2";
+	}
+	
+	// 로그아웃 처리
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)
+	public String logoutGet(HttpSession session) {
+		String token = session.getAttribute("sToken")==null ? "" : (String)session.getAttribute("sToken");
+		if(token.equals("damoa")) {
+			System.out.println("일반 로그아웃");
+			// 세션삭제
+			session.invalidate();
+			
+			return "redirect:/damoa";
+		}
+		else {
+			System.out.println("카카오 로그아웃");
+			
+			String mid = (String) session.getAttribute("sMid");
+			String accessToken = (String) session.getAttribute("sAccessToken");
+			String reqURL = "https://kapi.kakao.com/v1/user/unlink";
+			
+			try {
+			    URL url = new URL(reqURL);
+			    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			    conn.setRequestMethod("POST");
+			    conn.setRequestProperty("Authorization", "Bearer " + accessToken);
+		
+			    // 카카오에 정상처리 되면 200번이 돌아옴
+			    int responseCode = conn.getResponseCode();
+			    System.out.println("responseCode : " + responseCode);
+	      
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+			session.invalidate();
+			
+			return "redirect:/damoa";
+		}
+	}
+	
+	// 카카오 로그인 처리
+	@RequestMapping(value = "/kakaoLogin", method = RequestMethod.GET)
+	public String kakaoLoginGet(HttpSession session, Model model,
+			@RequestParam(name="nickName", defaultValue = "", required = false) String nickName,
+			@RequestParam(name="email", defaultValue = "", required = false) String email,
+			@RequestParam(name="accessToken", defaultValue = "", required = false) String accessToken
+			) throws MessagingException{
+		
+		session.setAttribute("sAccessToken", accessToken);
+		
+		// 이메일 및 토큰을 통하여 회원인지 확인
+		MemberVO vo = memberService.getMemberEmailTokenCheck(email,"kakao");
+		
+		// DB에 저장된 카카오 회원이 아닌시, DB에 저장 처리
+		if(vo == null) {
+			// 아이디 결정해주기
+			String mid = email.substring(0,email.indexOf("@"));
+			
+			// 기존에 같은 아이디가 존재한다면 랜덤의 아이디 부여
+			MemberVO midVO = memberService.getMemberMidCheck(mid);
+			if(midVO != null ) mid = RandomStringUtils.randomAlphanumeric(64).substring(0,12);
+			
+			// 임시 비밀번호를 발급처리 후 메일로 전송처리한다.
+			UUID uid = UUID.randomUUID();
+			String pwd = uid.toString().substring(0,8);
+			session.setAttribute("sImsiPwd", pwd);
+			String imsiPwd = pwd;
+			
+			// 비밀번호 암호화
+			pwd = bCrypt.encode(pwd);
+			
+			// 닉네임 중복시 닉 부여
+			String newNickName = "";
+			MemberVO nickVO = memberService.getMemberNickNameCheck(nickName);
+			if(nickVO != null) newNickName = "모아"+(int)(Math.random() * 1000)+1;
+			
+			// 새로 발급된 임시 비밀번호를 메일로 전송
+			String title = "임시 비밀번호가 도착하였습니다.";
+			String mailFlag = imsiPwd;
+			String res = mailSend(email, title, mailFlag, "kakaoLoginPwd");
+			
+			if(!res.equals("1")) {
+				return "redirect:/message/kakaoLoginNo";
+			}
+			
+			// 자동 회원 가입처리(DB에 앞에서 만들어준 값들로 가입처리한다.)
+			if(newNickName.equals("")) {
+				// 닉네임 중복x
+				memberService.setKakaoMemberInput1(mid,pwd,nickName,email);
+			}
+			else {
+				// 닉네임 중복o
+				String name = nickName;
+				memberService.setKakaoMemberInput2(mid,pwd,name,email,newNickName);
+			}
+			
+			vo = memberService.getMemberMidCheck(mid);
+		}
+		
+		model.addAttribute("vo", vo);
+		// 처음 로그인시, 정보 수정 페이지로
+		if(vo.getAddress().equals("")) return "member/kakaoInforUpdate";
+		else {
+			// 처음 로그인이 아닐시, 로그인 처리
+			// 세션 저장
+			session.setAttribute("sMid", vo.getMid());
+			session.setAttribute("sNickName", vo.getNickName());
+			session.setAttribute("sToken", vo.getToken());
+			
+			return "redirect:/";
+		}
+	}
+	
+	// 카카오 처음 로그인 시 정보 수정 처리
+	@RequestMapping(value = "/kakaoInforUpdate", method = RequestMethod.POST)
+	public String kakaoInforUpdatePost(MemberVO vo){
+		System.out.println(vo);
+		// 가져온 내용 업데이트 처리 하기
+		if(vo.getAdYN() == null) {
+			vo.setAdYN("N");
+		}
+		
+		int res = memberService.setKakaoFirstUpdatInfor(vo.getMid(),vo.getAddress(),vo.getGender(),vo.getEmail(),vo.getAdYN());
+		
+		if(res == 1) return "redirect:/member/kakaoLogin?email="+vo.getEmail();
+		else return "redirect:/message/kakaoLoginNo";
 	}
 	
 	// 회원가입 화면 이동
@@ -233,15 +365,23 @@ public class memberController {
 	// 아이디 찾기 메일 보내기
 	@ResponseBody
 	@RequestMapping(value = "/idFind", method = RequestMethod.POST)
-	public String idFindPost(String email) throws MessagingException {
+	public String idFindPost(String email, String name) throws MessagingException {
 		
 		List<MemberVO> vos = memberService.getMemberEmailCheck(email);
 		
 		String emailList ="";
 		if(vos.size() != 0) {
 			
+			emailList += name + "/";
 			for(int i=0; i<vos.size(); i++) {
-				emailList += vos.get(i).getMid() + "/";
+				String token = "";
+				if(vos.get(i).getToken().equals("damoa")) {
+					token = "일반 회원가입";
+				}
+				else if(vos.get(i).getToken().equals("kakao")) {
+					token = "카카오 회원가입";
+				}
+				emailList += token + ": " + vos.get(i).getMid() + "&nbsp;&nbsp;&nbsp;&nbsp; <span style='font-size:14px; color:black'>가입일 : " + vos.get(i).getStartDate().substring(0,10) + "<span>/";
 			}
 			
 			String title = "요청하신 아이디 안내 메일입니다.";
@@ -261,6 +401,34 @@ public class memberController {
 	@RequestMapping(value = "/pwdFind", method = RequestMethod.GET)
 	public String pwdFindGet() {
 		return "member/pwdFind";
+	}
+	
+	// 비밀번호 발급 처리
+	@ResponseBody
+	@RequestMapping(value = "/pwdFind", method = RequestMethod.POST)
+	public String pwdFindPost(String email, String mid) throws MessagingException {
+
+		MemberVO vo = memberService.getMemberMidEmailCheck(mid,email);
+		
+		if(vo != null) {
+			String pwd = RandomStringUtils.randomAlphanumeric(64).substring(0,10);
+			
+			String title = "임시 비밀번호가 도착하였습니다.";
+			String mailFlag = pwd;
+			String res = mailSend(email, title, mailFlag,"pwdFind");
+			
+			if(res.equals("1")) {
+				// 암호화 후 DB 업데이트
+				pwd = bCrypt.encode(pwd);
+				memberService.setMemberPwdUpdate(mid,pwd);
+				
+				return "1";
+			}
+			else return "2";
+		}
+		else {
+			return "2";
+		}
 	}
 
 	// 메일 전송을 위한 메소드
@@ -296,15 +464,43 @@ public class memberController {
 			String[] mail = mailFlag.split("/");
 			int cnt = 0;
 			
-			content += "<tr><td>안녕하세요. '다모아'를 이용해주셔서 감사합니다.</td></tr>";
+			content += "<tr><td>안녕하세요. "+ mail[0] +"님</td></tr>";
+			content += "<tr><td>'다모아'를 이용해주셔서 감사합니다.</td></tr>";
 			content += "<tr><td>요청하신 이메일(<font color='#A97BF5'>"+ email +"</font>)에 해당하는 아이디를 안내해 드립니다.</td></tr>";
 			content += "<tr><td style='height:20px'></td></tr>";
 			content += "<tr><td>해당 이메일을 통하여 가입한 아이디는 다음과 같습니다.</td></tr>";
 			content += "<tr><td style='height:20px'></td></tr>";
-			for(int i=0; i<mail.length; i++) {
+			for(int i=1; i<mail.length; i++) {
 				cnt++;
 				content += "<tr><td style='font-size:24px; color:blue'>" +cnt +". " + mail[i] + "</td></tr>"; 
 			}
+			content += "<tr><td style='height:20px'></td></tr>";
+			content += "<tr><td>감사합니다.</td></tr>";
+		}
+		else if(flag.equals("kakaoLoginPwd")) {
+			content += "<tr><td>안녕하세요.</td></tr>";
+			content += "<tr><td>'다모아'를 이용해주셔서 감사합니다.</td></tr>";
+			content += "<tr><td style='height:20px'></td></tr>";
+			content += "<tr><td>'다모아'사이트 이용을 위한 임시비밀번호를 안내해드립니다.</td></tr>";
+			content += "<tr><td style='height:20px'></td></tr>";
+			content += "<tr><td>임시 비밀번호 : </td></tr>";
+			content += "<tr><td style='font-size: 24px; color:blue; font-weight: bold;'>"+ mailFlag +"</td></tr>";
+			content += "<tr><td style='height:20px'></td></tr>";
+			content += "<tr><td>해당 임시 비밀번호는 '마이페이지 -> 비밀번호 변경'에서 변경이 가능하며,</td></tr>";
+			content += "<tr><td>카카오 첫 로그인 시 수정한 아이디를 통하여 일반 로그인 또한 가능합니다.</td></tr>";
+			content += "<tr><td>감사합니다.</td></tr>";
+		}
+		else if(flag.equals("pwdFind")) {
+			content += "<tr><td>안녕하세요.</td></tr>";
+			content += "<tr><td>'다모아'를 이용해주셔서 감사합니다.</td></tr>";
+			content += "<tr><td style='height:20px'></td></tr>";
+			content += "<tr><td>저희 사이트는 관리자라도 회원님의 비밀번호를 알 수 없기 때문에,</td></tr>";
+			content += "<tr><td>비밀번호를 알려드리는 대신 임시 비밀번호를 발급해드리고 있습니다.</td></tr>";
+			content += "<tr><td>아래의 임시 비밀번호를 확인 후, <span style='color:red'>'마이페이지 -> 비밀번호 변경'</span>에서</td></tr>";
+			content += "<tr><td><span style='color:red'>비밀번호를 변경해주시기 바랍니다.</span></td></tr>";
+			content += "<tr><td style='height:20px'></td></tr>";
+			content += "<tr><td>임시 비밀번호 : </td></tr>";
+			content += "<tr><td style='font-size: 24px; color:blue; font-weight: bold;'>"+ mailFlag +"</td></tr>";
 			content += "<tr><td style='height:20px'></td></tr>";
 			content += "<tr><td>감사합니다.</td></tr>";
 		}

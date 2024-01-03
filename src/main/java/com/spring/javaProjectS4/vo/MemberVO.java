@@ -37,4 +37,5 @@ public class MemberVO {
 	private String startDate;
 	private String lastDate;
 	private String adYN;
+	private String token;
 }

@@ -146,7 +146,7 @@
 				<!-- 로그인 시 -->
 				<c:if test="${sMid != null}">
 					<ul class="header-top-ul">
-						<li><a href="">${sNickName}님</a></li>
+						<li><a href="${ctp}/member/logout">${sNickName}님</a></li>
 						<li><a href=""><i class="fa-regular fa-bell" title="알림"></i></a></li>
 					</ul>
 				</c:if>

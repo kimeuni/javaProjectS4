@@ -82,6 +82,7 @@
     		width: 45px; 
     		height: 45px; 
     	}
+    	
     </style>
     <script>
     	'use strict'
@@ -97,6 +98,7 @@
     	function idFind(){
     		let name = $("#name").val();
     		let email = $("#email").val();
+    		let regName = /^[가-힣]{2,10}$/;
     		
     		$("#demo-idFind").addClass("demo-idFind-str");
     		
@@ -105,19 +107,30 @@
     			$("#demo-idFind").html(str);
     			return false
     		}
+    		else if(!regName.test(name)){
+    			str = '성명은 2~10자의 한글만 입력가능합니다.';
+    			$("#demo-idFind").html(str);
+    			return false
+    		}
     		else if(email.trim() == ""){
     			str = '이메일을 입력해주세요.';
     			$("#demo-idFind").html(str);
+    			return false
     		}
     		else{
     			// 로딩 보이기, 버튼 감추기
     			$(".spinner-border").show();
         		$("#idFindBtn").hide();
     			
+        		let query = {
+        			name : name,
+        			email, email
+        		}
+        		
     			$.ajax({
     				url : "${ctp}/member/idFind",
     				type : "post",
-    				data : {email : email},
+    				data : query,
     				success : function(res){
     					if(res == "1"){
 				    		$("#demo-idFind").removeClass("demo-idFind-str");
