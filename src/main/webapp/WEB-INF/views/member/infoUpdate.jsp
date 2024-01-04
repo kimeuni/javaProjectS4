@@ -5,7 +5,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>마이페이지</title>
+    <title>정보 수정</title>
     <jsp:include page="/WEB-INF/views/include/bs4.jsp" />
     <style>
     	body{
@@ -34,35 +34,26 @@
     		width: 70%;
     		margin-top: 60px; 
     	}
-    	#myPage-myinfo-menu{
+    	#myPage-infoUpdate{
     		margin: 0 auto;
     		width : 75%;
     		border: 1px solid;
     		border-radius : 5px;
     		padding: 20px;
     		background-color: #fff;
-    		text-align: center;
+    		text-align: left;
     		box-shadow: 5px 5px 10px gray;
     	}
-    	#myPage-myinfo-menu hr{
-    		margin: 0px;
-    	}
-    	#myPage-myinfo-menu-str{
+    	#myPage-infoUpdate-str{
     		font-size: 1.2em;
     		color : gray;
-    		text-align: left;
     		margin-bottom: 20px;
     	}
-    	#myPage-myinfo-menu a div{
-    		height: 60px;
-    		line-height: 60px;
-    		font-size: 1.1em;
-    	}
-    	#myPage-myinfo-menu a{
-    		color : black;
-    		text-decoration: none;
-    	}
     </style>
+    <script>
+    	'use strict'
+    	
+    </script>
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/include/myPageMenu.jsp" />
@@ -70,13 +61,8 @@
 		<div id="myPage-right-content">
 			<div id="top-menu-str">${menuStr}</div>
 			<div id="myPage-right-inner-content">
-				<div id="myPage-myinfo-menu">
-					<div id="myPage-myinfo-menu-str">개인정보 관리 <i class="fa-solid fa-pencil"></i></div>
-					<a href="${ctp}/member/pwdUpdate"><div><i class="fa-solid fa-lock"></i> 비밀번호 변경</div></a>
-					<hr/>
-					<a href=""><div><i class="fa-solid fa-pen"></i> 정보 수정</div></a>
-					<hr/>
-					<a href="${ctp}/member/userDel"><div><i class="fa-solid fa-user-slash"></i> 계정 탈퇴</div></a>
+				<div id="myPage-infoUpdate">
+					<div id="myPage-infoUpdate-str">정보 수정 <i class="fa-solid fa-pen"></i></div>
 				</div>
 			</div>
 		</div>

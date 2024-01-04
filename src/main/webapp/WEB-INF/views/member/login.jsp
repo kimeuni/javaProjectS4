@@ -140,8 +140,6 @@
 					});
 				}
 			});
-			$(".spinner-border").hide();
-			$(".kakaoBtn").show();
 		}
 		
 		

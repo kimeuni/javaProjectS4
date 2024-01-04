@@ -183,8 +183,7 @@
     						$("#demo-Del").html(str);
     					}
     					else if(res == "2"){
-    						str = '회원탈퇴';
-    						$("#demo-Del").html(str);
+    						location.href="${ctp}/member/userBye";
     					}
     				},
     				error : function(){

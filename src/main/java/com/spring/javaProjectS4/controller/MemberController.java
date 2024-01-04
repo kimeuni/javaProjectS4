@@ -539,10 +539,53 @@ public class MemberController {
 			return "1";
 		}
 		else {
-			// 데이터베이스에 저장
+			// 데이터베이스에 저장 및 업데이트 처리 할 것
 			
 			return "2";
 		}
+	}
+	
+	// 탈퇴 후 보이는 페이지 및 세션 끊기
+	@RequestMapping(value = "/userBye", method = RequestMethod.GET)
+	public String userByeGet(HttpSession session) {
+		String token = session.getAttribute("sToken")==null ? "" : (String)session.getAttribute("sToken");
+		
+		if(token.equals("damoa")) {
+			session.invalidate();
+		}
+		else if(token.equals("kakao")) {
+
+			String mid = (String) session.getAttribute("sMid");
+			String accessToken = (String) session.getAttribute("sAccessToken");
+			String reqURL = "https://kapi.kakao.com/v1/user/unlink";
+			
+			try {
+			    URL url = new URL(reqURL);
+			    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			    conn.setRequestMethod("POST");
+			    conn.setRequestProperty("Authorization", "Bearer " + accessToken);
+		
+			    int responseCode = conn.getResponseCode();
+	      
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+			session.invalidate();
+		}
+		return "member/userBye";
+	}
+	
+	@RequestMapping(value = "/pwdUpdate",method = RequestMethod.GET)
+	public String pwdUpdateGet(HttpSession session, Model model) {
+		
+		String mid = session.getAttribute("sMid")==null ? "" : (String)session.getAttribute("sMid");
+		MemberVO vo = memberService.getMemberMidCheck(mid);
+		
+		model.addAttribute("vo",vo);
+		model.addAttribute("menuStr","비밀번호 변경");
+		
+		return "member/pwdUpdate";
 	}
 
 	// 메일 전송을 위한 메소드

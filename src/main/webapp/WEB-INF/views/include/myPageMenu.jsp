@@ -71,6 +71,6 @@
 	</div>
 	<div id="myPage-menu">
 		<a href="${ctp}/member/myPage/myInfo"><div>개인정보 관리</div></a>
-		<a href=""><div>1:1 문의사항&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-caret-down"></i></div></a>
+		<a href=""><div>1:1 문의사항&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-caret-down"></i></div></a>
 	</div>
 </div>
