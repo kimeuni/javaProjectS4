@@ -98,7 +98,6 @@ public class MemberController {
 					
 					response.addCookie(cookie);
 				}
-				// 아이디 저장 체크 x시 쿠기 삭제
 				else if(idSave.equals("NO")) {
 					Cookie[] cookies = request.getCookies();
 					for(int i=0; i<cookies.length; i++) {
@@ -110,6 +109,9 @@ public class MemberController {
 						}
 					}
 				}
+				
+				// 마지막 접속일 업데이트
+				memberService.setUpdateLastDate(mid);
 				
 				return "3";
 			}
@@ -146,6 +148,9 @@ public class MemberController {
 				}
 			}
 		}
+
+		// 마지막 접속일 업데이트
+		memberService.setUpdateLastDate(mid);
 		
 		return "2";
 	}
@@ -480,6 +485,62 @@ public class MemberController {
 			else return "2";
 		}
 		else {
+			return "2";
+		}
+	}
+	
+	// 마이페이지 이동
+	@RequestMapping(value = {"/myPage","/myPage/myInfo"}, method = RequestMethod.GET)
+	public String myPageGet(HttpSession session, Model model,
+			@RequestParam(name="flag",defaultValue = "", required = false)String flag
+			) {
+		String mid = session.getAttribute("sMid")==null ? "" : (String)session.getAttribute("sMid");
+		String nickName = session.getAttribute("sNickName")==null ? "" : (String)session.getAttribute("sNickName");
+		
+		MemberVO vo = memberService.getMemberMidCheck(mid);
+		
+		if(flag.equals("myPg")) {
+			model.addAttribute("menuStr",nickName+"님 마이페이지");
+		}
+		else {
+			model.addAttribute("menuStr","개인정보 관리");
+		}
+		
+		model.addAttribute("vo",vo);
+		
+		return "member/myPage";
+	}
+	
+	// 탈퇴 안내 페이지로 이동
+	@RequestMapping(value = "/userDel", method = RequestMethod.GET)
+	public String userDelGet(HttpSession session, Model model) {
+		String mid = session.getAttribute("sMid")==null ? "" : (String)session.getAttribute("sMid");
+		
+		MemberVO vo = memberService.getMemberMidCheck(mid);
+		
+		model.addAttribute("vo",vo);
+		model.addAttribute("menuStr","계정탈퇴 안내");
+		
+		return "member/userDel";
+	}
+	
+	// 탈퇴 처리
+	@ResponseBody
+	@RequestMapping(value = "/userDelOk", method = RequestMethod.POST)
+	public String userDelPost(HttpSession session,
+				@RequestParam(name="pwd",defaultValue = "", required = false) String pwd,
+				@RequestParam(name="whyDel",defaultValue = "", required = false) String whyDel,
+				@RequestParam(name="why",defaultValue = "", required = false) String why
+			) {
+		
+		String mid = session.getAttribute("sMid")==null ? "" : (String)session.getAttribute("sMid");
+		MemberVO vo = memberService.getMemberMidCheck(mid);
+		if(!bCrypt.matches(pwd, vo.getPwd())) {
+			return "1";
+		}
+		else {
+			// 데이터베이스에 저장
+			
 			return "2";
 		}
 	}

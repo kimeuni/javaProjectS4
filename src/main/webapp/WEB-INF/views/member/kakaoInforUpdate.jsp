@@ -65,6 +65,25 @@
     		font-size: 12px;
     		color: red;
     	}
+    	#kakao-infor-up-btn input[type="button"]{
+    		width: 600px;
+			height: 45px;
+			margin-top: 10px;
+			margin-bottom: 20px;
+			background: #402F1D;
+			color: #fff;
+			font-size: 1.2em;
+			border-radius: 10px;
+			font-weight: bold;
+    	}
+    	#join-address-div input[type="button"]{
+    		width: 110px;
+			height: 32px;
+			background: #402F1D;
+			color: #fff;
+			font-size: 0.8em;
+			border-radius: 10px;
+    	}
     </style>
     <script>
     	'use strict'
@@ -177,7 +196,7 @@
 	    			<i class="fa-solid fa-check"></i> 변경한 정보를 통하여 일반 로그인도 가능합니다. <br/>
 	    			<i class="fa-solid fa-check"></i> 아이디는 해당 페이지에서 변경 후, 수정이 불가능하오니 신중히 작성 부탁드립니다. <br/>
 	    			<i class="fa-solid fa-check"></i> 그외의 정보는 마이페이지에서 수정 가능합니다. <br/>
-	    			<i class="fa-solid fa-check"></i> 해당 화면에서 <span style="color:red">1.아이디 2.주소 3.성별 4.광고메일 우뮤</span> 수정 가능합니다. <br/>
+	    			<i class="fa-solid fa-check"></i> 해당 화면에서 <span style="color:red">1.아이디 2.주소 3.성별 4.광고메일 수신 유무</span> 수정 가능합니다. <br/>
 	    		</div>
     		</div>
     		<hr/>
@@ -205,7 +224,7 @@
    				<div>
 					<input type="checkbox" id="adYN" name="adYN" value="Y"/>&nbsp;<label for="adYN"><span style="color:red;">(선택)</span> 정보/이벤트 메일 수신에 동의합니다.</label>
 				</div>
-	   			<div>
+	   			<div id="kakao-infor-up-btn">
 	   				<input type="button" value="정보 수정" onclick="kakaoInforUp()"/>
 	   			</div>
 	   			<input type="hidden" name="email" id="email" value="${vo.email}"/>

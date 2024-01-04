@@ -25,7 +25,7 @@
 		background-color: white;
 		height: 40px;
 		line-height: 40px;
-		overflow: hidden;
+		/* overflow: hidden; */
 	}
 	.gnb-inner {
 		background-color: white;
@@ -35,6 +35,8 @@
 
 	/* Active Class */
 	header.act .lnb-inner {
+		display : none;
+		visibility : hidden;
 		height: 0;
 	}
 	header.act .gnb-inner {
@@ -60,21 +62,57 @@
 	#gnb-btm-nav-align span a:hover, #header-search-span a:hover{
 		color: #000;
 	}
-	/* 1번째 nav */
+	/* 1번째 nav(주메뉴) */
 	#lnb-top-nav-size{
 		max-width: 1200px;
 		margin: 0 auto;
 	}
 	.header-top-ul{
+		background-color: #fff;
 		text-align: right;
 	}
 	.header-top-ul li {
+		background-color: #fff;
 		display: inline-block;
 		padding: 5px 10px;
+		position: relative;
+		width: 120px;
+		height: 40px;
+		text-align: center;
 	}
 	.header-top-ul li a{
 		text-decoration: none;
 		color: black;
+	}
+	/* 1번째 nav(서브메뉴) */
+	.header-top-ul li ul{
+		display : none;
+		position: absolute;
+		top: 40px;
+		right: 0;
+		width: 122px;
+		padding: 0px;
+		border: 1px solid;
+	}
+	.header-top-ul li:hover ul{
+		display: block;
+	}
+	.header-top-ul li ul li{
+		padding : 0px;
+		min-height: 40px;
+		min-width: 120px;
+	}
+	#inner-alarm{
+		width: 300px;
+		height: 170px;
+		overflow: auto;
+	}
+	#alarm-ul{
+		width: 302px;
+		height: 172px;
+		position: absolute;
+		top: 40px;
+		right: -100px;
 	}
 	
 	/* 2번째 nav */
@@ -121,6 +159,15 @@
 		width: 780px;
 		text-align: left;
 	}
+	.header-top-ul, .header-top-ul li{
+		margin: 0;
+	}
+	.header-top-ul a{
+		text-decoration: inherit;
+	}
+	#inner-alarm hr{
+		margin: 3px 10px;
+	}
 </style>
 <script>
 	$(window).scroll(function() {
@@ -146,8 +193,35 @@
 				<!-- 로그인 시 -->
 				<c:if test="${sMid != null}">
 					<ul class="header-top-ul">
-						<li><a href="${ctp}/member/logout">${sNickName}님</a></li>
-						<li><a href=""><i class="fa-regular fa-bell" title="알림"></i></a></li>
+						<li>
+							<i class="fa-solid fa-user"></i>${sNickName}님
+							<ul>
+								<c:if test="${sMid == 'admin'}"><li><a href="${ctp}/admin/adminMenu">관리자메뉴</a></li></c:if>
+								<li><a href="${ctp}/member/myPage?flag=myPg">마이페이지</a></li>
+								<li><a href="${ctp}/member/logout">로그아웃</a></li>
+							</ul>
+						</li>
+						<li>
+							<i class="fa-solid fa-bell"></i>알림
+							<ul id="alarm-ul">
+								<li id="inner-alarm">
+									알림
+									<hr/>
+									
+								</li>
+							</ul>
+						</li>
+						<li>
+							<i class="fa-solid fa-cart-shopping"></i>내상점
+							<ul>
+								<li><a href="">내상점</a></li>
+								<li><a href="">찜목록</a></li>
+								<li><a href="">상점관리</a></li>
+							</ul>
+						</li>
+						<li>
+							<i class="fa-solid fa-comment"></i>채팅
+						</li>
 					</ul>
 				</c:if>
 			</div>

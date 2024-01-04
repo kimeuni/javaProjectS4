@@ -104,6 +104,21 @@
 			$("#imsiPwdGo").hide();
 		});
 		
+		$(function() {
+			$("#mid").on("keydown", function(e) {
+				if(e.keyCode == 13){
+					loginOk();
+				}
+			});
+		});
+		$(function() {
+			$("#pwd").on("keydown", function(e) {
+				if(e.keyCode == 13){
+					loginOk();
+				}
+			});
+		});
+		
 		// 카카오 로그인을 위한 자바스크립트 앱키
 		window.Kakao.init("feb7c4c19e6c057416316d3cdb528c05");
 		

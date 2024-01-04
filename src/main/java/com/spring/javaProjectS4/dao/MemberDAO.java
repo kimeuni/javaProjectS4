@@ -28,4 +28,6 @@ public interface MemberDAO {
 
 	public void setMemberPwdUpdate(@Param("mid") String mid,@Param("pwd") String pwd);
 
+	public void setUpdateLastDate(@Param("mid") String mid);
+
 }

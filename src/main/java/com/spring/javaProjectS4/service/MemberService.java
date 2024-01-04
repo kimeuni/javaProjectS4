@@ -26,4 +26,6 @@ public interface MemberService {
 
 	public void setMemberPwdUpdate(String mid, String pwd);
 
+	public void setUpdateLastDate(String mid);
+
 }

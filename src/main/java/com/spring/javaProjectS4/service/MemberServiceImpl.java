@@ -63,5 +63,10 @@ public class MemberServiceImpl implements MemberService {
 		memberDAO.setMemberPwdUpdate(mid,pwd);
 	}
 
+	@Override
+	public void setUpdateLastDate(String mid) {
+		memberDAO.setUpdateLastDate(mid);
+	}
+
 	
 }

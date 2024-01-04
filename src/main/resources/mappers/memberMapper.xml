@@ -33,4 +33,7 @@
 	<update id="setMemberPwdUpdate">
 		update memberS set pwd = #{pwd} where mid = #{mid};
 	</update>
+	<update id="setUpdateLastDate">
+		update memberS set lastDate = now() where mid = #{mid};
+	</update>
 </mapper>

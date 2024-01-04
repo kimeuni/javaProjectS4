@@ -9,7 +9,7 @@ create table memberS(
 	address varchar(100) not null, 				/* 주소 */
 	email varchar(60) not null, 				/* 이메일 */
 	gender char(2) not null, 					/* 성별 (여자/남자) */
-	profile varchar(100) default "no_img.jpg", 	/* 기본 프로필 */
+	profile varchar(100) default "no_img.png", 	/* 기본 프로필 */
 	userDel char(1) default 'N', 				/* 회원 탈퇴 유무 (탈퇴:Y / 탈퇴x: N) */
 	adminYN char(1) default 'N', 				/* 관리자 확인 (일반회월:N / 관리자:Y) */
 	startDate datetime default now(), 			/* 계정 생성일 */
