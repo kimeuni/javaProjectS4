@@ -66,6 +66,13 @@
     	.check-no{
     		height: 20px;
     		color: red;
+    		margin-left: 23%;
+    		font-size: 12px;
+    	}
+    	.update-no{
+    		height: 20px;
+    		color: red;
+    		margin-left: 23%;
     	}
     	#myPage-pwdUpdate hr{
     		margin: 5px 0px;
@@ -74,7 +81,7 @@
     		text-align: center;
     	}
     	#pwdBtn input[type="button"]{
-    		margin: 15px 0px;
+    		margin-top : 15px;
 			width: 435px;
 			height: 50px;
 			background: #402F1D;
@@ -87,6 +94,94 @@
     <script>
     	'use strict'
     	
+    	let str ='';
+    	
+    	// 공백일 시 나온 오류 문구 키보드 칠시 사라지도록 처리
+    	$(function() {
+    		$("#pwd").on("keyup",function() {
+    			let pwd = $("#pwd").val();
+    			if(pwd.trim() != ''){
+	    			str = '';
+	    			$("#demo-pwd").html(str);
+    			}
+    		});
+    	});
+    	$(function() {
+    		$("#nPwd").on("keyup",function() {
+    			let nPwd = $("#nPwd").val();
+    			if(nPwd.trim() != ''){
+	    			str = '';
+	    			$("#demo-nPwd").html(str);
+    			}
+    		});
+    	});
+    	$(function() {
+    		$("#nPwdCk").on("keyup",function() {
+    			let nPwdCk = $("#nPwdCk").val();
+    			if(nPwdCk.trim() != ''){
+	    			str = '';
+	    			$("#demo-nPwdCk").html(str);
+    			}
+    		});
+    	});
+    	
+    	// 비밀번호 수정 처리
+    	function pwdUpdateOk(){
+    		let pwd = $("#pwd").val();
+    		let nPwd = $("#nPwd").val();
+    		let nPwdCk = $("#nPwdCk").val();
+    		let regPwd = /^(?=.*[a-zA-Z0-9])(?=.*[~!@#$%^&*()_+[\]{}?]).{8,16}$/;
+    		
+    		if(pwd.trim() == ""){
+    			str ='현재 비밀번호를 입력해주세요.';
+    			$("#demo-pwd").html(str);
+    		}
+    		else if(nPwd.trim() == ""){
+    			str ='새 비밀번호를 입력해주세요.';
+    			$("#demo-nPwd").html(str);
+    		}
+    		else if(!regPwd.test(nPwd)){
+    			str = '비밀번호는 8~16자의 영문 대소문자, 숫자,특수문자(~!@#$%^&*()_+[]{}?)를 각각 1자이상 포함되어야 합니다.'
+   				$("#demo-nPwd").html(str);
+    		}
+    		else if(nPwdCk.trim() == ""){
+    			str ='새 비밀번호 확인을 입력해주세요.';
+    			$("#demo-nPwdCk").html(str);
+    		}
+    		else if(nPwd != nPwdCk){
+    			str ='새 비밀번호화 비밀번호 확인이 일치하지 않습니다.';
+    			$("#demo-nPwdCk").html(str);
+    		}
+    		else {
+    			let query = {
+    				pwd : pwd,
+    				nPwd : nPwd,
+    			}
+    			
+    			$.ajax({
+    				url : "${ctp}/member/pwdUpdate",
+    				type : "post",
+    				data : query,
+    				success : function(res){
+    					if(res == "1"){
+    						str ='현재 비밀번호가 일치하지 않습니다.';
+    		    			$("#demo-pwd").html(str);
+    					}
+    					else if(res == "2"){
+    						str ='현재 비밀번호와 새 비밀번호가 동일합니다.';
+    		    			$("#demo-update-no").html(str);
+    					}
+    					else if(res == "3"){
+    						alert("비밀번호가 변경되었습니다.")
+    						location.reload();
+    					}
+    				},
+    				error : function(){
+    					alert("전송오류(pwdUpdate.jsp)");
+    				}
+    			});
+    		}
+    	}
     </script>
 </head>
 <body>
@@ -113,7 +208,8 @@
 						<div class="pwd-input"><input type="password" name="nPwdCk" id="nPwdCk" placeholder="새 비밀번호 확인"></div>
 						<div id="demo-nPwdCk" class="check-no"></div>
 					</div>
-					<div id="pwdBtn"><input type="button" value="비밀번호 변경" onclick="" /></div>
+					<div id="pwdBtn"><input type="button" value="비밀번호 변경" onclick="pwdUpdateOk()" /></div>
+					<div id="demo-update-no" class="update-no"></div>
 				</div>
 			</div>
 		</div>

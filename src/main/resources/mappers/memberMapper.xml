@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.spring.javaProjectS4.dao.MemberDAO">
 	<select id="getMemberMidCheck" resultType="com.spring.javaProjectS4.vo.MemberVO">
-		select * from memberS where mid = #{mid};
+		select *,timestampdiff(day,lastDate,now()) as date_diff from memberS where mid = #{mid};
 	</select>
 	<select id="getMemberNickNameCheck" resultType="com.spring.javaProjectS4.vo.MemberVO">
 		select * from memberS where nickName = #{nickName};
@@ -11,10 +11,13 @@
 		select * from memberS where email = #{email};
 	</select>
 	<select id="getMemberEmailTokenCheck" resultType="com.spring.javaProjectS4.vo.MemberVO">
-		select * from memberS where token = #{token} and email = #{email};
+		select *,timestampdiff(day,lastDate,now()) as date_diff from memberS where token = #{token} and email = #{email};
 	</select>
 	<select id="getMemberMidEmailCheck" resultType="com.spring.javaProjectS4.vo.MemberVO">
 		select * from memberS where mid = #{mid} and email = #{email};
+	</select>
+	<select id="getTitleList" resultType="com.spring.javaProjectS4.vo.ReasonTitleVO">
+		select * from reasonTitleS;
 	</select>
 	
 	<insert id="setMemberJoin">
@@ -26,6 +29,9 @@
 	<insert id="setKakaoMemberInput2">
 		insert into memberS (mid, pwd, name, nickName, address, email, gender,token) values(#{mid},#{pwd},#{name},#{nickName},'',#{email},'','kakao');
 	</insert>
+	<insert id="setUserDelReason">
+		insert into userDelReasonS values (default,#{whyDel},#{why},default);
+	</insert>
 	
 	<update id="setKakaoFirstUpdatInfor">
 		update memberS set mid = #{mid}, address = #{address}, gender = #{gender}, adYN = #{adYN} where email = #{email} and token = 'kakao';
@@ -35,5 +41,16 @@
 	</update>
 	<update id="setUpdateLastDate">
 		update memberS set lastDate = now() where mid = #{mid};
+	</update>
+	<update id="setUserDelUpdateY">
+		update memberS set userDel = 'Y' where mid = #{mid};
+	</update>
+	<update id="setUserDelUpdateN">
+		<if test="token == 'kakao'">
+			update memberS set userDel = 'N' where email = #{mid} and token = #{token};
+		</if>
+		<if test="token != 'kakao'">
+			update memberS set userDel = 'N' where mid = #{mid} and token = #{token};
+		</if>
 	</update>
 </mapper>

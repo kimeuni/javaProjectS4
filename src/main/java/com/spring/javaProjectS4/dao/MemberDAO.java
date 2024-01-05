@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.spring.javaProjectS4.vo.MemberVO;
+import com.spring.javaProjectS4.vo.ReasonTitleVO;
 
 public interface MemberDAO {
 
@@ -29,5 +30,13 @@ public interface MemberDAO {
 	public void setMemberPwdUpdate(@Param("mid") String mid,@Param("pwd") String pwd);
 
 	public void setUpdateLastDate(@Param("mid") String mid);
+
+	public List<ReasonTitleVO> getTitleList();
+
+	public void setUserDelUpdateY(@Param("mid") String mid);
+
+	public void setUserDelReason(@Param("whyDel") String whyDel,@Param("why") String why);
+
+	public int setUserDelUpdateN(@Param("mid") String mid,@Param("token") String token);
 
 }

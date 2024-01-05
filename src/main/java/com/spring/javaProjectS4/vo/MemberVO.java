@@ -38,4 +38,6 @@ public class MemberVO {
 	private String lastDate;
 	private String adYN;
 	private String token;
+	
+	private int date_diff; // 탈퇴한지 30일이 지났는지 체크
 }

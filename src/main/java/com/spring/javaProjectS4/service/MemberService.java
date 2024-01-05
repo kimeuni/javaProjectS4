@@ -3,6 +3,7 @@ package com.spring.javaProjectS4.service;
 import java.util.List;
 
 import com.spring.javaProjectS4.vo.MemberVO;
+import com.spring.javaProjectS4.vo.ReasonTitleVO;
 
 public interface MemberService {
 
@@ -27,5 +28,13 @@ public interface MemberService {
 	public void setMemberPwdUpdate(String mid, String pwd);
 
 	public void setUpdateLastDate(String mid);
+
+	public List<ReasonTitleVO> getTitleList();
+
+	public void setUserDelUpdateY(String mid);
+
+	public void setUserDelReason(String whyDel, String why);
+
+	public int setUserDelUpdateN(String mid, String token);
 
 }

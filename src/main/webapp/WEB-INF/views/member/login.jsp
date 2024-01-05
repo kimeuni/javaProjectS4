@@ -182,6 +182,14 @@
 							// 나중에 관리자 화면으로 이동하도록 주소 바꾸기
 							location.href='${ctp}/damoa';
 						}
+						else {
+							// 계정 비활성 && 30일 이내 시 계정 복구창 이동
+							let arr = new Array();
+							arr  = res.split("/");
+							
+							
+							location.href="${ctp}/member/accountRestore?mid="+arr[0]+"&token="+arr[1]+"&lastDate="+arr[2];
+						}
 					},
 					error : function(){
 						alert("전송오류(login.jsp)")

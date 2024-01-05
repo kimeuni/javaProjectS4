@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.spring.javaProjectS4.dao.MemberDAO;
 import com.spring.javaProjectS4.vo.MemberVO;
+import com.spring.javaProjectS4.vo.ReasonTitleVO;
 
 @Service
 public class MemberServiceImpl implements MemberService {
@@ -68,5 +69,24 @@ public class MemberServiceImpl implements MemberService {
 		memberDAO.setUpdateLastDate(mid);
 	}
 
-	
+	@Override
+	public List<ReasonTitleVO> getTitleList() {
+		return memberDAO.getTitleList();
+	}
+
+	@Override
+	public void setUserDelUpdateY(String mid) {
+		memberDAO.setUserDelUpdateY(mid);
+	}
+
+	@Override
+	public void setUserDelReason(String whyDel, String why) {
+		memberDAO.setUserDelReason(whyDel, why);
+	}
+
+	@Override
+	public int setUserDelUpdateN(String mid, String token) {
+		return memberDAO.setUserDelUpdateN(mid, token);
+	}
+
 }

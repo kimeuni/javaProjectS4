@@ -94,7 +94,7 @@
     	$(function() {
     		$("#whyDel").on("click",function() {
     			let whyDel =$("#whyDel").val();
-    			if(whyDel == "기타"){
+    			if(whyDel == "A9999"){
     				$("#otherWhy").show();
     			}
     			else $("#otherWhy").hide();
@@ -157,7 +157,7 @@
     			$("#demo-whyDel").html(str);
     			return false;
     		}
-    		else if(whyDel == "기타" && why.trim() == ""){
+    		else if(whyDel == "A9999" && why.trim() == ""){
     			str = '탈퇴 사유를 입력해주세요.';
     			$("#demo-whyDel").html(str);
     			return false;
@@ -206,8 +206,8 @@
 					<div id="myPage-userDel-str">계정탈퇴 안내 <i class="fa-solid fa-user-slash"></i><c:if test="${sMid == 'admin'}"> <span style="color:red">(관리자는 회원 탈퇴 불가)</span></c:if></div>
 					<div style="color:gray">안내사항을 반드시 숙지 후 진행 바랍니다.</div><br/>
 					<div>
-						1.사용하고 계신 아이디(<span style="color:red">${vo.mid}</span>)는 탈퇴하실 경우 30일간 동일한 아이디로 재가입이 불가능합니다.<br/>
-						<span style="color:red">탈퇴하신 계정은 복구가 불가능</span>하오니, 신중하게 선택 바랍니다.<br/><br/>
+						1.사용하고 계신 아이디(<span style="color:red">${vo.mid}</span>)는 탈퇴하실 경우 동일한 아이디로 재가입이 불가능합니다.<br/>
+						30일 이후에는  <span style="color:red">계정의 복구가 불가능</span>하오니, 신중하게 선택 바랍니다.<br/><br/>
 						
 						2.탈퇴하신 경우 이용하신 내역 수정 및 확인이 어려울 수 있이며 로그인 후 가능한 모든 기능은 사용이 불가능합니다. 
 						<span style="color:red">기존에 거래중인 상품이 있는지 확인 후 탈퇴</span>해주시기 바랍니다.<br/><br/>
@@ -218,14 +218,9 @@
 					<div id="demo-pwd" class="check-no"></div>
 					<select name="whyDel" id="whyDel">
 						<option value="">탈퇴 사유를 선택해주세요.</option>
-						<option value="찾는 물건 없음">찾는 물품이 없어요</option>
-						<option value="물품 안 팔림">물품이 안 팔려요</option>
-						<option value="비매너 사용자 만남">비매너 사용자를 만났어요</option>
-						<option value="새상점 만들기">새 상점을 만들고 싶어요</option>
-						<option value="개인정보 삭제">개인정보를 삭제하고 싶어요</option>
-						<option value="이용 불편">이용이 불편하고 장애가 많아요</option>
-						<option value="사용 빈도 낮음">사용 빈도가 낮아요</option>
-						<option value="기타">기타</option>
+						<c:forEach var="TVO" items="${vos}" varStatus="st">
+							<option value="${TVO.code}">${TVO.title}</option>
+						</c:forEach>
 					</select>
 					<div id="otherWhy"><textarea rows="4" cols="50" id="why"></textarea></div>
 					<div id="demo-whyDel" class="check-no"></div>

@@ -1,8 +1,6 @@
 package com.spring.javaProjectS4.controller;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
@@ -35,6 +33,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.spring.javaProjectS4.service.MemberService;
 import com.spring.javaProjectS4.vo.MemberVO;
+import com.spring.javaProjectS4.vo.ReasonTitleVO;
 
 @Controller
 @RequestMapping("/member")
@@ -72,7 +71,7 @@ public class MemberController {
 			@RequestParam(name="mid", defaultValue = "", required = false) String mid, 
 			@RequestParam(name="pwd", defaultValue = "", required = false) String pwd,
 			@RequestParam(name="idSave", defaultValue = "NO", required = false) String idSave,
-			HttpSession session) {
+			HttpSession session,Model model) {
 		
 		MemberVO vo = memberService.getMemberMidCheck(mid);
 		
@@ -80,7 +79,7 @@ public class MemberController {
 		if(mid.equals("")) return "1";
 		// 비밀번호 공백
 		else if(pwd.equals("")) return "1";
-		// vo가 null일시
+		// 회원이 아닐 시,
 		else if(vo == null) return "1";
 		// 관리자일 경우
 		else if(vo.getMid().equals("admin")) {
@@ -115,6 +114,14 @@ public class MemberController {
 				
 				return "3";
 			}
+		}
+		// 계정 탈퇴 했는데 30일 안지났을 경우(로그인시 계정 복구할거냐고 물어보기)
+		else if(vo.getUserDel().equals("Y") && vo.getDate_diff() <= 30 ) {
+			return mid+"/damoa/"+vo.getLastDate();
+		}
+		// 계정 탈퇴 했는데 30일 지났을 경우 (완전히 계정 이용 불가)
+		else if(vo.getUserDel().equals("Y") && vo.getDate_diff() > 30) {
+			return "1";
 		}
 		// 비밀번호가 같지 않을 시
 		else if(vo.getMid().equals(mid)) {
@@ -206,8 +213,8 @@ public class MemberController {
 		// 이메일 및 토큰을 통하여 회원인지 확인
 		MemberVO vo = memberService.getMemberEmailTokenCheck(email,"kakao");
 		
-		// DB에 저장된 카카오 회원이 아닌시, DB에 저장 처리
-		if(vo == null) {
+		// 카카오 회원이 아닐시, 혹은 탈퇴 후 30일이 지났을 시
+		if(vo == null || (vo.getDate_diff() > 30 && vo.getUserDel().equals("Y"))) {
 			// 아이디 결정해주기
 			String mid = email.substring(0,email.indexOf("@"));
 			
@@ -251,6 +258,14 @@ public class MemberController {
 			
 			vo = memberService.getMemberMidCheck(mid);
 		}
+		// 계정 탈퇴 했는데 30일 안지났을 경우(로그인시 계정 복구할거냐고 물어보기)
+		else if(vo.getUserDel().equals("Y") && vo.getDate_diff() <= 30 ) {
+			model.addAttribute("mid",email);
+			model.addAttribute("token","kakao");
+			model.addAttribute("lastDate",vo.getLastDate());
+			
+			return "member/accountRestore";
+		}
 		
 		model.addAttribute("vo", vo);
 		// 처음 로그인시, 정보 수정 페이지로
@@ -261,6 +276,9 @@ public class MemberController {
 			session.setAttribute("sMid", vo.getMid());
 			session.setAttribute("sNickName", vo.getNickName());
 			session.setAttribute("sToken", vo.getToken());
+			
+			// 마지막 접속일 업데이트
+			memberService.setUpdateLastDate(vo.getMid());
 			
 			return "redirect:/";
 		}
@@ -517,8 +535,10 @@ public class MemberController {
 		String mid = session.getAttribute("sMid")==null ? "" : (String)session.getAttribute("sMid");
 		
 		MemberVO vo = memberService.getMemberMidCheck(mid);
+		List<ReasonTitleVO> vos = memberService.getTitleList();
 		
 		model.addAttribute("vo",vo);
+		model.addAttribute("vos",vos);
 		model.addAttribute("menuStr","계정탈퇴 안내");
 		
 		return "member/userDel";
@@ -539,13 +559,31 @@ public class MemberController {
 			return "1";
 		}
 		else {
-			// 데이터베이스에 저장 및 업데이트 처리 할 것
+			// userDel Y로 업데이트처리
+			memberService.setUserDelUpdateY(mid);
+			
+			// 탈퇴 이유 등록(A9999=기타)
+			if(whyDel.equals("A9999")) {
+				memberService.setUserDelReason(whyDel,why);
+			}
+			else {
+				List<ReasonTitleVO> vos = memberService.getTitleList();
+				for(int i=0; i<vos.size(); i++) {
+					if(vos.get(i).getCode().equals(whyDel)) {
+						why = vos.get(i).getTitle();
+						break;
+					}
+				}
+				memberService.setUserDelReason(whyDel,why);
+			}
+			
+			// 중고거래, 커뮤니티, 모아모아 등 게시글 안보이게 처리
 			
 			return "2";
 		}
 	}
 	
-	// 탈퇴 후 보이는 페이지 및 세션 끊기
+	// 탈퇴 후 보이는 페이지 들어가기 및 세션 끊기
 	@RequestMapping(value = "/userBye", method = RequestMethod.GET)
 	public String userByeGet(HttpSession session) {
 		String token = session.getAttribute("sToken")==null ? "" : (String)session.getAttribute("sToken");
@@ -576,6 +614,7 @@ public class MemberController {
 		return "member/userBye";
 	}
 	
+	// 비밀번호 변경 화면 이동
 	@RequestMapping(value = "/pwdUpdate",method = RequestMethod.GET)
 	public String pwdUpdateGet(HttpSession session, Model model) {
 		
@@ -586,6 +625,57 @@ public class MemberController {
 		model.addAttribute("menuStr","비밀번호 변경");
 		
 		return "member/pwdUpdate";
+	}
+	
+	// 비밀번호 변경 처리
+	@ResponseBody
+	@RequestMapping(value = "/pwdUpdate",method = RequestMethod.POST)
+	public String puwdUpdatePost(String pwd, String nPwd, HttpSession session) {
+		String mid = session.getAttribute("sMid")==null ? "" : (String)session.getAttribute("sMid");
+		MemberVO vo = memberService.getMemberMidCheck(mid);
+		
+		// 현재 비밀번호와 입력한 비밀번호가 다를시,
+		if(!bCrypt.matches(pwd,vo.getPwd())) {
+			return "1";
+		}
+		else if(bCrypt.matches(nPwd,vo.getPwd())) {
+			// 새 비밀번호와 기본 비밀번호가 동일할 경우
+			return "2";
+		}
+		else {
+			// 비밀번호 암호화 후 업데이트 처리
+			nPwd = bCrypt.encode(nPwd);
+			
+			memberService.setMemberPwdUpdate(mid, nPwd);
+			
+			return "3";
+		}
+	}
+	
+	// 계정 복구 화면 이동
+	@RequestMapping(value = "/accountRestore", method = RequestMethod.GET)
+	public String accountRestoreGet(String mid,String token,String lastDate, Model model) {
+		model.addAttribute("mid",mid);
+		model.addAttribute("token",token);
+		model.addAttribute("lastDate",lastDate);
+		return "member/accountRestore";
+	}
+	
+	// 계정 복구 처리
+	@ResponseBody
+	@RequestMapping(value = "/restoreOk", method = RequestMethod.POST)
+	public String restoreOkPost(String mid, String token) {
+		int res = 0;
+		System.out.println(mid + "/" + token);
+		
+		res = memberService.setUserDelUpdateN(mid,token);
+		
+		if(res != 0) {
+			return "1";
+		}
+		else {
+			return "2";
+		}
 	}
 
 	// 메일 전송을 위한 메소드
