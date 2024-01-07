@@ -39,4 +39,6 @@ public interface MemberDAO {
 
 	public int setUserDelUpdateN(@Param("mid") String mid,@Param("token") String token);
 
+	public int setInfoUpdate(@Param("mid") String mid,@Param("name") String name,@Param("nickName") String nickName,@Param("email") String email,@Param("address") String address);
+
 }

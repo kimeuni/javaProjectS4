@@ -372,11 +372,17 @@ public class MemberController {
 	// 닉네임 유효성 검사
 	@ResponseBody
 	@RequestMapping(value = "/nickNameCheck", method = RequestMethod.POST)
-	public String nickNameCheckPost(String nickName) {
+	public String nickNameCheckPost(String nickName,HttpSession session) {
+		String mid = session.getAttribute("sMid")==null ? "" : (String)session.getAttribute("sMid");
+		MemberVO voM = memberService.getMemberMidCheck(mid);
 		
 		MemberVO vo = memberService.getMemberNickNameCheck(nickName);
+		if(nickName.equals(voM.getNickName())) {
+			// infoUpdate 부분에서 닉네임 동일 시
+			return "3";
+		}
 		// 중복
-		if(vo != null){
+		else if(vo != null){
 			return "1";
 		}
 		else {
@@ -654,10 +660,11 @@ public class MemberController {
 	
 	// 계정 복구 화면 이동
 	@RequestMapping(value = "/accountRestore", method = RequestMethod.GET)
-	public String accountRestoreGet(String mid,String token,String lastDate, Model model) {
+	public String accountRestoreGet(String mid,String token,String lastDate, Model model,HttpSession session) {
 		model.addAttribute("mid",mid);
 		model.addAttribute("token",token);
 		model.addAttribute("lastDate",lastDate);
+		
 		return "member/accountRestore";
 	}
 	
@@ -676,6 +683,44 @@ public class MemberController {
 		else {
 			return "2";
 		}
+	}
+	
+	// 마이페이지-정보수정 화면 이동
+	@RequestMapping(value = "/infoUpdate",method = RequestMethod.GET)
+	public String infoUpdateGet(Model model, HttpSession session) {
+		String mid = session.getAttribute("sMid")==null ? "" : (String)session.getAttribute("sMid");
+		MemberVO vo = memberService.getMemberMidCheck(mid);
+		
+		model.addAttribute("vo",vo);
+		model.addAttribute("menuStr","정보 수정");
+		
+		return "member/infoUpdate";
+	}
+	
+	// 마이페이지-정보수정 처리
+	@ResponseBody
+	@RequestMapping(value = "/infoUpdateOk", method = RequestMethod.POST)
+	public String infoUpdateOkPost(String name, String nickName, String email, String address,HttpSession session) {
+		String mid = session.getAttribute("sMid")==null ? "" : (String)session.getAttribute("sMid");
+		
+		// 계정 정보 업데이트 처리
+		int res = memberService.setInfoUpdate(mid,name,nickName,email,address);
+		if(res == 1) {
+			return "1";
+		}
+		else return "2";
+	}
+	
+	// 마이페이지-프로필변경 화면 이동
+	@RequestMapping(value = "/profileUpdate", method = RequestMethod.GET)
+	public String profileUpdateGet(Model model, HttpSession session) {
+		String mid = session.getAttribute("sMid")==null ? "" : (String)session.getAttribute("sMid");
+		MemberVO vo = memberService.getMemberMidCheck(mid);
+		
+		model.addAttribute("vo",vo);
+		model.addAttribute("menuStr","프로필 변경");
+		
+		return "member/profileUpdate";
 	}
 
 	// 메일 전송을 위한 메소드

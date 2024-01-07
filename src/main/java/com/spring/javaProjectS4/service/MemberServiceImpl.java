@@ -89,4 +89,9 @@ public class MemberServiceImpl implements MemberService {
 		return memberDAO.setUserDelUpdateN(mid, token);
 	}
 
+	@Override
+	public int setInfoUpdate(String mid, String name, String nickName, String email, String address) {
+		return memberDAO.setInfoUpdate( mid, name, nickName, email, address);
+	}
+
 }

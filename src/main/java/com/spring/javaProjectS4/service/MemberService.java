@@ -37,4 +37,6 @@ public interface MemberService {
 
 	public int setUserDelUpdateN(String mid, String token);
 
+	public int setInfoUpdate(String mid, String name, String nickName, String email, String address);
+
 }

@@ -130,7 +130,8 @@
 		}
     </style>
     <script>
-    	'use script'
+    	'use strict'
+    	
     	let midCheckOk = false;
     	let pwdCheckOk = false;
     	let pwdOkCheckOk = false;
@@ -141,10 +142,11 @@
     	
     	let str = '';
     	let timerSw = 0;
+    	let playTime = '';
 
     	// 타이머
-    	let time = 60000;
-    	let min = 1;
+    	let time = 180000;
+    	let min = 3;
     	let sec = 60;
     	
     	function codeTimer(){
@@ -435,8 +437,8 @@
     			// 이메일 전송을 누를 시에 타이머 <분,초> 설정 및 클래스 등 설정 (인증번호 전송을 여러번 눌렀을 시.. 초기화..)
 	    		timerSw = 1; //타이머를 누를 시 스위치 1로 변환
 
-    			time = 60000; //3분
-    	    	min = 1;
+    			time = 180000; //3분
+    	    	min = 3;
     	    	sec = 60;
 				str = '';
     			$("#demo_codeW").html(str);
@@ -513,11 +515,13 @@
 	    					emailCodeCheckOk = true;
 	    				}
 	    				else if(res == "2"){
-	    					str = '인증번호가 만료되었습니다. 인증번호를 다시 발급받아 주세요.';
-			    			$("#demo_codeW").html(str);
-			    			$("#codeW").addClass("join-no");
-			    			$("#codeW").focus();
-			    			emailCodeCheckOk = false;
+	    					if(emailCodeCheckOk != true){
+		    					str = '인증번호가 만료되었습니다. 인증번호를 다시 발급받아 주세요.';
+				    			$("#demo_codeW").html(str);
+				    			$("#codeW").addClass("join-no");
+				    			$("#codeW").focus();
+				    			emailCodeCheckOk = false;
+	    					}
 	    				}
 	    				else if(res == "3"){
 	    					str = '인증번호를 다시 확인해주세요.';
@@ -603,7 +607,7 @@
     			return false;
     		}
     		else if(adr.trim() == ""){
-    			str = '주소을 확인해주세요.';
+    			str = '주소를 확인해주세요.';
     			$("#demo_address").html(str);
     			$("#sample6_postcode").focus();
     			$("#sample6_postcode").addClass("join-no");	
@@ -614,7 +618,7 @@
     			// 전송전에 '주소'를 하나로 묶어서 전송처리 준비
             	let postcode = joinForm.postcode.value;
             	let roadAddress = joinForm.roadAddress.value;
-            	let detailAddress = joinForm.detailAddress.value;
+            	let detailAddress = joinForm.detailAddress.value + " ";
             	let extraAddress = joinForm.extraAddress.value;
             	joinForm.address.value = postcode + "/" + roadAddress + "/" + detailAddress + "/" + extraAddress;
             	

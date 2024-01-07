@@ -6,10 +6,10 @@
  		margin: 0px;
  		padding: 0px;
  	}
- 	#myPage-left-nav{
+ 	#admin-left-nav{
  		position : fixed;
  		overflow : auto;
- 		background-color: #EBDDCC;
+ 		background-color: #3E465B;
  		height : 100vh;
  		width : 20%;
  		display: inline-block;
@@ -43,34 +43,43 @@
  		color: black;
  		font-size: 1.3em;
  	}
- 	#myPage-menu a div{
+ 	.admin-inner-menu{
  		text-align: left;
  		font-size: 1.3em;
  		font-weight: bold;
- 		background-color: #382426;
+ 		background-color: #0E0F37;
  		color : #fff;
  		height: 50px;
  		line-height: 50px;
- 		border: 1px solid;
+ 		/* border: 1px solid; */
  		padding: 0px 30px;
  	}
- 	#myPage-menu a{
+ 	#admin-menu a{
  		color : #fff;
  		text-decoration: none;
  	}
+ 	#admin-member-menu a div{
+ 		padding-left: 50px;
+ 	}
 </style>
-<div id="myPage-left-nav">
-	<div><a href="${ctp}/damoa"><img src="${ctp}/data/images/다모아로고1.png" height="65px"></a></div>
-	<div id="member-profile">
-		<c:if test="${vo.profile == 'no_img.png'}"><a href="${ctp}/member/profileUpdate" ><img src="${ctp}/data/images/${vo.profile}" id="profileChan"></a></c:if>
-		<span><a href="${ctp}/member/profileChange" ><i class="fa-solid fa-square-pen"></i></a></span>
-		<div id="profile-str">
-			<div id="profile-str-nick">${vo.nickName}</div>
-			<div id="profile-str-mail">${vo.email}</div>
+<script>
+	'use strict'
+	
+	$(function() {
+		$("#admin-member-menu").hide();
+	});
+	
+	function memberManagement(){
+		$("#admin-member-menu").slideDown();
+	}
+</script>
+<div id="admin-left-nav">
+	<div><a href="${ctp}/damoa"><img src="${ctp}/data/images/다모아로고2.png" height="65px"></a></div>
+	<div id="admin-menu">
+		<a href="javascript:memberManagement()"><div class="admin-inner-menu">회원 관리&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-caret-down"></i></div></a>
+		<div id="admin-member-menu">
+			<a href="${ctp}/admin/memberList"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> 회원 리스트</div></a>
 		</div>
-	</div>
-	<div id="myPage-menu">
-		<a href="${ctp}/member/myPage/myInfo"><div>개인정보 관리</div></a>
-		<a href=""><div>1:1 문의사항&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-caret-down"></i></div></a>
+		<a href=""><div class="admin-inner-menu">1:1 문의사항&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-caret-down"></i></div></a>
 	</div>
 </div>

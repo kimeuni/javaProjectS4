@@ -196,7 +196,7 @@
 						<li>
 							<i class="fa-solid fa-user"></i>${sNickName}님
 							<ul>
-								<c:if test="${sMid == 'admin'}"><li><a href="${ctp}/admin/adminMenu">관리자메뉴</a></li></c:if>
+								<c:if test="${sMid == 'admin'}"><li><a href="${ctp}/admin/adminMain">관리자메뉴</a></li></c:if>
 								<li><a href="${ctp}/member/myPage?flag=myPg">마이페이지</a></li>
 								<li><a href="${ctp}/member/logout">로그아웃</a></li>
 							</ul>

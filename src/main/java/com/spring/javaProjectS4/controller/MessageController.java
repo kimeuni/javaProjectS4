@@ -34,6 +34,10 @@ public class MessageController {
 			model.addAttribute("msg", "문제가 발생하였습니다. 다시 로그인해주세요.");
 			model.addAttribute("url","member/login");
 		}
+		else if(msgFalg.equals("restoreMidNo")) {
+			model.addAttribute("msg", "잘못된 접근");
+			model.addAttribute("url","damoa");
+		}
 			
 		return "include/message";
 	}

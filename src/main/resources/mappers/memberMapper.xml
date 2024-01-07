@@ -53,4 +53,7 @@
 			update memberS set userDel = 'N' where mid = #{mid} and token = #{token};
 		</if>
 	</update>
+	<update id="setInfoUpdate">
+		update memberS set name = #{name}, nickName = #{nickName}, email = #{email}, address = #{address} where mid = #{mid};
+	</update>
 </mapper>

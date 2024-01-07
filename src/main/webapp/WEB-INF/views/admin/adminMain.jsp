@@ -5,14 +5,14 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>마이페이지</title>
+    <title>관리자 메인</title>
     <jsp:include page="/WEB-INF/views/include/bs4.jsp" />
     <style>
     	body{
     		margin: 0px;
     		padding: 0px;
     	}
-    	#myPage-right-content{
+    	#admin-right-content{
     		min-height : 100vh;
     		background-color: #eee;
     		margin-left : 20%;
@@ -21,20 +21,22 @@
     		height : 100%;
     	}
     	#top-menu-str{
-    		background-color: #5E5756;
+    		background-color: #fff;
 			height: 50px;
-			color: #fff;
+			color: #000;
 			font-weight: bold;
 			font-size: 1.5em;
 			padding-left: 30px;
 			line-height: 50px;
+			border-bottom: 1px solid;
+			box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
     	}
-    	#myPage-right-inner-content{
+    	#admin-right-inner-content{
     		margin: 0 auto;
     		width: 70%;
     		margin-top: 60px; 
     	}
-    	#myPage-myinfo-menu{
+    	#admin-myinfo-menu{
     		margin: 0 auto;
     		width : 75%;
     		border: 1px solid;
@@ -44,40 +46,33 @@
     		text-align: center;
     		box-shadow: 5px 5px 10px gray;
     	}
-    	#myPage-myinfo-menu hr{
+    	#admin-myinfo-menu hr{
     		margin: 0px;
     	}
-    	#myPage-myinfo-menu-str{
+    	#admin-myinfo-menu-str{
     		font-size: 1.2em;
     		color : gray;
     		text-align: left;
     		margin-bottom: 20px;
     	}
-    	#myPage-myinfo-menu a div{
+    	#admin-myinfo-menu a div{
     		height: 60px;
     		line-height: 60px;
     		font-size: 1.1em;
     	}
-    	#myPage-myinfo-menu a{
+    	#admin-myinfo-menu a{
     		color : black;
     		text-decoration: none;
     	}
     </style>
 </head>
 <body>
-<jsp:include page="/WEB-INF/views/include/myPageMenu.jsp" />
-	<div id="myPage-container">
-		<div id="myPage-right-content">
-			<div id="top-menu-str">${menuStr}</div>
-			<div id="myPage-right-inner-content">
-				<div id="myPage-myinfo-menu">
-					<div id="myPage-myinfo-menu-str">개인정보 관리 <i class="fa-solid fa-pencil"></i></div>
-					<a href="${ctp}/member/pwdUpdate"><div><i class="fa-solid fa-lock"></i> 비밀번호 변경</div></a>
-					<hr/>
-					<a href="${ctp}/member/infoUpdate"><div><i class="fa-solid fa-pen"></i> 정보 수정</div></a>
-					<hr/>
-					<a href="${ctp}/member/userDel"><div><i class="fa-solid fa-user-slash"></i> 계정 탈퇴</div></a>
-				</div>
+<jsp:include page="/WEB-INF/views/include/adminMenu.jsp" />
+	<div id="admin-container">
+		<div id="admin-right-content">
+			<div id="top-menu-str">관리자 메인</div>
+			<div id="admin-right-inner-content">
+				
 			</div>
 		</div>
 	</div>
