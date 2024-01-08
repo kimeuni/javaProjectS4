@@ -21,6 +21,8 @@
     		height : 100%;
     	}
     	#top-menu-str{
+    		position: fixed;
+    		width: 100%;
     		background-color: #5E5756;
 			height: 50px;
 			color: #fff;
@@ -32,7 +34,8 @@
     	#myPage-right-inner-content{
     		margin: 0 auto;
     		width: 70%;
-    		margin-top: 60px; 
+    		margin-top: 110px; 
+    		margin-bottom: 60px; 
     	}
     	#myPage-pwdUpdate{
     		margin: 0 auto;
@@ -115,7 +118,7 @@
 					<div style="color:gray">대표 프로필을 변경할 수 있습니다.</div><br/>
 					<div>프로필 사진</div>
 					<hr/>
-					<div id="profile-img-div"><img src="${ctp}/data/images/${vo.profile}"></div>
+					<div id="profile-img-div"><img src="${ctp}/data/member/${vo.profile}"></div>
 					<div id="file-btns-div">
 						<div class="file-btn-div">
 							<label for="profile">
@@ -131,8 +134,8 @@
 					</div>
 					<hr/>
 					<div id="ok-no-btn">
-						<input type="button" value="적용" id="ok-btn" onclick="" />
-						<input type="button" value="취소" id="no-btn" onclick="" />
+						<input type="button" value="적용" id="ok-btn" onclick="profileUpdateOk()" />
+						<input type="button" value="취소" id="no-btn" onclick="location.href='${ctp}/member/myPage'" />
 					</div>
 				</div>
 			</div>

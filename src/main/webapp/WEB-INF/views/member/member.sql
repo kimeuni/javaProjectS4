@@ -11,12 +11,13 @@ create table memberS(
 	email varchar(60) not null, 				/* 이메일 */
 	gender char(2) not null, 					/* 성별 (여자/남자) */
 	profile varchar(100) default "no_img.png", 	/* 기본 프로필 */
-	userDel char(1) default 'N', 				/* 회원 탈퇴 유무 (탈퇴:Y / 탈퇴x: N) */
+	userDel char(1) default 'N', 				/* 회원 탈퇴 유무 (탈퇴:Y / 탈퇴x: N / 누적 신고로인형 계정 비활성화 : R) */
 	adminYN char(1) default 'N', 				/* 관리자 확인 (일반회월:N / 관리자:Y) */
 	startDate datetime default now(), 			/* 계정 생성일 */
 	lastDate datetime default now(), 			/* 마지막 접속일 */
 	adYN char(1) not null default 'Y',			/* 이메일 광고 수신 유무 (광고o : Y / 광고x : N) */ 
 	token varchar(10) not null default 'damoa', /* 카카오 유저, 일반 유저 확인(일반회원가입:damoa /카카오회원가입:kakao) */
+	totReportCnt int default 0;
 	primary key(idx),
 	unique key(mid)
 );

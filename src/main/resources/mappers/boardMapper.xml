@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.javaProjectS4.dao.BoardDAO">
+	<select id="getNoticeList" resultType="com.spring.javaProjectS4.vo.NoticeVO">
+		select *,timestampdiff(hour,nDate,now()) as hour_diff,dateDiff(now(),nDate) from noticeS order by idx limit #{startIndexNo},#{pageSize};
+	</select>
+	<select id="getNoticeAllTotRecCnt" resultType="int">
+		select count(*) from noticeS
+	</select>
+	<select id="getNoticeSearchTotRecCnt" resultType="int">
+		select count(*) from noticeS ${part}  like concat('%',#{searchString},'%')
+	</select>
+</mapper>

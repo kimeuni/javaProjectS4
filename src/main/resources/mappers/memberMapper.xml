@@ -21,7 +21,7 @@
 	</select>
 	
 	<insert id="setMemberJoin">
-		insert into memberS values(default,#{vo.mid},#{vo.pwd},#{vo.name},#{vo.nickName},#{vo.address},#{vo.email},#{vo.gender},default,default,default,default,default,#{vo.adYN},default);
+		insert into memberS values(default,#{vo.mid},#{vo.pwd},#{vo.name},#{vo.nickName},#{vo.address},#{vo.email},#{vo.gender},default,default,default,default,default,#{vo.adYN},default,default);
 	</insert>
 	<insert id="setKakaoMemberInput1">
 		insert into memberS (mid, pwd, name, nickName, address, email, gender,token) values(#{mid},#{pwd},#{nickName},#{nickName},'',#{email},'','kakao');

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.javaProjectS4.dao.AdminDAO">
+	<select id="getMemberList" resultType="com.spring.javaProjectS4.vo.MemberVO">
+		select *,timestampdiff(day,lastDate,now()) as date_diff from memberS order by idx limit #{startIndexNo},#{pageSize};
+	</select>
+	<select id="getMemberSearchList" resultType="com.spring.javaProjectS4.vo.MemberVO">
+		select *,timestampdiff(day,lastDate,now()) as date_diff from memberS where ${part} like concat('%',#{searchString},'%')order by idx limit #{startIndexNo},#{pageSize};
+	</select>
+	<select id="getMemberAllTotRecCnt" resultType="int">
+		select count(*) from memberS;
+	</select>
+	<select id="getMemberSearchTotRecCnt" resultType="int">
+		select count(*) from memberS where ${part} like concat('%',#{searchString},'%');
+	</select>
+	<select id="getUserDelList" resultType="com.spring.javaProjectS4.vo.MemberVO" >
+		select *,timestampdiff(day,lastDate,now()) as date_diff from memberS where userDel='Y' order by lastDate limit #{startIndexNo},#{pageSize};
+	</select>
+	<select id="getUserDelTotRecCnt" resultType="int">
+		select count(*) from memberS where userDel = 'Y';
+	</select>
+</mapper>

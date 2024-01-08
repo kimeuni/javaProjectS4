@@ -24,6 +24,8 @@
     		height : 100%;
     	}
     	#top-menu-str{
+    		position: fixed;
+    		width: 100%;
     		background-color: #5E5756;
 			height: 50px;
 			color: #fff;
@@ -35,7 +37,8 @@
     	#myPage-right-inner-content{
     		margin: 0 auto;
     		width: 70%;
-    		margin-top: 60px; 
+    		margin-top: 110px; 
+    		margin-bottom: 60px; 
     	}
     	#myPage-infoUpdate{
     		margin: 0 auto;

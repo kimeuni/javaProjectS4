@@ -237,7 +237,7 @@
 							<li><a href="">커뮤니티</a></li>
 							<li><a href="">모아모아</a></li>
 							<li><a href="">이벤트</a></li>
-							<li><a href="">공지사항</a></li>
+							<li><a href="${ctp}/board/noticeList">공지사항</a></li>
 							<li><a href="">문의사항</a></li>
 						</ul>
 					</nav>

@@ -1,13 +1,18 @@
 package com.spring.javaProjectS4.pagination;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-// 일하는 애니까.. 일하는 애인지 알려주기 위한 서비스 붙여주기..
+import com.spring.javaProjectS4.dao.AdminDAO;
+import com.spring.javaProjectS4.dao.BoardDAO;
+
 @Service
 public class PageProcess {
-	// 필요한 자료 스캔
+	@Autowired
+	AdminDAO adminDAO;
 	
-	
+	@Autowired
+	BoardDAO boardDAO;
 	
 	// section = 게시판, 자료실 현재 글 위치
 	// part = ex)자료실 안에 들어있는 카테고리
@@ -17,7 +22,24 @@ public class PageProcess {
 		int totRecCnt = 0; //초기값
 		String search = "";
 		
-		if(section.equals("board")) {
+		if(section.equals("adminMemberList")) {
+			if(part.equals("")) {
+				totRecCnt = adminDAO.getMemberAllTotRecCnt();
+			}
+			else {
+				totRecCnt = adminDAO.getMemberSearchTotRecCnt(part,searchString);
+			}
+		}
+		if(section.equals("noticeList")) {
+			if(part.equals("")) {
+				totRecCnt = boardDAO.getNoticeAllTotRecCnt();
+			}
+			else {
+				totRecCnt = boardDAO.getNoticeSearchTotRecCnt(part,searchString);
+			}
+		}
+		if(section.equals("adminUserDelList")) {
+			totRecCnt = adminDAO.getUserDelTotRecCnt();
 		}
 		
 		int totPage = (totRecCnt % pageSize)==0 ? (totRecCnt / pageSize) : (totRecCnt / pageSize) + 1;

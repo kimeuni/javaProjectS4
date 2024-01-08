@@ -21,6 +21,8 @@
     		height : 100%;
     	}
     	#top-menu-str{
+    		position: fixed;
+    		width: 100%;
     		background-color: #fff;
 			height: 50px;
 			color: #000;
@@ -34,7 +36,8 @@
     	#admin-right-inner-content{
     		margin: 0 auto;
     		width: 70%;
-    		margin-top: 60px; 
+    		margin-top: 110px; 
+    		margin-bottom: 60px; 
     	}
     	#admin-myinfo-menu{
     		margin: 0 auto;
