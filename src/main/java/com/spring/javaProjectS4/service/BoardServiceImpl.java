@@ -19,4 +19,9 @@ public class BoardServiceImpl implements BoardService {
 		return boardDAO.getNoticeList(startIndexNo, pageSize);
 	}
 
+	@Override
+	public NoticeVO getNoticeIdx(int idx) {
+		return boardDAO.getNoticeIdx( idx);
+	}
+
 }

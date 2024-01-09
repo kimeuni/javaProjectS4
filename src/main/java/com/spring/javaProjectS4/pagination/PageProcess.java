@@ -30,9 +30,12 @@ public class PageProcess {
 				totRecCnt = adminDAO.getMemberSearchTotRecCnt(part,searchString);
 			}
 		}
-		if(section.equals("noticeList")) {
+		if(section.equals("notice")) {
 			if(part.equals("")) {
 				totRecCnt = boardDAO.getNoticeAllTotRecCnt();
+			}
+			else if(part.equals("main")) {
+				totRecCnt = boardDAO.getNoticeOpenSwYTotRecCnt();
 			}
 			else {
 				totRecCnt = boardDAO.getNoticeSearchTotRecCnt(part,searchString);

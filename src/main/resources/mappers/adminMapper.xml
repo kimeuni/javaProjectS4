@@ -19,4 +19,22 @@
 	<select id="getUserDelTotRecCnt" resultType="int">
 		select count(*) from memberS where userDel = 'Y';
 	</select>
+	<select id="getNoticeAllList" resultType="com.spring.javaProjectS4.vo.NoticeVO">
+		select * from noticeS order by idx desc limit #{startIndexNo},#{pageSize};
+	</select>
+	<select id="getNoticeIdx" resultType="com.spring.javaProjectS4.vo.NoticeVO">
+		select * from noticeS where idx = #{idx};
+	</select>
+	
+	<insert id="setNoticeInput">
+		insert into noticeS values (default,#{vo.nickName},#{vo.title},#{vo.content},default,default,#{vo.openSw});
+	</insert>
+	
+	<update id="setNoticeUpdate">
+		update noticeS set title = #{vo.title}, content = #{vo.content}, nDate = now(), openSw = #{vo.openSw} where idx = #{vo.idx};
+	</update>
+	
+	<delete id="setUserAccountDel">
+		delete from memberS where mid = #{mid};
+	</delete>
 </mapper>

@@ -8,6 +8,7 @@
 	footer{
 		background-color: #252525;
 		height: 150px;
+		width: 100vW;
 	}
 	#footer-div{
 		max-width: 1200px;

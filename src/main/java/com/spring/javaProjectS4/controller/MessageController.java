@@ -38,7 +38,10 @@ public class MessageController {
 			model.addAttribute("msg", "잘못된 접근");
 			model.addAttribute("url","damoa");
 		}
-			
+		else if(msgFalg.equals("noticeContentNo")) {
+			model.addAttribute("msg", "공지사항의 내용을 입력해주세요.");
+			model.addAttribute("url","admin/noticeInput");
+		}
 		return "include/message";
 	}
 }

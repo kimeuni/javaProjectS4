@@ -8,4 +8,6 @@ public interface BoardService {
 
 	public List<NoticeVO> getNoticeList(int startIndexNo, int pageSize);
 
+	public NoticeVO getNoticeIdx(int idx);
+
 }

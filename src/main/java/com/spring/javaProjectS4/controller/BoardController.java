@@ -30,13 +30,25 @@ public class BoardController {
 			@RequestParam(name="pag", defaultValue = "1", required = false) int pag,
 			@RequestParam(name="pageSize", defaultValue = "10", required = false) int pageSize) {
 		
-		PageVO pageVO = pageProcess.totRecCnt(pag, pageSize, "notice", "", "");
+		PageVO pageVO = pageProcess.totRecCnt(pag, pageSize, "notice", "main", "");
 		List<NoticeVO> vos = boardService.getNoticeList(pageVO.getStartIndexNo(),pageSize);
 		
 		model.addAttribute("vos",vos);
 		model.addAttribute("pageVO",pageVO);
 		
 		return "notice/noticeList";
+	}
+	
+	@RequestMapping(value = "/noticeContent",method = RequestMethod.GET)
+	public String noticeContentGet(Model model,
+			@RequestParam(name="idx",defaultValue = "",required = false) int idx
+			) {
+		
+		// idx에 해당하는 공지사항 값 가져오기
+		NoticeVO vo = boardService.getNoticeIdx(idx);
+		
+		model.addAttribute("vo",vo);
+		return "notice/noticeContent";
 	}
 	
 }

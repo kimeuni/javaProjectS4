@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.spring.javaProjectS4.vo.MemberVO;
+import com.spring.javaProjectS4.vo.NoticeVO;
 
 public interface AdminDAO {
 
@@ -19,5 +20,15 @@ public interface AdminDAO {
 	public List<MemberVO> getUserDelList(@Param("startIndexNo") int startIndexNo,@Param("pageSize") int pageSize);
 
 	public int getUserDelTotRecCnt();
+
+	public int setNoticeInput(@Param("vo") NoticeVO vo);
+
+	public void setUserAccountDel(@Param("mid") String mid);
+
+	public List<NoticeVO> getNoticeAllList(@Param("startIndexNo") int startIndexNo,@Param("pageSize") int pageSize);
+
+	public NoticeVO getNoticeIdx(@Param("idx") int idx);
+
+	public int setNoticeUpdate(@Param("vo") NoticeVO vo);
 
 }

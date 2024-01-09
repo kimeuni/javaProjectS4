@@ -3,7 +3,7 @@ show tables;
 -- 공지사항 DB
 create table noticeS(
 	idx int not null auto_increment primary key,	/* 고유번호 */
-	nickName varchar(17) not null,					/* 닉네임 */
+	nickName varchar(11) not null,					/* 닉네임 */
 	title varchar(41) not null,						/* 제목 */
 	content text not null,							/* 내용 */
 	nDate datetime default now(),					/* 작성일 */

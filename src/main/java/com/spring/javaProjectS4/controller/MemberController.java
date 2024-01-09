@@ -377,12 +377,15 @@ public class MemberController {
 		MemberVO voM = memberService.getMemberMidCheck(mid);
 		
 		MemberVO vo = memberService.getMemberNickNameCheck(nickName);
-		if(nickName.equals(voM.getNickName())) {
-			// infoUpdate 부분에서 닉네임 동일 시
-			return "3";
-		}
 		// 중복
-		else if(vo != null){
+		if(vo != null){
+			// 마이페이지-정보 수정시 사용
+			if(voM !=null) {
+				if(nickName.equals(voM.getNickName())) {
+					// infoUpdate 부분에서 닉네임 동일 시
+					return "3";
+				}
+			}
 			return "1";
 		}
 		else {

@@ -13,5 +13,9 @@ public interface BoardDAO {
 	public int getNoticeAllTotRecCnt();
 
 	public int getNoticeSearchTotRecCnt(@Param("part") String part,@Param("searchString") String searchString);
+
+	public NoticeVO getNoticeIdx(@Param("idx") int idx);
+
+	public int getNoticeOpenSwYTotRecCnt();
 	
 }

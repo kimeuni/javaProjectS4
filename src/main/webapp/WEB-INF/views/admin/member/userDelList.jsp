@@ -123,6 +123,22 @@
     	#memberReport-go a{
     		color: #000;
     	}
+    	#choice-Del-btn{
+    		text-align: left;
+    		padding-left: 30px;
+    		margin: 10px 0px;
+    		width: 120px;
+    		height: 35px;
+    		background-color: red;
+    		color: #fff;
+    		line-height: 35px;
+    		border-radius: 5px;
+    		font-weight: bold;
+    	}
+    	#choice-Del-btn a{
+    		text-decoration: none;
+    		color : #fff;
+    	}
     </style>
     <script>
     	'use strict'
@@ -153,6 +169,82 @@
     			}
     		});
     	});
+    	
+    	// 전체 선택 및 전체 해제
+    	function checkAll(){
+    		let checkAll = "N";
+    		if($("#ckAll")[0].checked) checkAll = "All"
+    		
+    		if(checkAll == "All"){
+	    		for(let i=0; i<$('input:checkbox[name=ckS]').length; i++){
+	    			$(".ckS")[i].checked = true;
+	    		}
+    		}
+    		else{
+	    		for(let i=0; i<$('input:checkbox[name=ckS]').length; i++){
+	    			$(".ckS")[i].checked = false;
+	    		}
+    		}
+    	}
+    	
+    	// 계정삭제 버튼으로 개별 삭제
+    	function accountDel(mid,nickName){
+    		let ans = confirm(nickName+"님의 계정을 삭제하시겠습니까?");
+    		if(ans){
+    			$.ajax({
+    				url : "${ctp}/admin/memberUserDel",
+    				type : "post",
+    				data : {mid : mid},
+    				success : function(res){
+    					alert("삭제되었습니다.");
+						location.reload();
+    				},
+    				error : function(){
+    					alert("전송오류(userDelList.jsp)")
+    				}
+    			});
+    		}
+    	}
+    	
+    	// 선택 삭제
+    	function choiceDel(){
+    		let mid = '';
+    		let nickName = '';
+    		
+    		for(let i=0; i<$('input:checkbox[name=ckS]').length; i++){
+    			if(userDelForm.ckS[i].checked){
+    				let str = userDelForm.ckS[i].value.split("/");
+    				let midStr = str[0];
+    				let nickStr = str[1];
+    				
+    				mid += midStr+"/";
+    				nickName += nickStr+"/";
+    			}
+    		}
+    		mid = mid.substring(0,mid.length-1);
+    		nickName = nickName.substring(0,nickName.length-1);
+    		
+    		if(mid.trim() == ""){
+    			alert("삭제할 계정을 선택해주세요.");
+    			return false;
+    		}
+    		
+    		let ans = confirm(nickName+"님의 계정을 삭제하시겠습니까?");
+    		if(ans){
+    			$.ajax({
+    				url : "${ctp}/admin/memberUserDel",
+    				type : "post",
+    				data : {mid : mid},
+    				success : function(res){
+						alert("삭제되었습니다.");
+						location.reload();
+    				},
+    				error : function(){
+    					alert("전송오류(userDelList.jsp)")
+    				}
+    			});
+    		}
+    	}
     </script>
 </head>
 <body>
@@ -177,42 +269,50 @@
 							<a href="${ctp}/admin/memberReport">회원 신고 관리 이동<i class="fa-solid fa-right-from-bracket"></i></a>
 						</div>
 					</div>
-					<table class="table table-hover text-center">
-						<thead>
-							<tr>
-								<th>성명</th>
-								<th>닉네임</th>
-								<th>이메일</th>
-								<th>가입일</th>
-								<th>탈퇴 경과</th>
-								<th>계정 삭제</th>
-							</tr>
-						</thead>
-						<tbody>
-							<c:forEach var="mVO" items="${mVOS}" varStatus="st">
-								<c:if test="${mVO.date_diff > 30 }">
-									<tr style="background-color: #F08282; color: #fff">
-										<td>${mVO.name}</td>
-										<td>${mVO.nickName}</td>
-										<td>${mVO.email}</td>
-										<td>${fn:substring(mVO.startDate,0,10)}</td>
-										<td>${mVO.date_diff}</td>
-										<td><a href="">계정 삭제</a></td>
-									</tr>
-								</c:if>
-								<c:if test="${mVO.date_diff <= 30 }">
-									<tr>
-										<td>${mVO.name}</td>
-										<td>${mVO.nickName}</td>
-										<td>${mVO.email}</td>
-										<td>${fn:substring(mVO.startDate,0,10)}</td>
-										<td>${mVO.date_diff}</td>
-										<td><a href="">계정 삭제</a></td>
-									</tr>
-								</c:if>
-							</c:forEach>
-						</tbody>
-					</table>
+					<div id="choice-Del-btn">
+						<a href="javascript:choiceDel()">선택 삭제</a>
+					</div>
+					<form name="userDelForm">
+						<table class="table table-hover text-center">
+							<thead>
+								<tr>
+									<th><input type="checkbox" name="ckAll" id="ckAll" value="all" onclick="checkAll()"/></th>
+									<th>성명</th>
+									<th>닉네임</th>
+									<th>이메일</th>
+									<th>가입일</th>
+									<th>탈퇴 경과</th>
+									<th>계정 삭제</th>
+								</tr>
+							</thead>
+							<tbody>
+								<c:forEach var="mVO" items="${mVOS}" varStatus="st">
+									<c:if test="${mVO.date_diff > 30 }">
+										<tr style="background-color: #F08282; color: #fff">
+											<th><input type="checkbox" name="ckS" class="ckS" value="${mVO.mid}/${mVO.nickName}"/></th>
+											<td>${mVO.name}</td>
+											<td>${mVO.nickName}</td>
+											<td>${mVO.email}</td>
+											<td>${fn:substring(mVO.startDate,0,10)}</td>
+											<td>${mVO.date_diff}</td>
+											<td><button onclick="accountDel('${mVO.mid}','${mVO.nickName}')">계정 삭제</button></td>
+										</tr>
+									</c:if>
+									<c:if test="${mVO.date_diff <= 30 }">
+										<tr>
+											<td>x</td>
+											<td>${mVO.name}</td>
+											<td>${mVO.nickName}</td>
+											<td>${mVO.email}</td>
+											<td>${fn:substring(mVO.startDate,0,10)}</td>
+											<td>${mVO.date_diff}</td>
+											<td>삭제 불가</td>
+										</tr>
+									</c:if>
+								</c:forEach>
+							</tbody>
+						</table>
+					</form>
 					<br/>
 					<div class="text-center">
 						<ul class="pagination justify-content-center">
