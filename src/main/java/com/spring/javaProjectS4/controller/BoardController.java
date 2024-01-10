@@ -46,9 +46,12 @@ public class BoardController {
 		return "notice/noticeList";
 	}
 	
+	// 공지사항 상세보기 화면 이동
 	@RequestMapping(value = "/noticeContent",method = RequestMethod.GET)
-	public String noticeContentGet(Model model, HttpSession session,
-			@RequestParam(name="idx",defaultValue = "",required = false) int idx
+	public String noticeContentGet(Model model, HttpSession session, String part, String searchString,
+			@RequestParam(name="idx",defaultValue = "",required = false) int idx,
+			@RequestParam(name="pag", defaultValue = "1", required = false) int pag,
+			@RequestParam(name="pageSize", defaultValue = "10", required = false) int pageSize
 			) {
 		
 		// 조회수 처리
@@ -74,9 +77,37 @@ public class BoardController {
 		model.addAttribute("vo",vo);
 		model.addAttribute("preVO",preVO);
 		model.addAttribute("nextVO",nextVO);
+		model.addAttribute("part",part);
+		model.addAttribute("searchString",searchString);
+		model.addAttribute("pag",pag);
+		model.addAttribute("pageSize",pageSize);
 		return "notice/noticeContent";
 	}
 
+	// 공지사항 검색
+	@RequestMapping(value = "/noticeSearch",method = RequestMethod.GET)
+	public String noticeSearchGet(Model model,String part, String searchString,
+			@RequestParam(name="pag", defaultValue = "1", required = false) int pag,
+			@RequestParam(name="pageSize", defaultValue = "10", required = false) int pageSize
+			) {
+		
+		PageVO pageVO = pageProcess.totRecCnt(pag, pageSize, "notice", part, searchString);
+		List<NoticeVO> vos = boardService.getNoticeSearchList(pageVO.getStartIndexNo(),pageSize,part,searchString);
+		System.out.println(vos);
+		
+		String partStr = "";
+		if(part.equals("title")) partStr = "제목";
+		else if(part.equals("content")) partStr = "내용";
+		
+		model.addAttribute("pageVO",pageVO);
+		model.addAttribute("vos",vos);
+		model.addAttribute("part",part);
+		model.addAttribute("partStr",partStr);
+		model.addAttribute("searchString",searchString);
+		
+		return "notice/noticeSearchList";
+	}
+	
 	// 자주하는 질문 화면 이동
 	@RequestMapping(value = "/FAQList",method = RequestMethod.GET)
 	public String FAQListGet(Model model,
@@ -85,6 +116,7 @@ public class BoardController {
 		
 		PageVO pageVO = pageProcess.totRecCnt(pag, pageSize, "FAQ", "", "");
 		List<FAQVO> vos = boardService.getFAQList(pageVO.getStartIndexNo(),pageSize);
+		
 		
 		model.addAttribute("pageVO",pageVO);
 		model.addAttribute("vos",vos);
@@ -124,4 +156,5 @@ public class BoardController {
 		
 		return "notice/FAQStringSearch";
 	}
+	
 }

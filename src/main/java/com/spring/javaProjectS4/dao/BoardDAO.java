@@ -34,5 +34,7 @@ public interface BoardDAO {
 	public int getFAQStringTotRecCnt(@Param("searchString") String searchString);
 
 	public List<FAQVO> getFAQStringSearchList(@Param("startIndexNo") int startIndexNo,@Param("pageSize") int pageSize,@Param("searchString") String searchString);
+
+	public List<NoticeVO> getNoticeSearchList(@Param("startIndexNo") int startIndexNo,@Param("pageSize") int pageSize,@Param("part") String part,@Param("searchString") String searchString);
 	
 }

@@ -21,4 +21,6 @@ public interface BoardService {
 
 	public List<FAQVO> getFAQStringSearchList(int startIndexNo, int pageSize, String searchString);
 
+	public List<NoticeVO> getNoticeSearchList(int startIndexNo, int pageSize, String part, String searchString);
+
 }

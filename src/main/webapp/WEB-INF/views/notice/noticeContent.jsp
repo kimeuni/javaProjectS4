@@ -138,7 +138,7 @@
     	<div id="notice-str-div">
     		<div id="notice-str"><h2>공지사항</h2></div>
     		<div id="notice-list">
-    			<a href="${ctp}/board/noticeList"><div id="notice-list-btn">목록</div></a>
+    			<a href="${ctp}/board/noticeList?pag=${pag}&pageSize=${pageSize}"><div id="notice-list-btn">목록</div></a>
    			</div>
     	</div>
     	<div id="notice-content-div">

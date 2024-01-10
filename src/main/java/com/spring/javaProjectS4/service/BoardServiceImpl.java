@@ -50,4 +50,9 @@ public class BoardServiceImpl implements BoardService {
 		return boardDAO.getFAQStringSearchList( startIndexNo, pageSize, searchString);
 	}
 
+	@Override
+	public List<NoticeVO> getNoticeSearchList(int startIndexNo, int pageSize, String part, String searchString) {
+		return boardDAO.getNoticeSearchList( startIndexNo, pageSize, part, searchString);
+	}
+
 }

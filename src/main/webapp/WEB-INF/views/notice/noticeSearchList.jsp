@@ -9,12 +9,12 @@
     <title>공지사항</title>
     <jsp:include page="/WEB-INF/views/include/bs4.jsp" />
     <style>
-    	#notice-list-container{
+    	#notice-SearchList-container{
     		max-width: 1200px;
     		min-height: 200px;
     		margin: 0 auto;
     	}
-    	#notice-list-container h3{
+    	#notice-SearchList-container h3{
     		padding-left: 30px;
     	}
     	#search-notice-container{
@@ -75,15 +75,15 @@
     		color: #252525;
     		text-decoration: none;
     	}
-    	#notice-list-ul-li ul li:hover{
+    	#notice-SearchList-ul-li ul li:hover{
     		background-color: #f1f3f5;
     	}
-    	#notice-list-ul-li ul{
+    	#notice-SearchList-ul-li ul{
     		text-align: center;
     		margin: 0px;
     		padding: 0px;
     	}
-    	#notice-list-ul-li ul li{
+    	#notice-SearchList-ul-li ul li{
    		    background-color: #fff;;
 		    display: inline-block;
 		    padding: 5px 10px;
@@ -94,11 +94,11 @@
 		    font-size: 1.1em;
 		    line-height: 50px;
     	}
-    	#notice-list-ul-li ul li a{
+    	#notice-SearchList-ul-li ul li a{
     		text-decoration: none;
     		color: #000;
     	}
-    	.notice-list-ul-li-div{
+    	.notice-SearchList-ul-li-div{
     		display: inline-block;
     	}
     	.no-div{
@@ -144,7 +144,7 @@
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/include/header.jsp" />
-	<div id="notice-list-container">
+	<div id="notice-SearchList-container">
 		<hr/>
 		    <h3>공지사항</h3>
 		<hr/>
@@ -168,14 +168,15 @@
 				<a href="${ctp}/board/noticeList"><li class="notice-list-li">공지사항</li></a><a href=""><li class="event-li">이벤트</li></a><a href="${ctp}/board/FAQList"><li class="FAQ-li">자주하는 질문</li></a>
 			</ul>
 		</div>
-		<div id="notice-list-ul-li">
+		<h3>'${partStr}'검색한 '${searchString}' 검색 결과</h3>
+		<div id="notice-SearchList-ul-li">
 			<c:set var="curScrStartNo" value="${pageVO.curScrStartNo }"></c:set>
 			<ul>
 				<c:forEach var="mVO" items="${vos}" varStatus="st">
 					<li>
-						<div class="notice-list-ul-li-div no-div">${curScrStartNo}</div>
-						<a href="${ctp}/board/noticeContent?idx=${mVO.idx}&pag=${pageVO.pag}&pageSize=${pageVO.pageSize}"><div class="notice-list-ul-li-div title-div">${mVO.title}</div></a>
-						<div class="notice-list-ul-li-div date-div">${fn:substring(mVO.NDate,0,10)}</div>
+						<div class="notice-SearchList-ul-li-div no-div">${curScrStartNo}</div>
+						<a href="${ctp}/board/noticeContent?idx=${mVO.idx}&pag=${pageVO.pag}&pageSize=${pageVO.pageSize}&part=${part}&searchString=${searchString}"><div class="notice-SearchList-ul-li-div title-div">${mVO.title}</div></a>
+						<div class="notice-SearchList-ul-li-div date-div">${fn:substring(mVO.NDate,0,10)}</div>
 					</li>
 					<c:set var="curScrStartNo" value="${curScrStartNo-1}"></c:set>
 				</c:forEach>
@@ -184,14 +185,14 @@
 		<br/>
 		<div class="text-center">
 			<ul class="pagination justify-content-center">
-			    <c:if test="${pageVO.pag > 1}"><li class="page-item"><a class="page-link text-secondary" href="noticeList?pag=1&pageSize=${pageVO.pageSize}"><i class="fa-solid fa-angles-left"></i></a></li></c:if>
-			  	<c:if test="${pageVO.curBlock > 0}"><li class="page-item"><a class="page-link text-secondary" href="noticeList?pag=${(pageVO.curBlock-1)*pageVO.blockSize+1}&pageSize=${pageVO.pageSize}"><i class="fa-solid fa-angle-left"></i></a></li></c:if>
+			    <c:if test="${pageVO.pag > 1}"><li class="page-item"><a class="page-link text-secondary" href="noticeSearchList?pag=1&pageSize=${pageVO.pageSize}&part=${part}&searchString=${searchString}">첫페이지</a></li></c:if>
+			  	<c:if test="${pageVO.curBlock > 0}"><li class="page-item"><a class="page-link text-secondary" href="noticeSearchList?pag=${(pageVO.curBlock-1)*pageVO.blockSize+1}&pageSize=${pageVO.pageSize}&part=${part}&searchString=${searchString}">이전블록</a></li></c:if>
 			  	<c:forEach var="i" begin="${(pageVO.curBlock*pageVO.blockSize)+1}" end="${(pageVO.curBlock*pageVO.blockSize)+pageVO.blockSize}" varStatus="st">
-				    <c:if test="${i <= pageVO.totPage && i == pageVO.pag}"><li class="page-item active"><a class="page-link bg-secondary border-secondary" href="noticeList?pag=${i}&pageSize=${pageVO.pageSize}">${i}</a></li></c:if>
-				    <c:if test="${i <= pageVO.totPage && i != pageVO.pag}"><li class="page-item"><a class="page-link text-secondary" href="noticeList?pag=${i}&pageSize=${pageVO.pageSize}">${i}</a></li></c:if>
+				    <c:if test="${i <= pageVO.totPage && i == pageVO.pag}"><li class="page-item active"><a class="page-link bg-secondary border-secondary" href="noticeSearchList?pag=${i}&pageSize=${pageVO.pageSize}&part=${part}&searchString=${searchString}">${i}</a></li></c:if>
+				    <c:if test="${i <= pageVO.totPage && i != pageVO.pag}"><li class="page-item"><a class="page-link text-secondary" href="noticeSearchList?pag=${i}&pageSize=${pageVO.pageSize}">${i}</a></li></c:if>
 			  	</c:forEach>
-			  	<c:if test="${pageVO.curBlock < pageVO.lastBlock}"><li class="page-item"><a class="page-link text-secondary" href="noticeList?pag=${(pageVO.curBlock+1)*pageVO.blockSize+1}&pageSize=${pageVO.pageSize}"><i class="fa-solid fa-angle-right"></i></a></li></c:if>
-			  	<c:if test="${pageVO.pag < pageVO.totPage}"><li class="page-item"><a class="page-link text-secondary" href="noticeList?pag=${pageVO.totPage}&pageSize=${pageVO.pageSize}"><i class="fa-solid fa-angles-right"></i></a></li></c:if>
+			  	<c:if test="${pageVO.curBlock < pageVO.lastBlock}"><li class="page-item"><a class="page-link text-secondary" href="noticeSearchList?pag=${(pageVO.curBlock+1)*pageVO.blockSize+1}&pageSize=${pageVO.pageSize}&part=${part}&searchString=${searchString}">다음블록</a></li></c:if>
+			  	<c:if test="${pageVO.pag < pageVO.totPage}"><li class="page-item"><a class="page-link text-secondary" href="noticeSearchList?pag=${pageVO.totPage}&pageSize=${pageVO.pageSize}&part=${part}&searchString=${searchString}">마지막페이지</a></li></c:if>
 			</ul>
 		</div>
 	</div>
