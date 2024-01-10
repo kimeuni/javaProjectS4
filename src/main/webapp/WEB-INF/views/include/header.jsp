@@ -198,6 +198,7 @@
 							<ul>
 								<c:if test="${sMid == 'admin'}"><li><a href="${ctp}/admin/adminMain">관리자메뉴</a></li></c:if>
 								<li><a href="${ctp}/member/myPage?flag=myPg">마이페이지</a></li>
+								<li><a href="${ctp}/member/myPage?flag=myPg">1:1문의</a></li>
 								<li><a href="${ctp}/member/logout">로그아웃</a></li>
 							</ul>
 						</li>
@@ -236,9 +237,7 @@
 							<li><a href="">중고거래</a></li>
 							<li><a href="">커뮤니티</a></li>
 							<li><a href="">모아모아</a></li>
-							<li><a href="">이벤트</a></li>
 							<li><a href="${ctp}/board/noticeList">공지사항</a></li>
-							<li><a href="">문의사항</a></li>
 						</ul>
 					</nav>
 					<span id="header-search-span">

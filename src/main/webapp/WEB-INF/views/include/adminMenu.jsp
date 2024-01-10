@@ -68,7 +68,7 @@
  		color : #fff;
  		text-decoration: none;
  	}
- 	#admin-member-inner-menu a div, #admin-inner-board-menu a div, #admin-notice-inner-menu a div,#admin-leave-inner-menu div{
+ 	#admin-member-inner-menu a div, #admin-board-inner-menu a div, #admin-notice-inner-menu a div{
  		padding-left: 50px;
  	}
  	.admin-inner-menu-n:hover{
@@ -85,17 +85,15 @@
 		$("#admin-member-inner-menu").hide();
 		$("#admin-board-inner-menu").hide();
 		$("#admin-notice-inner-menu").hide();
-		$("#admin-leave-inner-menu").hide();
 		$("#member-menu-up").hide();
 		$("#board-menu-up").hide();
 		$("#notice-menu-up").hide();
-		$("#leave-menu-up").hide();
 		if('${menuCk}' == '회원리스트' || '${menuCk}' == '회원검색리스트' || '${menuCk}' == '회원탈퇴신청'){
 			$("#member-menu-down").hide();
 			$("#member-menu-up").show();
 			$("#admin-member-inner-menu").show();
 		}
-		else if('${menuCk}' == '공지작성' || '${menuCk}' == '공지관리'){
+		else if('${menuCk}' == '공지작성' || '${menuCk}' == '공지관리' || '${menuCk}' == '이벤트작성' || '${menuCk}' == '자주하는질문작성'){
 			$("#notice-menu-down").hide();
 			$("#notice-menu-up").show();
 			$("#admin-notice-inner-menu").show();
@@ -114,10 +112,6 @@
 		$("#notice-menu-down").show();
 		$("#notice-menu-up").hide();
 		$("#admin-notice-inner-menu").slideUp();
-
-		$("#leave-menu-down").show();
-		$("#leave-menu-up").hide();
-		$("#admin-leave-inner-menu").slideUp();
 	}
 	
 	function memberManagementUp(){
@@ -138,10 +132,6 @@
 		$("#notice-menu-down").show();
 		$("#notice-menu-up").hide();
 		$("#admin-notice-inner-menu").slideUp();
-		
-		$("#leave-menu-down").show();
-		$("#leave-menu-up").hide();
-		$("#admin-leave-inner-menu").slideUp();
 	}
 	
 	function boardManagementUp(){
@@ -162,10 +152,6 @@
 		$("#notice-menu-down").hide();
 		$("#notice-menu-up").show();
 		$("#admin-notice-inner-menu").slideDown();
-		
-		$("#leave-menu-down").show();
-		$("#leave-menu-up").hide();
-		$("#admin-leave-inner-menu").slideUp();
 	}
 	
 	function noticeManagementUp(){
@@ -174,29 +160,6 @@
 		$("#admin-notice-inner-menu").slideUp();
 	}
 	
-	function leaveManagementDown(){
-		$("#member-menu-down").show();
-		$("#member-menu-up").hide();
-		$("#admin-member-inner-menu").slideUp();
-		
-		$("#board-menu-down").show();
-		$("#board-menu-up").hide();
-		$("#admin-board-inner-menu").slideUp();
-		
-		$("#notice-menu-down").show();
-		$("#notice-menu-up").hide();
-		$("#admin-notice-inner-menu").slideUp();
-		
-		$("#leave-menu-down").hide();
-		$("#leave-menu-up").show();
-		$("#admin-leave-inner-menu").slideDown();
-	}
-	
-	function leaveManagementUp(){
-		$("#leave-menu-down").show();
-		$("#leave-menu-up").hide();
-		$("#admin-leave-inner-menu").slideUp();
-	}
 </script>
 <div id="admin-left-nav">
 	<div id="damoa-logo-div"><a href="${ctp}/damoa"><img src="${ctp}/data/images/다모아로고2.png" height="65px"></a></div>
@@ -226,26 +189,26 @@
 			<a href="${ctp}/admin/memberList"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> 신고 관리</div></a>
 		</div>
 		<div id="notice-menu-down">
-			<a href="javascript:noticeManagementDown()"><div class="admin-inner-menu-n"><i class="fa-solid fa-chevron-right"></i> 공지사항</div></a>
+			<a href="javascript:noticeManagementDown()"><div class="admin-inner-menu-n"><i class="fa-solid fa-chevron-right"></i> 공지 관리</div></a>
 		</div>
 		<div id="notice-menu-up">
-			<a href="javascript:noticeManagementUp()"><div class="admin-inner-menu"><i class="fa-solid fa-angle-down"></i> 공지사항</div></a>
+			<a href="javascript:noticeManagementUp()"><div class="admin-inner-menu"><i class="fa-solid fa-angle-down"></i> 공지 관리</div></a>
 		</div>
 		<div id="admin-notice-inner-menu">
 			<a href="${ctp}/admin/noticeInput"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> 공지 작성</div></a>
 			<a href="${ctp}/admin/noticeManagement"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> 공지 관리</div></a>
+			<a href="${ctp}/admin/eventInput"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> 이벤트 등록</div></a>
+			<a href="${ctp}/admin/noticeManagement"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> 이벤트 관리</div></a>
+			<a href="${ctp}/admin/FAQInput"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> FAQ 등록</div></a>
 		</div>
-		<div id="leave-menu-down">
-			<a href="javascript:leaveManagementDown()"><div class="admin-inner-menu-n"><i class="fa-solid fa-chevron-right"></i> 탈퇴 관리</div></a>
-		</div>
-		<div id="leave-menu-up">
-			<a href="javascript:leaveManagementUp()"><div class="admin-inner-menu"><i class="fa-solid fa-angle-down"></i> 탈퇴 관리</div></a>
-		</div>
-		<div id="admin-leave-inner-menu">
-			<a href="${ctp}/admin/leaveCategory"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> 탈퇴 카테고리</div></a>
+		<div >
+			<a href=""><div class="admin-inner-menu-n">탈퇴 목록 등록</div></a>
 		</div>
 		<div>
 			<a href="${ctp}/admin/adminMain"><div class="admin-inner-menu-n">임시파일 삭제</div></a>
+		</div>
+		<div>
+			<a href="${ctp}/admin/adminMain"><div class="admin-inner-menu-n">통계</div></a>
 		</div>
 	</div>
 </div>

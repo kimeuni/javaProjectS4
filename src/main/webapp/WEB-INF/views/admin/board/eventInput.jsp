@@ -1,12 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <c:set var="ctp" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>공지사항 수정</title>
+    <title>이벤트 등록</title>
     <script src="${ctp}/ckeditor/ckeditor.js"></script>
     <jsp:include page="/WEB-INF/views/include/bs4.jsp" />
     <style>
@@ -14,7 +13,7 @@
     		margin: 0px;
     		padding: 0px;
     	}
-    	#admin-notice-right-content{
+    	#admin-event-right-content{
     		min-height : 100vh;
     		background-color: #eee;
     		margin-left : 20%;
@@ -35,13 +34,13 @@
 			border-bottom: 1px solid;
 			box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
     	}
-    	#admin-notice-right-inner-content{
+    	#admin-event-right-inner-content{
     		margin: 0 auto;
     		width: 70%;
     		margin-top: 110px; 
     		margin-bottom: 60px; 
     	}
-    	#admin-notice-menu{
+    	#admin-event-menu{
     		margin: 0 auto;
     		width : 100%;
     		border: 1px solid;
@@ -51,30 +50,16 @@
     		text-align: center;
     		box-shadow: 5px 5px 10px gray;
     	}
-    	#admin-notice-menu-str{
-    		width: 90%;
+    	#admin-event-menu-str{
     		font-size: 1.2em;
     		color : gray;
     		text-align: left;
     		margin-bottom: 20px;
-    		display: inline-block;
     	}
-    	#back-btn{
-    		width: 80px;
-    		background-color: #fff;
-    		border : 1px solid #315eb2;
-    		color: #315eb2;
-    		font-weight: bold;
-    		height: 27px;
-    		line-height : 27px;
-    		display: inline-block;
-    		border-radius: 5px;
-    		margin-right: 10px;
-    	}
-    	#notice-title-input{
+    	#event-title-input{
     		text-align: left;
     	}
-    	#notice-title-input input[type="text"]{
+    	#event-title-input input[type="text"]{
     		width: 90%;
     		height: 40px;
     		margin-bottom: 20px;
@@ -117,7 +102,7 @@
     	
     	
     	// 공지 등록하러 가기
-    	function noticeUpdateOk(){
+    	function eventInputOk(){
     		let title = $("#title").val();
     		let content = CKEDITOR.instances.CKEDITOR.getData();
     		let openSw;
@@ -136,7 +121,6 @@
     		}
     		else{
     			let query = {
-    				idx : ${vo.idx},
     				nickName : '${sNickName}',
     				title : title,
     				content : content,
@@ -144,21 +128,21 @@
     			}
     			
     			$.ajax({
-    				url : "${ctp}/admin/noticeUpdate",
+    				url : "${ctp}/admin/eventInput",
     				type : "post",
     				data : query,
     				success : function(res){
     					if(res == "1"){
-    						alert("공지사항이 수정되었습니다.");
-    						location.href='${ctp}/admin/noticeManagement';
+    						alert("공지사항이 등록되었습니다.");
+    						location.reload();
     					}
     					else if(res == "2"){
-    						alert("공지사항 수정에 실패하였습니다.");
-    						location.href='${ctp}/admin/noticeUpdate';
+    						alert("공지사항이 등록에 실패하였습니다.");
+    						location.reload();
     					}
     				},
     				error : function(){
-    					alert("전송 오류(noticeUpdate.jsp)")
+    					alert("전송 오류(eventInput.jsp)")
     				}
     			});
     		}
@@ -167,23 +151,20 @@
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/include/adminMenu.jsp" />
-	<div id="admin-notice-container">
-		<div id="admin-notice-right-content">
-			<div id="top-menu-str">공지사항 수정</div>
-			<div id="admin-notice-right-inner-content">
-				<div id="admin-notice-menu">
+	<div id="admin-event-container">
+		<div id="admin-event-right-content">
+			<div id="top-menu-str">이벤트 등록</div>
+			<div id="admin-event-right-inner-content">
+				<div id="admin-event-menu">
+					<div id="admin-event-menu-str">이벤트 등록 <i class="fa-solid fa-pencil"></i></div>
 					<div>
-						<div id="admin-notice-menu-str">공지사항 수정 <i class="fa-solid fa-pencil"></i></div>
-						<a href="${ctp}/admin/noticeManagement"><div id="back-btn">돌아가기</div></a>
-					</div>
-					<div>
-						<div id="notice-title-input">
-							<input type="text" name="title" id="title" maxlength="40" value="${vo.title}" required placeholder="제목을 입력하세요." />
-							<span id="demo-title-str-cnt">(${fn:length(vo.title)}/40)</span>
+						<div id="event-title-input">
+							<input type="text" name="title" id="title" maxlength="40" required placeholder="제목을 입력하세요." />
+							<span id="demo-title-str-cnt">(0/40)</span>
 						</div>
 					</div>
 					<div>
-						<textarea rows="6" name="content" id="CKEDITOR" required>${vo.content}</textarea>
+						<textarea rows="6" name="content" id="CKEDITOR" required></textarea>
 						<script>
 				        CKEDITOR.replace("content",{
 				        	height:400,
@@ -193,12 +174,13 @@
 				        </script>
 					</div>
 					<div id="radio-btn-div">
-						<input type="radio" name="openSw" id="open" value="Y" ${vo.openSw == 'Y'? 'checked' : ''}/>공개 &nbsp;&nbsp;&nbsp;&nbsp;
-						<input type="radio" name="openSw" id="close" value="N" ${vo.openSw == 'N'? 'checked' : ''} />비공개
+						<input type="radio" name="openSw" id="open" value="Y" checked />공개 &nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="radio" name="openSw" id="close" value="N" />비공개
 					</div>
 					<div id="btn-div">
-						<input type="button" value="공지 등록"  onclick="noticeUpdateOk()" />
+						<input type="button" value="공지 등록"  onclick="eventInputOk()" />
 					</div>
+					<input type="hidden" value="${sNickName }" name="nickName" />
 				</div>
 			</div>
 		</div>

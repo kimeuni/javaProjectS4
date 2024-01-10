@@ -221,7 +221,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<c:if test="${mVOS == null }"><tr><td colspan="8"><span style="color:red">${part}</span>로 검색하신 <span style="color:red">${searchString}</span>은 없는 회원입니다.</td></tr></c:if>
+							<c:if test="${empty mVOS}"><tr><td colspan="9"><span style="color:red">${partStr}</span>(으)로 검색하신 <span style="color:red">${searchString}</span>은(는) 없는 회원입니다.</td></tr></c:if>
 							<c:if test="${mVOS != null }">
 								<c:forEach var="mVO" items="${mVOS}" varStatus="st">
 									<tr>

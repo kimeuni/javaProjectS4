@@ -76,7 +76,113 @@
     		text-decoration: none;
     		color: #fff;
     	}
+    	#choice-Del-btn{
+    		text-align: left;
+    		padding-left: 30px;
+    		margin: 10px 0px;
+    		width: 120px;
+    		height: 35px;
+    		background-color: red;
+    		color: #fff;
+    		line-height: 35px;
+    		border-radius: 5px;
+    		font-weight: bold;
+    	}
+    	#choice-Del-btn a{
+    		text-decoration: none;
+    		color : #fff;
+    	}
     </style>
+    <script>
+    	'use strict'
+    	
+    	$(function() {
+    		$(".ckS").on("change", function() {
+	    		if($('input:checkbox[name=ckS]').length == $('input:checkbox[name=ckS]:checked').length){
+	    			$("#ckAll")[0].checked = true;
+	    		}
+	    		else {
+	    			$("#ckAll")[0].checked = false;
+	    		}
+    		});
+    	});
+    	
+    	// 전체 선택 및 전체 해제
+    	function checkAll(){
+    		let checkAll = "N";
+    		if($("#ckAll")[0].checked) checkAll = "All"
+    		
+    		if(checkAll == "All"){
+	    		for(let i=0; i<$('input:checkbox[name=ckS]').length; i++){
+	    			$(".ckS")[i].checked = true;
+	    		}
+    		}
+    		else{
+	    		for(let i=0; i<$('input:checkbox[name=ckS]').length; i++){
+	    			$(".ckS")[i].checked = false;
+	    		}
+    		}
+    	}
+
+    	// 계정삭제 버튼으로 개별 삭제
+    	function noticeDel(curScrStartNo,idx){
+    		let ans = confirm(curScrStartNo+"번 공지사항을 삭제하시겠습니까?");
+    		if(ans){
+    			$.ajax({
+    				url : "${ctp}/admin/noticeDel",
+    				type : "post",
+    				data : {idx : idx},
+    				success : function(res){
+    					alert("삭제되었습니다.");
+						location.reload();
+    				},
+    				error : function(){
+    					alert("전송오류(userDelList.jsp)")
+    				}
+    			});
+    		}
+    	}
+    	
+    	// 선택 삭제
+    	function choiceDel(){
+    		let curScrStartNo = '';
+    		let idx = '';
+    		
+    		for(let i=0; i<$('input:checkbox[name=ckS]').length; i++){
+    			if(userDelForm.ckS[i].checked){
+    				let str = userDelForm.ckS[i].value.split("/");
+    				let curScrStartNoStr = str[0];
+    				let idxStr = str[1];
+    				
+    				curScrStartNo += curScrStartNoStr+"/";
+    				idx += idxStr+"/";
+    			}
+    		}
+    		curScrStartNo = curScrStartNo.substring(0,curScrStartNo.length-1);
+    		idx = idx.substring(0,idx.length-1);
+    		
+    		if(curScrStartNo.trim() == ""){
+    			alert("삭제할 계정을 선택해주세요.");
+    			return false;
+    		}
+    		
+    		let ans = confirm(curScrStartNo+"번의 공지사항을 삭제하시겠습니까?");
+    		if(ans){
+    			$.ajax({
+    				url : "${ctp}/admin/noticeDel",
+    				type : "post",
+    				data : {idx : idx},
+    				success : function(res){
+						alert("삭제되었습니다.");
+						location.reload();
+    				},
+    				error : function(){
+    					alert("전송오류(noticeManagement.jsp)")
+    				}
+    			});
+    		}
+    	}
+    </script>
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/include/adminMenu.jsp" />
@@ -119,7 +225,7 @@
 								<c:set var="curScrStartNo" value="${pageVO.curScrStartNo}"></c:set>
 								<c:forEach var="nVO" items="${nVOS}" varStatus="st">
 									<tr>
-										<td><input type="checkbox" name="ckS" class="ckS" value="${mVO.mid}/${mVO.nickName}"/></td>
+										<td><input type="checkbox" name="ckS" class="ckS" value="${curScrStartNo}/${nVO.idx}"/></td>
 										<td>${curScrStartNo}</td>
 										<c:if test="${fn:length(nVO.title) > 25 }">
 											<td style="text-align: left;">${fn:substring(nVO.title,0,23)}...</td>
@@ -130,9 +236,9 @@
 										<td>${fn:substring(nVO.NDate,0,10)}</td>
 										<td>${nVO.readNum }</td>
 										<td>${nVO.openSw == 'Y'? '공개' : '비공개' }</td>
-										<td><a href="">상세보기</a></td>
+										<td><a href="${ctp}/admin/noticeContent?idx=${nVO.idx}">상세보기</a></td>
 										<td><a href="${ctp}/admin/noticeUpdate?idx=${nVO.idx}">수정</a></td>
-										<td><a href="">삭제</a></td>
+										<td><a href="javascript:noticeDel('${curScrStartNo}','${nVO.idx}')">삭제</a></td>
 									</tr>
 									<c:set var="curScrStartNo" value="${curScrStartNo-1}"></c:set>
 								</c:forEach>

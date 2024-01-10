@@ -34,7 +34,7 @@
     		background-color: #fff;
 		    display: inline-block;
 		    padding: 5px 10px;
-		    width: 50%;
+		    width: 33.3%;
 		    height: 60px;
 		    text-align: center;
 	        border-top: 5px solid #5E5756;
@@ -43,11 +43,25 @@
 		    line-height: 50px;
 		    font-weight: bold;
     	}
-    	.FNA-li{
+    	.event-li{
     		background-color: #fafafc;;
 		    display: inline-block;
 		    padding: 5px 10px;
-		    width: 50%;
+		    width: 33.3%;
+		    height: 60px;
+		    text-align: center;
+	        border-top: 1px solid #eaeaee;
+		    border-right: 1px solid #eaeaee;
+		    border-bottom: 1px solid #c8c8d5;
+		    font-size: 1.2em;
+		    line-height: 50px;
+		    font-weight: bold;
+    	}
+    	.FAQ-li{
+    		background-color: #fafafc;;
+		    display: inline-block;
+		    padding: 5px 10px;
+		    width: 33.3%;
 		    height: 60px;
 		    text-align: center;
 	        border-top: 1px solid #eaeaee;
@@ -122,7 +136,7 @@
 		</div>
 		<div id="ul-li-container">
 			<ul>
-				<a href="${ctp}/board/noticeList"><li class="notice-list-li">공지사항</li></a><a href=""><li class="FNA-li">자주찾는 질문</li></a>
+				<a href="${ctp}/board/noticeList"><li class="notice-list-li">공지사항</li></a><a href=""><li class="event-li">이벤트</li></a><a href="${ctp}/board/FAQList"><li class="FAQ-li">자주하는 질문</li></a>
 			</ul>
 		</div>
 		<div id="notice-list-ul-li">

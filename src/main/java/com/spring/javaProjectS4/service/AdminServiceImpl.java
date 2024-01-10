@@ -15,6 +15,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.spring.javaProjectS4.dao.AdminDAO;
+import com.spring.javaProjectS4.vo.FAQVO;
 import com.spring.javaProjectS4.vo.MemberVO;
 import com.spring.javaProjectS4.vo.NoticeVO;
 
@@ -40,7 +41,7 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public void setImgCheck(String content) {
+	public void setImgCheck(String content, String str) {
 		// 임시 파일에 저장된 사진을 실제로 올린 이미지만 저장 처리하는 곳.
 		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
 		
@@ -52,10 +53,13 @@ public class AdminServiceImpl implements AdminService {
 		String nextImg = content.substring(content.indexOf("src=\"/") + position);
 		boolean sw = true;
 		
+		String copyFilePath = "";
 		while(sw) {
 			String imgFile = nextImg.substring(0,nextImg.indexOf("\""));
 			String origFilePath = realPath + "ckeditor/" + imgFile;
-			String copyFilePath = realPath + "notice/" + imgFile;
+			if(str.equals("notice")) {
+				copyFilePath = realPath + "notice/" + imgFile;
+			}
 			
 			fileCopyCheck(origFilePath,copyFilePath); // ckeditor에 있는 그림 board에 복사 처리
 			
@@ -108,18 +112,24 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public void getImgBackUp(String content) {
+	public void getImgBackUp(String content, String str) {
 		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
 		
 		String realPath = request.getSession().getServletContext().getRealPath("/resources/data/");
 		
-		int position = 32;
+		int position = 0;
+		if(str.equals("notice")) {
+			position = 32;
+		}
 		String nextImg = content.substring(content.indexOf("src=\"/") + position);
 		boolean sw = true;
 		
+		String origFilePath = "";
 		while(sw) {
 			String imgFile = nextImg.substring(0,nextImg.indexOf("\""));
-			String origFilePath = realPath + "notice/" + imgFile;
+			if(str.equals("notice")) {
+				origFilePath = realPath + "notice/" + imgFile;
+			}
 			String copyFilePath = realPath + "ckeditor/" + imgFile;
 			
 			fileCopyCheck(origFilePath, copyFilePath);
@@ -131,16 +141,23 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public void setImgDelete(String content) {
+	public void setImgDelete(String content, String str) {
 		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
 		String realPath = request.getSession().getServletContext().getRealPath("/resources/data/");
-		int position = 32;
+		
+		int position = 0;
+		if(str.equals("notice")) {
+			position = 32;
+		}
 		String nextImg = content.substring(content.indexOf("src=\"/") + position);
 		boolean sw = true;
 		
+		String origFilePath = "";
 		while(sw) {
 			String imgFile = nextImg.substring(0,nextImg.indexOf("\""));
-			String origFilePath = realPath + "notice/" + imgFile;
+			if(str.equals("notice")) {
+				origFilePath = realPath + "notice/" + imgFile;
+			}
 			
 			fileDelete(origFilePath);
 			
@@ -159,5 +176,15 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public int setNoticeUpdate(NoticeVO vo) {
 		return adminDAO.setNoticeUpdate(vo);
+	}
+
+	@Override
+	public void setNoticeDel(int idx) {
+		adminDAO.setNoticeDel(idx);
+	}
+
+	@Override
+	public int setFAQInput(FAQVO vo) {
+		return adminDAO.setFAQInput(vo);
 	}
 }

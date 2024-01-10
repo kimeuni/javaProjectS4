@@ -17,7 +17,7 @@
     	#notice-content-div{
     		border-bottom: 1px solid #5E5756;
     	}
-    	div #content img{
+    	div #notice-content img{
     	max-width: 600px; 
     	height: auto !important; 
     	}
@@ -76,6 +76,55 @@
     	#notice-content{
     		margin: 20px 40px;
     	}
+    	#pre-next-div{
+    		border-bottom: 1px solid #5E5756;
+    		border-top: 1px solid #5E5756;
+    		margin-top: 60px;
+    		margin-bottom: 100px;
+    	}
+    	#pre-next-div ul{
+    		margin: 0px;
+    		padding: 0px;
+    		list-style: none;
+    	}
+    	#pre-next-div ul li:hover{
+    		background-color: #fafafc;
+    	}
+    	#pre-div{
+    		border-bottom: 1px solid #5E5756;
+    		height: 50px;
+    		line-height: 50px;
+    	}
+    	#next-div{
+    		height: 50px;
+    		line-height: 50px;
+    	}
+    	.pre-emoji{
+    		width: 5%;
+    		display: inline-block;
+    		text-align: center;
+    	}
+    	.pre-str{
+    		width: 10%;
+    		display: inline-block;
+    	}
+    	.pre-title-yes{
+    		width: 70%;
+    		display: inline-block;
+    	}
+    	.pre-date{
+    		width: 13%;
+    		display: inline-block;
+    		text-align: center;
+    	}
+    	.pre-title-no{
+    		width: 74%;
+    		display: inline-block;
+    	}
+    	#pre-div a, #next-div a{
+    		text-decoration: none;
+    		color: #000;
+    	}
     </style>
     <script>
     	'use strict'
@@ -102,7 +151,40 @@
 			</div>
 			<div id="notice-content">${vo.content}</div>
     	</div>
-		<div>다음글 이전글 처리하기</div>
+		<div id="pre-next-div">
+			<ul>
+				<li>
+					<div id="pre-div">
+						<div class="pre-emoji"><i class="fa-solid fa-caret-up"></i></div>
+						<div class=pre-str>이전글</div>
+						<c:if test="${preVO != null }">
+							<a href="${ctp}/board/noticeContent?idx=${preVO.idx}"><div class="pre-title-yes">${preVO.title }</div></a>
+							<div class="pre-date">${fn:substring(preVO.NDate,0,10) }</div>
+						</c:if>
+						<c:if test="${preVO == null }">
+							<div class="pre-title-no">
+								이전글이 없습니다.
+							</div>
+						</c:if>
+					</div>
+				</li>
+				<li>
+					<div id="next-div">
+						<div class="pre-emoji"><i class="fa-solid fa-caret-down"></i></div>
+						<div class=pre-str>다음글</div>
+						<c:if test="${nextVO != null }">
+							<a href="${ctp}/board/noticeContent?idx=${nextVO.idx}"><div class="pre-title-yes">${nextVO.title }</div></a>
+							<div class="pre-date">${fn:substring(nextVO.NDate,0,10) }</div>
+						</c:if>
+						<c:if test="${nextVO == null }">
+							<div class="pre-title-no">
+								다음글이 없습니다.
+							</div>
+						</c:if>
+					</div>
+				</li>
+			</ul>
+		</div>
     </div>
 <jsp:include page="/WEB-INF/views/include/footer.jsp" />
 </body>

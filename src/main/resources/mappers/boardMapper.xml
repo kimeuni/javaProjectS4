@@ -4,6 +4,24 @@
 	<select id="getNoticeList" resultType="com.spring.javaProjectS4.vo.NoticeVO">
 		select *,timestampdiff(hour,nDate,now()) as hour_diff,dateDiff(now(),nDate) from noticeS where openSw = 'Y' order by idx desc limit #{startIndexNo},#{pageSize};
 	</select>
+	<select id="getFAQList" resultType="com.spring.javaProjectS4.vo.FAQVO">
+		select * from FAQS order by idx desc limit #{startIndexNo},#{pageSize};
+	</select>
+	<select id="getFAQCategoryList" resultType="com.spring.javaProjectS4.vo.FAQVO">
+		select * from FAQS where category = #{searchString} order by idx desc limit #{startIndexNo},#{pageSize};
+	</select>
+	<select id="getFAQStringSearchList" resultType="com.spring.javaProjectS4.vo.FAQVO">
+		select * from FAQS where question like concat('%',#{searchString},'%') or answer like concat('%',#{searchString},'%') order by idx desc limit #{startIndexNo},#{pageSize};
+	</select>
+	<select id="getFAQAllTotRecCnt" resultType="int">
+		select count(*) from FAQS;
+	</select>
+	<select id="getFAQCategoryTotRecCnt" resultType="int">
+		select count(*) from FAQS where category = #{searchString};
+	</select>
+	<select id="getFAQStringTotRecCnt" resultType="int">
+		select count(*) from FAQS where question like concat('%',#{searchString},'%') or answer like concat('%',#{searchString},'%');
+	</select>
 	<select id="getNoticeAllTotRecCnt" resultType="int">
 		select count(*) from noticeS
 	</select>
@@ -11,10 +29,21 @@
 		select count(*) from noticeS where openSw = 'Y';
 	</select>
 	<select id="getNoticeSearchTotRecCnt" resultType="int">
-		select count(*) from noticeS ${part} like concat('%',#{searchString},'%')
+		select count(*) from noticeS where ${part} like concat('%',#{searchString},'%')
 	</select>
 	<select id="getNoticeIdx" resultType="com.spring.javaProjectS4.vo.NoticeVO">
 		select * from noticeS where idx = #{idx};
 	</select>
+	<select id="getPreNNextSearch" resultType="com.spring.javaProjectS4.vo.NoticeVO">
+		<if test="str == 'preVO'">
+			select * from noticeS where <![CDATA[idx < #{idx}]]> order by idx desc limit 1;
+		</if>
+		<if test="str != 'preVO'">
+			select * from noticeS where <![CDATA[idx > #{idx}]]> order by idx limit 1;
+		</if>
+	</select>
 	
+	<update id="setReadNumUpdate">
+		update noticeS set readNum = readNum + 1 where idx = #{idx};
+	</update>
 </mapper>

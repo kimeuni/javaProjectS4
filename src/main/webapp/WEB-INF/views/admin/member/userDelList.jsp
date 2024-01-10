@@ -143,6 +143,17 @@
     <script>
     	'use strict'
     	
+    	$(function() {
+    		$(".ckS").on("change", function() {
+	    		if($('input:checkbox[name=ckS]').length == $('input:checkbox[name=ckS]:checked').length){
+	    			$("#ckAll")[0].checked = true;
+	    		}
+	    		else {
+	    			$("#ckAll")[0].checked = false;
+	    		}
+    		});
+    	});
+    	
     	// 개별 검색
     	function searchMembers(){
     		let searchString = $("#searchString").val();

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.spring.javaProjectS4.pagination.PageProcess;
 import com.spring.javaProjectS4.pagination.PageVO;
 import com.spring.javaProjectS4.service.AdminService;
+import com.spring.javaProjectS4.vo.FAQVO;
 import com.spring.javaProjectS4.vo.MemberVO;
 import com.spring.javaProjectS4.vo.NoticeVO;
 
@@ -62,10 +63,16 @@ public class AdminController {
 		
 		List<MemberVO> mVOS = adminService.getMemberSearchList(part,searchString,pageVO.getStartIndexNo(),pageSize);
 		
+		String partStr = "";
+		if(part.equals("name")) partStr = "성명";
+		else if(part.equals("nickName")) partStr = "닉네임";
+		else partStr = "이메일";
+		
 		model.addAttribute("menuCk","회원검색리스트");
 		model.addAttribute("mVOS",mVOS);
 		model.addAttribute("pageVO",pageVO);
 		model.addAttribute("part",part);
+		model.addAttribute("partStr",partStr);
 		model.addAttribute("searchString",searchString);
 		
 		return "admin/member/memberSearchList";
@@ -126,7 +133,7 @@ public class AdminController {
 		}
 		
 		// 내용에 이미지가 들어가 있으면 올린 이미지만 저장처리
-		if(vo.getContent().indexOf("src=\"/") != -1) adminService.setImgCheck(vo.getContent());
+		if(vo.getContent().indexOf("src=\"/") != -1) adminService.setImgCheck(vo.getContent(),"notice");
 		
 		// DB에 저장되는 content의 경로 변경
 		vo.setContent(vo.getContent().replace("/data/ckeditor/", "/data/notice/"));
@@ -159,7 +166,7 @@ public class AdminController {
 			Model model) {
 		// 현재 글 내용에 존재하는 이미지 임시 파일에 백업받기
 		NoticeVO vo = adminService.getNoticeIdx(idx);
-		if(vo.getContent().indexOf("src=\"/") != -1) adminService.getImgBackUp(vo.getContent());
+		if(vo.getContent().indexOf("src=\"/") != -1) adminService.getImgBackUp(vo.getContent(),"notice");
 		
 		model.addAttribute("menuCk","공지관리");
 		model.addAttribute("vo",vo);
@@ -175,13 +182,13 @@ public class AdminController {
 		// 이미지 처리
 		if(!origVO.getContent().equals(vo.getContent())) {
 			// 내용이 바뀌었으면 원본 내용에 들어 있던 이미지 모두 삭제처리
-			if(origVO.getContent().indexOf("src=\"/") != -1) adminService.setImgDelete(origVO.getContent());
+			if(origVO.getContent().indexOf("src=\"/") != -1) adminService.setImgDelete(origVO.getContent(),"notice");
 			
-			// 만약 이미지를 모두 삭제했을시에는 바로 업데이트 처리하도록 하기위해서 밑에 과정 건너뛰도록 처리
+			// 만약 이미지를 모두 삭제했을시에는 바로 업데이트 처리하도록 밑에 과정 건너뛰도록 처리
 			if(vo.getContent().indexOf("src=\"/") != -1) {
 				vo.setContent(vo.getContent().replace("/data/notice/", "/data/ckeditor/"));
 				
-				adminService.setImgCheck(vo.getContent());
+				adminService.setImgCheck(vo.getContent(),"notice");
 				
 				vo.setContent(vo.getContent().replace("/data/ckeditor/", "/data/notice/"));
 			}
@@ -192,5 +199,73 @@ public class AdminController {
 		else return "2";
 	}
 	
+	// 관리자-공지사항 관리 => 삭제 처리(개별 및 여러개)
+	@ResponseBody
+	@RequestMapping(value = "/noticeDel", method = RequestMethod.POST)
+	public String noticeDelPost(@RequestParam(name="idx", defaultValue = "", required = false) String idx) {
+		String[] idxArr = null;
+		if(idx.indexOf("/") != -1) {
+			idxArr = idx.split("/");
+			
+			// 계정 삭제
+			for(int i=0; i<idxArr.length; i++) {
+				// 이미지 삭제 처리
+				NoticeVO vo = adminService.getNoticeIdx(Integer.parseInt(idxArr[i]));
+				if(vo.getContent().indexOf("src=\"/") != -1) adminService.setImgDelete(vo.getContent(),"notice");
+				
+				adminService.setNoticeDel(Integer.parseInt(idxArr[i]));
+			}
+			return "1";
+		}
+		else {
+			// 이미지 삭제 처리
+			NoticeVO vo = adminService.getNoticeIdx(Integer.parseInt(idx));
+			if(vo.getContent().indexOf("src=\"/") != -1) adminService.setImgDelete(vo.getContent(),"notice");
+			
+			adminService.setNoticeDel(Integer.parseInt(idx));
+			return "1";
+		}
+	}
+	
+	// 관리자-공지사항-상세보기 화면 이동
+	@RequestMapping(value = "/noticeContent",method = RequestMethod.GET)
+	public String noticeContentGet(Model model,
+			@RequestParam(name="idx", defaultValue = "", required = false) int idx
+			) {
+		
+		NoticeVO vo = adminService.getNoticeIdx(idx);
+		
+		model.addAttribute("vo",vo);
+		model.addAttribute("menuCk","공지관리");
+		
+		return "admin/board/noticeContent";
+	}
+	
+	// 이벤트 등록 화면 이동
+	@RequestMapping(value = "/eventInput", method = RequestMethod.GET)
+	public String eventInputGet(Model model) {
+		model.addAttribute("menuCk","이벤트작성");
+		return "admin/board/eventInput";
+	}
+	
+	// FAQ 등록 화면 이동
+	@RequestMapping(value = "/FAQInput",method = RequestMethod.GET)
+	public String FAQInputGet(Model model) {
+		model.addAttribute("menuCk","자주하는질문작성");
+		return "admin/board/FAQInput";
+	}
+	
+	// FAQ 등록 처리
+	@ResponseBody
+	@RequestMapping(value = "/FAQInput",method = RequestMethod.POST)
+	public String FAQInputPost(FAQVO vo) {
+		
+		vo.setAnswer(vo.getAnswer().replace("\n", "<br/>"));
+		
+		int res = adminService.setFAQInput(vo);
+		
+		if(res != 0) return "1";
+		else return "2";
+	}
 	
 }

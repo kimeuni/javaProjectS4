@@ -44,6 +44,17 @@ public class PageProcess {
 		if(section.equals("adminUserDelList")) {
 			totRecCnt = adminDAO.getUserDelTotRecCnt();
 		}
+		if(section.equals("FAQ")) {
+			if(part.equals("")) {
+				totRecCnt = boardDAO.getFAQAllTotRecCnt();
+			}
+			else if(part.equals("category")) {
+				totRecCnt = boardDAO.getFAQCategoryTotRecCnt(searchString);
+			}
+			else if(part.equals("string")) {
+				totRecCnt = boardDAO.getFAQStringTotRecCnt(searchString);
+			}
+		}
 		
 		int totPage = (totRecCnt % pageSize)==0 ? (totRecCnt / pageSize) : (totRecCnt / pageSize) + 1;
 		int startIndexNo = (pag - 1) * pageSize;

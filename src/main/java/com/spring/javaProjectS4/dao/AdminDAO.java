@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.spring.javaProjectS4.vo.FAQVO;
 import com.spring.javaProjectS4.vo.MemberVO;
 import com.spring.javaProjectS4.vo.NoticeVO;
 
@@ -30,5 +31,9 @@ public interface AdminDAO {
 	public NoticeVO getNoticeIdx(@Param("idx") int idx);
 
 	public int setNoticeUpdate(@Param("vo") NoticeVO vo);
+
+	public void setNoticeDel(@Param("idx") int idx);
+
+	public int setFAQInput(@Param("vo") FAQVO vo);
 
 }
