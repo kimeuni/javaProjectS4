@@ -21,7 +21,6 @@ create table memberS(
 	primary key(idx),
 	unique key(mid)
 );
-
 -- 관리자 부여
 insert into memberS values (default,'admin','1234','관리자','관리자','','axdc1234@naver.com','여자',default,default,'Y',default,default,'N');
 
@@ -69,3 +68,4 @@ select * from userDelReasonS;
 drop table userDelReasonS;
 
 insert into userDelReasonS values(default,'A9999','그만..',default);
+

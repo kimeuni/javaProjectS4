@@ -25,6 +25,15 @@
 	<select id="getNoticeIdx" resultType="com.spring.javaProjectS4.vo.NoticeVO">
 		select * from noticeS where idx = #{idx};
 	</select>
+	<select id="getFAQAllList" resultType="com.spring.javaProjectS4.vo.FAQVO">
+		select * from FAQS order by idx desc limit #{startIndexNo},#{pageSize};
+	</select>
+	<select id="getFAQIdx" resultType="com.spring.javaProjectS4.vo.FAQVO">
+		select * from FAQS where idx = #{idx};
+	</select>
+	<select id="getAdYEmailList" resultType="String">
+		select email from memberS where adYN = 'Y' and userDel = 'N' group by email;
+	</select>
 	
 	<insert id="setNoticeInput">
 		insert into noticeS values (default,#{vo.nickName},#{vo.title},#{vo.content},default,default,#{vo.openSw});
@@ -32,9 +41,15 @@
 	<insert id="setFAQInput">
 		insert into FAQS values (default,#{vo.category},#{vo.question},#{vo.answer});
 	</insert>
+	<insert id="setEventEmailSave">
+		insert into eventMailS values (default,#{title},#{content},default,#{fName});
+	</insert>
 	
 	<update id="setNoticeUpdate">
 		update noticeS set title = #{vo.title}, content = #{vo.content}, nDate = now(), openSw = #{vo.openSw} where idx = #{vo.idx};
+	</update>
+	<update id="setFAQUpdate">
+		update FAQS set category = #{vo.category}, question = #{vo.question}, answer = #{vo.answer} where idx = #{vo.idx};
 	</update>
 	
 	<delete id="setUserAccountDel">
@@ -42,5 +57,8 @@
 	</delete>
 	<delete id="setNoticeDel">
 		delete from noticeS where idx = #{idx};
+	</delete>
+	<delete id="setFAQDel">
+		delete from FAQS where idx = #{idx};
 	</delete>
 </mapper>

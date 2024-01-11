@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpSession;
 
@@ -48,8 +49,10 @@ public class BoardController {
 	
 	// 공지사항 상세보기 화면 이동
 	@RequestMapping(value = "/noticeContent",method = RequestMethod.GET)
-	public String noticeContentGet(Model model, HttpSession session, String part, String searchString,
-			@RequestParam(name="idx",defaultValue = "",required = false) int idx,
+	public String noticeContentGet(Model model, HttpSession session, 
+			@RequestParam(name="part",defaultValue = "",required = false) String part,
+			@RequestParam(name="searchString",defaultValue = "",required = false) String searchString,
+			@RequestParam(name="idx",defaultValue = "0",required = false) int idx,
 			@RequestParam(name="pag", defaultValue = "1", required = false) int pag,
 			@RequestParam(name="pageSize", defaultValue = "10", required = false) int pageSize
 			) {
@@ -69,10 +72,20 @@ public class BoardController {
 		// idx에 해당하는 공지사항 값 가져오기
 		NoticeVO vo = boardService.getNoticeIdx(idx);
 		
-		// 이전글
-		NoticeVO preVO = boardService.getPreNNextSearch(idx,"preVO");
-		// 다음글
-		NoticeVO nextVO = boardService.getPreNNextSearch(idx,"nextVO");
+		NoticeVO preVO = null;
+		NoticeVO nextVO = null;
+		if(part.equals("")) {
+			// 이전글
+			preVO = boardService.getPreNNextSearch(idx,"preVO","","");
+			// 다음글
+			nextVO = boardService.getPreNNextSearch(idx,"nextVO","","");
+		}
+		else{
+			// 이전글
+			preVO = boardService.getPreNNextSearch(idx,"preVO",part,searchString);
+			// 다음글
+			nextVO = boardService.getPreNNextSearch(idx,"nextVO",part,searchString);
+		}
 		
 		model.addAttribute("vo",vo);
 		model.addAttribute("preVO",preVO);
@@ -93,16 +106,10 @@ public class BoardController {
 		
 		PageVO pageVO = pageProcess.totRecCnt(pag, pageSize, "notice", part, searchString);
 		List<NoticeVO> vos = boardService.getNoticeSearchList(pageVO.getStartIndexNo(),pageSize,part,searchString);
-		System.out.println(vos);
-		
-		String partStr = "";
-		if(part.equals("title")) partStr = "제목";
-		else if(part.equals("content")) partStr = "내용";
 		
 		model.addAttribute("pageVO",pageVO);
 		model.addAttribute("vos",vos);
 		model.addAttribute("part",part);
-		model.addAttribute("partStr",partStr);
 		model.addAttribute("searchString",searchString);
 		
 		return "notice/noticeSearchList";

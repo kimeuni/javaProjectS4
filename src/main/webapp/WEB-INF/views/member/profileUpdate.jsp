@@ -104,6 +104,13 @@
     <script>
     	'use strict'
     	
+    	$(function() {
+    		let profile = $("#profile").val();
+    		if(profile == ""){
+	   			$("#profileImg").attr("src", '${ctp}/data/member/${vo.profile}');
+    		}
+    	});
+    	
     	
     </script>
 </head>
@@ -118,7 +125,7 @@
 					<div style="color:gray">대표 프로필을 변경할 수 있습니다.</div><br/>
 					<div>프로필 사진</div>
 					<hr/>
-					<div id="profile-img-div"><img src="${ctp}/data/member/${vo.profile}"></div>
+					<div id="profile-img-div"><img id="profileImg" ></div>
 					<div id="file-btns-div">
 						<div class="file-btn-div">
 							<label for="profile">

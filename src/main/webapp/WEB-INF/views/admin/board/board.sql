@@ -11,6 +11,8 @@ create table noticeS(
 	openSw char(1) default 'Y'						/* 공개:Y 비공개:N */
 );
 
+select * from noticeS;
+
 -- 이벤트 DB
 create table eventS(
 	idx int not null auto_increment primary key,

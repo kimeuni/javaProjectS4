@@ -128,6 +128,15 @@
 			margin-top: 50px;
 			margin-bottom: 20px;
 		}
+		#search-no{
+    		font-size: 1.2em;
+    		text-align: center;
+    		margin: 20px 0px; 
+    		padding: 0px 30px;
+    	}
+    	#search-no a{
+    		color: red;
+    	}
     </style>
     <script>
     	'use strict'
@@ -187,13 +196,16 @@
 			</div>
 		</div>
 		<h3>'${searchString}' 검색결과</h3>
-		<div class="accordion">
-			<c:forEach var="vo" items="${vos}" varStatus="st">
-				<input type="checkbox" name="answer" id="answer${vo.idx}">
-				<label for="answer${vo.idx}">${vo.question}</label>
-				<div><p>${vo.answer }</p></div>
-			</c:forEach>
-		</div>
+		<c:if test="${empty vos }"><div id="search-no">검색하신 내용이 존재하지 않습니다.<br/><br/><a href="">1:1 문의하러 가기</a></div></c:if>
+		<c:if test="${!empty  vos}">
+			<div class="accordion">
+				<c:forEach var="vo" items="${vos}" varStatus="st">
+					<input type="checkbox" name="answer" id="answer${vo.idx}">
+					<label for="answer${vo.idx}">${vo.question}</label>
+					<div><p>${vo.answer }</p></div>
+				</c:forEach>
+			</div>
+		</c:if>
 		<br/>
 		<div class="text-center">
 			<ul class="pagination justify-content-center">

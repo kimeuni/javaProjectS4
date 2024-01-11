@@ -11,7 +11,7 @@ public interface BoardService {
 
 	public NoticeVO getNoticeIdx(int idx);
 
-	public NoticeVO getPreNNextSearch(int idx, String str);
+	public NoticeVO getPreNNextSearch(int idx, String str, String part, String searchString);
 
 	public void setReadNumUpdate(int idx);
 

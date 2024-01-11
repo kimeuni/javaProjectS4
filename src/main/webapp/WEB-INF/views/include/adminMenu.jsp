@@ -51,7 +51,6 @@
  		color : #fff;
  		height: 50px;
  		line-height: 50px;
- 		/* border: 1px solid; */
  		padding: 0px 30px;
  	}
  	.admin-inner-menu-n{
@@ -61,15 +60,15 @@
  		color : #fff;
  		height: 50px;
  		line-height: 50px;
- 		/* border: 1px solid; */
  		padding: 0px 30px;
  	}
  	#admin-menu a{
  		color : #fff;
  		text-decoration: none;
  	}
- 	#admin-member-inner-menu a div, #admin-board-inner-menu a div, #admin-notice-inner-menu a div{
+ 	#admin-member-inner-menu a div, #admin-board-inner-menu a div, #admin-notice-inner-menu a div, #admin-advertisement-inner-menu a div{
  		padding-left: 50px;
+ 		font-size: 1.2em;
  	}
  	.admin-inner-menu-n:hover{
  		background-color: #0E0F37;
@@ -85,18 +84,25 @@
 		$("#admin-member-inner-menu").hide();
 		$("#admin-board-inner-menu").hide();
 		$("#admin-notice-inner-menu").hide();
+		$("#admin-advertisement-inner-menu").hide();
 		$("#member-menu-up").hide();
 		$("#board-menu-up").hide();
 		$("#notice-menu-up").hide();
+		$("#advertisement-menu-up").hide();
 		if('${menuCk}' == '회원리스트' || '${menuCk}' == '회원검색리스트' || '${menuCk}' == '회원탈퇴신청'){
 			$("#member-menu-down").hide();
 			$("#member-menu-up").show();
 			$("#admin-member-inner-menu").show();
 		}
-		else if('${menuCk}' == '공지작성' || '${menuCk}' == '공지관리' || '${menuCk}' == '이벤트작성' || '${menuCk}' == '자주하는질문작성'){
+		else if('${menuCk}' == '공지작성' || '${menuCk}' == '공지관리' || '${menuCk}' == '이벤트작성' || '${menuCk}' == '자주하는질문작성' || '${menuCk}' == '자주하는질문관리'){
 			$("#notice-menu-down").hide();
 			$("#notice-menu-up").show();
 			$("#admin-notice-inner-menu").show();
+		}
+		else if('${menuCk}' == '광고메일'){
+			$("#advertisement-menu-down").hide();
+			$("#advertisement-menu-up").show();
+			$("#admin-advertisement-inner-menu").show();
 		}
 	});
 	
@@ -112,6 +118,10 @@
 		$("#notice-menu-down").show();
 		$("#notice-menu-up").hide();
 		$("#admin-notice-inner-menu").slideUp();
+		
+		$("#advertisement-menu-down").show();
+		$("#advertisement-menu-up").hide();
+		$("#admin-advertisement-inner-menu").slideUp();
 	}
 	
 	function memberManagementUp(){
@@ -132,6 +142,10 @@
 		$("#notice-menu-down").show();
 		$("#notice-menu-up").hide();
 		$("#admin-notice-inner-menu").slideUp();
+		
+		$("#advertisement-menu-down").show();
+		$("#advertisement-menu-up").hide();
+		$("#admin-advertisement-inner-menu").slideUp();	
 	}
 	
 	function boardManagementUp(){
@@ -152,6 +166,10 @@
 		$("#notice-menu-down").hide();
 		$("#notice-menu-up").show();
 		$("#admin-notice-inner-menu").slideDown();
+		
+		$("#advertisement-menu-down").show();
+		$("#advertisement-menu-up").hide();
+		$("#admin-advertisement-inner-menu").slideUp();	
 	}
 	
 	function noticeManagementUp(){
@@ -160,6 +178,29 @@
 		$("#admin-notice-inner-menu").slideUp();
 	}
 	
+	function advertisementManagementDown(){
+		$("#member-menu-down").show();
+		$("#member-menu-up").hide();
+		$("#admin-member-inner-menu").slideUp();
+		
+		$("#board-menu-down").show();
+		$("#board-menu-up").hide();
+		$("#admin-board-inner-menu").slideUp();
+		
+		$("#notice-menu-down").show();
+		$("#notice-menu-up").hide();
+		$("#admin-notice-inner-menu").slideUp();
+		
+		$("#advertisement-menu-down").hide();
+		$("#advertisement-menu-up").show();
+		$("#admin-advertisement-inner-menu").slideDown();
+	}
+	
+	function advertisementManagementUp(){
+		$("#advertisement-menu-down").show();
+		$("#advertisement-menu-up").hide();
+		$("#admin-advertisement-inner-menu").slideUp();		
+	}
 </script>
 <div id="admin-left-nav">
 	<div id="damoa-logo-div"><a href="${ctp}/damoa"><img src="${ctp}/data/images/다모아로고2.png" height="65px"></a></div>
@@ -200,6 +241,17 @@
 			<a href="${ctp}/admin/eventInput"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> 이벤트 등록</div></a>
 			<a href="${ctp}/admin/noticeManagement"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> 이벤트 관리</div></a>
 			<a href="${ctp}/admin/FAQInput"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> FAQ 등록</div></a>
+			<a href="${ctp}/admin/FAQManagement"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> FAQ 관리</div></a>
+		</div>
+		<div id="advertisement-menu-down">
+			<a href="javascript:advertisementManagementDown()"><div class="admin-inner-menu-n"><i class="fa-solid fa-chevron-right"></i> 광고 관리</div></a>
+		</div>
+		<div id="advertisement-menu-up">
+			<a href="javascript:advertisementManagementUp()"><div class="admin-inner-menu"><i class="fa-solid fa-angle-down"></i> 광고 관리</div></a>
+		</div>
+		<div id="admin-advertisement-inner-menu">
+			<a href="${ctp}/admin/mailInput"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> 광고메일 전송</div></a>
+			<a href="${ctp}/admin/mailInput"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> 메인화면 광고</div></a>
 		</div>
 		<div >
 			<a href=""><div class="admin-inner-menu-n">탈퇴 목록 등록</div></a>

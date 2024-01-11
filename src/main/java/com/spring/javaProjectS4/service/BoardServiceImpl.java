@@ -26,8 +26,8 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public NoticeVO getPreNNextSearch(int idx, String str) {
-		return boardDAO.getPreNNextSearch(idx, str);
+	public NoticeVO getPreNNextSearch(int idx, String str, String part, String searchString) {
+		return boardDAO.getPreNNextSearch(idx, str, part, searchString);
 	}
 
 	@Override

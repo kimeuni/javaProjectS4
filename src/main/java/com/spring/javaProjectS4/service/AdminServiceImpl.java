@@ -60,6 +60,9 @@ public class AdminServiceImpl implements AdminService {
 			if(str.equals("notice")) {
 				copyFilePath = realPath + "notice/" + imgFile;
 			}
+			else if(str.equals("eventEmail")) {
+				copyFilePath = realPath + "mail/" + imgFile;
+			}
 			
 			fileCopyCheck(origFilePath,copyFilePath); // ckeditor에 있는 그림 board에 복사 처리
 			
@@ -164,7 +167,6 @@ public class AdminServiceImpl implements AdminService {
 			if(nextImg.indexOf("src=\"/") == -1) sw = false;
 			else nextImg = nextImg.substring(nextImg.indexOf("src=\"/")+position);
 		}
-		
 	}
 
 	// 이미지 삭제
@@ -187,4 +189,55 @@ public class AdminServiceImpl implements AdminService {
 	public int setFAQInput(FAQVO vo) {
 		return adminDAO.setFAQInput(vo);
 	}
+
+	@Override
+	public List<FAQVO> getFAQAllList(int startIndexNo, int pageSize) {
+		return adminDAO.getFAQAllList( startIndexNo, pageSize);
+	}
+
+	@Override
+	public FAQVO getFAQIdx(int idx) {
+		return adminDAO.getFAQIdx(idx);
+	}
+
+	@Override
+	public void setFAQDel(int idx) {
+		adminDAO.setFAQDel(idx);
+	}
+
+	@Override
+	public int setFAQUpdate(FAQVO vo) {
+		return adminDAO.setFAQUpdate(vo);
+	}
+
+	@Override
+	public List<String> getAdYEmailList() {
+		return adminDAO.getAdYEmailList();
+	}
+
+	@Override
+	public void setEventEmailSave(String title, String content, String fName) {
+		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
+		String realPath = request.getSession().getServletContext().getRealPath("/resources/data/");
+		
+		int position = 30;
+		
+		String nextImg = content.substring(content.indexOf("src=\"/") + position);
+		boolean sw = true;
+		
+		// fName에 저장할 이미지 이름 저장
+		while(sw) {
+			String imgFile = nextImg.substring(0,nextImg.indexOf("\""));
+			
+			fName += imgFile + "/";
+			
+			if(nextImg.indexOf("src=\"/") == -1) sw = false;
+			else nextImg = nextImg.substring(nextImg.indexOf("src=\"/")+position);
+		}
+		
+		fName = fName.substring(0,fName.length()-1);
+		
+		adminDAO.setEventEmailSave( title, content, fName);
+	}
+
 }

@@ -111,6 +111,15 @@
     	.date-div{
     		width: 10%;
     	}
+    	#search-no{
+    		font-size: 1.2em;
+    		text-align: center;
+    		margin: 20px 0px; 
+    		padding: 0px 30px;
+    	}
+    	#search-no a{
+    		color: red;
+    	}
     </style>
     <script>
     	'use strict'
@@ -124,20 +133,15 @@
     	});
     	
     	function searchNotices(){
-    		let part = $("#part").val();
     		let searchString = $("#searchString").val();
     		
-    		if(part.trim() == ""){
-    			alert("어떤 것으로 검색할 지 선택하세요.");
-    			return false;
-    		}
-    		else if(searchString.trim() == ""){
+    		if(searchString.trim() == ""){
     			alert("검색할 내용을 입력하세요.");
     			$("#searchString").focus();
     			return false;
     		}
     		else{
-    			location.href="${ctp}/board/noticeSearch?part="+part+"&searchString="+searchString;
+    			location.href="${ctp}/board/noticeSearch?part=title&searchString="+searchString;
     		}
     	}
     </script>
@@ -150,11 +154,6 @@
 		<hr/>
 		<div>
 			<div id="search-notice-container">
-				<select id="part" name="part">
-					<option value="">구분선택</option>
-					<option value="title">제목</option>
-					<option value="content">내용</option>
-				</select>
 				<div>
 					<input type="text" name="searchString" id="searchString" />
 				</div>
@@ -168,7 +167,9 @@
 				<a href="${ctp}/board/noticeList"><li class="notice-list-li">공지사항</li></a><a href=""><li class="event-li">이벤트</li></a><a href="${ctp}/board/FAQList"><li class="FAQ-li">자주하는 질문</li></a>
 			</ul>
 		</div>
-		<h3>'${partStr}'검색한 '${searchString}' 검색 결과</h3>
+		<h3>'${searchString}' 검색 결과</h3>
+		<c:if test="${empty vos}"><div id="search-no">검색하신 내용이 존재하지 않습니다.<br/><br/><a href="${ctp}/board/noticeList">전체공지 보러가기<i class="fa-solid fa-right-from-bracket"></i></a></div></c:if>
+		<c:if test="${!empty vos}">
 		<div id="notice-SearchList-ul-li">
 			<c:set var="curScrStartNo" value="${pageVO.curScrStartNo }"></c:set>
 			<ul>
@@ -182,6 +183,7 @@
 				</c:forEach>
 			</ul>
 		</div>
+		</c:if>
 		<br/>
 		<div class="text-center">
 			<ul class="pagination justify-content-center">

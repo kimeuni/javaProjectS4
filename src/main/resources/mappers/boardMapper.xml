@@ -38,12 +38,19 @@
 		select * from noticeS where idx = #{idx};
 	</select>
 	<select id="getPreNNextSearch" resultType="com.spring.javaProjectS4.vo.NoticeVO">
-		<if test="str == 'preVO'">
-			select * from noticeS where <![CDATA[idx < #{idx}]]> order by idx desc limit 1;
+		<if test="str == 'preVO' and part == ''">
+			select * from noticeS where <![CDATA[idx < #{idx}]]> and openSw = 'Y' order by idx desc limit 1;
 		</if>
-		<if test="str != 'preVO'">
-			select * from noticeS where <![CDATA[idx > #{idx}]]> order by idx limit 1;
+		<if test="str != 'preVO' and part == ''">
+			select * from noticeS where <![CDATA[idx > #{idx}]]> and openSw = 'Y' order by idx limit 1;
 		</if>
+		<if test="str == 'preVO' and part != ''">
+			select * from noticeS where <![CDATA[idx < #{idx}]]> and openSw = 'Y' and ${part} like concat('%',#{searchString},'%') order by idx desc limit 1;
+		</if>
+		<if test="str != 'preVO' and part != ''">
+			select * from noticeS where <![CDATA[idx > #{idx}]]> and openSw = 'Y' and ${part} like concat('%',#{searchString},'%') order by idx limit 1;
+		</if>
+		
 	</select>
 	
 	<update id="setReadNumUpdate">

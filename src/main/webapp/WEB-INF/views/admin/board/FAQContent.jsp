@@ -6,7 +6,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>공지사항 | ${vo.title}</title>
+    <title>FAQ | ${vo.question}</title>
     <jsp:include page="/WEB-INF/views/include/bs4.jsp" />
     <style>
     	body{
@@ -84,27 +84,27 @@
     		border : 1px solid red;
     		color: red;
     	}
-    	#notice-content-div{
+    	#FAQ-content-div{
     		border-bottom: 1px solid #5E5756;
     		text-align: left;
     	}
-    	div #notice-content img{
+    	div #FAQ-content img{
     	max-width: 600px; 
     	height: auto !important; 
     	}
-    	#notice-str-div{
+    	#FAQ-str-div{
     		margin-top: 50px;
     		margin-bottom: 40px;
     	}
-    	#notice-str{
+    	#FAQ-str{
     		width: 90%;
     		display: inline-block;
     	}
-    	#notice-list{
+    	#FAQ-list{
     		width: 8%;
     		display: inline-block;
     	}
-    	#notice-list-btn{
+    	#FAQ-list-btn{
     		width: 100px;
     		height: 40px;
     		line-height: 40px;
@@ -113,56 +113,40 @@
     		text-align: center;
     		border: 1px solid #5E5756;
     	}
-    	#notice-list a{
+    	#FAQ-list a{
     		text-decoration: none;
     		color: #000;
     	}
-    	#notice-title-div{
+    	#FAQ-title-div{
     		border-bottom: 1px solid #5E5756;
     		border-top: 1px solid #5E5756;
-    		background-color: #F1E5D4;
     		height: 80px;
     		font-size: 1.5em;
     		line-height: 80px;
     		padding: 0px 15px;
     		color: #5E5756;
+    		background-color: #eee;
     	}
-    	#notice-read-date{
-    		height: 60px;
-    		line-height: 60px;
-    		border-top: 1px solid #5E5756;
-    		text-align: right;
-    		width: 100%;
-    		color: #CEBAAD;
-    	}
-    	#notice-read{
-    		width: 20%;
-    		display: inline-block;
-    	}
-    	#notice-date{
-    		padding-right: 20px;
-    		width: 17%;
-    		display: inline-block;
-    	}
-    	#notice-content{
+    	#FAQ-content{
     		margin: 20px 40px;
     	}
     </style>
     <script>
     	'use strict'
-    	function contetnDelete(title,idx){
-    		let ans = confirm("<"+title+">의 공지사항을 삭제하시겠습니까?");
+    	
+    	function contetnDelete(question,idx){
+    		let ans = confirm("<"+question+">의 질문을 삭제하시겠습니까?");
     		if(ans){
     			$.ajax({
-    				url : "${ctp}/admin/noticeDel",
+    				url : "${ctp}/admin/FAQDel",
     				type : "post",
     				data : {idx : idx},
     				success : function(res){
     					alert("삭제되었습니다.");
-						location.href="${ctp}/admin/noticeManagement";
+						location.href="${ctp}/admin/FAQManagement";
     				},
     				error : function(){
-    					alert("전송오류(noticecontent.jsp)")
+    					alert("전송오류(FAQcontent.jsp)")
     				}
     			});
     		}
@@ -173,24 +157,20 @@
 <jsp:include page="/WEB-INF/views/include/adminMenu.jsp" />
 	<div id="admin-content-container">
 		<div id="admin-content-right-content">
-			<div id="top-menu-str">공지사항 상세보기</div>
+			<div id="top-menu-str">자주하는 질문 상세보기</div>
 			<div id="admin-content-right-inner-content">
 				<div id="admin-content-menu">
 					<div>
-						<div id="admin-content-menu-str">공지사항 상세보기 <i class="fa-solid fa-book-open"></i></div>
-						<a href="${ctp}/admin/noticeManagement"><div class="go-btn">돌아가기</div></a>
-						<a href="${ctp}/admin/noticeUpdate?idx=${vo.idx}"><div class="go-btn update-btn">수정</div></a>
-						<a href="javascript:contetnDelete('${vo.title }',${vo.idx})"><div class="go-btn delete-btn">삭제</div></a>
+						<div id="admin-content-menu-str">자주하는 질문 상세보기 <i class="fa-solid fa-book-open"></i></div>
+						<a href="${ctp}/admin/FAQManagement"><div class="go-btn">돌아가기</div></a>
+						<a href="${ctp}/admin/FAQUpdate?idx=${vo.idx}"><div class="go-btn update-btn">수정</div></a>
+						<a href="javascript:contetnDelete('${vo.question }',${vo.idx})"><div class="go-btn delete-btn">삭제</div></a>
 					</div>
-					<div id="notice-content-div">
-						<div id="notice-read-date">
-							<div id="notice-read"><i class="fa-solid fa-eye"></i>${vo.readNum}</div>
-							<div id="notice-date"><i class="fa-regular fa-calendar-days"></i>${fn:substring(vo.NDate,0,10)}</div>
+					<div id="FAQ-content-div">
+						<div id="FAQ-title-div">
+							<div id="FAQ-title-str">${vo.question}</div>
 						</div>
-						<div id="notice-title-div">
-							<div id="notice-title-str">${vo.title}</div>
-						</div>
-						<div id="notice-content">${vo.content}</div>
+						<div id="FAQ-content">${vo.answer}</div>
 			    	</div>
 				</div>
 			</div>

@@ -34,4 +34,16 @@ public interface AdminService {
 
 	public int setFAQInput(FAQVO vo);
 
+	public List<FAQVO> getFAQAllList(int startIndexNo, int pageSize);
+
+	public FAQVO getFAQIdx(int idx);
+
+	public void setFAQDel(int idx);
+
+	public int setFAQUpdate(FAQVO vo);
+
+	public List<String> getAdYEmailList();
+
+	public void setEventEmailSave(String title, String content, String fName);
+
 }

@@ -19,7 +19,7 @@ public interface BoardDAO {
 
 	public int getNoticeOpenSwYTotRecCnt();
 
-	public NoticeVO getPreNNextSearch(@Param("idx") int idx,@Param("str") String str);
+	public NoticeVO getPreNNextSearch(@Param("idx") int idx,@Param("str") String str,@Param("part") String part,@Param("searchString") String searchString);
 
 	public void setReadNumUpdate(@Param("idx") int idx);
 

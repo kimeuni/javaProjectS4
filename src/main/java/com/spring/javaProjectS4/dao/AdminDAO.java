@@ -36,4 +36,16 @@ public interface AdminDAO {
 
 	public int setFAQInput(@Param("vo") FAQVO vo);
 
+	public List<FAQVO> getFAQAllList(@Param("startIndexNo") int startIndexNo,@Param("pageSize") int pageSize);
+
+	public FAQVO getFAQIdx(@Param("idx") int idx);
+
+	public void setFAQDel(@Param("idx") int idx);
+
+	public int setFAQUpdate(@Param("vo") FAQVO vo);
+
+	public List<String> getAdYEmailList();
+
+	public void setEventEmailSave(@Param("title") String title,@Param("content") String content,@Param("fName") String fName);
+
 }

@@ -37,10 +37,17 @@
 		right: 0px;
 	}
 </style>
+<script>
+	'use strict';
+	
+</script>
 <body>
+<!-- 메인화면에 띄울 광고 -->
+
+
 <jsp:include page="/WEB-INF/views/include/header.jsp"/>
 <main>
-	<section id="soge-bg-cl">
+	<div id="soge-bg-cl">
 		<div id="soge-bg">
 			<div id="soge-title">
 				<div>일상의 보물을<br/> 모두 모아</div>
@@ -48,7 +55,7 @@
 			<div id="soge-sub-title">일상의 행복을 모두 모아 <br/> '다모아'에서 함께 나누어 보세요.</div>
 			<div id="damoa-ct-img"><img src="${ctp}/data/images/다모아 캐릭터.png" height="655px;"/></div>
 		</div>
-	</section>
+	</div>
 	<div style="height: 1000px;"></div>
 </main>
 <jsp:include page="/WEB-INF/views/include/footer.jsp" />

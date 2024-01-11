@@ -124,20 +124,15 @@
     	});
     	
     	function searchNotices(){
-    		let part = $("#part").val();
     		let searchString = $("#searchString").val();
     		
-    		if(part.trim() == ""){
-    			alert("어떤 것으로 검색할 지 선택하세요.");
-    			return false;
-    		}
-    		else if(searchString.trim() == ""){
+    		if(searchString.trim() == ""){
     			alert("검색할 내용을 입력하세요.");
     			$("#searchString").focus();
     			return false;
     		}
     		else{
-    			location.href="${ctp}/board/noticeSearch?part="+part+"&searchString="+searchString;
+    			location.href="${ctp}/board/noticeSearch?part=title&searchString="+searchString;
     		}
     	}
     </script>
@@ -150,11 +145,6 @@
 		<hr/>
 		<div>
 			<div id="search-notice-container">
-				<select id="part" name="part">
-					<option value="">구분선택</option>
-					<option value="title">제목</option>
-					<option value="content">내용</option>
-				</select>
 				<div>
 					<input type="text" name="searchString" id="searchString" />
 				</div>

@@ -138,7 +138,12 @@
     	<div id="notice-str-div">
     		<div id="notice-str"><h2>공지사항</h2></div>
     		<div id="notice-list">
-    			<a href="${ctp}/board/noticeList?pag=${pag}&pageSize=${pageSize}"><div id="notice-list-btn">목록</div></a>
+    			<c:if test="${empty part}">
+	    			<a href="${ctp}/board/noticeList?pag=${pag}&pageSize=${pageSize}"><div id="notice-list-btn">목록</div></a>
+    			</c:if>
+    			<c:if test="${!empty part}">
+	    			<a href="${ctp}/board/noticeSearch?pag=${pag}&pageSize=${pageSize}&part=${part}&searchString=${searchString}"><div id="notice-list-btn">목록</div></a>
+    			</c:if>
    			</div>
     	</div>
     	<div id="notice-content-div">
