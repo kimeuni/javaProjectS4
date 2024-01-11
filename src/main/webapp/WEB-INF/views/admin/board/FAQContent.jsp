@@ -57,7 +57,7 @@
     		margin-bottom: 20px;
     	}
     	#admin-content-menu-str{
-    		width: 70%; 
+    		width: 68%; 
     		font-size: 1.2em;
     		color : gray;
     		text-align: left;

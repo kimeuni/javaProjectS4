@@ -254,7 +254,7 @@
 			<a href="${ctp}/admin/mailInput"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> 메인화면 광고</div></a>
 		</div>
 		<div >
-			<a href=""><div class="admin-inner-menu-n">탈퇴 목록 등록</div></a>
+			<a href="${ctp}/admin/delTitleInput"><div class="admin-inner-menu-n">탈퇴 목록 등록</div></a>
 		</div>
 		<div>
 			<a href="${ctp}/admin/adminMain"><div class="admin-inner-menu-n">임시파일 삭제</div></a>

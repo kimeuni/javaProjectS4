@@ -179,8 +179,8 @@
 							location.href='${ctp}/damoa';
 						}
 						else if(res == "3"){
-							// 나중에 관리자 화면으로 이동하도록 주소 바꾸기
-							location.href='${ctp}/damoa';
+							// 관리자 화면 이동
+							location.href='${ctp}/admin/adminMain';
 						}
 						else {
 							// 계정 비활성 && 30일 이내 시 계정 복구창 이동

@@ -158,7 +158,7 @@
 <jsp:include page="/WEB-INF/views/include/header.jsp" />
 	<div id="FAQ-categorySearch-container">
 		<hr/>
-		    <h3>자주하는 질문</h3>
+		    <h3 style="margin: 0px">자주하는 질문</h3>
 		<hr/>
 		<div>
 			<div id="search-FAQ-container">

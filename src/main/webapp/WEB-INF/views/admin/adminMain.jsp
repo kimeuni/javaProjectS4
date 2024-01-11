@@ -12,7 +12,7 @@
     		margin: 0px;
     		padding: 0px;
     	}
-    	#admin-right-content{
+    	#admin-main-right-content{
     		min-height : 100vh;
     		background-color: #eee;
     		margin-left : 20%;
@@ -33,13 +33,13 @@
 			border-bottom: 1px solid;
 			box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
     	}
-    	#admin-right-inner-content{
+    	#admin-main-right-inner-content{
     		margin: 0 auto;
     		width: 70%;
     		margin-top: 110px; 
     		margin-bottom: 60px; 
     	}
-    	#admin-myinfo-menu{
+    	#admin-main-menu{
     		margin: 0 auto;
     		width : 75%;
     		border: 1px solid;
@@ -49,32 +49,14 @@
     		text-align: center;
     		box-shadow: 5px 5px 10px gray;
     	}
-    	#admin-myinfo-menu hr{
-    		margin: 0px;
-    	}
-    	#admin-myinfo-menu-str{
-    		font-size: 1.2em;
-    		color : gray;
-    		text-align: left;
-    		margin-bottom: 20px;
-    	}
-    	#admin-myinfo-menu a div{
-    		height: 60px;
-    		line-height: 60px;
-    		font-size: 1.1em;
-    	}
-    	#admin-myinfo-menu a{
-    		color : black;
-    		text-decoration: none;
-    	}
     </style>
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/include/adminMenu.jsp" />
-	<div id="admin-container">
-		<div id="admin-right-content">
+	<div id="admin-main-container">
+		<div id="admin-main-right-content">
 			<div id="top-menu-str">관리자 메인</div>
-			<div id="admin-right-inner-content">
+			<div id="admin-main-right-inner-content">
 				
 			</div>
 		</div>

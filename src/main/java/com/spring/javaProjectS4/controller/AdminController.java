@@ -396,6 +396,12 @@ public class AdminController {
 		}
 	}
 	
+	// 탈퇴 목록 등록
+	@RequestMapping(value = "/delTitleInput", method = RequestMethod.GET)
+	public String delTitleInputGet() {
+		return "admin/delTitle/delTitleInput";
+	}
+	
 	// 메일 전송을 위한 메소드
 		private String mailSend(String email, String title, String mailFlag, String flag) throws MessagingException {
 			HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();

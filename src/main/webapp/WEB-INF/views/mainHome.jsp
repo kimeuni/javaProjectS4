@@ -36,14 +36,42 @@
 		top: 0px;
 		right: 0px;
 	}
+	#advertisement-container{
+		position: relative;
+	}
+	#advertisement-div{
+		z-index: 9999;
+		position: fixed;
+		top : 45%;
+		left: 4%;
+	}
+	.advertisement-close-btn:hover{
+		cursor: pointer;
+	}
 </style>
 <script>
 	'use strict';
 	
+	$(function() {
+		$(".advertisement-close-btn").on("click", function(){
+			$("#advertisement-container").hide();
+		});
+	});
 </script>
 <body>
 <!-- 메인화면에 띄울 광고 -->
-
+<div id="advertisement-container">
+	<div id="advertisement-div">
+		<a href=""><div><img src = "" width="320px" height="320px"></div></a>
+		<c:if test="${sMid == null }">
+			<div class="advertisement-close-btn">창 닫기</div>
+		</c:if>
+		<c:if test="${sMid != null }">
+			<div>오늘 하루 안보기</div>
+			<div class="advertisement-close-btn">창 닫기</div>
+		</c:if>
+	</div>
+</div>
 
 <jsp:include page="/WEB-INF/views/include/header.jsp"/>
 <main>
