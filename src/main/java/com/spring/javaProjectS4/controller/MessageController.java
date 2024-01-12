@@ -42,6 +42,14 @@ public class MessageController {
 			model.addAttribute("msg", "공지사항의 내용을 입력해주세요.");
 			model.addAttribute("url","admin/noticeInput");
 		}
+		else if(msgFalg.equals("adInputY")) {
+			model.addAttribute("msg", "메인광고가 등록되었습니다.");
+			model.addAttribute("url","admin/advertisementInput");
+		}
+		else if(msgFalg.equals("adInputN")) {
+			model.addAttribute("msg", "메인광고 등록에 실패하였습니다.");
+			model.addAttribute("url","admin/advertisementInput");
+		}
 		return "include/message";
 	}
 }

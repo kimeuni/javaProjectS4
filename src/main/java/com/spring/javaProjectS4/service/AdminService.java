@@ -2,9 +2,13 @@ package com.spring.javaProjectS4.service;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+
 import com.spring.javaProjectS4.vo.FAQVO;
+import com.spring.javaProjectS4.vo.MainAdvertisementVO;
 import com.spring.javaProjectS4.vo.MemberVO;
 import com.spring.javaProjectS4.vo.NoticeVO;
+import com.spring.javaProjectS4.vo.ReasonTitleVO;
 
 public interface AdminService {
 
@@ -45,5 +49,20 @@ public interface AdminService {
 	public List<String> getAdYEmailList();
 
 	public void setEventEmailSave(String title, String content, String fName);
+
+	public void setUserShowDelMid(String mid);
+
+	public List<ReasonTitleVO> getReasonTitleList();
+
+	public int setDelTitleInput(String code, String title, String displayNone);
+
+	public int setReasonTitleDel(String code);
+
+	public void setUserDelReasonDel(String code);
+
+	public int setDisplayNoneUpdate(String displayNone, String code);
+
+	public int setAdInput(String mImg, String url, MultipartHttpServletRequest mainImg);
+
 
 }

@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.spring.javaProjectS4.vo.MemberVO;
 import com.spring.javaProjectS4.vo.ReasonTitleVO;
+import com.spring.javaProjectS4.vo.UserShowAdvertisementVO;
+import com.spring.javaProjectS4.vo.MainAdvertisementVO;
 
 public interface MemberService {
 
@@ -38,5 +40,15 @@ public interface MemberService {
 	public int setUserDelUpdateN(String mid, String token);
 
 	public int setInfoUpdate(String mid, String name, String nickName, String email, String address);
+
+	public UserShowAdvertisementVO getUserShowAdMid(String mid);
+
+	public int setLoginDateUpdatMid(String mid);
+
+	public void setAlarmYUpdate(String mid);
+
+	public MainAdvertisementVO getMainAdOpen();
+
+	public void setMainAdInputMid(String mid, int adIdx);
 
 }

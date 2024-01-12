@@ -5,7 +5,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -13,11 +16,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.spring.javaProjectS4.dao.AdminDAO;
 import com.spring.javaProjectS4.vo.FAQVO;
+import com.spring.javaProjectS4.vo.MainAdvertisementVO;
 import com.spring.javaProjectS4.vo.MemberVO;
 import com.spring.javaProjectS4.vo.NoticeVO;
+import com.spring.javaProjectS4.vo.ReasonTitleVO;
 
 @Service
 public class AdminServiceImpl implements AdminService {
@@ -239,5 +246,77 @@ public class AdminServiceImpl implements AdminService {
 		
 		adminDAO.setEventEmailSave( title, content, fName);
 	}
+
+	@Override
+	public void setUserShowDelMid(String mid) {
+		adminDAO.setUserShowDelMid(mid);
+	}
+
+	@Override
+	public List<ReasonTitleVO> getReasonTitleList() {
+		return adminDAO.getReasonTitleList();
+	}
+
+	@Override
+	public int setDelTitleInput(String code, String title, String displayNone) {
+		return adminDAO.setDelTitleInput(code, title, displayNone);
+	}
+
+	@Override
+	public int setReasonTitleDel(String code) {
+		return adminDAO.setReasonTitleDel(code);
+	}
+
+	@Override
+	public void setUserDelReasonDel(String code) {
+		adminDAO.setUserDelReasonDel(code);
+	}
+
+	@Override
+	public int setDisplayNoneUpdate(String displayNone, String code) {
+		return adminDAO.setDisplayNoneUpdate(displayNone, code);
+	}
+
+	@Override
+	public int setAdInput(String mImg, String url, MultipartHttpServletRequest mainImg) {
+		System.out.println("서비스");
+		int res = 0;
+		try {
+			MultipartFile fileImg = mainImg.getFile("mainImg");
+			
+			String saveFileName = "";
+			// 저장되는 파일명 중복되지 않도록 처리 (날짜 + 랜덤 2자리 숫자 + 원본 파일명)
+			Date date = new Date();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmmss");
+			UUID uid = UUID.randomUUID();
+			String uuid = uid.toString().substring(0,2);
+			saveFileName = sdf.format(date) + "_" + uuid + "_" + fileImg.getOriginalFilename();
+			
+			
+			writeFile(fileImg,saveFileName);
+			
+			mImg= saveFileName;
+			System.out.println(mImg);
+			res = adminDAO.setAdInput(mImg, url);
+		} catch (IOException e) {
+			System.out.println("IO오류" + e.getMessage());
+			e.printStackTrace();
+		}
+		return res;
+		
+	}
+
+	// 파일 서버 폴더에 저장
+	private void writeFile(MultipartFile fileImg, String saveFileName) throws IOException {
+		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
+		String realPath = request.getSession().getServletContext().getRealPath("/resources/data/advertisement/");
+		
+		byte[] data = fileImg.getBytes();
+		FileOutputStream fos = new FileOutputStream(realPath + saveFileName);
+		
+		fos.write(data);
+		fos.close();
+	}
+
 
 }

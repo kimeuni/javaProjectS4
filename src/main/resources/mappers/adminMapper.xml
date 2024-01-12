@@ -34,6 +34,9 @@
 	<select id="getAdYEmailList" resultType="String">
 		select email from memberS where adYN = 'Y' and userDel = 'N' group by email;
 	</select>
+	<select id="getReasonTitleList" resultType="com.spring.javaProjectS4.vo.ReasonTitleVO">
+		select * from reasonTitleS order by code;
+	</select>
 	
 	<insert id="setNoticeInput">
 		insert into noticeS values (default,#{vo.nickName},#{vo.title},#{vo.content},default,default,#{vo.openSw});
@@ -44,12 +47,21 @@
 	<insert id="setEventEmailSave">
 		insert into eventMailS values (default,#{title},#{content},default,#{fName});
 	</insert>
+	<insert id="setDelTitleInput">
+		insert into reasonTitleS values (#{code},#{title},#{displayNone});
+	</insert>
+	<insert id="setAdInput">
+		insert into mainAdvertisementS values (default,#{mImg},#{url},default,default);
+	</insert>
 	
 	<update id="setNoticeUpdate">
 		update noticeS set title = #{vo.title}, content = #{vo.content}, nDate = now(), openSw = #{vo.openSw} where idx = #{vo.idx};
 	</update>
 	<update id="setFAQUpdate">
 		update FAQS set category = #{vo.category}, question = #{vo.question}, answer = #{vo.answer} where idx = #{vo.idx};
+	</update>
+	<update id="setDisplayNoneUpdate">
+		update reasonTitleS set displayNone = #{displayNone} where code = #{code};
 	</update>
 	
 	<delete id="setUserAccountDel">
@@ -60,5 +72,14 @@
 	</delete>
 	<delete id="setFAQDel">
 		delete from FAQS where idx = #{idx};
+	</delete>
+	<delete id="setUserShowDelMid">
+		delete from UserShowAdvertisementS where mid = #{mid};
+	</delete>
+	<delete id="setReasonTitleDel">
+		delete from reasonTitleS where code = #{code};
+	</delete>
+	<delete id="setUserDelReasonDel">
+		delete from userDelReasonS where titleCode = #{code};
 	</delete>
 </mapper>

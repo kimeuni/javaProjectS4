@@ -3,10 +3,13 @@ package com.spring.javaProjectS4.dao;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.spring.javaProjectS4.vo.FAQVO;
+import com.spring.javaProjectS4.vo.MainAdvertisementVO;
 import com.spring.javaProjectS4.vo.MemberVO;
 import com.spring.javaProjectS4.vo.NoticeVO;
+import com.spring.javaProjectS4.vo.ReasonTitleVO;
 
 public interface AdminDAO {
 
@@ -47,5 +50,20 @@ public interface AdminDAO {
 	public List<String> getAdYEmailList();
 
 	public void setEventEmailSave(@Param("title") String title,@Param("content") String content,@Param("fName") String fName);
+
+	public void setUserShowDelMid(@Param("mid") String mid);
+
+	public List<ReasonTitleVO> getReasonTitleList();
+
+	public int setDelTitleInput(@Param("code") String code,@Param("title") String title,@Param("displayNone") String displayNone);
+
+	public int setReasonTitleDel(@Param("code") String code);
+
+	public void setUserDelReasonDel(@Param("code") String code);
+
+	public int setDisplayNoneUpdate(@Param("displayNone") String displayNone,@Param("code") String code);
+
+	public int setAdInput(@Param("mImg") String mImg,@Param("url") String url);
+
 
 }

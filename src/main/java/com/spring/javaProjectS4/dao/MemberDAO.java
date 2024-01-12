@@ -6,6 +6,8 @@ import org.apache.ibatis.annotations.Param;
 
 import com.spring.javaProjectS4.vo.MemberVO;
 import com.spring.javaProjectS4.vo.ReasonTitleVO;
+import com.spring.javaProjectS4.vo.UserShowAdvertisementVO;
+import com.spring.javaProjectS4.vo.MainAdvertisementVO;
 
 public interface MemberDAO {
 
@@ -40,5 +42,15 @@ public interface MemberDAO {
 	public int setUserDelUpdateN(@Param("mid") String mid,@Param("token") String token);
 
 	public int setInfoUpdate(@Param("mid") String mid,@Param("name") String name,@Param("nickName") String nickName,@Param("email") String email,@Param("address") String address);
+
+	public UserShowAdvertisementVO getUserShowAdMid(@Param("mid") String mid);
+
+	public int setLoginDateUpdatMid(@Param("mid") String mid);
+
+	public void setAlarmYUpdate(@Param("mid") String mid);
+
+	public MainAdvertisementVO getMainAdOpen();
+
+	public void setMainAdInputMid(@Param("mid") String mid,@Param("adIdx") int adIdx);
 
 }

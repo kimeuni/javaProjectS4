@@ -99,7 +99,7 @@
 			$("#notice-menu-up").show();
 			$("#admin-notice-inner-menu").show();
 		}
-		else if('${menuCk}' == '광고메일'){
+		else if('${menuCk}' == '광고메일' || '${menuCk}' == '메인광고등록' || '${menuCk}' == '메인광고관리'){
 			$("#advertisement-menu-down").hide();
 			$("#advertisement-menu-up").show();
 			$("#admin-advertisement-inner-menu").show();
@@ -251,7 +251,9 @@
 		</div>
 		<div id="admin-advertisement-inner-menu">
 			<a href="${ctp}/admin/mailInput"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> 광고메일 전송</div></a>
-			<a href="${ctp}/admin/mailInput"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> 메인화면 광고</div></a>
+			<a href="${ctp}/admin/mailInput"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> 광고메일 관리</div></a>
+			<a href="${ctp}/admin/advertisementInput"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> 메인화면 광고 등록</div></a>
+			<a href="${ctp}/admin/advertisementManagement"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> 메인화면 광고 관리</div></a>
 		</div>
 		<div >
 			<a href="${ctp}/admin/delTitleInput"><div class="admin-inner-menu-n">탈퇴 목록 등록</div></a>

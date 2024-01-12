@@ -67,5 +67,5 @@ select * from userDelReasonS;
 
 drop table userDelReasonS;
 
-insert into userDelReasonS values(default,'A9999','그만..',default);
+insert into userDelReasonS values(default,'A0009','삭제테스트',default);
 

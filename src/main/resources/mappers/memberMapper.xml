@@ -17,7 +17,13 @@
 		select * from memberS where mid = #{mid} and email = #{email};
 	</select>
 	<select id="getTitleList" resultType="com.spring.javaProjectS4.vo.ReasonTitleVO">
-		select * from reasonTitleS;
+		select * from reasonTitleS where displayNone = 'Y';
+	</select>
+	<select id="getUserShowAdMid" resultType="com.spring.javaProjectS4.vo.UserShowAdvertisementVO">
+		select * from UserShowAdvertisementS where mid = #{mid};
+	</select>
+	<select id="getMainAdOpen" resultType="com.spring.javaProjectS4.vo.MainAdvertisementVO">
+		select * from mainAdvertisementS where openSw = 'Y';
 	</select>
 	
 	<insert id="setMemberJoin">
@@ -31,6 +37,9 @@
 	</insert>
 	<insert id="setUserDelReason">
 		insert into userDelReasonS values (default,#{whyDel},#{why},default);
+	</insert>
+	<insert id="setMainAdInputMid">
+		insert into UserShowAdvertisementS values (default,#{adIdx},#{mid},default,default,default);
 	</insert>
 	
 	<update id="setKakaoFirstUpdatInfor">
@@ -55,5 +64,11 @@
 	</update>
 	<update id="setInfoUpdate">
 		update memberS set name = #{name}, nickName = #{nickName}, email = #{email}, address = #{address} where mid = #{mid};
+	</update>
+	<update id="setLoginDateUpdatMid">
+		update UserShowAdvertisementS set loginDate = now() where mid = #{mid};
+	</update>
+	<update id="setAlarmYUpdate">
+		update UserShowAdvertisementS set alarm = 'Y' where mid = #{mid};
 	</update>
 </mapper>

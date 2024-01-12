@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import com.spring.javaProjectS4.dao.MemberDAO;
 import com.spring.javaProjectS4.vo.MemberVO;
 import com.spring.javaProjectS4.vo.ReasonTitleVO;
+import com.spring.javaProjectS4.vo.UserShowAdvertisementVO;
+import com.spring.javaProjectS4.vo.MainAdvertisementVO;
 
 @Service
 public class MemberServiceImpl implements MemberService {
@@ -92,6 +94,31 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public int setInfoUpdate(String mid, String name, String nickName, String email, String address) {
 		return memberDAO.setInfoUpdate( mid, name, nickName, email, address);
+	}
+
+	@Override
+	public UserShowAdvertisementVO getUserShowAdMid(String mid) {
+		return memberDAO.getUserShowAdMid(mid);
+	}
+
+	@Override
+	public int setLoginDateUpdatMid(String mid) {
+		return memberDAO.setLoginDateUpdatMid(mid);
+	}
+
+	@Override
+	public void setAlarmYUpdate(String mid) {
+		memberDAO.setAlarmYUpdate(mid);
+	}
+
+	@Override
+	public MainAdvertisementVO getMainAdOpen() {
+		return memberDAO.getMainAdOpen();
+	}
+
+	@Override
+	public void setMainAdInputMid(String mid, int adIdx) {
+		memberDAO.setMainAdInputMid(mid, adIdx);
 	}
 
 }

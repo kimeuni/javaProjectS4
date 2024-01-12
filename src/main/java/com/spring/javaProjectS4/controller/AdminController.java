@@ -18,13 +18,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.spring.javaProjectS4.pagination.PageProcess;
 import com.spring.javaProjectS4.pagination.PageVO;
 import com.spring.javaProjectS4.service.AdminService;
 import com.spring.javaProjectS4.vo.FAQVO;
+import com.spring.javaProjectS4.vo.MainAdvertisementVO;
 import com.spring.javaProjectS4.vo.MemberVO;
 import com.spring.javaProjectS4.vo.NoticeVO;
+import com.spring.javaProjectS4.vo.ReasonTitleVO;
 
 @Controller
 @RequestMapping("/admin")
@@ -117,11 +120,19 @@ public class AdminController {
 			
 			// 계정 삭제
 			for(int i=0; i<midArr.length; i++) {
+				
+				// 메인광고 삭제
+				adminService.setUserShowDelMid(midArr[i]);
+				
+				// 계정 삭제
 				adminService.setUserAccountDel(midArr[i]);
 			}
 			return "1";
 		}
 		else {
+			// 메인광고 삭제
+			adminService.setUserShowDelMid(mid);
+			// 계정 삭제
 			adminService.setUserAccountDel(mid);
 			return "1";
 		}
@@ -396,10 +407,88 @@ public class AdminController {
 		}
 	}
 	
-	// 탈퇴 목록 등록
+	// 탈퇴 목록 등록 화면 이동
 	@RequestMapping(value = "/delTitleInput", method = RequestMethod.GET)
-	public String delTitleInputGet() {
+	public String delTitleInputGet(Model model) {
+		// 탈퇴 목록 리스트 가져오기
+		List<ReasonTitleVO> vos = adminService.getReasonTitleList();
+		
+		model.addAttribute("vos",vos);
 		return "admin/delTitle/delTitleInput";
+	}
+	
+	// 탈퇴 목록 등록 처리
+	@ResponseBody
+	@RequestMapping(value = "/delTitleInput", method = RequestMethod.POST)
+	public String delTitleInputPost(Model model,
+			String code, String title, String displayNone) {
+		
+		//같은 코드가 있는지 확인
+		List<ReasonTitleVO> vos = adminService.getReasonTitleList();
+		for(int i=0; i<vos.size(); i++) {
+			if(vos.get(i).getCode().equals(code)) {
+				return "3";
+			}
+		}
+		// 목록 등록
+		int res = adminService.setDelTitleInput(code,title,displayNone);
+		if(res != 0) return "1";
+		else return "2";
+		
+	}
+	
+	// 탈퇴 목록 삭제 처리
+	@ResponseBody
+	@RequestMapping(value = "/reasonTitleDel", method = RequestMethod.POST)
+	public String reasonTitleDelPost(String code) {
+		
+		// 해당 목차로 쌓은 데이터 삭제
+		adminService.setUserDelReasonDel(code);
+		
+		// 목차 삭제
+		int res = adminService.setReasonTitleDel(code);
+		
+		if(res != 0) return "1";
+		else return "2";
+	}
+	
+	// 탈퇴 목록 공개,비공개 전환 처리
+	@ResponseBody
+	@RequestMapping(value = "/displayNoneUpdate",method = RequestMethod.POST)
+	public String displayNoneUpdatePost(String displayNone,String code) {
+		
+		int res = adminService.setDisplayNoneUpdate(displayNone, code);
+		if(res != 0) return "1";
+		else return "2";
+	}
+	
+	// 메인화면 광고 등록
+	@RequestMapping(value = "/advertisementInput", method = RequestMethod.GET)
+	public String advertisementInputGet(Model model) {
+		model.addAttribute("menuCk","메인광고등록");
+		return "admin/advertisement/advertisementInput";
+	}
+	
+	// 메인화면 광고 등록 처리
+	@RequestMapping(value = "/advertisementInput", method = RequestMethod.POST)
+	public String advertisementInputPost(MultipartHttpServletRequest mainImg, 
+			@RequestParam(name="mImg",defaultValue = "", required = false) String mImg,
+			String url) {
+		System.out.println(url);
+		System.out.println("컨트롤러");
+		// 등록 처리
+		int res = adminService.setAdInput(mImg,url,mainImg);
+
+		if(res != 0) return "redirect:/message/adInputY";
+		else return "redirect:/message/adInputN";
+	}
+	
+	
+	// 메인화면 광고 관리 화면 이동
+	@RequestMapping(value = "/advertisementManagement", method = RequestMethod.GET)
+	public String advertisementManagementGet(Model model) {
+		model.addAttribute("menuCk","메인광고관리");
+		return "admin/advertisement/advertisementManagement";
 	}
 	
 	// 메일 전송을 위한 메소드

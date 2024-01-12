@@ -3,6 +3,9 @@ package com.spring.javaProjectS4.controller;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Formatter;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,6 +37,8 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import com.spring.javaProjectS4.service.MemberService;
 import com.spring.javaProjectS4.vo.MemberVO;
 import com.spring.javaProjectS4.vo.ReasonTitleVO;
+import com.spring.javaProjectS4.vo.UserShowAdvertisementVO;
+import com.spring.javaProjectS4.vo.MainAdvertisementVO;
 
 @Controller
 @RequestMapping("/member")
@@ -112,7 +117,31 @@ public class MemberController {
 				// 마지막 접속일 업데이트
 				memberService.setUpdateLastDate(mid);
 				
-				return "3";
+				// 메인 광고 알림 Y로 바꾸기 (하루 지났으면)
+				Date now = new Date();
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				String today = sdf.format(now);
+				
+				// 로그인한 날짜 업데이트
+				int res = memberService.setLoginDateUpdatMid(mid);
+				
+				if(res != 0) {
+					// 해당 유저의 광고 알람 유무를 알기 위해 값 불러오기
+					UserShowAdvertisementVO UserAdVO = memberService.getUserShowAdMid(mid);
+					
+					if(UserAdVO.getAlarm().equals("Y")) return "3";
+					else {
+						// 알람 N한 날이 오늘이랑 같으면 화면으로 이동 아니면 알람을 Y로 바꿔준다.
+						UserAdVO.setAlarmNDate(UserAdVO.getAlarmNDate().substring(0,10));
+						if(UserAdVO.getAlarmNDate().equals(today)) return "3";
+						else {
+							// 알람 Y로 수정
+							memberService.setAlarmYUpdate(mid);
+							
+							return "3";
+						}
+					}
+				}
 			}
 		}
 		// 계정 탈퇴 했는데 30일 안지났을 경우(로그인시 계정 복구할거냐고 물어보기)
@@ -158,7 +187,32 @@ public class MemberController {
 
 		// 마지막 접속일 업데이트
 		memberService.setUpdateLastDate(mid);
+
+		// 메인 광고 알림 Y로 바꾸기 (하루 지났으면)
+		Date now = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		String today = sdf.format(now);
 		
+		// 로그인한 날짜 업데이트
+		int res = memberService.setLoginDateUpdatMid(mid);
+		
+		if(res != 0) {
+			// 해당 유저의 광고 알람 유무를 알기 위해 값 불러오기
+			UserShowAdvertisementVO UserAdVO = memberService.getUserShowAdMid(mid);
+			
+			if(UserAdVO.getAlarm().equals("Y")) return "2";
+			else {
+				// 알람 N한 날이 오늘이랑 같으면 화면으로 이동 아니면 알람을 Y로 바꿔준다.
+				UserAdVO.setAlarmNDate(UserAdVO.getAlarmNDate().substring(0,10));
+				if(UserAdVO.getAlarmNDate().equals(today)) return "2";
+				else {
+					// 알람 Y로 수정
+					memberService.setAlarmYUpdate(mid);
+					
+					return "2";
+				}
+			}
+		}
 		return "2";
 	}
 	
@@ -280,8 +334,34 @@ public class MemberController {
 			// 마지막 접속일 업데이트
 			memberService.setUpdateLastDate(vo.getMid());
 			
-			return "redirect:/";
+
+			// 메인 광고 알림 Y로 바꾸기 (하루 지났으면)
+			Date now = new Date();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			String today = sdf.format(now);
+			
+			// 로그인한 날짜 업데이트
+			int res = memberService.setLoginDateUpdatMid(vo.getMid());
+			
+			if(res != 0) {
+				// 해당 유저의 광고 알람 유무를 알기 위해 값 불러오기
+				UserShowAdvertisementVO UserAdVO = memberService.getUserShowAdMid(vo.getMid());
+				
+				if(UserAdVO.getAlarm().equals("Y")) return "redirect:/";
+				else {
+					// 알람 N한 날이 오늘이랑 같으면 화면으로 이동 아니면 알람을 Y로 바꿔준다.
+					UserAdVO.setAlarmNDate(UserAdVO.getAlarmNDate().substring(0,10));
+					if(UserAdVO.getAlarmNDate().equals(today)) return "redirect:/";
+					else {
+						// 알람 Y로 수정
+						memberService.setAlarmYUpdate(vo.getMid());
+						
+						return "redirect:/";
+					}
+				}
+			}
 		}
+		return "redirect:/";
 	}
 	
 	// 카카오 처음 로그인 시 정보 수정 처리
@@ -295,7 +375,18 @@ public class MemberController {
 		
 		int res = memberService.setKakaoFirstUpdatInfor(vo.getMid(),vo.getAddress(),vo.getGender(),vo.getEmail(),vo.getAdYN());
 		
-		if(res == 1) return "redirect:/member/kakaoLogin?email="+vo.getEmail();
+		if(res != 0) {
+			// 메인 광고 화면 DB 저장
+			// 메인화면에 걸리 광고가 open인 걸로 값 들어가도록 (없으면 기본값 1로 들어가기)
+			MainAdvertisementVO mainAdVO = memberService.getMainAdOpen();
+			if(mainAdVO != null) {
+				memberService.setMainAdInputMid(vo.getMid(),mainAdVO.getIdx());
+			}
+			else {
+				memberService.setMainAdInputMid(vo.getMid(),1);
+			}
+			return "redirect:/member/kakaoLogin?email="+vo.getEmail();
+		}
 		else return "redirect:/message/kakaoLoginNo";
 	}
 	
@@ -350,7 +441,18 @@ public class MemberController {
 		// 회원가입 처리
 		int res = memberService.setMemberJoin(vo);
 		
-		if(res == 1) return "redirect:/message/joinOk";
+		if(res != 0) {
+			// 메인 광고 화면 DB 저장
+			// 메인화면에 걸리 광고가 open인 걸로 값 들어가도록 (없으면 기본값 1로 들어가기)
+			MainAdvertisementVO mainAdVO = memberService.getMainAdOpen();
+			if(mainAdVO != null) {
+				memberService.setMainAdInputMid(vo.getMid(),mainAdVO.getIdx());
+			}
+			else {
+				memberService.setMainAdInputMid(vo.getMid(),1);
+			}
+			return "redirect:/message/joinOk";
+		}
 		else return "redirect:/message/joinNo";
 	}
 	

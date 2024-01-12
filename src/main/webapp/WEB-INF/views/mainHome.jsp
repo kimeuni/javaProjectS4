@@ -36,10 +36,10 @@
 		top: 0px;
 		right: 0px;
 	}
-	#advertisement-container{
+	.advertisement-container{
 		position: relative;
 	}
-	#advertisement-div{
+	.advertisement-div{
 		z-index: 9999;
 		position: fixed;
 		top : 45%;
@@ -48,30 +48,79 @@
 	.advertisement-close-btn:hover{
 		cursor: pointer;
 	}
+	#mid-no-close-btn{
+		padding: 10px 0px;
+	}
+	.ad-str-div{
+		background-color: #252525;
+		color: #fff;
+		text-align: center;
+		padding: 10px 0px;
+	}
+	.oneDay-no-open{
+		width: 48%;
+		display: inline-block;
+		border-right: 1px solid #fff;
+	}
+	.oneDay-no-open:hover{
+		cursor: pointer; 
+	}
+	.mid-yes-close-btn{
+		width: 48%;
+		display: inline-block;
+	}
 </style>
 <script>
 	'use strict';
 	
+	// 창닫기
 	$(function() {
 		$(".advertisement-close-btn").on("click", function(){
-			$("#advertisement-container").hide();
+			$(".advertisement-container").hide();
+		});
+	});
+	
+	// 오늘 하루 안보기
+	$(function() {
+		$(".oneDay-no-open").on("click", function() {
+			
+			$.ajax({
+				url : "${ctp}/userShowNUpdate",
+				type : "post",
+				data : {mid : '${sMid}'},
+				success : function(res){
+					$(".advertisement-container").hide();
+				},
+				error : function(){
+					alert("전송오류(mainHome.jsp)")
+				}
+			});
 		});
 	});
 </script>
 <body>
 <!-- 메인화면에 띄울 광고 -->
-<div id="advertisement-container">
-	<div id="advertisement-div">
-		<a href=""><div><img src = "" width="320px" height="320px"></div></a>
-		<c:if test="${sMid == null }">
-			<div class="advertisement-close-btn">창 닫기</div>
-		</c:if>
-		<c:if test="${sMid != null }">
-			<div>오늘 하루 안보기</div>
-			<div class="advertisement-close-btn">창 닫기</div>
-		</c:if>
+<c:if test="${mainAdVO.openSw == 'Y' && userAdVO.alarm == 'Y' }">
+	<div class="advertisement-container">
+		<div class="advertisement-div">
+			<a href="${mainAdVO.url}" target="_blank"><div><img src = "${ctp}/data/advertisement/${mainAdVO.mainImg}" width="320px" height="320px"></div></a>
+			<div class="ad-str-div">
+				<div class="oneDay-no-open">오늘 하루 안보기</div>
+				<div class="advertisement-close-btn mid-yes-close-btn">창 닫기</div>
+			</div>
+		</div>
 	</div>
-</div>
+</c:if>
+<c:if test="${mainAdVO.openSw == 'Y' && empty userAdVO.alarm}">
+	<div class="advertisement-container">
+		<div class="advertisement-div">
+			<a href="${mainAdVO.url}" target="_blank"><div><img src = "${ctp}/data/advertisement/${mainAdVO.mainImg}" width="320px" height="320px"></div></a>
+			<div class="ad-str-div">
+				<div class="advertisement-close-btn mid-no-close-btn">창 닫기</div>
+			</div>
+		</div>
+	</div>
+</c:if>
 
 <jsp:include page="/WEB-INF/views/include/header.jsp"/>
 <main>
