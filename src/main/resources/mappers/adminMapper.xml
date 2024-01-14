@@ -37,6 +37,21 @@
 	<select id="getReasonTitleList" resultType="com.spring.javaProjectS4.vo.ReasonTitleVO">
 		select * from reasonTitleS order by code;
 	</select>
+	<select id="getAdAllList" resultType="com.spring.javaProjectS4.vo.MainAdvertisementVO">
+		select * from mainAdvertisementS order by idx;
+	</select>
+	<select id="getMainAdIdx" resultType="com.spring.javaProjectS4.vo.MainAdvertisementVO">
+		select * from mainAdvertisementS where idx = #{idx};
+	</select>
+	<select id="getMainAdOpenSwY" resultType="com.spring.javaProjectS4.vo.MainAdvertisementVO">
+		select * from mainAdvertisementS where openSw = 'Y';
+	</select>
+	<select id="getMailAllList" resultType="com.spring.javaProjectS4.vo.EventMailVO">
+		select * from eventMailS order by idx;
+	</select>
+	<select id="getEventMailIdx" resultType="com.spring.javaProjectS4.vo.EventMailVO">
+		select * from eventMailS where idx = #{idx};
+	</select>
 	
 	<insert id="setNoticeInput">
 		insert into noticeS values (default,#{vo.nickName},#{vo.title},#{vo.content},default,default,#{vo.openSw});
@@ -63,6 +78,12 @@
 	<update id="setDisplayNoneUpdate">
 		update reasonTitleS set displayNone = #{displayNone} where code = #{code};
 	</update>
+	<update id="setAdOpenSwNo">
+		update mainAdvertisementS set openSw = 'N' where idx = #{idx};
+	</update>
+	<update id="setAdOpenSwYes">
+		update mainAdvertisementS set openSw = 'Y' where idx = #{idx};
+	</update>
 	
 	<delete id="setUserAccountDel">
 		delete from memberS where mid = #{mid};
@@ -81,5 +102,11 @@
 	</delete>
 	<delete id="setUserDelReasonDel">
 		delete from userDelReasonS where titleCode = #{code};
+	</delete>
+	<delete id="setMainAdDelete">
+		delete from mainAdvertisementS where idx = #{idx};
+	</delete>
+	<delete id="setMailDelete">
+		delete from eventMailS where idx = #{idx};
 	</delete>
 </mapper>

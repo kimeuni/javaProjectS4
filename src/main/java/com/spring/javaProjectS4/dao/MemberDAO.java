@@ -51,6 +51,6 @@ public interface MemberDAO {
 
 	public MainAdvertisementVO getMainAdOpen();
 
-	public void setMainAdInputMid(@Param("mid") String mid,@Param("adIdx") int adIdx);
+	public void setMainAdInputMid(@Param("mid") String mid);
 
 }

@@ -134,7 +134,7 @@
 							<input type="file" name="profile" id="profile" />
 						</div>
 						<div class="file-btn-div">
-							<a href="">
+							<a href="javascript:location.reload()">
 								<b>삭제</b>
 							</a>
 						</div>

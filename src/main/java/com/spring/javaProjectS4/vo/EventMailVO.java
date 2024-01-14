@@ -12,4 +12,5 @@ public class EventMailVO {
 	private String title;
 	private String content;
 	private String mDate;
+	private String fName;
 }

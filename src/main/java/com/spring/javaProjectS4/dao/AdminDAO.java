@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.spring.javaProjectS4.vo.EventMailVO;
 import com.spring.javaProjectS4.vo.FAQVO;
 import com.spring.javaProjectS4.vo.MainAdvertisementVO;
 import com.spring.javaProjectS4.vo.MemberVO;
@@ -64,6 +65,25 @@ public interface AdminDAO {
 	public int setDisplayNoneUpdate(@Param("displayNone") String displayNone,@Param("code") String code);
 
 	public int setAdInput(@Param("mImg") String mImg,@Param("url") String url);
+
+	public List<MainAdvertisementVO> getAdAllList();
+
+	public MainAdvertisementVO getMainAdIdx(@Param("idx") int idx);
+
+	public int setAdOpenSwNo(@Param("idx") int idx);
+
+	public MainAdvertisementVO getMainAdOpenSwY();
+
+	public int setAdOpenSwYes(@Param("idx") int idx);
+
+	public int setMainAdDelete(@Param("idx") int idx);
+
+	public List<EventMailVO> getMailAllList();
+
+	public EventMailVO getEventMailIdx(@Param("idx") int idx);
+
+	public int setMailDelete(@Param("idx") int idx);
+
 
 
 }

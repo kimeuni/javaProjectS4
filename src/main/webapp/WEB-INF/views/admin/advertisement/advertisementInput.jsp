@@ -55,6 +55,50 @@
     		text-align: left;
     		margin-bottom: 20px;
     	}
+    	#img-url-div{
+    		text-align: left;
+    		padding-left: 30px;
+    	}
+    	#file-btns-div b{
+    		height: 25px;
+    		width: 70px;
+    		border: 1px solid;
+    		padding: 10px;
+    		cursor: pointer;
+    		background-color: #fff;
+    		margin-right: 10px;
+    	}
+    	#file-btns-div a{
+    		color: gray;
+    		text-decoration: none;
+    	}
+    	#file-btns-div input[type="file"]{
+    		position : absolute;
+    		height: 1px;
+    		width: 1px;
+    		margin: -1px;
+    		overflow: hidden;
+    	}
+    	.file-btn-div{
+    		display: inline-block;
+    	}
+    	#mainImg-demo{
+    		margin: 10px 0px;
+    	}
+    	#img-url-div input[type="text"]{
+    		width: 350px;
+    		height : 35px;
+    		border: 1px solid gray;
+    		padding: 0px 10px;
+    		margin-bottom: 20px;
+    	}
+    	#img-url-div input[type="button"]{
+    		width: 350px;
+    		height : 35px;
+    		background-color: #eee;
+    		border: 1px solid gray;
+    		font-weight: bold;
+    	}
     </style>
     <script>
     	'use strict'
@@ -91,7 +135,6 @@
 	  			return false;
 	  		}
 	  		else if(mainImg.trim() != "") {
-	  			alert("들어옴")
 		    	let ext = mainImg.substring(mainImg.lastIndexOf(".")+1).toLowerCase();
 		    	let maxSize = 1024 * 1024 * 10;
 		    	let fileSize = document.getElementById("mainImg").files[0].size;
@@ -127,16 +170,25 @@
 						</div>
 					<hr/>
 					<form name="adForm" method="post" enctype="multipart/form-data" >
-						<div>
-							<div>
-								<input type="file"  name="mainImg" id="mainImg" onchange="imgCheck(this)" />
-								<div>메인광고 이미지 미리보기</div>
-								<div id="mainImg-demo">
-									<img id="mainImge" width="120px" height="120px">
+						<div id="img-url-div">
+							<div id="file-btns-div">
+								<div class="file-btn-div">
+									<label for="mainImg">
+										<b>사진 등록</b>
+									</label>
+									<input type="file" name="mainImg" id="mainImg" onchange="imgCheck(this)" />
+								</div>
+								<div class="file-btn-div">
+									<a href="javascript:location.reload()">
+										<b>삭제</b>
+									</a>
 								</div>
 							</div>
+							<div id="mainImg-demo">
+								<img id="mainImge" width="320px" height="320px">
+							</div>
 							<div>
-								<input type="url" name="url" id="url" required placeholder="url을 입력하세요(필수)"/>
+								<input type="text" name="url" id="url" required placeholder="url을 입력하세요(필수)"/>
 							</div>
 							<div>
 								<input type="button" value="메인화면 광고 등록" onclick="mainAdInput()"/>

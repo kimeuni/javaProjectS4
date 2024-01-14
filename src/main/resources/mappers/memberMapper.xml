@@ -39,7 +39,7 @@
 		insert into userDelReasonS values (default,#{whyDel},#{why},default);
 	</insert>
 	<insert id="setMainAdInputMid">
-		insert into UserShowAdvertisementS values (default,#{adIdx},#{mid},default,default,default);
+		insert into UserShowAdvertisementS values (default,#{mid},default,default,default);
 	</insert>
 	
 	<update id="setKakaoFirstUpdatInfor">

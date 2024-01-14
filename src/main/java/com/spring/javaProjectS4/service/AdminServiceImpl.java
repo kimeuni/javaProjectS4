@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.spring.javaProjectS4.dao.AdminDAO;
+import com.spring.javaProjectS4.vo.EventMailVO;
 import com.spring.javaProjectS4.vo.FAQVO;
 import com.spring.javaProjectS4.vo.MainAdvertisementVO;
 import com.spring.javaProjectS4.vo.MemberVO;
@@ -155,24 +156,40 @@ public class AdminServiceImpl implements AdminService {
 		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
 		String realPath = request.getSession().getServletContext().getRealPath("/resources/data/");
 		
-		int position = 0;
-		if(str.equals("notice")) {
-			position = 32;
-		}
-		String nextImg = content.substring(content.indexOf("src=\"/") + position);
-		boolean sw = true;
+		String oFilePath = "";
+		if(str.equals("mainAd")) {
+			oFilePath = realPath + "advertisement/" + content;
 		
-		String origFilePath = "";
-		while(sw) {
-			String imgFile = nextImg.substring(0,nextImg.indexOf("\""));
-			if(str.equals("notice")) {
-				origFilePath = realPath + "notice/" + imgFile;
+			fileDelete(oFilePath);
+		}
+		else if(str.equals("eventMail")) {
+			String[] fArr = content.split("/");
+			for(int i =0; i<fArr.length; i++) {
+				oFilePath = realPath + "mail/" + fArr[i];
+				
+				fileDelete(oFilePath);
 			}
+		}
+		else {
+			int position = 0;
+			if(str.equals("notice")) {
+				position = 32;
+			}
+			String nextImg = content.substring(content.indexOf("src=\"/") + position);
+			boolean sw = true;
 			
-			fileDelete(origFilePath);
-			
-			if(nextImg.indexOf("src=\"/") == -1) sw = false;
-			else nextImg = nextImg.substring(nextImg.indexOf("src=\"/")+position);
+			String origFilePath = "";
+			while(sw) {
+				String imgFile = nextImg.substring(0,nextImg.indexOf("\""));
+				if(str.equals("notice")) {
+					origFilePath = realPath + "notice/" + imgFile;
+				}
+				
+				fileDelete(origFilePath);
+				
+				if(nextImg.indexOf("src=\"/") == -1) sw = false;
+				else nextImg = nextImg.substring(nextImg.indexOf("src=\"/")+position);
+			}
 		}
 	}
 
@@ -227,22 +244,26 @@ public class AdminServiceImpl implements AdminService {
 		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
 		String realPath = request.getSession().getServletContext().getRealPath("/resources/data/");
 		
-		int position = 30;
 		
-		String nextImg = content.substring(content.indexOf("src=\"/") + position);
-		boolean sw = true;
 		
-		// fName에 저장할 이미지 이름 저장
-		while(sw) {
-			String imgFile = nextImg.substring(0,nextImg.indexOf("\""));
+		if(content.indexOf("src=\"/") != -1) {
+			int position = 30;
+			String nextImg = content.substring(content.indexOf("src=\"/") + position);
+			boolean sw = true;
 			
-			fName += imgFile + "/";
+			// fName에 저장할 이미지 이름 저장
+			while(sw) {
+				String imgFile = nextImg.substring(0,nextImg.indexOf("\""));
+				
+				fName += imgFile + "/";
+				
+				if(nextImg.indexOf("src=\"/") == -1) sw = false;
+				else nextImg = nextImg.substring(nextImg.indexOf("src=\"/")+position);
+			}
 			
-			if(nextImg.indexOf("src=\"/") == -1) sw = false;
-			else nextImg = nextImg.substring(nextImg.indexOf("src=\"/")+position);
+			fName = fName.substring(0,fName.length()-1);
 		}
-		
-		fName = fName.substring(0,fName.length()-1);
+		else fName = "";
 		
 		adminDAO.setEventEmailSave( title, content, fName);
 	}
@@ -316,6 +337,51 @@ public class AdminServiceImpl implements AdminService {
 		
 		fos.write(data);
 		fos.close();
+	}
+
+	@Override
+	public List<MainAdvertisementVO> getAdAllList() {
+		return adminDAO.getAdAllList();
+	}
+
+	@Override
+	public MainAdvertisementVO getMainAdIdx(int idx) {
+		return adminDAO.getMainAdIdx( idx);
+	}
+
+	@Override
+	public int setAdOpenSwNo(int idx) {
+		return adminDAO.setAdOpenSwNo( idx);
+	}
+
+	@Override
+	public MainAdvertisementVO getMainAdOpenSwY() {
+		return adminDAO.getMainAdOpenSwY();
+	}
+
+	@Override
+	public int setAdOpenSwYes(int idx) {
+		return adminDAO.setAdOpenSwYes(idx);
+	}
+
+	@Override
+	public int setMainAdDelete(int idx) {
+		return adminDAO.setMainAdDelete( idx);
+	}
+
+	@Override
+	public List<EventMailVO> getMailAllList() {
+		return adminDAO.getMailAllList();
+	}
+
+	@Override
+	public EventMailVO getEventMailIdx(int idx) {
+		return adminDAO.getEventMailIdx( idx);
+	}
+
+	@Override
+	public int setMailDelete(int idx) {
+		return adminDAO.setMailDelete( idx);
 	}
 
 

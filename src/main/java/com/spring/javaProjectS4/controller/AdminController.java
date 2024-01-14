@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.spring.javaProjectS4.pagination.PageProcess;
 import com.spring.javaProjectS4.pagination.PageVO;
 import com.spring.javaProjectS4.service.AdminService;
+import com.spring.javaProjectS4.vo.EventMailVO;
 import com.spring.javaProjectS4.vo.FAQVO;
 import com.spring.javaProjectS4.vo.MainAdvertisementVO;
 import com.spring.javaProjectS4.vo.MemberVO;
@@ -407,6 +408,40 @@ public class AdminController {
 		}
 	}
 	
+	// (광고/이벤트)메일 관리 화면 이동
+	@RequestMapping(value = "/mailManagement", method = RequestMethod.GET)
+	public String mailManagementGet(Model model) {
+		List<EventMailVO> vos = adminService.getMailAllList();
+		
+		model.addAttribute("menuCk","광고메일");
+		model.addAttribute("vos",vos);
+		return "admin/mail/mailManagement";
+	}
+	
+	// (광고/이벤트)메일 관리에서 자세히 보기 열기
+	@ResponseBody
+	@RequestMapping(value = "/MailManagContent", method = RequestMethod.POST)
+	public EventMailVO MailManagContentPost(@RequestParam(name="idx",defaultValue = "0", required = false) int idx) {
+		return adminService.getEventMailIdx(idx);
+	}
+	
+	// (광고/이벤트)메일 관리 삭제
+	@ResponseBody
+	@RequestMapping(value = "/mailDelete",method = RequestMethod.POST)
+	public String mailDeletePost(@RequestParam(name="idx",defaultValue = "0", required = false) int idx) {
+		
+		EventMailVO vo = adminService.getEventMailIdx(idx);
+		
+		// 이미지 삭제
+		if(vo.getFName() != "") {
+			adminService.setImgDelete(vo.getFName(), "eventMail");
+		}
+		
+		int res = adminService.setMailDelete(idx);
+		if(res != 0) return "1";
+		else return "2";
+	}
+	
 	// 탈퇴 목록 등록 화면 이동
 	@RequestMapping(value = "/delTitleInput", method = RequestMethod.GET)
 	public String delTitleInputGet(Model model) {
@@ -487,8 +522,73 @@ public class AdminController {
 	// 메인화면 광고 관리 화면 이동
 	@RequestMapping(value = "/advertisementManagement", method = RequestMethod.GET)
 	public String advertisementManagementGet(Model model) {
+		List<MainAdvertisementVO> vos = adminService.getAdAllList();
+		MainAdvertisementVO vo = adminService.getMainAdOpenSwY();
+		
 		model.addAttribute("menuCk","메인광고관리");
+		model.addAttribute("vos",vos);
+		model.addAttribute("vo",vo);
 		return "admin/advertisement/advertisementManagement";
+	}
+	
+	// 메인화면 광고 관리 리스트 클릭 시 보이는 값 가져오기
+	@ResponseBody
+	@RequestMapping(value = "/adManagContent", method = RequestMethod.POST)
+	public MainAdvertisementVO adManagContentPost(@RequestParam(name="idx", defaultValue = "", required = false) int idx) {
+		return adminService.getMainAdIdx(idx);
+	}
+	
+	// 메인화면 광고 관리 - 비공개 전환
+	@ResponseBody
+	@RequestMapping(value = "/adOpenSwNo", method = RequestMethod.POST)
+	public String adOpenSwNoPost(@RequestParam(name="idx", defaultValue = "", required = false) int idx) {
+		int res = adminService.setAdOpenSwNo(idx);
+		
+		if(res != 0) return "1";
+		else return "2";
+	}
+	
+	// 메인화면 광고 관리 - 공개 전환
+	@ResponseBody
+	@RequestMapping(value = "/adOpenSwYes", method = RequestMethod.POST)
+	public String adOpenSwYesPost(@RequestParam(name="idx", defaultValue = "", required = false) int idx) {
+		
+		MainAdvertisementVO vo = adminService.getMainAdOpenSwY();
+		
+		if(vo == null) {
+			int res = adminService.setAdOpenSwYes(idx);
+			
+			if(res != 0) {
+				return "1";
+			}
+			else {
+				return "3";
+			}
+		}
+		else {
+			return "2";
+		}
+	}
+	
+	// 메인화면 광고 관리 - 삭제
+	@ResponseBody
+	@RequestMapping(value = "/adDelete", method = RequestMethod.POST)
+	public String adDeletePost(@RequestParam(name="idx", defaultValue = "", required = false) int idx) {
+		MainAdvertisementVO vo = adminService.getMainAdIdx(idx);
+		
+		// 이미지 삭제
+		adminService.setImgDelete(vo.getMainImg(), "mainAd");
+		
+		int res = adminService.setMainAdDelete(idx);
+		if(res != 0) return "1";
+		else return "2";
+	}
+	
+	// 임시 이미지 삭제 화면 이동
+	@RequestMapping(value = "/imsiImgDelete",method = RequestMethod.GET)
+	public String ImsiImgDeleteGet() {
+		
+		return "admin/imsiImgDelete";
 	}
 	
 	// 메일 전송을 위한 메소드
@@ -532,24 +632,26 @@ public class AdminController {
 			// 이메일 전송하는 이미지 보여주기 처리
 			if(flag.equals("eventMail")) {
 				
-				// src부터 시작하여 임시 파일 저장된 곳의 파일 이름 시작 index 번호
-				int position = 9;
 				
-				String nextImg = mailFlag.substring(mailFlag.indexOf("src=\"cid:") + position);
-				boolean sw = true;
-				
-				System.out.println("이미지 : " + nextImg);
-				while(sw) {
-					String imgFile = nextImg.substring(0,nextImg.indexOf("\""));
+				if(mailFlag.indexOf("src=\"cid:") != -1) {
+					// src부터 시작하여 임시 파일 저장된 곳의 파일 이름 시작 index 번호
+					int position = 9;
 					
-					System.out.println(imgFile);
+					String nextImg = mailFlag.substring(mailFlag.indexOf("src=\"cid:") + position);
+					boolean sw = true;
 					
-					file = new FileSystemResource(request.getSession().getServletContext().getRealPath("/resources/data/mail/"+imgFile));
-					
-					messageHelper.addInline(imgFile, file);
-					if(nextImg.indexOf("src=\"cid:") == -1) sw = false;
-					else nextImg = nextImg.substring(nextImg.indexOf("src=\"cid:") + position);
-					
+					System.out.println("이미지 : " + nextImg);
+					while(sw) {
+						String imgFile = nextImg.substring(0,nextImg.indexOf("\""));
+						
+						System.out.println(imgFile);
+						
+						file = new FileSystemResource(request.getSession().getServletContext().getRealPath("/resources/data/mail/"+imgFile));
+						
+						messageHelper.addInline(imgFile, file);
+						if(nextImg.indexOf("src=\"cid:") == -1) sw = false;
+						else nextImg = nextImg.substring(nextImg.indexOf("src=\"cid:") + position);
+					}
 				}
 			}
 			

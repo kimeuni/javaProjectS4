@@ -251,7 +251,7 @@
 		</div>
 		<div id="admin-advertisement-inner-menu">
 			<a href="${ctp}/admin/mailInput"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> 광고메일 전송</div></a>
-			<a href="${ctp}/admin/mailInput"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> 광고메일 관리</div></a>
+			<a href="${ctp}/admin/mailManagement"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> 광고메일 관리</div></a>
 			<a href="${ctp}/admin/advertisementInput"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> 메인화면 광고 등록</div></a>
 			<a href="${ctp}/admin/advertisementManagement"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> 메인화면 광고 관리</div></a>
 		</div>
@@ -259,7 +259,7 @@
 			<a href="${ctp}/admin/delTitleInput"><div class="admin-inner-menu-n">탈퇴 목록 등록</div></a>
 		</div>
 		<div>
-			<a href="${ctp}/admin/adminMain"><div class="admin-inner-menu-n">임시파일 삭제</div></a>
+			<a href="${ctp}/admin/imsiImgDelete"><div class="admin-inner-menu-n">임시파일 삭제</div></a>
 		</div>
 		<div>
 			<a href="${ctp}/admin/adminMain"><div class="admin-inner-menu-n">통계</div></a>

@@ -117,8 +117,8 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public void setMainAdInputMid(String mid, int adIdx) {
-		memberDAO.setMainAdInputMid(mid, adIdx);
+	public void setMainAdInputMid(String mid) {
+		memberDAO.setMainAdInputMid(mid);
 	}
 
 }

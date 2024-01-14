@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.spring.javaProjectS4.vo.EventMailVO;
 import com.spring.javaProjectS4.vo.FAQVO;
 import com.spring.javaProjectS4.vo.MainAdvertisementVO;
 import com.spring.javaProjectS4.vo.MemberVO;
@@ -63,6 +64,24 @@ public interface AdminService {
 	public int setDisplayNoneUpdate(String displayNone, String code);
 
 	public int setAdInput(String mImg, String url, MultipartHttpServletRequest mainImg);
+
+	public List<MainAdvertisementVO> getAdAllList();
+
+	public MainAdvertisementVO getMainAdIdx(int idx);
+
+	public int setAdOpenSwNo(int idx);
+
+	public MainAdvertisementVO getMainAdOpenSwY();
+
+	public int setAdOpenSwYes(int idx);
+
+	public int setMainAdDelete(int idx);
+
+	public List<EventMailVO> getMailAllList();
+
+	public EventMailVO getEventMailIdx(int idx);
+
+	public int setMailDelete(int idx);
 
 
 }

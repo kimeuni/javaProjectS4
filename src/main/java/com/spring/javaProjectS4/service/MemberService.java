@@ -49,6 +49,6 @@ public interface MemberService {
 
 	public MainAdvertisementVO getMainAdOpen();
 
-	public void setMainAdInputMid(String mid, int adIdx);
+	public void setMainAdInputMid(String mid);
 
 }

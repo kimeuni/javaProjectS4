@@ -377,14 +377,8 @@ public class MemberController {
 		
 		if(res != 0) {
 			// 메인 광고 화면 DB 저장
-			// 메인화면에 걸리 광고가 open인 걸로 값 들어가도록 (없으면 기본값 1로 들어가기)
-			MainAdvertisementVO mainAdVO = memberService.getMainAdOpen();
-			if(mainAdVO != null) {
-				memberService.setMainAdInputMid(vo.getMid(),mainAdVO.getIdx());
-			}
-			else {
-				memberService.setMainAdInputMid(vo.getMid(),1);
-			}
+			memberService.setMainAdInputMid(vo.getMid());
+			
 			return "redirect:/member/kakaoLogin?email="+vo.getEmail();
 		}
 		else return "redirect:/message/kakaoLoginNo";
@@ -442,15 +436,9 @@ public class MemberController {
 		int res = memberService.setMemberJoin(vo);
 		
 		if(res != 0) {
-			// 메인 광고 화면 DB 저장
-			// 메인화면에 걸리 광고가 open인 걸로 값 들어가도록 (없으면 기본값 1로 들어가기)
-			MainAdvertisementVO mainAdVO = memberService.getMainAdOpen();
-			if(mainAdVO != null) {
-				memberService.setMainAdInputMid(vo.getMid(),mainAdVO.getIdx());
-			}
-			else {
-				memberService.setMainAdInputMid(vo.getMid(),1);
-			}
+			// 메인 광고 화면 DB 
+
+			memberService.setMainAdInputMid(vo.getMid());
 			return "redirect:/message/joinOk";
 		}
 		else return "redirect:/message/joinNo";
