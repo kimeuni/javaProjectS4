@@ -514,6 +514,9 @@ public class AdminController {
 		// 등록 처리
 		int res = adminService.setAdInput(mImg,url,mainImg);
 
+		System.out.println(mImg);
+		System.out.println(url);
+		System.out.println(mainImg);
 		if(res != 0) return "redirect:/message/adInputY";
 		else return "redirect:/message/adInputN";
 	}
@@ -534,14 +537,14 @@ public class AdminController {
 	// 메인화면 광고 관리 리스트 클릭 시 보이는 값 가져오기
 	@ResponseBody
 	@RequestMapping(value = "/adManagContent", method = RequestMethod.POST)
-	public MainAdvertisementVO adManagContentPost(@RequestParam(name="idx", defaultValue = "", required = false) int idx) {
+	public MainAdvertisementVO adManagContentPost(@RequestParam(name="idx", defaultValue = "0", required = false) int idx) {
 		return adminService.getMainAdIdx(idx);
 	}
 	
 	// 메인화면 광고 관리 - 비공개 전환
 	@ResponseBody
 	@RequestMapping(value = "/adOpenSwNo", method = RequestMethod.POST)
-	public String adOpenSwNoPost(@RequestParam(name="idx", defaultValue = "", required = false) int idx) {
+	public String adOpenSwNoPost(@RequestParam(name="idx", defaultValue = "0", required = false) int idx) {
 		int res = adminService.setAdOpenSwNo(idx);
 		
 		if(res != 0) return "1";
@@ -551,7 +554,7 @@ public class AdminController {
 	// 메인화면 광고 관리 - 공개 전환
 	@ResponseBody
 	@RequestMapping(value = "/adOpenSwYes", method = RequestMethod.POST)
-	public String adOpenSwYesPost(@RequestParam(name="idx", defaultValue = "", required = false) int idx) {
+	public String adOpenSwYesPost(@RequestParam(name="idx", defaultValue = "0", required = false) int idx) {
 		
 		MainAdvertisementVO vo = adminService.getMainAdOpenSwY();
 		
@@ -573,7 +576,7 @@ public class AdminController {
 	// 메인화면 광고 관리 - 삭제
 	@ResponseBody
 	@RequestMapping(value = "/adDelete", method = RequestMethod.POST)
-	public String adDeletePost(@RequestParam(name="idx", defaultValue = "", required = false) int idx) {
+	public String adDeletePost(@RequestParam(name="idx", defaultValue = "0", required = false) int idx) {
 		MainAdvertisementVO vo = adminService.getMainAdIdx(idx);
 		
 		// 이미지 삭제

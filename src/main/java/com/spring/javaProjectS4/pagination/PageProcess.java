@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.spring.javaProjectS4.dao.AdminDAO;
 import com.spring.javaProjectS4.dao.BoardDAO;
+import com.spring.javaProjectS4.dao.MemberDAO;
 
 @Service
 public class PageProcess {
@@ -13,6 +14,9 @@ public class PageProcess {
 	
 	@Autowired
 	BoardDAO boardDAO;
+	
+	@Autowired
+	MemberDAO memberDAO;
 	
 	// section = 게시판, 자료실 현재 글 위치
 	// part = ex)자료실 안에 들어있는 카테고리
@@ -53,6 +57,12 @@ public class PageProcess {
 			}
 			else if(part.equals("string")) {
 				totRecCnt = boardDAO.getFAQStringTotRecCnt(searchString);
+			}
+		}
+		if(section.equals("myAskList")) {
+			if(part.equals("")) {
+				//searchString에 세션 mid 들어있음
+				totRecCnt = memberDAO.getMyAskListTotRecCnt(searchString);
 			}
 		}
 		

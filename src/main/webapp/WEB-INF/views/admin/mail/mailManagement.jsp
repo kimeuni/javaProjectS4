@@ -150,6 +150,10 @@
     		height: 85%;
     		width: 100%
     	}
+    	#mail-inner-content img{
+    		width: 550px !important;
+    		height: 700px !important;
+    	}
     </style>
     <script>
     	'use strict'
@@ -163,9 +167,9 @@
     				let str = '';
     				
     				str += '<h3>'+vo.title+'</h3>';
-    				str += '<div>메일 전송일 : '+vo.mDate+'</div>';
+    				str += '<div>메일 전송일 : '+vo.mdate+'</div>';
     				str += '<hr/>';
-    				str += '<div>';
+    				str += '<div id="mail-inner-content">';
     				str += vo.content;
     				str += '</div>';
     				str += '<br/>';

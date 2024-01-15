@@ -179,6 +179,14 @@
 			$("#logo-img").attr("src","${ctp}/data/images/다모아로고1.png")
 		}
 	});
+	
+	function askInputOpen(){
+		let url = "${ctp}/ask/askInput";
+    	let winName = "1:1 문의하기";
+    	let opt = "width=600px, height=850px, top=100px, left=500px " 
+    	
+   		childWindow = window.open(url,winName,opt)
+	}
 </script>
 	<header>
 		<div class="lnb-inner">
@@ -198,7 +206,7 @@
 							<ul>
 								<c:if test="${sMid == 'admin'}"><li><a href="${ctp}/admin/adminMain">관리자메뉴</a></li></c:if>
 								<li><a href="${ctp}/member/myPage?flag=myPg">마이페이지</a></li>
-								<li><a href="${ctp}/member/myPage?flag=myPg">1:1문의</a></li>
+								<li><a href="javascript:askInputOpen()">1:1문의</a></li>
 								<li><a href="${ctp}/member/logout">로그아웃</a></li>
 							</ul>
 						</li>

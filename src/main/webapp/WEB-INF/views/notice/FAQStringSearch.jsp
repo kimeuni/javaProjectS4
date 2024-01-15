@@ -161,6 +161,15 @@
 				location.href="${ctp}/board/FAQStringSearch?part=string&searchString="+searchString;
 			}
     	}
+    	
+		// 1:1 문의하기 화면 띄우기
+    	function askInputOpen(){
+    		let url = "${ctp}/ask/askInput";
+        	let winName = "1:1 문의하기";
+        	let opt = "width=600px, height=850px, top=100px, left=500px " 
+        	
+       		childWindow = window.open(url,winName,opt)
+    	}
     </script>
 </head>
 <body>
@@ -196,7 +205,7 @@
 			</div>
 		</div>
 		<h3>'${searchString}' 검색결과</h3>
-		<c:if test="${empty vos }"><div id="search-no">검색하신 내용이 존재하지 않습니다.<br/><br/><a href="">1:1 문의하러 가기</a></div></c:if>
+		<c:if test="${empty vos }"><div id="search-no">검색하신 내용이 존재하지 않습니다.<br/><br/><a href="javascript:askInputOpen()">1:1 문의하러 가기</a></div></c:if>
 		<c:if test="${!empty  vos}">
 			<div class="accordion">
 				<c:forEach var="vo" items="${vos}" varStatus="st">

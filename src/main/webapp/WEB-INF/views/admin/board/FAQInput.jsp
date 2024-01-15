@@ -106,6 +106,7 @@
     		if(question.length > 40){
     			alert("제목은 최대 40글자까지 가능합니다.");
 	    		str = '(40/40)';
+	    		("#question").val().substring(0,40);
 	    		$("#demo-question-str-cnt").html(str);
     		}
     	}

@@ -9,6 +9,7 @@ import com.spring.javaProjectS4.dao.MemberDAO;
 import com.spring.javaProjectS4.vo.MemberVO;
 import com.spring.javaProjectS4.vo.ReasonTitleVO;
 import com.spring.javaProjectS4.vo.UserShowAdvertisementVO;
+import com.spring.javaProjectS4.vo.AskVO;
 import com.spring.javaProjectS4.vo.MainAdvertisementVO;
 
 @Service
@@ -119,6 +120,11 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public void setMainAdInputMid(String mid) {
 		memberDAO.setMainAdInputMid(mid);
+	}
+
+	@Override
+	public List<AskVO> getMyAskList(int startIndexNo, int pageSize, String mid) {
+		return memberDAO.getMyAskList(startIndexNo,pageSize,mid);
 	}
 
 }

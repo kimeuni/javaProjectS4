@@ -148,6 +148,8 @@
 				location.href="${ctp}/board/FAQStringSearch?part=string&searchString="+searchString;
 			}
     	}
+    	
+    	
     </script>
 </head>
 <body>

@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import com.spring.javaProjectS4.vo.MemberVO;
 import com.spring.javaProjectS4.vo.ReasonTitleVO;
 import com.spring.javaProjectS4.vo.UserShowAdvertisementVO;
+import com.spring.javaProjectS4.vo.AskVO;
 import com.spring.javaProjectS4.vo.MainAdvertisementVO;
 
 public interface MemberDAO {
@@ -52,5 +53,9 @@ public interface MemberDAO {
 	public MainAdvertisementVO getMainAdOpen();
 
 	public void setMainAdInputMid(@Param("mid") String mid);
+
+	public List<AskVO> getMyAskList(@Param("startIndexNo")int startIndexNo,@Param("pageSize") int pageSize,@Param("mid") String mid);
+
+	public int getMyAskListTotRecCnt(@Param("searchString") String searchString);
 
 }

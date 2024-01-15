@@ -300,7 +300,6 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public int setAdInput(String mImg, String url, MultipartHttpServletRequest mainImg) {
-		System.out.println("서비스");
 		int res = 0;
 		try {
 			MultipartFile fileImg = mainImg.getFile("mainImg");

@@ -30,10 +30,10 @@ drop table eventS;
 
 -- 자주하는 질문 DB
 create table FAQS(
-	idx int not null auto_increment primary key,
-	category varchar(21) not null,
-	question varchar(41) not null,
-	answer text not null
+	idx int not null auto_increment primary key,	/* 고유번호 */
+	category varchar(21) not null,					/* 유형(카테고리) */
+	question varchar(41) not null,					/* 질문 */
+	answer text not null							/* 답변 */
 );
 
 -- 중고거래 게시판 DB

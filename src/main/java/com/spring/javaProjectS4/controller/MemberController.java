@@ -34,10 +34,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import com.spring.javaProjectS4.pagination.PageProcess;
+import com.spring.javaProjectS4.pagination.PageVO;
 import com.spring.javaProjectS4.service.MemberService;
 import com.spring.javaProjectS4.vo.MemberVO;
 import com.spring.javaProjectS4.vo.ReasonTitleVO;
 import com.spring.javaProjectS4.vo.UserShowAdvertisementVO;
+import com.spring.javaProjectS4.vo.AskVO;
 import com.spring.javaProjectS4.vo.MainAdvertisementVO;
 
 @Controller
@@ -52,6 +55,9 @@ public class MemberController {
 	
 	@Autowired
 	JavaMailSender mailSender;
+	
+	@Autowired
+	PageProcess pageProcess;
 	
 	// 로그인 화면 이동
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -816,6 +822,28 @@ public class MemberController {
 		return "member/profileUpdate";
 	}
 
+	// 마이페이지-내 문의 내역 화면 이동
+	@RequestMapping(value = "/ask/myAskList", method = RequestMethod.GET )
+	public String myAskListGet(Model model, HttpSession session,
+			@RequestParam(name="pag", defaultValue = "1", required = false) int pag,
+			@RequestParam(name="pageSize", defaultValue = "10", required = false) int pageSize
+			) {
+		String mid = session.getAttribute("sMid")==null ? "" : (String)session.getAttribute("sMid");
+		MemberVO vo = memberService.getMemberMidCheck(mid);
+
+		PageVO pageVO = pageProcess.totRecCnt(pag, pageSize, "myAskList", "", mid);
+		// 내가 문의한 리스트 불러오기
+		List<AskVO> vos = memberService.getMyAskList(pageVO.getStartIndexNo(),pageSize,mid);
+		
+		
+		model.addAttribute("vo",vo);
+		model.addAttribute("vos",vos);
+		model.addAttribute("pageVO",pageVO);
+		model.addAttribute("menuStr","내 문의 내역");
+		
+		return "ask/myAskList";
+	}
+	
 	// 메일 전송을 위한 메소드
 	private String mailSend(String email, String title, String mailFlag, String flag) throws MessagingException {
 		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();

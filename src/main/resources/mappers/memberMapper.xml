@@ -25,6 +25,12 @@
 	<select id="getMainAdOpen" resultType="com.spring.javaProjectS4.vo.MainAdvertisementVO">
 		select * from mainAdvertisementS where openSw = 'Y';
 	</select>
+	<select id="getMyAskList" resultType="com.spring.javaProjectS4.vo.AskVO">
+		select * from askS where mid = #{mid} limit #{startIndexNo},#{pageSize};
+	</select>
+	<select id="getMyAskListTotRecCnt" resultType="int">
+		select count(*) from askS where mid = #{searchString};
+	</select>
 	
 	<insert id="setMemberJoin">
 		insert into memberS values(default,#{vo.mid},#{vo.pwd},#{vo.name},#{vo.nickName},#{vo.address},#{vo.email},#{vo.gender},default,default,default,default,default,#{vo.adYN},default,default);
