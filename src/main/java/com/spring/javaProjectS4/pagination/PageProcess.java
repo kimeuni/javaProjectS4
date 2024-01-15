@@ -64,6 +64,9 @@ public class PageProcess {
 				//searchString에 세션 mid 들어있음
 				totRecCnt = memberDAO.getMyAskListTotRecCnt(searchString);
 			}
+			else if(part.equals("답변대기") || part.equals("답변완료")) {
+				totRecCnt = memberDAO.getMyAskListSearchTotRecCnt(part,searchString);
+			}
 		}
 		
 		int totPage = (totRecCnt % pageSize)==0 ? (totRecCnt / pageSize) : (totRecCnt / pageSize) + 1;

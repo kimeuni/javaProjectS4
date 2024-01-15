@@ -66,7 +66,7 @@
  		color : #fff;
  		text-decoration: none;
  	}
- 	#admin-member-inner-menu a div, #admin-board-inner-menu a div, #admin-notice-inner-menu a div, #admin-advertisement-inner-menu a div{
+ 	#admin-member-inner-menu a div, #admin-board-inner-menu a div, #admin-notice-inner-menu a div, #admin-advertisement-inner-menu a div, #admin-ask-inner-menu a div{
  		padding-left: 50px;
  		font-size: 1.2em;
  	}
@@ -85,10 +85,12 @@
 		$("#admin-board-inner-menu").hide();
 		$("#admin-notice-inner-menu").hide();
 		$("#admin-advertisement-inner-menu").hide();
+		$("#admin-ask-inner-menu").hide();
 		$("#member-menu-up").hide();
 		$("#board-menu-up").hide();
 		$("#notice-menu-up").hide();
 		$("#advertisement-menu-up").hide();
+		$("#ask-menu-up").hide();
 		if('${menuCk}' == '회원리스트' || '${menuCk}' == '회원검색리스트' || '${menuCk}' == '회원탈퇴신청'){
 			$("#member-menu-down").hide();
 			$("#member-menu-up").show();
@@ -103,6 +105,11 @@
 			$("#advertisement-menu-down").hide();
 			$("#advertisement-menu-up").show();
 			$("#admin-advertisement-inner-menu").show();
+		}
+		else if('${menuCk}' == '답변대기'){
+			$("#ask-menu-down").hide();
+			$("#ask-menu-up").show();
+			$("#admin-ask-inner-menu").show();
 		}
 	});
 	
@@ -122,6 +129,10 @@
 		$("#advertisement-menu-down").show();
 		$("#advertisement-menu-up").hide();
 		$("#admin-advertisement-inner-menu").slideUp();
+		
+		$("#ask-menu-down").show();
+		$("#ask-menu-up").hide();
+		$("#admin-ask-inner-menu").slideUp();
 	}
 	
 	function memberManagementUp(){
@@ -146,6 +157,10 @@
 		$("#advertisement-menu-down").show();
 		$("#advertisement-menu-up").hide();
 		$("#admin-advertisement-inner-menu").slideUp();	
+		
+		$("#ask-menu-down").show();
+		$("#ask-menu-up").hide();
+		$("#admin-ask-inner-menu").slideUp();
 	}
 	
 	function boardManagementUp(){
@@ -170,6 +185,10 @@
 		$("#advertisement-menu-down").show();
 		$("#advertisement-menu-up").hide();
 		$("#admin-advertisement-inner-menu").slideUp();	
+		
+		$("#ask-menu-down").show();
+		$("#ask-menu-up").hide();
+		$("#admin-ask-inner-menu").slideUp();
 	}
 	
 	function noticeManagementUp(){
@@ -194,12 +213,44 @@
 		$("#advertisement-menu-down").hide();
 		$("#advertisement-menu-up").show();
 		$("#admin-advertisement-inner-menu").slideDown();
+		
+		$("#ask-menu-down").show();
+		$("#ask-menu-up").hide();
+		$("#admin-ask-inner-menu").slideUp();
 	}
 	
 	function advertisementManagementUp(){
 		$("#advertisement-menu-down").show();
 		$("#advertisement-menu-up").hide();
 		$("#admin-advertisement-inner-menu").slideUp();		
+	}
+	
+	function askManagementDown(){
+		$("#member-menu-down").show();
+		$("#member-menu-up").hide();
+		$("#admin-member-inner-menu").slideUp();
+		
+		$("#board-menu-down").show();
+		$("#board-menu-up").hide();
+		$("#admin-board-inner-menu").slideUp();
+		
+		$("#notice-menu-down").show();
+		$("#notice-menu-up").hide();
+		$("#admin-notice-inner-menu").slideUp();
+		
+		$("#advertisement-menu-down").show();
+		$("#advertisement-menu-up").hide();
+		$("#admin-advertisement-inner-menu").slideUp();
+		
+		$("#ask-menu-down").hide();
+		$("#ask-menu-up").show();
+		$("#admin-ask-inner-menu").slideDown();
+	}
+	
+	function askManagementUp(){
+		$("#ask-menu-down").show();
+		$("#ask-menu-up").hide();
+		$("#admin-ask-inner-menu").slideUp();
 	}
 </script>
 <div id="admin-left-nav">
@@ -254,6 +305,16 @@
 			<a href="${ctp}/admin/mailManagement"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> 광고메일 관리</div></a>
 			<a href="${ctp}/admin/advertisementInput"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> 메인화면 광고 등록</div></a>
 			<a href="${ctp}/admin/advertisementManagement"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> 메인화면 광고 관리</div></a>
+		</div>
+		<div id="ask-menu-down">
+			<a href="javascript:askManagementDown()"><div class="admin-inner-menu-n"><i class="fa-solid fa-chevron-right"></i> 문의 관리</div></a>
+		</div>
+		<div id="ask-menu-up">
+			<a href="javascript:askManagementUp()"><div class="admin-inner-menu"><i class="fa-solid fa-angle-down"></i> 문의 관리</div></a>
+		</div>
+		<div id="admin-ask-inner-menu">
+			<a href="${ctp}/admin/askStatusNo"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> 답변대기 문의</div></a>
+			<a href="${ctp}/admin/askStatusYes"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> 답변완료 문의</div></a>
 		</div>
 		<div >
 			<a href="${ctp}/admin/delTitleInput"><div class="admin-inner-menu-n">탈퇴 목록 등록</div></a>

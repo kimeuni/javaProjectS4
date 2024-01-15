@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import com.spring.javaProjectS4.vo.MemberVO;
 import com.spring.javaProjectS4.vo.ReasonTitleVO;
 import com.spring.javaProjectS4.vo.UserShowAdvertisementVO;
+import com.spring.javaProjectS4.vo.AnswerVO;
 import com.spring.javaProjectS4.vo.AskVO;
 import com.spring.javaProjectS4.vo.MainAdvertisementVO;
 
@@ -57,5 +58,13 @@ public interface MemberDAO {
 	public List<AskVO> getMyAskList(@Param("startIndexNo")int startIndexNo,@Param("pageSize") int pageSize,@Param("mid") String mid);
 
 	public int getMyAskListTotRecCnt(@Param("searchString") String searchString);
+
+	public AskVO getAskIdx(@Param("idx") int idx);
+
+	public AnswerVO getAnswerAskIdx(@Param("idx") int idx);
+
+	public List<AskVO> getMyAskListSearch(@Param("startIndexNo") int startIndexNo,@Param("pageSize") int pageSize,@Param("mid") String mid,@Param("part") String part);
+
+	public int getMyAskListSearchTotRecCnt(@Param("part") String part,@Param("searchString") String searchString);
 
 }

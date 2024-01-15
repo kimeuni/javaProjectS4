@@ -31,6 +31,18 @@
 	<select id="getMyAskListTotRecCnt" resultType="int">
 		select count(*) from askS where mid = #{searchString};
 	</select>
+	<select id="getAskIdx" resultType="com.spring.javaProjectS4.vo.AskVO">
+		select * from askS where idx = #{idx};
+	</select>
+	<select id="getAnswerAskIdx" resultType="com.spring.javaProjectS4.vo.AnswerVO">
+		select * from answerS where askIdx = #{idx};
+	</select>
+	<select id="getMyAskListSearch" resultType="com.spring.javaProjectS4.vo.AskVO">
+		select * from askS where mid = #{mid} and status = #{part} limit #{startIndexNo},#{pageSize};
+	</select>
+	<select id="getMyAskListSearchTotRecCnt" resultType="int">
+		select count(*) from askS where mid = #{searchString} and status = #{part};
+	</select>
 	
 	<insert id="setMemberJoin">
 		insert into memberS values(default,#{vo.mid},#{vo.pwd},#{vo.name},#{vo.nickName},#{vo.address},#{vo.email},#{vo.gender},default,default,default,default,default,#{vo.adYN},default,default);

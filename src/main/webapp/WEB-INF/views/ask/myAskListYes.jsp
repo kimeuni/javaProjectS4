@@ -6,7 +6,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>내 문의 내역</title>
+    <title>내 문의 내역 | 답변완료</title>
     <jsp:include page="/WEB-INF/views/include/bs4.jsp" />
     <style>
     	body{
@@ -94,7 +94,7 @@
 			<div id="top-menu-str">${menuStr}</div>
 			<div id="myAskList-right-inner-content">
 				<div id="myAskList-myinfo-menu">
-					<div id="myAskList-myinfo-menu-str">내 문의 내역 <i class="fa-solid fa-clipboard-list"></i></div>
+					<div id="myAskList-myinfo-menu-str">내 문의 내역 | 답변완료 <i class="fa-solid fa-clipboard-list"></i></div>
 					<hr/>
 						<div style="text-align: left">
 							<span style="color:red">제목을 클릭</span>시 상세보기로 이동가능합니다. | 답변 완료 후 <span style="color: red">6개월(180일)이 지난 문의는 삭제</span>됩니다.<br/>
@@ -121,8 +121,8 @@
 								</tr>
 							</thead>
 							<c:if test="${empty vos}">
-								<tr>
-									<td colspan="4">문의하신 내역이 존재하지 않습니다.</td>
+								<tr >
+									<td colspan="4">답변완료된 문의 내역이 존재하지 않습니다.</td>
 								</tr>
 							</c:if>
 							<c:if test="${!empty vos}">
@@ -147,14 +147,14 @@
 					<br/>
 					<div class="text-center">
 						<ul class="pagination justify-content-center">
-						    <c:if test="${pageVO.pag > 1}"><li class="page-item"><a class="page-link text-secondary" href="myAskList?pag=1&pageSize=${pageVO.pageSize}"><i class="fa-solid fa-angles-left"></i></a></li></c:if>
-						  	<c:if test="${pageVO.curBlock > 0}"><li class="page-item"><a class="page-link text-secondary" href="myAskList?pag=${(pageVO.curBlock-1)*pageVO.blockSize+1}&pageSize=${pageVO.pageSize}"><i class="fa-solid fa-angle-left"></i></a></li></c:if>
+						    <c:if test="${pageVO.pag > 1}"><li class="page-item"><a class="page-link text-secondary" href="myAskListSearch?pag=1&pageSize=${pageVO.pageSize}&part=${part}"><i class="fa-solid fa-angles-left"></i></a></li></c:if>
+						  	<c:if test="${pageVO.curBlock > 0}"><li class="page-item"><a class="page-link text-secondary" href="myAskListSearch?pag=${(pageVO.curBlock-1)*pageVO.blockSize+1}&pageSize=${pageVO.pageSize}&part=${part}"><i class="fa-solid fa-angle-left"></i></a></li></c:if>
 						  	<c:forEach var="i" begin="${(pageVO.curBlock*pageVO.blockSize)+1}" end="${(pageVO.curBlock*pageVO.blockSize)+pageVO.blockSize}" varStatus="st">
-							    <c:if test="${i <= pageVO.totPage && i == pageVO.pag}"><li class="page-item active"><a class="page-link bg-secondary border-secondary" href="myAskList?pag=${i}&pageSize=${pageVO.pageSize}">${i}</a></li></c:if>
-							    <c:if test="${i <= pageVO.totPage && i != pageVO.pag}"><li class="page-item"><a class="page-link text-secondary" href="myAskList?pag=${i}&pageSize=${pageVO.pageSize}">${i}</a></li></c:if>
+							    <c:if test="${i <= pageVO.totPage && i == pageVO.pag}"><li class="page-item active"><a class="page-link bg-secondary border-secondary" href="myAskListSearch?pag=${i}&pageSize=${pageVO.pageSize}&part=${part}">${i}</a></li></c:if>
+							    <c:if test="${i <= pageVO.totPage && i != pageVO.pag}"><li class="page-item"><a class="page-link text-secondary" href="myAskListSearch?pag=${i}&pageSize=${pageVO.pageSize}&part=${part}">${i}</a></li></c:if>
 						  	</c:forEach>
-						  	<c:if test="${pageVO.curBlock < pageVO.lastBlock}"><li class="page-item"><a class="page-link text-secondary" href="myAskList?pag=${(pageVO.curBlock+1)*pageVO.blockSize+1}&pageSize=${pageVO.pageSize}"><i class="fa-solid fa-angle-right"></i></a></li></c:if>
-						  	<c:if test="${pageVO.pag < pageVO.totPage}"><li class="page-item"><a class="page-link text-secondary" href="myAskList?pag=${pageVO.totPage}&pageSize=${pageVO.pageSize}"><i class="fa-solid fa-angles-right"></i></a></li></c:if>
+						  	<c:if test="${pageVO.curBlock < pageVO.lastBlock}"><li class="page-item"><a class="page-link text-secondary" href="myAskListSearch?pag=${(pageVO.curBlock+1)*pageVO.blockSize+1}&pageSize=${pageVO.pageSize}&part=${part}"><i class="fa-solid fa-angle-right"></i></a></li></c:if>
+						  	<c:if test="${pageVO.pag < pageVO.totPage}"><li class="page-item"><a class="page-link text-secondary" href="myAskListSearch?pag=${pageVO.totPage}&pageSize=${pageVO.pageSize}&part=${part}"><i class="fa-solid fa-angles-right"></i></a></li></c:if>
 						</ul>
 					</div>
 				</div>

@@ -65,6 +65,26 @@
     		color : black;
     		text-decoration: none;
     	}
+    	#myPage-alarm-menu{
+    		margin-top: 20px !important;
+    		margin: 0 auto;
+    		width : 75%;
+    		border: 1px solid;
+    		border-radius : 5px;
+    		padding: 20px;
+    		background-color: #fff;
+    		text-align: center;
+    		box-shadow: 5px 5px 10px gray;
+    	}
+    	#myPage-alarm-menu a div{
+    		height: 60px;
+    		line-height: 60px;
+    		font-size: 1.1em;
+    	}
+    	#myPage-alarm-menu a{
+    		color : black;
+    		text-decoration: none;
+    	}
     </style>
 </head>
 <body>
@@ -80,6 +100,10 @@
 					<a href="${ctp}/member/infoUpdate"><div><i class="fa-solid fa-pen"></i> 정보 수정</div></a>
 					<hr/>
 					<a href="${ctp}/member/userDel"><div><i class="fa-solid fa-user-slash"></i> 계정 탈퇴</div></a>
+				</div>
+				<div id="myPage-alarm-menu">
+					<div id="myPage-myinfo-menu-str">알림 관리 <i class="fa-regular fa-bell"></i></div>
+					<a href=""><div><i class="fa-solid fa-envelope"></i> (광고/이벤트) 메일 알림</div></a>
 				</div>
 			</div>
 		</div>

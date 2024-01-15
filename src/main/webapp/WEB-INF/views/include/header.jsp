@@ -229,7 +229,7 @@
 							</ul>
 						</li>
 						<li>
-							<i class="fa-solid fa-comment"></i>채팅
+							<a href="${ctp}/chat/chatContent"><i class="fa-solid fa-comment"></i>채팅</a>
 						</li>
 					</ul>
 				</c:if>

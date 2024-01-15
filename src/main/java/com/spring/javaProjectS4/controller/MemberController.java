@@ -40,6 +40,7 @@ import com.spring.javaProjectS4.service.MemberService;
 import com.spring.javaProjectS4.vo.MemberVO;
 import com.spring.javaProjectS4.vo.ReasonTitleVO;
 import com.spring.javaProjectS4.vo.UserShowAdvertisementVO;
+import com.spring.javaProjectS4.vo.AnswerVO;
 import com.spring.javaProjectS4.vo.AskVO;
 import com.spring.javaProjectS4.vo.MainAdvertisementVO;
 
@@ -842,6 +843,52 @@ public class MemberController {
 		model.addAttribute("menuStr","내 문의 내역");
 		
 		return "ask/myAskList";
+	}
+	
+	// 마이페이지-내문의내역-문의 상세보기
+	@RequestMapping(value = "/ask/askContent", method = RequestMethod.GET)
+	public String askContentGet(@RequestParam(name="idx",defaultValue = "0",required = false) int idx,
+			Model model,HttpSession session,
+			@RequestParam(name="pag", defaultValue = "1", required = false) int pag,
+			@RequestParam(name="pageSize", defaultValue = "10", required = false) int pageSize
+			) {
+		String mid = session.getAttribute("sMid")==null ? "" : (String)session.getAttribute("sMid");
+		MemberVO vo = memberService.getMemberMidCheck(mid);
+		
+		AskVO askVO = memberService.getAskIdx(idx);
+		AnswerVO ansVO = memberService.getAnswerAskIdx(idx);
+		
+		model.addAttribute("vo",vo);
+		model.addAttribute("pag",pag);
+		model.addAttribute("pageSize",pageSize);
+		model.addAttribute("askVO",askVO);
+		model.addAttribute("ansVO",ansVO);
+		return "ask/askContent";
+	}
+	
+	// 마이페이지-내문의내역-검색(유형)
+	@RequestMapping(value = "/ask/myAskListSearch", method = RequestMethod.GET)
+	public String myAskListSearchGet(Model model,HttpSession session,
+			@RequestParam(name="part",defaultValue = "",required = false) String part,
+			@RequestParam(name="pag", defaultValue = "1", required = false) int pag,
+			@RequestParam(name="pageSize", defaultValue = "10", required = false) int pageSize) {
+		String mid = session.getAttribute("sMid")==null ? "" : (String)session.getAttribute("sMid");
+		MemberVO vo = memberService.getMemberMidCheck(mid);
+		
+		PageVO pageVO = null;
+		List<AskVO> vos = null;
+		if(part.equals("전체")) return "redirect:/member/ask/myAskList";
+		else {
+			pageVO = pageProcess.totRecCnt(pag, pageSize, "myAskList", part, mid);
+			vos = memberService.getMyAskListSearch(pageVO.getStartIndexNo(),pageSize,mid,part);
+		}
+		model.addAttribute("vo",vo);
+		model.addAttribute("menuStr","내 문의 내역");
+		model.addAttribute("vos",vos);
+		model.addAttribute("pageVO",pageVO);
+		model.addAttribute("part",part);
+		if(part.equals("답변대기")) return "ask/myAskListNo";
+		else return "ask/myAskListYes";
 	}
 	
 	// 메일 전송을 위한 메소드

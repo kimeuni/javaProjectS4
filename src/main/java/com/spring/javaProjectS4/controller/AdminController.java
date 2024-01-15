@@ -594,6 +594,13 @@ public class AdminController {
 		return "admin/imsiImgDelete";
 	}
 	
+	// 문의 관리 - 답변대기 문의
+	@RequestMapping(value = "/askStatusNo", method = RequestMethod.GET)
+	public String askStatusNoGet(Model model) {
+		model.addAttribute("menuCk","답변대기");
+		return "admin/ask/askStatusNo";
+	}
+	
 	// 메일 전송을 위한 메소드
 		private String mailSend(String email, String title, String mailFlag, String flag) throws MessagingException {
 			HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
