@@ -8,7 +8,7 @@
    		font-size: 1.2em;
    		line-height: 49px; 
    		padding: 0px 10px;
-   		border-bottom: 1px solid #eee;
+   		border-bottom: 1px solid #ddd;
    	}
    	#chat-list-div{
    		height: 93%;

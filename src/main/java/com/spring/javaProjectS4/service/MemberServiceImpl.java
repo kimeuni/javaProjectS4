@@ -143,4 +143,9 @@ public class MemberServiceImpl implements MemberService {
 		return memberDAO.getMyAskListSearch( startIndexNo, pageSize, mid, part);
 	}
 
+	@Override
+	public int setAdYNUpdate(String adYN, String mid) {
+		return memberDAO.setAdYNUpdate( adYN, mid);
+	}
+
 }

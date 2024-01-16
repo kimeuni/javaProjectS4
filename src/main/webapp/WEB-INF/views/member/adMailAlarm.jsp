@@ -37,24 +37,19 @@
     		margin-top: 110px; 
     		margin-bottom: 60px; 
     	}
-    	#myPage-myinfo-menu{
+    	#myPage-alarm-menu hr{
+    		margin: 0px;
+    	}
+    	#myPage-alarm-menu{
+    		margin-top: 20px !important;
     		margin: 0 auto;
-    		width : 75%;
+    		width : 80%;
     		border: 1px solid;
     		border-radius : 5px;
     		padding: 20px;
     		background-color: #fff;
     		text-align: center;
     		box-shadow: 5px 5px 10px gray;
-    	}
-    	#myPage-myinfo-menu hr{
-    		margin: 0px;
-    	}
-    	#myPage-myinfo-menu-str{
-    		font-size: 1.2em;
-    		color : gray;
-    		text-align: left;
-    		margin-bottom: 20px;
     	}
     	#myPage-alarm-menu-str{
     		font-size: 1.2em;
@@ -62,36 +57,69 @@
     		text-align: left;
     		margin-bottom: 20px;
     	}
-    	#myPage-myinfo-menu a div{
-    		height: 60px;
-    		line-height: 60px;
-    		font-size: 1.1em;
+    	.flex-div{
+    		display: flex;
+    		height: 50px;
     	}
-    	#myPage-myinfo-menu a{
-    		color : black;
-    		text-decoration: none;
-    	}
-    	#myPage-alarm-menu{
-    		margin-top: 20px !important;
-    		margin: 0 auto;
-    		width : 75%;
-    		border: 1px solid;
-    		border-radius : 5px;
-    		padding: 20px;
-    		background-color: #fff;
+    	.c-8{
+    		width: 75%;
     		text-align: center;
-    		box-shadow: 5px 5px 10px gray;
+    		font-size: 1.2em;
+    		line-height: 50px;
     	}
-    	#myPage-alarm-menu a div{
-    		height: 60px;
-    		line-height: 60px;
-    		font-size: 1.1em;
+    	.c-2{
+    		width: 25%;
+    		text-align: center;
+    		font-size: 1.2em;
+    		line-height: 50px;
     	}
-    	#myPage-alarm-menu a{
-    		color : black;
+    	.c-2 .no-btn div{
+    		width: 120px;
+    		height: 40px;
+    		border: 1px solid #eee;
+    		line-height: 40px;
+    		background-color: black;
+    		color: #fff;
+    		text-decoration: none;
+    		margin-top: 5px;
+    	}
+    	.c-2 .yes-btn div{
+    		width: 120px;
+    		height: 40px;
+    		border: 1px solid green;
+    		line-height: 40px;
+    		background-color: green;
+    		color: #fff;
+    		text-decoration: none;
+    		margin-top: 5px;
+    	}
+    	.c-2 a{
     		text-decoration: none;
     	}
     </style>
+    <script>
+    	'use strict'
+    	
+    	function adYN(adYN){
+    		let query = {
+    			adYN : adYN,
+    			mid : '${vo.mid}'
+    		}
+    		
+    		$.ajax({
+    			url : "${ctp}/member/adYN",
+    			type : "post",
+    			data : query,
+    			success : function(res){
+    				if(res == "1") location.reload();
+    				else alert("메일 알람 끄기/켜지 실패")
+    			},
+    			error : function(){
+    				alert("전송오류(adMailAlarm.jsp)")
+    			}
+    		});
+    	}
+    </script>
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/include/myPageMenu.jsp" />
@@ -99,17 +127,17 @@
 		<div id="myPage-right-content">
 			<div id="top-menu-str">${menuStr}</div>
 			<div id="myPage-right-inner-content">
-				<div id="myPage-myinfo-menu">
-					<div id="myPage-myinfo-menu-str">개인정보 관리 <i class="fa-solid fa-pencil"></i></div>
-					<a href="${ctp}/member/pwdUpdate"><div><i class="fa-solid fa-lock"></i> 비밀번호 변경</div></a>
-					<hr/>
-					<a href="${ctp}/member/infoUpdate"><div><i class="fa-solid fa-pen"></i> 정보 수정</div></a>
-					<hr/>
-					<a href="${ctp}/member/userDel"><div><i class="fa-solid fa-user-slash"></i> 계정 탈퇴</div></a>
-				</div>
 				<div id="myPage-alarm-menu">
 					<div id="myPage-alarm-menu-str">알림 관리 <i class="fa-regular fa-bell"></i></div>
-					<a href="${ctp}/member/adMailAlarm"><div><i class="fa-solid fa-envelope"></i> (광고/이벤트) 메일 알림</div></a>
+					<hr/>
+						<div class="flex-div">
+							<div class="c-8">(광고/이메일)메일 알림</div>
+							<div class="c-2">
+								<c:if test="${vo.adYN == 'Y' }"><a href="javascript:adYN('N')" class="no-btn"><div>알림 끄기</div></a></c:if>
+								<c:if test="${vo.adYN != 'Y' }"><a href="javascript:adYN('Y')" class="yes-btn"><div>알림 켜기</div></a></c:if>
+							</div>
+						</div>
+					<hr/>
 				</div>
 			</div>
 		</div>

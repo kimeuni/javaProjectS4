@@ -33,6 +33,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.spring.javaProjectS4.pagination.PageProcess;
 import com.spring.javaProjectS4.pagination.PageVO;
@@ -892,6 +893,39 @@ public class MemberController {
 		model.addAttribute("part",part);
 		if(part.equals("답변대기")) return "ask/myAskListNo";
 		else return "ask/myAskListYes";
+	}
+	
+	// 이벤트/광고 메일 알람 화면 이동
+	@RequestMapping(value = "/adMailAlarm", method = RequestMethod.GET)
+	public String adMailAlarmGet(HttpSession session, Model model) {
+		String mid = session.getAttribute("sMid")==null ? "" : (String)session.getAttribute("sMid");
+		MemberVO vo = memberService.getMemberMidCheck(mid);
+		
+		model.addAttribute("vo",vo);
+		model.addAttribute("menuStr","(광고/이벤트) 메일 알림");
+		return "member/adMailAlarm";
+	}
+	
+	// 광고/이벤트 메일 알람 처리(Y/N)
+	@ResponseBody
+	@RequestMapping(value = "/adYN", method = RequestMethod.POST)
+	public String adYNPost(String adYN,String mid) {
+		int res = memberService.setAdYNUpdate(adYN,mid);
+		if(res != 0) return "1";
+		else return "2";
+	}
+	
+	// 프로필 수정
+	@RequestMapping(value = "/profileUpdate", method = RequestMethod.POST)
+	public String profileUpdatePost(MultipartHttpServletRequest profile, String oProfile) {
+		
+		// 기본 프로필이 아닐 시 삭제 후 새 이미지 업데이트
+		if(!oProfile.equals("no_img.png")) {
+			//int res = memberService.origProfileDel(oProfile);
+			
+		}
+		
+		return "";
 	}
 	
 	// 메일 전송을 위한 메소드

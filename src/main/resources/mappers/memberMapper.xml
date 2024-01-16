@@ -89,4 +89,7 @@
 	<update id="setAlarmYUpdate">
 		update UserShowAdvertisementS set alarm = 'Y' where mid = #{mid};
 	</update>
+	<update id="setAdYNUpdate">
+		update memberS set adYN = #{adYN} where mid = #{mid};
+	</update>
 </mapper>

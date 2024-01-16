@@ -81,6 +81,7 @@
     	#profile-img-div img{
     		border-radius: 100%;
     		width: 150px;
+    		height: 150px;
     		margin-bottom: 25px;
     	}
     	#ok-no-btn{
@@ -111,7 +112,45 @@
     		}
     	});
     	
-    	
+
+	    // 선택한 이미지 화면에 출력 (미리보기)
+	    function imgCheck(e){
+	    	if(e.files && e.files[0]){
+	    		let reader = new FileReader();
+				reader.onload = function(e){
+					document.getElementById("profileImg").src = e.target.result;
+				}
+				reader.readAsDataURL(e.files[0]);
+			}
+	    }
+	    
+	    // 프로필 등록
+	    function profileUpdateOk(){
+	    	let profile = document.getElementById("profile").value;
+	  		
+	    	if(profile.trim() == ""){
+	    		alert("이미지를 등록해주세요.");
+	    		return false;
+	    	}
+	  		else if(profile.trim() != "") {
+		    	let ext = profile.substring(profile.lastIndexOf(".")+1).toLowerCase();
+		    	let maxSize = 1024 * 1024 * 10;
+		    	let fileSize = document.getElementById("profile").files[0].size;
+		  		// 업로드 가능한 확장명 파일
+		  		if(ext != 'jpg' && ext != 'gif'&& ext != 'png' && ext != 'jpeg'){
+					alert("업로드 가능한 파일은 'jpg/gif/png/jpeg'만 가능합니다.")
+					return false;
+				}
+				// 파일 용량 체크
+				else if(fileSize > maxSize) {
+					alert("업로드할 파일의 최대용량은 10MByte입니다.");
+					return false;
+				}
+		    	else {
+		    		profileForm.submit();
+		    	}
+	  		}
+	    }
     </script>
 </head>
 <body>
@@ -120,31 +159,34 @@
 		<div id="myPage-right-content">
 			<div id="top-menu-str">${menuStr}</div>
 			<div id="myPage-right-inner-content">
-				<div id="myPage-pwdUpdate">
-					<div id="myPage-pwdUpdate-str">프로필 변경 <i class="fa-solid fa-id-card-clip"></i></div>
-					<div style="color:gray">대표 프로필을 변경할 수 있습니다.</div><br/>
-					<div>프로필 사진</div>
-					<hr/>
-					<div id="profile-img-div"><img id="profileImg" ></div>
-					<div id="file-btns-div">
-						<div class="file-btn-div">
-							<label for="profile">
-								<b>사진 등록</b>
-							</label>
-							<input type="file" name="profile" id="profile" />
+				<form name="profileForm" method="post" enctype="multipart/form-data" >
+					<div id="myPage-pwdUpdate">
+						<div id="myPage-pwdUpdate-str">프로필 변경 <i class="fa-solid fa-id-card-clip"></i></div>
+						<div style="color:gray">대표 프로필을 변경할 수 있습니다.</div><br/>
+						<div>프로필 사진</div>
+						<hr/>
+						<div id="profile-img-div"><img id="profileImg" ></div>
+						<div id="file-btns-div">
+							<div class="file-btn-div">
+								<label for="profile">
+									<b>사진 등록</b>
+								</label>
+								<input type="file" name="profile" id="profile" onchange="imgCheck(this)" />
+							</div>
+							<div class="file-btn-div">
+								<a href="javascript:location.reload()">
+									<b>삭제</b>
+								</a>
+							</div>
 						</div>
-						<div class="file-btn-div">
-							<a href="javascript:location.reload()">
-								<b>삭제</b>
-							</a>
+						<hr/>
+						<div id="ok-no-btn">
+							<input type="button" value="적용" id="ok-btn" onclick="profileUpdateOk()" />
+							<input type="button" value="취소" id="no-btn" onclick="location.href='${ctp}/member/myPage'" />
 						</div>
 					</div>
-					<hr/>
-					<div id="ok-no-btn">
-						<input type="button" value="적용" id="ok-btn" onclick="profileUpdateOk()" />
-						<input type="button" value="취소" id="no-btn" onclick="location.href='${ctp}/member/myPage'" />
-					</div>
-				</div>
+					<input type="hidden" id="oProfile" name="oProfile" value="${vo.profile}"/>
+				</form>
 			</div>
 		</div>
 	</div>

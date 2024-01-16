@@ -67,4 +67,6 @@ public interface MemberDAO {
 
 	public int getMyAskListSearchTotRecCnt(@Param("part") String part,@Param("searchString") String searchString);
 
+	public int setAdYNUpdate(@Param("adYN") String adYN,@Param("mid") String mid);
+
 }

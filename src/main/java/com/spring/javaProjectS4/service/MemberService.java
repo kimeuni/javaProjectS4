@@ -61,4 +61,6 @@ public interface MemberService {
 
 	public List<AskVO> getMyAskListSearch(int startIndexNo, int pageSize, String mid, String part);
 
+	public int setAdYNUpdate(String adYN, String mid);
+
 }

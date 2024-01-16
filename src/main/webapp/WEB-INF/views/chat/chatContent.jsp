@@ -12,13 +12,13 @@
     		margin: 0 auto;
     		width: 1024px;
     		display: flex;
-    		border-top: 1px solid #eee;
-    		border-bottom: 1px solid #eee;
+    		border-top: 1px solid #ddd;
+    		border-bottom: 1px solid #ddd;
     	}
     	#chat-left-container{
     		width: 50%;
     		height: 700px;
-    		border-right: 1px solid #eee;
+    		border-right: 1px solid #ddd;
     	}
     	#chat-right-container{
     		width: 50%;
