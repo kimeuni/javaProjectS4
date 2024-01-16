@@ -23,12 +23,15 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.spring.javaProjectS4.pagination.PageProcess;
 import com.spring.javaProjectS4.pagination.PageVO;
 import com.spring.javaProjectS4.service.AdminService;
+import com.spring.javaProjectS4.vo.AnswerVO;
+import com.spring.javaProjectS4.vo.AskVO;
 import com.spring.javaProjectS4.vo.EventMailVO;
 import com.spring.javaProjectS4.vo.FAQVO;
 import com.spring.javaProjectS4.vo.MainAdvertisementVO;
 import com.spring.javaProjectS4.vo.MemberVO;
 import com.spring.javaProjectS4.vo.NoticeVO;
 import com.spring.javaProjectS4.vo.ReasonTitleVO;
+import com.spring.javaProjectS4.vo.UserReportVO;
 
 @Controller
 @RequestMapping("/admin")
@@ -231,7 +234,7 @@ public class AdminController {
 		if(idx.indexOf("/") != -1) {
 			idxArr = idx.split("/");
 			
-			// 계정 삭제
+			//  삭제
 			for(int i=0; i<idxArr.length; i++) {
 				// 이미지 삭제 처리
 				NoticeVO vo = adminService.getNoticeIdx(Integer.parseInt(idxArr[i]));
@@ -352,7 +355,7 @@ public class AdminController {
 		String[] idxArr = null;
 		if(idx.indexOf("/") != -1) {
 			idxArr = idx.split("/");
-			// 계정 삭제
+			// 삭제
 			for(int i=0; i<idxArr.length; i++) {
 				
 				adminService.setFAQDel(Integer.parseInt(idxArr[i]));
@@ -510,13 +513,9 @@ public class AdminController {
 			@RequestParam(name="mImg",defaultValue = "", required = false) String mImg,
 			String url) {
 		System.out.println(url);
-		System.out.println("컨트롤러");
 		// 등록 처리
 		int res = adminService.setAdInput(mImg,url,mainImg);
 
-		System.out.println(mImg);
-		System.out.println(url);
-		System.out.println(mainImg);
 		if(res != 0) return "redirect:/message/adInputY";
 		else return "redirect:/message/adInputN";
 	}
@@ -594,11 +593,149 @@ public class AdminController {
 		return "admin/imsiImgDelete";
 	}
 	
-	// 문의 관리 - 답변대기 문의
+	// 문의 관리 - 답변대기 문의 화면이동
 	@RequestMapping(value = "/askStatusNo", method = RequestMethod.GET)
-	public String askStatusNoGet(Model model) {
+	public String askStatusNoGet(Model model,
+			@RequestParam(name="pag", defaultValue = "1", required = false) int pag,
+			@RequestParam(name="pageSize", defaultValue = "10", required = false) int pageSize
+			) {
+		
+		PageVO pageVO = pageProcess.totRecCnt(pag, pageSize, "askAdmin", "답변대기", "");
+		List<AskVO> vos = adminService.getAskStatusList(pageVO.getStartIndexNo(),pageSize,"답변대기");
+		model.addAttribute("vos",vos);
+		model.addAttribute("pageVO",pageVO);
 		model.addAttribute("menuCk","답변대기");
 		return "admin/ask/askStatusNo";
+	}
+	
+	// 문의 관리 - 답변대기 문의 - 삭제
+	@ResponseBody
+	@RequestMapping(value = "/askStatusNoDel",method = RequestMethod.POST)
+	public String askStatusNoDelPost(@RequestParam(name="idx", defaultValue = "0", required = false) String idx) {
+
+		String[] idxArr = null;
+		if(idx.indexOf("/") != -1) {
+			idxArr = idx.split("/");
+			// 삭제
+			for(int i=0; i<idxArr.length; i++) {
+				
+				adminService.setaskStatusNoDel(Integer.parseInt(idxArr[i]));
+			}
+			return "1";
+		}
+		else {
+			adminService.setaskStatusNoDel(Integer.parseInt(idx));
+			return "1";
+		}
+	}
+	
+	// 문의 관리 - 답변대기 문의- 문의 답변 화면 이동
+	@RequestMapping(value = "/askAnsInput", method = RequestMethod.GET)
+	public String askAnsInputGet(Model model,
+			@RequestParam(name="idx", defaultValue = "0", required = false) int idx,
+			@RequestParam(name="pag", defaultValue = "1", required = false) int pag,
+			@RequestParam(name="pageSize", defaultValue = "10", required = false) int pageSize
+			) {
+		
+		AskVO askVO = adminService.getAskIdx(idx);
+		
+		// 해당 유저 신고처리된게 있는지 확인
+		UserReportVO reportVO = adminService.getUserAskReport("ask",idx);
+		
+		model.addAttribute("askVO",askVO);
+		model.addAttribute("reportVO",reportVO);
+		model.addAttribute("pag",pag);
+		model.addAttribute("pageSize",pageSize);
+		model.addAttribute("menuCk","답변대기");
+		return "admin/ask/askAnsInput";
+	}
+	
+	// 문의 관리 - 답변대기문의- 문의답변 - 신고처리
+	@ResponseBody
+	@RequestMapping(value = "/askUserReport",method = RequestMethod.POST)
+	public String askUserReportPost(String reportShop, 
+			@RequestParam(name="idx", defaultValue = "0", required = false) int idx,
+			String reason) {
+		// 신고 처리 업데이트
+		adminService.setUserReportInput("ask",idx,reportShop,reason);
+		
+		// 해당 유저 신고 cnt 업데이트
+		int res = adminService.setMemberReportCntUpdate(reportShop);
+		if(res !=0) return "1";
+		else return "2";
+	}
+	
+	// 문의 관리 - 답변대기문의 - 문의답변 - 문의답변 처리
+	@ResponseBody
+	@RequestMapping(value = "/askAnsInput",method = RequestMethod.POST)
+	public String askAnsInputPost(String content,@RequestParam(name="idx", defaultValue = "0", required = false) int idx) {
+		content = content.replace("\n", "<br/>");
+		// 답변 등록
+		adminService.setAnsInput(idx,content);
+		
+		// ask에서 상태 답변완료 로 업데이트
+		int res = adminService.setAskStatusUpdate(idx);
+		if(res != 0 ) return "1";
+		else return "2";
+	}
+
+	// 문의 관리 - 답변완료 문의 삭제 화면이동
+	@RequestMapping(value = "/askStatusYes", method = RequestMethod.GET)
+	public String askStatusYesGet(Model model,
+			@RequestParam(name="pag", defaultValue = "1", required = false) int pag,
+			@RequestParam(name="pageSize", defaultValue = "10", required = false) int pageSize
+			) {
+		
+		PageVO pageVO = pageProcess.totRecCnt(pag, pageSize, "askAdmin", "답변완료", "");
+		List<AskVO> vos = adminService.getAskStatusList(pageVO.getStartIndexNo(),pageSize,"답변완료");
+		
+		model.addAttribute("vos",vos);
+		model.addAttribute("pageVO",pageVO);
+		model.addAttribute("menuCk","답변완료");
+		return "admin/ask/askStatusYes";
+	}
+	
+	// 문의 관리 - 완료 문의 삭제 - 상세보기 화면 이동
+	@RequestMapping(value = "/askAnsContent",method = RequestMethod.GET)
+	public String askAnsContentGet(Model model,
+			@RequestParam(name="idx", defaultValue = "0", required = false) int idx,
+			@RequestParam(name="pag", defaultValue = "1", required = false) int pag,
+			@RequestParam(name="pageSize", defaultValue = "10", required = false) int pageSize) {
+		
+		AskVO askVO = adminService.getAskIdx(idx);
+		AnswerVO ansVO = adminService.getAnswerAskIdx(idx);
+		
+		model.addAttribute("askVO",askVO);
+		model.addAttribute("ansVO",ansVO);
+		model.addAttribute("pag",pag);
+		model.addAttribute("pageSize",pageSize);
+		model.addAttribute("menuCk","답변완료");
+		return "admin/ask/askAnsContent";
+	}
+	
+	// 문의관리 - 완료 문의 삭제 - 삭제 처리
+	@ResponseBody
+	@RequestMapping(value = "/askStatusYesDel",method = RequestMethod.POST)
+	public String askStatusYesDelPost(@RequestParam(name="idx", defaultValue = "0", required = false) String idx) {
+
+		String[] idxArr = null;
+		if(idx.indexOf("/") != -1) {
+			idxArr = idx.split("/");
+			// 삭제
+			for(int i=0; i<idxArr.length; i++) {
+				
+				// 답변 삭제
+				adminService.setAnsDel(Integer.parseInt(idxArr[i]));
+				//문의 삭제
+				adminService.setaskStatusNoDel(Integer.parseInt(idxArr[i]));
+			}
+			return "1";
+		}
+		else {
+			adminService.setAnsDel(Integer.parseInt(idx));
+			adminService.setaskStatusNoDel(Integer.parseInt(idx));
+			return "1";
+		}
 	}
 	
 	// 메일 전송을 위한 메소드
@@ -626,7 +763,7 @@ public class AdminController {
 			content += "<tr style='text-align:right; background-color: #5E5756;'><th><a href='' style='color:#fff'>다모아 바로가기</a></th></tr>";
 			content += "<tr><td><img src='cid:MailMain.png' width='650px'></td></tr>";
 			content += "<tr><td style='height:20px'></td></tr>";
-			// 인증번호 발송
+			// 작성한 내용
 			if(flag.equals("eventMail")) {
 				content += "<tr><td>"+ mailFlag +"</td></tr>";
 			}

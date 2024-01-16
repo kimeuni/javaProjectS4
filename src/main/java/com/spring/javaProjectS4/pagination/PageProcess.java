@@ -68,6 +68,11 @@ public class PageProcess {
 				totRecCnt = memberDAO.getMyAskListSearchTotRecCnt(part,searchString);
 			}
 		}
+		if(section.equals("askAdmin")) {
+			if(part.equals("답변대기") || part.equals("답변완료")) {
+				totRecCnt = adminDAO.getAskStatusRecCnt(part);
+			}
+		}
 		
 		int totPage = (totRecCnt % pageSize)==0 ? (totRecCnt / pageSize) : (totRecCnt / pageSize) + 1;
 		int startIndexNo = (pag - 1) * pageSize;

@@ -5,12 +5,15 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.spring.javaProjectS4.vo.AnswerVO;
+import com.spring.javaProjectS4.vo.AskVO;
 import com.spring.javaProjectS4.vo.EventMailVO;
 import com.spring.javaProjectS4.vo.FAQVO;
 import com.spring.javaProjectS4.vo.MainAdvertisementVO;
 import com.spring.javaProjectS4.vo.MemberVO;
 import com.spring.javaProjectS4.vo.NoticeVO;
 import com.spring.javaProjectS4.vo.ReasonTitleVO;
+import com.spring.javaProjectS4.vo.UserReportVO;
 
 public interface AdminDAO {
 
@@ -83,6 +86,28 @@ public interface AdminDAO {
 	public EventMailVO getEventMailIdx(@Param("idx") int idx);
 
 	public int setMailDelete(@Param("idx") int idx);
+
+	public List<AskVO> getAskStatusList(@Param("startIndexNo") int startIndexNo,@Param("pageSize") int pageSize,@Param("status") String status);
+
+	public int getAskStatusRecCnt(@Param("part") String part);
+
+	public void setaskStatusNoDel(@Param("idx") int idx);
+
+	public AskVO getAskIdx(@Param("idx") int idx);
+
+	public UserReportVO getUserAskReport(@Param("part") String part,@Param("partIdx") int partIdx);
+
+	public void setUserReportInput(@Param("part") String part,@Param("partIdx") int partIdx,@Param("mid") String mid,@Param("reason") String reason);
+
+	public int setMemberReportCntUpdate(@Param("mid") String mid);
+
+	public void setAnsInput(@Param("idx") int idx,@Param("content") String content);
+
+	public int setAskStatusUpdate(@Param("idx") int idx);
+
+	public AnswerVO getAnswerAskIdx(@Param("idx") int idx);
+
+	public void setAnsDel(@Param("idx") int idx);
 
 
 

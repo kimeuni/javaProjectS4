@@ -20,7 +20,7 @@
 		select count(*) from memberS where userDel = 'Y';
 	</select>
 	<select id="getNoticeAllList" resultType="com.spring.javaProjectS4.vo.NoticeVO">
-		select * from noticeS order by idx desc limit #{startIndexNo},#{pageSize};
+		select *,timestampdiff(hour,nDate,now()) as hour_diff,dateDiff(now(),nDate) as date_diff from noticeS order by idx desc limit #{startIndexNo},#{pageSize};
 	</select>
 	<select id="getNoticeIdx" resultType="com.spring.javaProjectS4.vo.NoticeVO">
 		select * from noticeS where idx = #{idx};
@@ -52,6 +52,23 @@
 	<select id="getEventMailIdx" resultType="com.spring.javaProjectS4.vo.EventMailVO">
 		select * from eventMailS where idx = #{idx};
 	</select>
+	<select id="getAskStatusList" resultType="com.spring.javaProjectS4.vo.AskVO">
+		select *,timestampdiff(hour,askDate,now()) as hour_diff,datediff(now(),askDate) as date_diff,
+		(select datediff(now(),ansDate) from answerS an where ask.idx = an.askIdx ) as ans_date_diff
+		 from askS ask where status = #{status} limit #{startIndexNo},#{pageSize};
+	</select>
+	<select id="getAskStatusRecCnt" resultType="int">
+		select count(*) from askS where status = #{part};
+	</select>
+	<select id="getAskIdx" resultType="com.spring.javaProjectS4.vo.AskVO">
+		select * from askS where idx = #{idx}
+	</select>
+	<select id="getUserAskReport" resultType="com.spring.javaProjectS4.vo.UserReportVO">
+		select * from userReportS where part = #{part} and partIdx = ${partIdx};
+	</select>
+	<select id="getAnswerAskIdx" resultType="com.spring.javaProjectS4.vo.AnswerVO">
+		select * from answerS where askIdx = #{idx};
+	</select>
 	
 	<insert id="setNoticeInput">
 		insert into noticeS values (default,#{vo.nickName},#{vo.title},#{vo.content},default,default,#{vo.openSw});
@@ -68,6 +85,12 @@
 	<insert id="setAdInput">
 		insert into mainAdvertisementS values (default,#{mImg},#{url},default,default);
 	</insert>
+	<insert id="setUserReportInput">
+		insert into userReportS values (default,#{mid},#{part},#{partIdx},default,#{reason});
+	</insert>
+	<insert id="setAnsInput">
+		insert into answerS values (default,#{idx},#{content},default);
+	</insert>
 	
 	<update id="setNoticeUpdate">
 		update noticeS set title = #{vo.title}, content = #{vo.content}, nDate = now(), openSw = #{vo.openSw} where idx = #{vo.idx};
@@ -83,6 +106,12 @@
 	</update>
 	<update id="setAdOpenSwYes">
 		update mainAdvertisementS set openSw = 'Y' where idx = #{idx};
+	</update>
+	<update id="setMemberReportCntUpdate">
+		update memberS set totReportCnt = (select count(*) from userReportS where mid = #{mid}) where mid = #{mid};
+	</update>
+	<update id="setAskStatusUpdate">
+		update askS set status = '답변완료' where idx = #{idx};
 	</update>
 	
 	<delete id="setUserAccountDel">
@@ -108,5 +137,11 @@
 	</delete>
 	<delete id="setMailDelete">
 		delete from eventMailS where idx = #{idx};
+	</delete>
+	<delete id="setaskStatusNoDel">
+		delete from askS where idx = #{idx};
+	</delete>
+	<delete id="setAnsDel">
+		delete from answerS where askIdx = #{idx};
 	</delete>
 </mapper>

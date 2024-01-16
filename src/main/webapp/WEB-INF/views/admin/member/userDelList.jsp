@@ -181,6 +181,19 @@
     		});
     	});
     	
+
+    	// 선택박스 전부 선택하면 전체체크박스 체크, 전체 체크 아닐시 해제
+    	$(function() {
+    		$(".ckS").on("change", function() {
+	    		if($('input:checkbox[name=ckS]').length == $('input:checkbox[name=ckS]:checked').length){
+	    			$("#ckAll")[0].checked = true;
+	    		}
+	    		else {
+	    			$("#ckAll")[0].checked = false;
+	    		}
+    		});
+    	});
+    	
     	// 전체 선택 및 전체 해제
     	function checkAll(){
     		let checkAll = "N";

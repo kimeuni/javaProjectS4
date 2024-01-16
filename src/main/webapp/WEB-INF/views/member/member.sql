@@ -62,10 +62,21 @@ create table userDelReasonS(
 );
 
 desc userDelReasonS;
-
+select * from userReportS;
 select * from userDelReasonS;
 
 drop table userDelReasonS;
 
 insert into userDelReasonS values(default,'A0009','삭제테스트',default);
 
+-- 유저 신고 처리 DB
+create table userReportS(
+	idx int not null auto_increment primary key,	/* 고유번호 */
+	mid varchar(17) not null,						/* 아이디 */
+	part varchar(20) not null,						/* 분류(ask:문의 / usedBoard:중고거래 / reply: 댓글) */
+	partIdx int not null,							/* 분류 idx */
+	rDate datetime default now(),					/* 신고 처리 날짜 */
+	reason varchar(301) default '',					/* 신고 이유 */
+	
+	foreign key(mid) references memberS (mid)
+);

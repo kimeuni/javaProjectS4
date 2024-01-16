@@ -120,6 +120,17 @@
     	#search-no a{
     		color: red;
     	}
+    	.new-str{
+    		border-radius: 100%;
+    		color: #fff;
+    		background-color: orange;
+    		padding: 2px 5px;
+    		height: 25px;
+    		line-height: 25px;
+    		margin-left: 10px;
+    		font-weight: bolder;
+    		font-size: 0.8em
+    	}
     </style>
     <script>
     	'use strict'
@@ -176,8 +187,15 @@
 				<c:forEach var="mVO" items="${vos}" varStatus="st">
 					<li>
 						<div class="notice-SearchList-ul-li-div no-div">${curScrStartNo}</div>
-						<a href="${ctp}/board/noticeContent?idx=${mVO.idx}&pag=${pageVO.pag}&pageSize=${pageVO.pageSize}&part=${part}&searchString=${searchString}"><div class="notice-SearchList-ul-li-div title-div">${mVO.title}</div></a>
-						<div class="notice-SearchList-ul-li-div date-div">${fn:substring(mVO.NDate,0,10)}</div>
+						<a href="${ctp}/board/noticeContent?idx=${mVO.idx}&pag=${pageVO.pag}&pageSize=${pageVO.pageSize}&part=${part}&searchString=${searchString}"><div class="notice-SearchList-ul-li-div title-div">${mVO.title}<c:if test="${mVO.hour_diff <=24}"><span class="new-str">N</span></c:if></div></a>
+						<div class="notice-SearchList-ul-li-div date-div">
+							<c:if test="${mVO.hour_diff <= 24 }">
+								${mVO.date_diff == 0 ? fn:substring(mVO.NDate,11,16) : fn:substring(mVO.NDate,5,16)}
+							</c:if>
+							<c:if test="${mVO.hour_diff > 24 }">
+								${fn:substring(mVO.NDate,0,10)}
+							</c:if>
+						</div>
 					</li>
 					<c:set var="curScrStartNo" value="${curScrStartNo-1}"></c:set>
 				</c:forEach>

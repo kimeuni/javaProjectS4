@@ -26,7 +26,7 @@
 		select * from mainAdvertisementS where openSw = 'Y';
 	</select>
 	<select id="getMyAskList" resultType="com.spring.javaProjectS4.vo.AskVO">
-		select * from askS where mid = #{mid} limit #{startIndexNo},#{pageSize};
+		select *,timestampdiff(hour,askDate,now()) as hour_diff,datediff(now(),askDate) as date_diff from askS where mid = #{mid} order by idx desc limit #{startIndexNo},#{pageSize};
 	</select>
 	<select id="getMyAskListTotRecCnt" resultType="int">
 		select count(*) from askS where mid = #{searchString};
@@ -38,7 +38,7 @@
 		select * from answerS where askIdx = #{idx};
 	</select>
 	<select id="getMyAskListSearch" resultType="com.spring.javaProjectS4.vo.AskVO">
-		select * from askS where mid = #{mid} and status = #{part} limit #{startIndexNo},#{pageSize};
+		select *,timestampdiff(hour,askDate,now()) as hour_diff,datediff(now(),askDate) as date_diff from askS where mid = #{mid} and status = #{part} order by idx desc limit #{startIndexNo},#{pageSize};
 	</select>
 	<select id="getMyAskListSearchTotRecCnt" resultType="int">
 		select count(*) from askS where mid = #{searchString} and status = #{part};

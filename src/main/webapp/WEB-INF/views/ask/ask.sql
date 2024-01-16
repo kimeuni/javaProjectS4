@@ -16,7 +16,9 @@ create table askS(
 );
 
 drop table askS;
-
+select *,timestampdiff(hour,askDate,now()) as hour_diff,datediff(now(),askDate) as date_diff,
+		(select datediff(now(),ansDate) from answerS an where ask.idx = an.askIdx) as ans_date_diff
+		 from askS ask where status = '답변완료'
 -- 1:1 질문 답변
 create table answerS(
 	idx int not null auto_increment primary key,	/* 고유번호 */
@@ -26,3 +28,5 @@ create table answerS(
 	
 	foreign key(askIdx) references askS (idx)
 );
+
+select *,timestampdiff(hour,askDate,now()) as hour_diff,datediff(now(),askDate) as date_diff from askS where status = '답변완료'

@@ -7,12 +7,11 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class AnswerVO {
+public class UserReportVO {
 	private int idx;
-	private int askIdx;
-	private String content;
-	private String ansDate;
-	
-	private String hour_diff;
-	private String date_diff;
+	private String mid;
+	private String part;
+	private int partIdx;
+	private String rDate;
+	private String reason;
 }

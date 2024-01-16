@@ -4,12 +4,15 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.spring.javaProjectS4.vo.AnswerVO;
+import com.spring.javaProjectS4.vo.AskVO;
 import com.spring.javaProjectS4.vo.EventMailVO;
 import com.spring.javaProjectS4.vo.FAQVO;
 import com.spring.javaProjectS4.vo.MainAdvertisementVO;
 import com.spring.javaProjectS4.vo.MemberVO;
 import com.spring.javaProjectS4.vo.NoticeVO;
 import com.spring.javaProjectS4.vo.ReasonTitleVO;
+import com.spring.javaProjectS4.vo.UserReportVO;
 
 public interface AdminService {
 
@@ -82,6 +85,26 @@ public interface AdminService {
 	public EventMailVO getEventMailIdx(int idx);
 
 	public int setMailDelete(int idx);
+
+	public List<AskVO> getAskStatusList(int startIndexNo, int pageSize, String status);
+
+	public void setaskStatusNoDel(int idx);
+
+	public AskVO getAskIdx(int idx);
+
+	public UserReportVO getUserAskReport(String part, int partIdx);
+
+	public void setUserReportInput(String part, int partIdx, String mid, String reason);
+
+	public int setMemberReportCntUpdate(String mid);
+
+	public void setAnsInput(int idx, String content);
+
+	public int setAskStatusUpdate(int idx);
+
+	public AnswerVO getAnswerAskIdx(int idx);
+
+	public void setAnsDel(int idx);
 
 
 }

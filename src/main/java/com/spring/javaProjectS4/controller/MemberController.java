@@ -850,7 +850,8 @@ public class MemberController {
 	public String askContentGet(@RequestParam(name="idx",defaultValue = "0",required = false) int idx,
 			Model model,HttpSession session,
 			@RequestParam(name="pag", defaultValue = "1", required = false) int pag,
-			@RequestParam(name="pageSize", defaultValue = "10", required = false) int pageSize
+			@RequestParam(name="pageSize", defaultValue = "10", required = false) int pageSize,
+			@RequestParam(name="part", defaultValue = "", required = false) String part
 			) {
 		String mid = session.getAttribute("sMid")==null ? "" : (String)session.getAttribute("sMid");
 		MemberVO vo = memberService.getMemberMidCheck(mid);
@@ -863,6 +864,8 @@ public class MemberController {
 		model.addAttribute("pageSize",pageSize);
 		model.addAttribute("askVO",askVO);
 		model.addAttribute("ansVO",ansVO);
+		model.addAttribute("part",part);
+		model.addAttribute("menuStr","내 문의 내역");
 		return "ask/askContent";
 	}
 	

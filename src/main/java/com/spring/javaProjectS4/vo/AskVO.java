@@ -16,4 +16,9 @@ public class AskVO {
 	private String category;
 	private String askDate;
 	private String status;
+	private String reportShop;
+	
+	private String hour_diff;
+	private String date_diff;
+	private String ans_date_diff; //답변일로부터 date cnt
 }

@@ -106,7 +106,7 @@
 			$("#advertisement-menu-up").show();
 			$("#admin-advertisement-inner-menu").show();
 		}
-		else if('${menuCk}' == '답변대기'){
+		else if('${menuCk}' == '답변대기' || '${menuCk}' == '답변완료'){
 			$("#ask-menu-down").hide();
 			$("#ask-menu-up").show();
 			$("#admin-ask-inner-menu").show();
@@ -314,7 +314,7 @@
 		</div>
 		<div id="admin-ask-inner-menu">
 			<a href="${ctp}/admin/askStatusNo"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> 답변대기 문의</div></a>
-			<a href="${ctp}/admin/askStatusYes"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> 답변완료 문의</div></a>
+			<a href="${ctp}/admin/askStatusYes"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> 완료 문의 삭제</div></a>
 		</div>
 		<div >
 			<a href="${ctp}/admin/delTitleInput"><div class="admin-inner-menu-n">탈퇴 목록 등록</div></a>

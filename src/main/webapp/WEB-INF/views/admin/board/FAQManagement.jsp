@@ -124,7 +124,7 @@
     		}
     	}
 
-    	// 계정삭제 버튼으로 개별 삭제
+    	//개별 삭제
     	function FAQDel(curScrStartNo,idx){
     		let ans = confirm(curScrStartNo+"번 FAQ를 삭제하시겠습니까?");
     		if(ans){

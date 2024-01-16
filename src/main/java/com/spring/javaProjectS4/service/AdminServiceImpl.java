@@ -20,12 +20,15 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.spring.javaProjectS4.dao.AdminDAO;
+import com.spring.javaProjectS4.vo.AnswerVO;
+import com.spring.javaProjectS4.vo.AskVO;
 import com.spring.javaProjectS4.vo.EventMailVO;
 import com.spring.javaProjectS4.vo.FAQVO;
 import com.spring.javaProjectS4.vo.MainAdvertisementVO;
 import com.spring.javaProjectS4.vo.MemberVO;
 import com.spring.javaProjectS4.vo.NoticeVO;
 import com.spring.javaProjectS4.vo.ReasonTitleVO;
+import com.spring.javaProjectS4.vo.UserReportVO;
 
 @Service
 public class AdminServiceImpl implements AdminService {
@@ -383,5 +386,54 @@ public class AdminServiceImpl implements AdminService {
 		return adminDAO.setMailDelete( idx);
 	}
 
+	@Override
+	public List<AskVO> getAskStatusList(int startIndexNo, int pageSize, String status) {
+		return adminDAO.getAskStatusList( startIndexNo, pageSize, status);
+	}
+
+	@Override
+	public void setaskStatusNoDel(int idx) {
+		adminDAO.setaskStatusNoDel(idx);
+	}
+
+	@Override
+	public AskVO getAskIdx(int idx) {
+		return adminDAO.getAskIdx( idx);
+	}
+
+	@Override
+	public UserReportVO getUserAskReport(String part, int partIdx) {
+		return adminDAO.getUserAskReport( part, partIdx);
+	}
+
+	@Override
+	public void setUserReportInput(String part, int partIdx, String mid, String reason) {
+		adminDAO.setUserReportInput( part, partIdx, mid,reason);
+	}
+
+	@Override
+	public int setMemberReportCntUpdate(String mid) {
+		return adminDAO.setMemberReportCntUpdate(mid);
+	}
+
+	@Override
+	public void setAnsInput(int idx, String content) {
+		adminDAO.setAnsInput( idx, content);
+	}
+
+	@Override
+	public int setAskStatusUpdate(int idx) {
+		return adminDAO.setAskStatusUpdate( idx);
+	}
+
+	@Override
+	public AnswerVO getAnswerAskIdx(int idx) {
+		return adminDAO.getAnswerAskIdx( idx);
+	}
+
+	@Override
+	public void setAnsDel(int idx) {
+		adminDAO.setAnsDel( idx);
+	}
 
 }

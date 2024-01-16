@@ -124,7 +124,7 @@
     		}
     	}
 
-    	// 계정삭제 버튼으로 개별 삭제
+    	//개별 삭제
     	function noticeDel(curScrStartNo,idx){
     		let ans = confirm(curScrStartNo+"번 공지사항을 삭제하시겠습니까?");
     		if(ans){
@@ -233,7 +233,14 @@
 										<c:if test="${fn:length(nVO.title) <= 25 }">
 											<td style="text-align: left;">${nVO.title}</td>
 										</c:if>
-										<td>${fn:substring(nVO.NDate,0,10)}</td>
+										<td>
+											<c:if test="${nVO.hour_diff <= 24 }">
+												${nVO.date_diff == 0 ? fn:substring(nVO.NDate,11,16) : fn:substring(nVO.NDate,5,16)}
+											</c:if>
+											<c:if test="${nVO.hour_diff > 24 }">
+												${fn:substring(nVO.NDate,0,10)}
+											</c:if>
+										</td>
 										<td>${nVO.readNum }</td>
 										<td>${nVO.openSw == 'Y'? '공개' : '비공개' }</td>
 										<td><a href="${ctp}/admin/noticeContent?idx=${nVO.idx}">상세보기</a></td>

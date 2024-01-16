@@ -131,7 +131,14 @@
 									<tr>
 										<td>${curScrStartNo}</td>
 										<td style="text-align: left;"><a href="${ctp}/member/ask/askContent?idx=${askVO.idx}&pag=${pageVO.pag}&pageSize=${pageVO.pageSize}">${askVO.title} <span style="color: #eee"><c:if test="${askVO.imgs != ''}"><i class="fa-solid fa-paperclip"></i></c:if></span></a></td>
-										<td>${fn:substring(askVO.askDate,0,11)}</td>
+										<td>
+											<c:if test="${askVO.hour_diff <= 24 }">
+												${askVO.date_diff == 0 ? fn:substring(askVO.askDate,11,16) : fn:substring(askVO.askDate,5,16)}
+											</c:if>
+											<c:if test="${askVO.hour_diff > 24 }">
+												${fn:substring(askVO.askDate,0,10)}
+											</c:if>
+										</td>
 										<c:if test="${askVO.status=='답변대기'}">
 											<td class="no-status">${askVO.status}</td>
 										</c:if>
