@@ -13,7 +13,7 @@
 		z-index: 1;
 	}
 	#soge-bg-cl{
-		background-color: #EBDDCC
+		background-color: #EBDDCC;
 	}
 	#soge-bg{
 		background-color: #EBDDCC;

@@ -147,6 +147,9 @@
     	#notice-content{
     		margin: 20px 40px;
     	}
+    	.content-flex-div{
+    		display: flex;
+    	}
     </style>
     <script>
     	'use strict'
@@ -176,7 +179,7 @@
 			<div id="top-menu-str">공지사항 상세보기</div>
 			<div id="admin-content-right-inner-content">
 				<div id="admin-content-menu">
-					<div>
+					<div class="content-flex-div">
 						<div id="admin-content-menu-str">공지사항 상세보기 <i class="fa-solid fa-book-open"></i></div>
 						<a href="${ctp}/admin/noticeManagement"><div class="go-btn">돌아가기</div></a>
 						<a href="${ctp}/admin/noticeUpdate?idx=${vo.idx}"><div class="go-btn update-btn">수정</div></a>

@@ -278,6 +278,7 @@
 			<a href="javascript:boardManagementUp()"><div class="admin-inner-menu"><i class="fa-solid fa-angle-down"></i> 게시판 관리</div></a>
 		</div>
 		<div id="admin-board-inner-menu">
+			<a href="${ctp}/admin/memberList"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> 카테고리 관리</div></a>
 			<a href="${ctp}/admin/memberList"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> 신고 관리</div></a>
 		</div>
 		<div id="notice-menu-down">

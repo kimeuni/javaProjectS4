@@ -33,7 +33,14 @@ public class UsedController {
 	}
 	
 	@RequestMapping(value ="/usedInput",method = RequestMethod.GET)
-	public String usedInputGet() {
+	public String usedInputGet(Model model) {
+		List<TopCategoryVO> tVOS = usedService.getTopCategoryList();
+		List<MidCategoryVO> mVOS = usedService.getMidCategoryList();
+		List<BtmCategoryVO> bVOS = usedService.getBtmCategoryList();
+		
+		model.addAttribute("tVOS",tVOS);
+		model.addAttribute("mVOS",mVOS);
+		model.addAttribute("bVOS",bVOS);
 		return "used/usedInput";
 	}
 }

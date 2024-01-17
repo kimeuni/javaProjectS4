@@ -223,6 +223,7 @@
 						<li>
 							<i class="fa-solid fa-cart-shopping"></i>내상점
 							<ul>
+								<li><a href="${ctp}/used/usedInput">상품 판매</a></li>
 								<li><a href="">내상점</a></li>
 								<li><a href="">찜목록</a></li>
 								<li><a href="">상점관리</a></li>

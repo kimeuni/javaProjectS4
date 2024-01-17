@@ -27,15 +27,14 @@
     	}
     	#notice-str{
     		width: 90%;
-    		display: inline-block;
+    		display: flex;
     	}
     	#notice-list{
-    		width: 8%;
-    		display: inline-block;
+    		width: 10%;
+    		display: flex;
     	}
     	#notice-list-btn{
     		width: 100px;
-    		height: 40px;
     		line-height: 40px;
     		background-color: #eee;
     		border-radius: 5px;
@@ -124,6 +123,10 @@
     	#pre-div a, #next-div a{
     		text-decoration: none;
     		color: #000;
+    		
+    	}
+    	.f-d{
+    		display: flex;
     	}
     </style>
     <script>
@@ -136,6 +139,7 @@
 <jsp:include page="/WEB-INF/views/include/header.jsp" />
     <div id="notice-content-container">
     	<div id="notice-str-div">
+    		<div class="f-d">
     		<div id="notice-str"><h2>공지사항</h2></div>
     		<div id="notice-list">
     			<c:if test="${empty part}">
@@ -144,6 +148,7 @@
     			<c:if test="${!empty part}">
 	    			<a href="${ctp}/board/noticeSearch?pag=${pag}&pageSize=${pageSize}&part=${part}&searchString=${searchString}"><div id="notice-list-btn">목록</div></a>
     			</c:if>
+   			</div>
    			</div>
     	</div>
     	<div id="notice-content-div">

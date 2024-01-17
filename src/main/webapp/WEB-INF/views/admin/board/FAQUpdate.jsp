@@ -67,13 +67,13 @@
     	#FAQ-category-div{
     		text-align: left;
     		display: inline-block;
-    		width: 13%;
+    		width: 15%;
     	}
     	#FAQ-category-div select{
     		height: 40px;
     	}
     	#FAQ-title-input input[type="text"]{
-    		width: 86%;
+    		width: 85%;
     		height: 40px;
     		margin-bottom: 20px;
     	}
@@ -101,6 +101,9 @@
     		display: inline-block;
     		border-radius: 5px;
     		margin-right: 10px;
+    	}
+    	.FAQ-flex-div{
+    		display: flex;
     	}
     </style>
     <script>
@@ -183,24 +186,26 @@
 			<div id="top-menu-str">자주하는 질문 수정</div>
 			<div id="admin-FAQ-right-inner-content">
 				<div id="admin-FAQ-menu">
-					<div>
+					<div class="FAQ-flex-div">
 						<div id="admin-FAQ-menu-str">자주하는 질문 수정 <i class="fa-solid fa-pencil"></i></div>
 						<a href="${ctp}/admin/FAQManagement"><div id="back-btn">돌아가기</div></a>
 					</div>
 					<div>
-						<div id="FAQ-category-div">
-							<select name="category" id="category">
-								<option value="" >카테고리 선택</option>
-								<option value="채팅" ${vo.category =='채팅'? 'selected' : '' }>채팅</option>
-								<option value="알림" ${vo.category =='알림'? 'selected' : '' }>알림</option>
-								<option value="검색" ${vo.category =='검색'? 'selected' : '' }>검색</option>
-								<option value="계정/로그인" ${vo.category =='계정/로그인'? 'selected' : '' }>계정/로그인</option>
-								<option value="기타" ${vo.category =='기타'? 'selected' : '' }>기타</option>
-							</select>
-						</div>
-						<div id="FAQ-title-input">
-							<input type="text" name="question" id="question" maxlength="40" value="${vo.question }" required placeholder="질문을 입력하세요." />
-							<span id="demo-question-str-cnt">(${fn:length(vo.question) }/40)</span>
+						<div class="FAQ-flex-div">
+							<div id="FAQ-category-div">
+								<select name="category" id="category">
+									<option value="" >카테고리 선택</option>
+									<option value="채팅" ${vo.category =='채팅'? 'selected' : '' }>채팅</option>
+									<option value="알림" ${vo.category =='알림'? 'selected' : '' }>알림</option>
+									<option value="검색" ${vo.category =='검색'? 'selected' : '' }>검색</option>
+									<option value="계정/로그인" ${vo.category =='계정/로그인'? 'selected' : '' }>계정/로그인</option>
+									<option value="기타" ${vo.category =='기타'? 'selected' : '' }>기타</option>
+								</select>
+							</div>
+							<div id="FAQ-title-input">
+								<input type="text" name="question" id="question" maxlength="40" value="${vo.question }" required placeholder="질문을 입력하세요." />
+								<span id="demo-question-str-cnt">(${fn:length(vo.question) }/40)</span>
+							</div>
 						</div>
 					</div>
 					<div id="FAQ-answer-div">

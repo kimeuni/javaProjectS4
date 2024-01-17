@@ -92,6 +92,9 @@
     		color: #fff;
     		font-weight: bold;
     	}
+    	.notice-flex-div{
+    		display: flex;
+    	}
     </style>
     <script>
     	'use strict'
@@ -172,7 +175,7 @@
 			<div id="top-menu-str">공지사항 수정</div>
 			<div id="admin-notice-right-inner-content">
 				<div id="admin-notice-menu">
-					<div>
+					<div class="notice-flex-div">
 						<div id="admin-notice-menu-str">공지사항 수정 <i class="fa-solid fa-pencil"></i></div>
 						<a href="${ctp}/admin/noticeManagement"><div id="back-btn">돌아가기</div></a>
 					</div>
