@@ -242,7 +242,7 @@
 					<span><a href="http://localhost:9090/javaProjectS4/"><img src="${ctp}/data/images/다모아로고1.png" height="60px" id="logo-img"></a></span>
 					<nav id="gub-ul-nav-div">
 						<ul id="header-btm-ul">
-							<li><a href="">중고거래</a></li>
+							<li><a href="${ctp}/used/usedMain">중고거래</a></li>
 							<li><a href="">커뮤니티</a></li>
 							<li><a href="">모아모아</a></li>
 							<li><a href="${ctp}/board/noticeList">공지사항</a></li>

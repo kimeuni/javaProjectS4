@@ -69,4 +69,8 @@ public interface MemberDAO {
 
 	public int setAdYNUpdate(@Param("adYN") String adYN,@Param("mid") String mid);
 
+	public int setProfileUpdate(@Param("profileStr") String profileStr,@Param("mid") String mid);
+
+	public int setProfileNoImgUpdate(@Param("profile") String profile,@Param("mid") String mid);
+
 }

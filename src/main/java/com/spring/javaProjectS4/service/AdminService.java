@@ -88,7 +88,7 @@ public interface AdminService {
 
 	public List<AskVO> getAskStatusList(int startIndexNo, int pageSize, String status);
 
-	public void setaskStatusNoDel(int idx);
+	public void setaskStatusNoDel(int idx, String img);
 
 	public AskVO getAskIdx(int idx);
 

@@ -62,7 +62,7 @@
 <div id="myPage-left-nav">
 	<div><a href="${ctp}/damoa"><img src="${ctp}/data/images/다모아로고1.png" height="65px"></a></div>
 	<div id="member-profile">
-		<a href="${ctp}/member/profileUpdate" ><img src="${ctp}/data/member/${vo.profile}" id="profileChan"></a>
+		<a href="${ctp}/member/profileUpdate" ><img src="${ctp}/data/member/${vo.profile}" width="120px" height="120px" id="profileChan"></a>
 		<span><a href="${ctp}/member/profileChange" ><i class="fa-solid fa-square-pen"></i></a></span>
 		<div id="profile-str">
 			<div id="profile-str-nick">${vo.nickName}</div>

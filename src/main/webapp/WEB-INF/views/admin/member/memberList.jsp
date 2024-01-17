@@ -84,6 +84,7 @@
     	}
     	.member-input img{
     		width: 100px;
+    		height : 100px;
     		border-radius: 100%;
     	}
     	.member-str-input-div{

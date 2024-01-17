@@ -129,16 +129,14 @@
 			let idx = '';
 			let curScrStartNo = '';
 			
-			for(let i=0; i<$('input:checkbox[name=ckS]').length; i++){
-				if(askForm.ckS[i].checked){
-					let str = askForm.ckS[i].value.split("/");
-					let idxStr = str[0];
-					let curScrStartNoStr = str[1];
-					
-					idx += idxStr+"/";
-					curScrStartNo += curScrStartNoStr+"/";
-				}
-			}
+			$("input[name=ckS]:checked").each(function(){
+				let str = $(this).val().split("/");
+				let idxStr = str[0];
+				let curScrStartNoStr = str[1];
+				
+				idx += idxStr+"/";
+				curScrStartNo += curScrStartNoStr+"/";
+			})
 			idx = idx.substring(0,idx.length-1);
 			curScrStartNo = curScrStartNo.substring(0,curScrStartNo.length-1);
 			
@@ -184,58 +182,56 @@
 					<div id="choice-Del-btn">
 						<a href="javascript:choiceDel()">선택 삭제</a>
 					</div>
-						<form name="askForm">
-							<table class="table table-hover">
-								<thead>
+						<table class="table table-hover">
+							<thead>
+								<tr>
+									<th><input type="checkbox" name="ckAll" id="ckAll" value="all" onclick="checkAll()"/></th>
+									<th>번호</th>
+									<th>제목</th>
+									<th>날짜</th>
+									<th>처리상태</th>
+									<th>작성자</th>
+									<th>유형</th>
+									<th>삭제</th>
+								</tr>
+							</thead>
+							<c:if test="${empty vos}">
+								<tr >
+									<td colspan="8">답변대기 중인 문의가 존재하지 않습니다.</td>
+								</tr>
+							</c:if>
+							<c:if test="${!empty vos}">
+								<c:set var="curScrStartNo" value="${pageVO.curScrStartNo}" />
+								<c:forEach var="askVO" items="${vos}" varStatus="st">
 									<tr>
-										<th><input type="checkbox" name="ckAll" id="ckAll" value="all" onclick="checkAll()"/></th>
-										<th>번호</th>
-										<th>제목</th>
-										<th>날짜</th>
-										<th>처리상태</th>
-										<th>작성자</th>
-										<th>유형</th>
-										<th>삭제</th>
+										<td><input type="checkbox" name="ckS" class="ckS" value="${askVO.idx}/${curScrStartNo}"/></td>
+										<td>${curScrStartNo}</td>
+										<td style="text-align: left;"><a href="${ctp}/admin/askAnsInput?idx=${askVO.idx}&pag=${pageVO.pag}&pageSize=${pageVO.pageSize}">
+											<c:if test="${fn:length(askVO.title) > 17}">
+												${fn:substring(askVO.title,0,17)} 
+											</c:if>
+											<c:if test="${fn:length(askVO.title) <= 17}">
+												${askVO.title} 
+											</c:if>
+											<span style="color: #eee"><c:if test="${askVO.imgs != ''}"><i class="fa-solid fa-paperclip"></i></c:if></span></a>
+										</td>
+										<td>
+											<c:if test="${askVO.hour_diff <= 24 }">
+												${askVO.date_diff == 0 ? fn:substring(askVO.askDate,11,16) : fn:substring(askVO.askDate,5,16)}
+											</c:if>
+											<c:if test="${askVO.hour_diff > 24 }">
+												${fn:substring(askVO.askDate,0,10)}
+											</c:if>
+										</td>
+										<td class="no-status">${askVO.status}</td>
+										<td class="no-status">${askVO.mid}</td>
+										<td class="no-status">${askVO.category}</td>
+										<td><a href="javascript:askDel('${askVO.idx}','${curScrStartNo}')">삭제</a></td>
 									</tr>
-								</thead>
-								<c:if test="${empty vos}">
-									<tr >
-										<td colspan="8">답변대기 중인 문의가 존재하지 않습니다.</td>
-									</tr>
-								</c:if>
-								<c:if test="${!empty vos}">
-									<c:set var="curScrStartNo" value="${pageVO.curScrStartNo}" />
-									<c:forEach var="askVO" items="${vos}" varStatus="st">
-										<tr>
-											<td><input type="checkbox" name="ckS" class="ckS" value="${askVO.idx}/${curScrStartNo}"/></td>
-											<td>${curScrStartNo}</td>
-											<td style="text-align: left;"><a href="${ctp}/admin/askAnsInput?idx=${askVO.idx}&pag=${pageVO.pag}&pageSize=${pageVO.pageSize}">
-												<c:if test="${fn:length(askVO.title) > 17}">
-													${fn:substring(askVO.title,0,17)} 
-												</c:if>
-												<c:if test="${fn:length(askVO.title) <= 17}">
-													${askVO.title} 
-												</c:if>
-												<span style="color: #eee"><c:if test="${askVO.imgs != ''}"><i class="fa-solid fa-paperclip"></i></c:if></span></a>
-											</td>
-											<td>
-												<c:if test="${askVO.hour_diff <= 24 }">
-													${askVO.date_diff == 0 ? fn:substring(askVO.askDate,11,16) : fn:substring(askVO.askDate,5,16)}
-												</c:if>
-												<c:if test="${askVO.hour_diff > 24 }">
-													${fn:substring(askVO.askDate,0,10)}
-												</c:if>
-											</td>
-											<td class="no-status">${askVO.status}</td>
-											<td class="no-status">${askVO.mid}</td>
-											<td class="no-status">${askVO.category}</td>
-											<td><a href="javascript:askDel('${askVO.idx}','${curScrStartNo}')">삭제</a></td>
-										</tr>
-										<c:set var="curScrStartNo" value="${curScrStartNo - 1 }" />
-									</c:forEach>
-								</c:if>
-							</table>
-						</form>
+									<c:set var="curScrStartNo" value="${curScrStartNo - 1 }" />
+								</c:forEach>
+							</c:if>
+						</table>
 					</div>
 					<br/>
 					<div class="text-center">

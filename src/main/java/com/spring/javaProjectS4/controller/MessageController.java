@@ -58,6 +58,14 @@ public class MessageController {
 			model.addAttribute("msg", "문의 접수에 실패하였습니다.");
 			model.addAttribute("url","ask/askInput");
 		}
+		else if(msgFalg.equals("profileUpdateY")) {
+			model.addAttribute("msg", "프로필이 변경되었습니다.");
+			model.addAttribute("url","member/profileUpdate");
+		}
+		else if(msgFalg.equals("profileUpdateN")) {
+			model.addAttribute("msg", "프로필 변경에 실패하였습니다.");
+			model.addAttribute("url","member/profileUpdate");
+		}
 		return "include/message";
 	}
 }

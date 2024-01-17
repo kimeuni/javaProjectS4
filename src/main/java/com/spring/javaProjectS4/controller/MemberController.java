@@ -917,15 +917,32 @@ public class MemberController {
 	
 	// 프로필 수정
 	@RequestMapping(value = "/profileUpdate", method = RequestMethod.POST)
-	public String profileUpdatePost(MultipartHttpServletRequest profile, String oProfile) {
+	public String profileUpdatePost(MultipartHttpServletRequest profile, String oProfile,String mid) {
 		
 		// 기본 프로필이 아닐 시 삭제 후 새 이미지 업데이트
 		if(!oProfile.equals("no_img.png")) {
-			//int res = memberService.origProfileDel(oProfile);
-			
+			memberService.origProfileDel(oProfile);
 		}
 		
-		return "";
+		String profileStr = "";
+		int res = memberService.setProfileUpdate(profile, profileStr,mid);
+		
+		if(res != 0 ) return "redirect:/message/profileUpdateY";
+		else return "redirect:/message/profileUpdateN";
+	}
+	
+	// 프로프 삭제(기본 프로필로 변경)
+	@ResponseBody
+	@RequestMapping(value = "/profileNoImgUpdate",method = RequestMethod.POST)
+	public String profileNoImgUpdatePost(String mid, String oProfile) {
+
+		// 기본 프로필이 아닐 시 삭제 후 기본 프로필 업데이트
+		if(!oProfile.equals("no_img.png")) {
+			memberService.origProfileDel(oProfile);
+		}
+		int res = memberService.setProfileNoImgUpdate("no_img.png",mid);
+		if(res != 0 ) return "1";
+		else return "2";
 	}
 	
 	// 메일 전송을 위한 메소드

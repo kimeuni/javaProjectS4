@@ -1,9 +1,21 @@
 package com.spring.javaProjectS4.service;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.spring.javaProjectS4.dao.MemberDAO;
 import com.spring.javaProjectS4.vo.MemberVO;
@@ -146,6 +158,68 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public int setAdYNUpdate(String adYN, String mid) {
 		return memberDAO.setAdYNUpdate( adYN, mid);
+	}
+
+	@Override
+	public void origProfileDel(String oProfile) {
+		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
+		String realPath = request.getSession().getServletContext().getRealPath("/resources/data/");
+		
+		String oFilePath = "";
+		
+		oFilePath = realPath + "member/" + oProfile;
+		
+		fileDelete(oFilePath);
+	}
+	
+	// 이미지 삭제
+	private void fileDelete(String origFilePath) {
+		File delFile = new File(origFilePath);
+		if(delFile.exists()) delFile.delete();
+	}
+
+	@Override
+	public int setProfileUpdate(MultipartHttpServletRequest profile, String profileStr, String mid) {
+		int res = 0;
+		try {
+			MultipartFile fileImg = profile.getFile("profile");
+			
+			String saveFileName = "";
+			// 저장되는 파일명 중복되지 않도록 처리 (날짜 + 랜덤 2자리 숫자 + 원본 파일명)
+			Date date = new Date();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmmss");
+			UUID uid = UUID.randomUUID();
+			String uuid = uid.toString().substring(0,2);
+			saveFileName = sdf.format(date) + "_" + uuid + "_" + fileImg.getOriginalFilename();
+			
+			
+			writeFile(fileImg,saveFileName);
+			
+			profileStr= saveFileName;
+			res = memberDAO.setProfileUpdate(profileStr,mid);
+		} catch (IOException e) {
+			System.out.println("IO오류" + e.getMessage());
+			e.printStackTrace();
+		}
+		return res;
+	}
+	
+
+	// 파일 서버 폴더에 저장
+	private void writeFile(MultipartFile fileImg, String saveFileName) throws IOException {
+		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
+		String realPath = request.getSession().getServletContext().getRealPath("/resources/data/member/");
+		
+		byte[] data = fileImg.getBytes();
+		FileOutputStream fos = new FileOutputStream(realPath + saveFileName);
+		
+		fos.write(data);
+		fos.close();
+	}
+
+	@Override
+	public int setProfileNoImgUpdate(String profile, String mid) {
+		return memberDAO.setProfileNoImgUpdate( profile, mid);
 	}
 
 }

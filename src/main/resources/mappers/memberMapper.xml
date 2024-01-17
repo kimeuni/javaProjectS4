@@ -92,4 +92,10 @@
 	<update id="setAdYNUpdate">
 		update memberS set adYN = #{adYN} where mid = #{mid};
 	</update>
+	<update id="setProfileUpdate">
+		update memberS set profile = #{profileStr} where mid = #{mid};
+	</update>
+	<update id="setProfileNoImgUpdate">
+		update memberS set profile = #{profile} where mid = #{mid};
+	</update>
 </mapper>

@@ -2,6 +2,8 @@ package com.spring.javaProjectS4.service;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+
 import com.spring.javaProjectS4.vo.MemberVO;
 import com.spring.javaProjectS4.vo.ReasonTitleVO;
 import com.spring.javaProjectS4.vo.UserShowAdvertisementVO;
@@ -62,5 +64,11 @@ public interface MemberService {
 	public List<AskVO> getMyAskListSearch(int startIndexNo, int pageSize, String mid, String part);
 
 	public int setAdYNUpdate(String adYN, String mid);
+
+	public void origProfileDel(String oProfile);
+
+	public int setProfileUpdate(MultipartHttpServletRequest profile, String profileStr, String mid);
+
+	public int setProfileNoImgUpdate(String profile, String mid);
 
 }

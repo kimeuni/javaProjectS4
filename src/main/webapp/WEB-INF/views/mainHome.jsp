@@ -9,6 +9,9 @@
 	<jsp:include page="/WEB-INF/views/include/bs4.jsp" />
 </head>
 <style> 
+	#soge-container{
+		z-index: 1;
+	}
 	#soge-bg-cl{
 		background-color: #EBDDCC
 	}
@@ -18,7 +21,6 @@
 		max-width: 1024px;
 		height: 655px;
 		margin: 0 auto;
-		z-index: 1;
 	}
 	#soge-title{
 		padding-top: 180px;
@@ -123,7 +125,7 @@
 </c:if>
 
 <jsp:include page="/WEB-INF/views/include/header.jsp"/>
-<main>
+<div id="soge-container">
 	<div id="soge-bg-cl">
 		<div id="soge-bg">
 			<div id="soge-title">
@@ -134,7 +136,7 @@
 		</div>
 	</div>
 	<div style="height: 1000px;"></div>
-</main>
+</div>
 <jsp:include page="/WEB-INF/views/include/footer.jsp" />
 </body>
 </html>

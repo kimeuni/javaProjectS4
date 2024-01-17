@@ -1,5 +1,6 @@
 package com.spring.javaProjectS4.controller;
 
+import java.io.File;
 import java.util.List;
 
 import javax.mail.MessagingException;
@@ -588,9 +589,50 @@ public class AdminController {
 	
 	// 임시 이미지 삭제 화면 이동
 	@RequestMapping(value = "/imsiImgDelete",method = RequestMethod.GET)
-	public String ImsiImgDeleteGet() {
+	public String ImsiImgDeleteGet(HttpServletRequest request, Model model) {
+		
+		String realPath = request.getSession().getServletContext().getRealPath("/resources/data/ckeditor");
+		
+		String[] files = new File(realPath).list();
+		
+		model.addAttribute("files", files);
+		model.addAttribute("fileCount", files.length);
 		
 		return "admin/imsiImgDelete";
+	}
+	
+	// 임시 이미지 삭제 처리
+	@ResponseBody
+	@RequestMapping(value = "/imsiImgDelete",method = RequestMethod.POST)
+	public String ImsiImgDeletePost(HttpServletRequest request,
+			@RequestParam(name="file", defaultValue = "", required=false) String fName) {
+		String realPath = request.getSession().getServletContext().getRealPath("/resources/data/ckeditor/");
+		int res = 0;
+		
+		// 여러개 값이 들어왔을 때
+		String[] fNames = null;
+		if(fName.indexOf("/") != -1) {
+			fNames = fName.split("/");
+			for(int i=0; i<fNames.length; i++) {
+				File file = new File(realPath + fNames[i]);
+				
+				if(file.exists()) {
+					file.delete();
+					res = 1;
+				}
+			}
+		}
+		else {
+			File file = new File(realPath + fName);
+			
+			if(file.exists()) {
+				file.delete();
+				res = 1;
+			}
+		}
+		
+		
+		return res + "";
 	}
 	
 	// 문의 관리 - 답변대기 문의 화면이동
@@ -618,13 +660,14 @@ public class AdminController {
 			idxArr = idx.split("/");
 			// 삭제
 			for(int i=0; i<idxArr.length; i++) {
-				
-				adminService.setaskStatusNoDel(Integer.parseInt(idxArr[i]));
+				AskVO vo = adminService.getAskIdx(Integer.parseInt(idxArr[i]));
+				adminService.setaskStatusNoDel(Integer.parseInt(idxArr[i]),vo.getImgs());
 			}
 			return "1";
 		}
 		else {
-			adminService.setaskStatusNoDel(Integer.parseInt(idx));
+			AskVO vo = adminService.getAskIdx(Integer.parseInt(idx));
+			adminService.setaskStatusNoDel(Integer.parseInt(idx),vo.getImgs());
 			return "1";
 		}
 	}
@@ -723,17 +766,19 @@ public class AdminController {
 			idxArr = idx.split("/");
 			// 삭제
 			for(int i=0; i<idxArr.length; i++) {
+				AskVO vo = adminService.getAskIdx(Integer.parseInt(idxArr[i]));
 				
 				// 답변 삭제
 				adminService.setAnsDel(Integer.parseInt(idxArr[i]));
 				//문의 삭제
-				adminService.setaskStatusNoDel(Integer.parseInt(idxArr[i]));
+				adminService.setaskStatusNoDel(Integer.parseInt(idxArr[i]),vo.getImgs());
 			}
 			return "1";
 		}
 		else {
+			AskVO vo = adminService.getAskIdx(Integer.parseInt(idx));
 			adminService.setAnsDel(Integer.parseInt(idx));
-			adminService.setaskStatusNoDel(Integer.parseInt(idx));
+			adminService.setaskStatusNoDel(Integer.parseInt(idx),vo.getImgs());
 			return "1";
 		}
 	}

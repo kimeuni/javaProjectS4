@@ -319,7 +319,6 @@ public class AdminServiceImpl implements AdminService {
 			writeFile(fileImg,saveFileName);
 			
 			mImg= saveFileName;
-			System.out.println(mImg);
 			res = adminDAO.setAdInput(mImg, url);
 		} catch (IOException e) {
 			System.out.println("IO오류" + e.getMessage());
@@ -392,7 +391,18 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public void setaskStatusNoDel(int idx) {
+	public void setaskStatusNoDel(int idx,String img) {
+		// 이미지가 있으면 이미지 삭제
+		if(!img.equals("")) {
+			HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
+			String realPath = request.getSession().getServletContext().getRealPath("/resources/data/ask/");
+			String oFilePath = "";
+			
+			oFilePath = realPath + img;
+			
+			fileDelete(oFilePath);
+		}
+		
 		adminDAO.setaskStatusNoDel(idx);
 	}
 

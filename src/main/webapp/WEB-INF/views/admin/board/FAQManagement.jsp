@@ -148,16 +148,14 @@
     		let curScrStartNo = '';
     		let idx = '';
     		
-    		for(let i=0; i<$('input:checkbox[name=ckS]').length; i++){
-    			if(FAQDelform.ckS[i].checked){
-    				let str = FAQDelform.ckS[i].value.split("/");
-    				let curScrStartNoStr = str[0];
-    				let idxStr = str[1];
-    				
-    				curScrStartNo += curScrStartNoStr+"/";
-    				idx += idxStr+"/";
-    			}
-    		}
+    		$("input[name=ckS]:checked").each(function(){
+				let str = $(this).val().split("/");
+				let curScrStartNoStr = str[0];
+				let idxStr = str[1];
+				
+				curScrStartNo += curScrStartNoStr+"/";
+				idx += idxStr+"/";
+			})
     		curScrStartNo = curScrStartNo.substring(0,curScrStartNo.length-1);
     		idx = idx.substring(0,idx.length-1);
     		

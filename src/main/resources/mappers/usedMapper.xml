@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.javaProjectS4.dao.UsedDAO">
+	<select id="getTopCategoryList" resultType="com.spring.javaProjectS4.vo.TopCategoryVO">
+		select * from topCategoryS order by idx;
+	</select>
+	<select id="getMidCategoryList" resultType="com.spring.javaProjectS4.vo.MidCategoryVO">
+		select * from midCategoryS order by idx;
+	</select>
+	<select id="getBtmCategoryList" resultType="com.spring.javaProjectS4.vo.BtmCategoryVO">
+		select * from btmCategoryS order by idx;
+	</select>
+</mapper>

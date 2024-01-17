@@ -73,7 +73,7 @@ insert into userDelReasonS values(default,'A0009','삭제테스트',default);
 create table userReportS(
 	idx int not null auto_increment primary key,	/* 고유번호 */
 	mid varchar(17) not null,						/* 아이디 */
-	part varchar(20) not null,						/* 분류(ask:문의 / usedBoard:중고거래 / reply: 댓글) */
+	part varchar(20) not null,						/* 분류(ask:문의 / used:중고거래 / reply: 댓글) */
 	partIdx int not null,							/* 분류 idx */
 	rDate datetime default now(),					/* 신고 처리 날짜 */
 	reason varchar(301) default '',					/* 신고 이유 */

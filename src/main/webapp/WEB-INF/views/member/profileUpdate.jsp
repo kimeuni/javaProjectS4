@@ -151,6 +151,29 @@
 		    	}
 	  		}
 	    }
+	    
+	    // 기본 프로필로 수정
+	   	function profileNoImgUpdate(){
+	    	let mid = $("#mid").val();
+	    	let oProfile = $("#oProfile").val();
+	    	
+	    	let query = {
+	    		mid : mid,
+	    		oProfile : oProfile
+	    	}
+	    	$.ajax({
+	    		url : "${ctp}/member/profileNoImgUpdate",
+	    		type : "post",
+	    		data : query,
+	    		success : function(res){
+	    			if(res == "1") location.reload();
+	    			else if(res == "2") alert("프로필 삭제에 실패하였습니다.");
+	    		},
+	    		error : function(){
+	    			alert("전송오류(profileUpdate.jsp)")
+	    		}
+	    	});
+	    }
     </script>
 </head>
 <body>
@@ -174,7 +197,7 @@
 								<input type="file" name="profile" id="profile" onchange="imgCheck(this)" />
 							</div>
 							<div class="file-btn-div">
-								<a href="javascript:location.reload()">
+								<a href="javascript:profileNoImgUpdate()">
 									<b>삭제</b>
 								</a>
 							</div>
@@ -186,6 +209,7 @@
 						</div>
 					</div>
 					<input type="hidden" id="oProfile" name="oProfile" value="${vo.profile}"/>
+					<input type="hidden" id="mid" name="mid" value="${vo.mid}"/>
 				</form>
 			</div>
 		</div>

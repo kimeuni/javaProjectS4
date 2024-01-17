@@ -37,6 +37,98 @@ create table FAQS(
 );
 
 -- 중고거래 게시판 DB
+create table usedS(
+	idx int not null auto_increment primary key,
+	imgs varchar(600) not null,
+	title varchar(41) not null,
+	topCategoryIdx int not null,
+	midCategoryIdx int,
+	btmCategoryIdx int,
+	region varchar(20) not null,
+	usedState varchar(20) not null,
+	exchange char(2) not null,
+	money int not null,
+	delivery int not null default 0,
+	content text not null,
+	mid varchar(17) not null,
+	viewCnt int default 0,
+	totLike int default 0,
+	state char(4) not null default '판매중',
+	userDel char(1) default 'N',
+	uploadDate datetime default now(),
+	
+	foreign key (mid) references memberS (mid)
+);
+
+-- 대분류
+create table topCategoryS(
+	idx int not null auto_increment primary key,
+	topCategoryName varchar(16) not null
+);
+
+insert into topCategory values(default,'여성의류');
+insert into topCategory values(default,'남성의류');
+insert into topCategory values(default,'신발');
+insert into topCategory values(default,'반려동물용품');
+insert into topCategory values(default,'도서/티켓/문구');
+insert into topCategory values(default,'스타굿즈');
+insert into topCategory values(default,'키덜트');
+insert into topCategory values(default,'뷰티/미용');
+
+-- 중분류
+create table midCategoryS(
+	idx int not null auto_increment primary key,
+	topCategoryIdx int not null,
+	midCategoryName varchar(16) not null,
+	
+	foreign key (topCategoryIdx) references topCategory (idx)
+);
+
+insert into midCategory values(default,8,'스킨케어');
+insert into midCategory values(default,8,'색조메이크업');
+insert into midCategory values(default,8,'베이스메이크업');
+insert into midCategory values(default,8,'바디/헤어케어');
+insert into midCategory values(default,8,'향수/아로마');
+insert into midCategory values(default,8,'네일아트/케어');
+insert into midCategory values(default,8,'미용소품/기기');
+insert into midCategory values(default,8,'다이어트/이너뷰티');
+insert into midCategory values(default,8,'남성 화장품');
+
+-- 소분류
+create table btmCategoryS(
+	idx int not null auto_increment primary key,
+	topCategoryIdx int not null,
+	midCategoryIdx int not null,
+	btmCategoryName varchar(16) not null,
+	
+	foreign key (topCategoryIdx) references topCategory (idx),
+	foreign key (midCategoryIdx) references midCategory (idx)
+);
+
+insert into btmCategory values(default,1,2,'');
+insert into btmCategory values(default,1,2,'니트/스웨터');
+insert into btmCategory values(default,1,2,'흐드티/후드집업');
+insert into btmCategory values(default,1,2,'맨투맨');
+insert into btmCategory values(default,1,2,'블라우스');
+insert into btmCategory values(default,1,2,'셔츠');
+insert into btmCategory values(default,1,2,'반팔 티셔츠');
+insert into btmCategory values(default,1,2,'긴팔 티셔츠');
+insert into btmCategory values(default,1,2,'민소매 티셔츠');
+
+drop table usedS;
+drop table likeS;
+
+-- 찜하기
+create table likeS(
+	idx int not null auto_increment primary key,
+	usedIdx int not null,
+	likeMid varchar(17) not null,
+	alarm char(1) default 'Y',
+	
+	foreign key (usedIdx) references usedS (idx)
+);
+
+-- 알림
 
 
 -- 커뮤니티 게시판 DB
@@ -44,8 +136,3 @@ create table FAQS(
 
 -- 좋아요 DB (커뮤니티, 모아모아)
 
-
--- 찜하기
-
-
--- 알림

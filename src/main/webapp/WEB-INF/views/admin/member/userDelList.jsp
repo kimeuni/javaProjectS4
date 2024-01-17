@@ -235,16 +235,15 @@
     		let mid = '';
     		let nickName = '';
     		
-    		for(let i=0; i<$('input:checkbox[name=ckS]').length; i++){
-    			if(userDelForm.ckS[i].checked){
-    				let str = userDelForm.ckS[i].value.split("/");
-    				let midStr = str[0];
-    				let nickStr = str[1];
-    				
-    				mid += midStr+"/";
-    				nickName += nickStr+"/";
-    			}
-    		}
+    		$("input[name=ckS]:checked").each(function(){
+    			let str = $(this).val().split("/");
+				let midStr = str[0];
+				let nickStr = str[1];
+				
+				mid += midStr+"/";
+				nickName += nickStr+"/";
+			})
+			
     		mid = mid.substring(0,mid.length-1);
     		nickName = nickName.substring(0,nickName.length-1);
     		
@@ -296,7 +295,6 @@
 					<div id="choice-Del-btn">
 						<a href="javascript:choiceDel()">선택 삭제</a>
 					</div>
-					<form name="userDelForm">
 						<table class="table table-hover text-center">
 							<thead>
 								<tr>
@@ -336,7 +334,6 @@
 								</c:forEach>
 							</tbody>
 						</table>
-					</form>
 					<br/>
 					<div class="text-center">
 						<ul class="pagination justify-content-center">
