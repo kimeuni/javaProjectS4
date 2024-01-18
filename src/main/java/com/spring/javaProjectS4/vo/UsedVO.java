@@ -11,7 +11,7 @@ public class UsedVO {
 	private int idx;
 	private String imgs;
 	private String title;
-	private String topCategoryIdx;
+	private int topCategoryIdx;
 	private int midCategoryIdx;
 	private int btmCategoryIdx;
 	private String region;
@@ -26,4 +26,12 @@ public class UsedVO {
 	private String state;
 	private String userDel;
 	private String uploadDate;
+	
+	// 게시글 올린 시간 체크
+	private String second_diff;
+	private String minute_diff;
+	private String hour_diff;
+	private String day_diff;
+	private String month_diff;
+	private String year_diff;
 }

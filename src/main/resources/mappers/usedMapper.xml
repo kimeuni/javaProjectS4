@@ -10,4 +10,29 @@
 	<select id="getBtmCategoryList" resultType="com.spring.javaProjectS4.vo.BtmCategoryVO">
 		select * from btmCategoryS order by idx;
 	</select>
+	<select id="getMemberMid" resultType="com.spring.javaProjectS4.vo.MemberVO">
+		select * from memberS where mid = #{mid};
+	</select>
+	<select id="getUsedAllList" resultType="com.spring.javaProjectS4.vo.UsedVO">
+		select *,timestampdiff(second,uploadDate,now()) as second_diff,timestampdiff(minute,uploadDate,now()) as minute_diff,
+			timestampdiff(hour,uploadDate,now()) as hour_diff, timestampdiff(day,uploadDate,now()) as day_diff, 
+			timestampdiff(month,uploadDate,now()) as month_diff, timestampdiff(year,uploadDate,now()) as year_diff
+			from usedS where userDel = 'N' order by uploadDate desc limit #{startIndexNo},#{pageSize};
+	</select>
+	<select id="getUsedAllRecCnt" resultType="int">
+		select count(*) from usedS where userDel = 'N';
+	</select>
+	<select id="getUsedIdx" resultType="com.spring.javaProjectS4.vo.UsedVO">
+		select * from usedS where idx = #{idx};
+	</select>
+	<select id="getUsedMidRecCnt" resultType="int">
+		select count(*) from usedS where mid = #{searchString};
+	</select>
+	<select id="getUsedMidList" resultType="com.spring.javaProjectS4.vo.UsedVO">
+		select * from usedS where mid = #{mid} limit #{startIndexNo},#{pageSize};
+	</select>
+	
+	<insert id="setUsedInput">
+		insert into usedS values (default,#{imgsStr},#{title},#{topCategoryIdx},#{midCategoryIdx},#{btmCategoryIdx},#{region},#{usedState},#{exchange},#{money},#{delivery},#{content},#{mid},default,default,default,default,default);
+	</insert>
 </mapper>

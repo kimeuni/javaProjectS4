@@ -66,6 +66,14 @@ public class MessageController {
 			model.addAttribute("msg", "프로필 변경에 실패하였습니다.");
 			model.addAttribute("url","member/profileUpdate");
 		}
+		else if(msgFalg.equals("usedInputOk")) {
+			model.addAttribute("msg", "상품이 등록되었습니다.");
+			model.addAttribute("url","used/usedMain");
+		}
+		else if(msgFalg.equals("usedInputNo")) {
+			model.addAttribute("msg", "상품 등록에 실패하였습니다.");
+			model.addAttribute("url","used/usedInput");
+		}
 		return "include/message";
 	}
 }

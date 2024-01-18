@@ -58,7 +58,7 @@
     	}
     	#used-menu-flex{
     		display: flex;
-    		width: 1024px;
+    		width: 1200px;
     		height: 60px;
     		margin: 0 auto;
     		color: #553830;
@@ -145,7 +145,43 @@
     		padding-bottom: 3px;
     		padding-left: 10px;
     	}
-    	
+    	.used-list-container{
+    		display: flex;
+    		min-height: 20px;
+    		width: 1200px;
+    		margin: 0 auto;
+    		flex-wrap: wrap;
+    	}
+    	.used-list-content-div{
+    		display: flex;
+    		width: 240px;
+    		padding: 10px;
+    	}
+    	.line-b{
+    		border: 1px solid #ccc;
+    	}
+    	.mt-1{
+    		margin: 7px;
+    	}
+    	.inner-flex-div{
+    		display: flex;
+    	}
+    	.inner-flex-end{
+    		margin-left: auto;
+    	}
+    	.w-2{
+    		min-width: 50px;
+    	}
+    	.ml-a{
+    		margin-left: auto;
+    	}
+    	.mt-5{
+    		margin-top: 7px !important;
+    	}
+    	.mg-10{
+    		margin-top : 15px;
+    		margin-bottom : 15px;
+    	}
     </style>
 </head>
 <body>
@@ -206,14 +242,53 @@
     			</ul>
     		</div>
     		<div id="all-region-used-div">
-    			<span id="all-used"><a href="">전체</a></span>
+    			<span id="all-used"><a href="${ctp}/used/usedMain">전체</a></span>
 	    		<span id="region-used"><a href="">내 지역 거래</a></span>
     		</div>
     	</div>
     </div>
-    <div style="height: 1500px;">
-    	
+    <h2 class="used-list-container mg-10">최근 등록 상품</h2>
+    <div class="used-list-container">
+    	<c:set var="ctn" value="0" />
+    	<c:forEach var="usedVO" items="${usedVOS}">
+    		<c:set var="sImg" value="${usedVO.imgs.split('/')}" />
+	    	<div class="used-list-content-div">
+	    		<div class="line-b">
+		    		<div><a href="${ctp}/used/usedContent?idx=${usedVO.idx}"><img src="${ctp}/data/used/${sImg[0]}" width="100%" height="218px"></a></div>
+		    		<div class="mt-1">
+			    		<div class="mt-5">${usedVO.title}</div>
+			    		<div class="inner-flex-div mt-5">
+			    			<div>${usedVO.money}원</div>
+			    			<c:if test="${usedVO.second_diff <= 59}"><div class="inner-flex-end">${usedVO.second_diff}초 전</div></c:if>
+			    			<c:if test="${usedVO.second_diff > 59 && usedVO.minute_diff <= 59}"><div class="inner-flex-end">${usedVO.minute_diff}분 전</div></c:if>
+			    			<c:if test="${usedVO.minute_diff > 59 && usedVO.hour_diff <=23}"><div class="inner-flex-end">${usedVO.hour_diff}시간 전</div></c:if>
+			    			<c:if test="${usedVO.hour_diff > 23 && usedVO.day_diff <= 31}"><div class="inner-flex-end">${usedVO.day_diff}일 전</div></c:if>
+			    			<c:if test="${usedVO.day_diff > 31 && usedVO.month_diff <= 12}"><div class="inner-flex-end">${usedVO.month_diff}달 전</div></c:if>
+			    			<c:if test="${usedVO.month_diff > 12}"><div class="inner-flex-end">${usedVO.year_diff}년 전</div></c:if>
+			    		</div>
+			    		<div class="inner-flex-div text-center mt-5">
+			    			<div class="w-2 ml-a"><i class="fa-solid fa-heart" style="color: red"></i> ${usedVO.totLike }</div>
+			    			<div class="w-2"><i class="fa-solid fa-eye"></i> ${usedVO.viewCnt}</div>
+			    		</div>
+		    		</div>
+	    		</div>
+	    	</div>
+	    	<c:set var="cnt" value="${cnt +1}" />
+    	</c:forEach>
     </div>
+    <br/>
+	<div class="text-center">
+		<ul class="pagination justify-content-center">
+		    <c:if test="${pageVO.pag > 1}"><li class="page-item"><a class="page-link text-secondary" href="usedMain?pag=1&pageSize=${pageVO.pageSize}"><i class="fa-solid fa-angles-left"></i></a></li></c:if>
+		  	<c:if test="${pageVO.curBlock > 0}"><li class="page-item"><a class="page-link text-secondary" href="usedMain?pag=${(pageVO.curBlock-1)*pageVO.blockSize+1}&pageSize=${pageVO.pageSize}"><i class="fa-solid fa-angle-left"></i></a></li></c:if>
+		  	<c:forEach var="i" begin="${(pageVO.curBlock*pageVO.blockSize)+1}" end="${(pageVO.curBlock*pageVO.blockSize)+pageVO.blockSize}" varStatus="st">
+			    <c:if test="${i <= pageVO.totPage && i == pageVO.pag}"><li class="page-item active"><a class="page-link bg-secondary border-secondary" href="usedMain?pag=${i}&pageSize=${pageVO.pageSize}">${i}</a></li></c:if>
+			    <c:if test="${i <= pageVO.totPage && i != pageVO.pag}"><li class="page-item"><a class="page-link text-secondary" href="usedMain?pag=${i}&pageSize=${pageVO.pageSize}">${i}</a></li></c:if>
+		  	</c:forEach>
+		  	<c:if test="${pageVO.curBlock < pageVO.lastBlock}"><li class="page-item"><a class="page-link text-secondary" href="usedMain?pag=${(pageVO.curBlock+1)*pageVO.blockSize+1}&pageSize=${pageVO.pageSize}"><i class="fa-solid fa-angle-right"></i></a></li></c:if>
+		  	<c:if test="${pageVO.pag < pageVO.totPage}"><li class="page-item"><a class="page-link text-secondary" href="usedMain?pag=${pageVO.totPage}&pageSize=${pageVO.pageSize}"><i class="fa-solid fa-angles-right"></i></a></li></c:if>
+		</ul>
+	</div>
 </div>
 <jsp:include page="/WEB-INF/views/include/footer.jsp" />
 </body>
