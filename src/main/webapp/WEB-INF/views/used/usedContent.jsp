@@ -56,11 +56,25 @@
     	}
     	.mt-1{
     		margin-top: 10px !important;
+    		justify-content: space-evenly;
     	}
     	.u-btns-flex{
     		display: flex;
     		width: 33%;
-    		justify-content: space-around;
+    		/* justify-content: space-around; */
+    	}
+    	.like-btn, .management-btn, .report-btn{
+    		background-color: #aaa;
+    		border: 1px solid;
+    		width: 150px;
+    		height: 40px;
+    		font-size: 1.1em;
+    		font-weight: bold;
+    		text-align: center;
+    		line-height: 40px;
+    	}
+    	.u-btns-flex a{
+    		text-decoration: none;
     	}
     </style>
     
@@ -120,9 +134,11 @@
 					<div>${usedVO.region}</div>
 				</div>
 				<div class="f-d mt-1">
-					<div class="u-btns-flex">dd</div>
-					<div class="u-btns-flex">dd</div>
-					<div class="u-btns-flex">dd</div>
+					<div class="u-btns-flex"><a href="" class="like-btn">찜하기</a></div>
+					<c:if test="${sMid == usedVO.mid }">
+						<div class="u-btns-flex"><a href="" class="management-btn">상점관리</a></div>
+					</c:if>
+					<div class="u-btns-flex"><a href="" class="report-btn">신고</a></div>
 				</div>
 			</div>
 		</div>

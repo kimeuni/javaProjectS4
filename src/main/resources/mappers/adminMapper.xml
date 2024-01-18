@@ -61,7 +61,7 @@
 		select count(*) from askS where status = #{part};
 	</select>
 	<select id="getAskIdx" resultType="com.spring.javaProjectS4.vo.AskVO">
-		select * from askS where idx = #{idx}
+		select *,(select datediff(now(),ansDate) from answerS an where ask.idx = an.askIdx ) as ans_date_diff from askS ask where idx = #{idx}
 	</select>
 	<select id="getUserAskReport" resultType="com.spring.javaProjectS4.vo.UserReportVO">
 		select * from userReportS where part = #{part} and partIdx = ${partIdx};

@@ -220,6 +220,7 @@
     		
     		$("#top-category-str").html(name);
     		$("#mid-category-str").html('');
+    		$("#btm-category-str").html('');
     	}
     	
     	// 중분류 선택

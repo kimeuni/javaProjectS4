@@ -169,7 +169,9 @@
 					<div id="admin-main-menu-str">문의 답변 내역 <i class="fa-solid fa-file-pen"></i></div>
 					<div class="askContent-flex-div">
 						<button onclick="location.href='${ctp}/admin/askStatusYes?pag=${pag}&pageSize=${pageSize}'" class="list-btn">목록</button>
-						<button onclick="askDel(${askVO.idx})" class="del-btn">삭제</button>
+						<c:if test="${askVO.ans_date_diff > 180 }">
+							<button onclick="askDel(${askVO.idx})" class="del-btn">삭제</button>
+						</c:if>
 					</div>
 					<div id="askContent-inner-container">
 						<div class="askContent-flex-div">

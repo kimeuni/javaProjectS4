@@ -47,18 +47,21 @@ public class UsedController {
 		String mid = session.getAttribute("sMid")== null ? "" : (String)session.getAttribute("sMid");
 		
 		// 지역 찾기 (서울/충남/충북 등..)
-		MemberVO mVO = usedService.getMemberMid(mid);
-		String [] region1 = null;
-		region1 = mVO.getAddress().split("/");
-		String[] region2 = region1[1].split(" ");
-		String region = region2[0];
+		if(!mid.equals("")) {
+			MemberVO mVO = usedService.getMemberMid(mid);
+			String [] region1 = null;
+			region1 = mVO.getAddress().split("/");
+			String[] region2 = region1[1].split(" ");
+			String region = region2[0];
+			
+			model.addAttribute("region",region);
+		}
 		
 		model.addAttribute("tVOS",tVOS);
 		model.addAttribute("mVOS",mVOS);
 		model.addAttribute("bVOS",bVOS);
 		model.addAttribute("pageVO",pageVO);
 		model.addAttribute("usedVOS",usedVOS);
-		model.addAttribute("region",region);
 		
 		return "used/usedMain";
 	}

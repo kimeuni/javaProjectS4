@@ -243,7 +243,9 @@
     		</div>
     		<div id="all-region-used-div">
     			<span id="all-used"><a href="${ctp}/used/usedMain">전체</a></span>
-	    		<span id="region-used"><a href="">내 지역 거래</a></span>
+    			<c:if test="${sMid != null }">
+		    		<span id="region-used"><a href="">내 지역 거래</a></span>
+    			</c:if>
     		</div>
     	</div>
     </div>
