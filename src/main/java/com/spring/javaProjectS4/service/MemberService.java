@@ -71,4 +71,6 @@ public interface MemberService {
 
 	public int setProfileNoImgUpdate(String profile, String mid);
 
+	public void setUsedStoreInput(String mid);
+
 }

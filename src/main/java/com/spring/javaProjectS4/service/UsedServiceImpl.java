@@ -1,6 +1,5 @@
 package com.spring.javaProjectS4.service;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -19,8 +18,12 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.spring.javaProjectS4.dao.UsedDAO;
 import com.spring.javaProjectS4.vo.BtmCategoryVO;
+import com.spring.javaProjectS4.vo.FollowUsedAlarmVO;
+import com.spring.javaProjectS4.vo.FollowVO;
+import com.spring.javaProjectS4.vo.LikeVO;
 import com.spring.javaProjectS4.vo.MemberVO;
 import com.spring.javaProjectS4.vo.MidCategoryVO;
+import com.spring.javaProjectS4.vo.StoreVO;
 import com.spring.javaProjectS4.vo.TopCategoryVO;
 import com.spring.javaProjectS4.vo.UsedVO;
 
@@ -29,7 +32,6 @@ public class UsedServiceImpl implements UsedService {
 	
 	@Autowired
 	UsedDAO usedDAO;
-
 	@Override
 	public List<TopCategoryVO> getTopCategoryList() {
 		return usedDAO.getTopCategoryList();
@@ -118,5 +120,65 @@ public class UsedServiceImpl implements UsedService {
 	@Override
 	public List<UsedVO> getUsedMidList(String mid, int startIndexNo, int pageSize) {
 		return usedDAO.getUsedMidList( mid, startIndexNo, pageSize);
+	}
+
+	@Override
+	public List<FollowVO> getFollowerList(String mid) {
+		return usedDAO.getFollowerList(mid);
+	}
+
+	@Override
+	public FollowVO getFollowerMid(String mid) {
+		return usedDAO.getFollowerMid( mid);
+	}
+
+	@Override
+	public List<UsedVO> getSaleUsedMidList(String mid, int startIndexNo, int pageSize) {
+		return usedDAO.getSaleUsedMidList( mid, startIndexNo, pageSize);
+	}
+
+	@Override
+	public int setFollowInput(String followerMid, String followingMid) {
+		return usedDAO.setFollowInput( followerMid, followingMid);
+	}
+
+	@Override
+	public int setFollowDelete(String followerMid, String followingMid) {
+		return usedDAO.setFollowDelete( followerMid, followingMid);
+	}
+
+	@Override
+	public void setViewCntUpdate(int idx) {
+		usedDAO.setViewCntUpdate( idx);
+	}
+
+	@Override
+	public StoreVO getStoreMid(String mid) {
+		return usedDAO.getStoreMid( mid);
+	}
+
+	@Override
+	public List<FollowVO> getFollowingList(String mid) {
+		return usedDAO.getFollowingList( mid);
+	}
+
+	@Override
+	public List<LikeVO> getLikeMid(String mid) {
+		return usedDAO.getLikeMid( mid);
+	}
+
+	@Override
+	public List<FollowVO> getFollowingCheckMid(String mid) {
+		return usedDAO.getFollowingCheckMid( mid);
+	}
+
+	@Override
+	public UsedVO getNowUploadUsed(String mid) {
+		return usedDAO.getNowUploadUsed( mid);
+	}
+
+	@Override
+	public void setFollowUsedAlarmInput(int idx, String followerMid, String mid) {
+		usedDAO.setFollowUsedAlarmInput( idx, followerMid,mid);
 	}
 }

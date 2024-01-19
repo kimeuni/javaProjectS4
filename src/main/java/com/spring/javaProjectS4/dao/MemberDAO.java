@@ -73,4 +73,6 @@ public interface MemberDAO {
 
 	public int setProfileNoImgUpdate(@Param("profile") String profile,@Param("mid") String mid);
 
+	public void setUsedStoreInput(@Param("mid") String mid);
+
 }

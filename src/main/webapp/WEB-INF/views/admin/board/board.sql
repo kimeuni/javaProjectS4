@@ -128,6 +128,45 @@ create table likeS(
 	foreign key (usedIdx) references usedS (idx)
 );
 
+-- 상점
+create table storeS(
+	idx int not null auto_increment primary key,	/* 고유번호 */
+	mid varchar(17) not null,						/* 누구 상점인지 */
+	storeIntroduce text,							/* 상점 소개 */
+	userDel char(1) default 'N',					/* 탈퇴유무 */
+	
+	foreign key (mid) references memberS (mid)
+);
+
+drop table storeS;
+
+-- 팔로우 리스트
+create table followS(
+	idx int not null auto_increment primary key,	/* 고유번호 */
+	followerMid varchar(17) not null,				/* 팔로우 누른 사람(로그인한 사람) */
+	followingMid varchar(17) not null,				/* 누구를 팔로우 했는지 */
+	alarm char(1) default 'Y',						/* 알림유무(Y:알림on / N:알림off) */
+	followAlarm char(1) default 'Y',				/* ~~님이 당신을 팔로우 했습니다. 알림을 위한 알림유무(Y:알림on / N:알림off) (알림 클릭시 N로 업데이트처리) */
+	
+	unique key(followingMid),
+	foreign key (followerMid) references memberS (mid)
+);
+select * from usedS where mid = 'admin' order by idx desc limit 1
+drop  table followS;
+
+-- 팔로우 알림이 Y 일시 추가되는 게시물 알림 리스트
+create table followUsedAlarmS(
+	idx int not null auto_increment primary key,	/* 고유번호 */
+	usedIdx int not null,							/* 올린 게시글 알림 */
+	UpUsedMid varchar(17) not null,					/* 게시물 올린 사람(팔로잉한 사람) */
+	alarmMid varchar(17) not null,					/* 알림 받는 사람(로그인한 사람) */
+	
+	foreign key (usedIdx) references usedS (idx),
+	foreign key (alarmMid) references followS (followerMid)
+);
+
+drop table followUsedAlarm;
+
 -- 알림
 
 

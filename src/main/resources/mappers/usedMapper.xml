@@ -28,11 +28,52 @@
 	<select id="getUsedMidRecCnt" resultType="int">
 		select count(*) from usedS where mid = #{searchString};
 	</select>
+	<select id="getSaleUsedMidRecCnt" resultType="int">
+		select count(*) from usedS where mid = #{searchString} and state = '판매중';
+	</select>
 	<select id="getUsedMidList" resultType="com.spring.javaProjectS4.vo.UsedVO">
 		select * from usedS where mid = #{mid} limit #{startIndexNo},#{pageSize};
+	</select>
+	<select id="getSaleUsedMidList" resultType="com.spring.javaProjectS4.vo.UsedVO">
+		select * from usedS where mid = #{mid} and state = '판매중' limit #{startIndexNo},#{pageSize};
+	</select>
+	<select id="getFollowerList" resultType="com.spring.javaProjectS4.vo.FollowVO" >
+		select * from followS where followingMid = #{mid};
+	</select>
+	<select id="getFollowingList" resultType="com.spring.javaProjectS4.vo.FollowVO" >
+		select * from followS where followerMid = #{mid};
+	</select>
+	<select id="getFollowerMid" resultType="com.spring.javaProjectS4.vo.FollowVO">
+		select * from followS where followerMid = #{mid};
+	</select>
+	<select id="getStoreMid" resultType="com.spring.javaProjectS4.vo.StoreVO">
+		select * from storeS where mid = #{mid};
+	</select>
+	<select id="getLikeMid" resultType="com.spring.javaProjectS4.vo.LikeVO">
+		select * from likeS where likeMid = #{mid};
+	</select>
+	<select id="getFollowingCheckMid" resultType="com.spring.javaProjectS4.vo.FollowVO">
+		select * from followS where followingMid = #{mid};
+	</select>
+	<select id="getNowUploadUsed" resultType="com.spring.javaProjectS4.vo.UsedVO">
+		select * from usedS where mid = #{mid} order by idx desc limit 1;
 	</select>
 	
 	<insert id="setUsedInput">
 		insert into usedS values (default,#{imgsStr},#{title},#{topCategoryIdx},#{midCategoryIdx},#{btmCategoryIdx},#{region},#{usedState},#{exchange},#{money},#{delivery},#{content},#{mid},default,default,default,default,default);
 	</insert>
+	<insert id="setFollowInput">
+		insert into followS values (default,#{followerMid},#{followingMid},default,default);
+	</insert>
+	<insert id="setFollowUsedAlarmInput">
+		insert into followUsedAlarmS values (default,#{idx},#{mid},#{followerMid});
+	</insert>
+	
+	<delete id="setFollowDelete">
+		delete from followS where followerMid = #{followerMid} and followingMid = #{followingMid};
+	</delete>
+	
+	<update id="setViewCntUpdate">
+		update usedS set viewCnt = viewCnt + 1 where idx = #{idx};
+	</update>
 </mapper>

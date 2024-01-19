@@ -5,8 +5,12 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.spring.javaProjectS4.vo.BtmCategoryVO;
+import com.spring.javaProjectS4.vo.FollowUsedAlarmVO;
+import com.spring.javaProjectS4.vo.FollowVO;
+import com.spring.javaProjectS4.vo.LikeVO;
 import com.spring.javaProjectS4.vo.MemberVO;
 import com.spring.javaProjectS4.vo.MidCategoryVO;
+import com.spring.javaProjectS4.vo.StoreVO;
 import com.spring.javaProjectS4.vo.TopCategoryVO;
 import com.spring.javaProjectS4.vo.UsedVO;
 
@@ -29,5 +33,29 @@ public interface UsedService {
 	public UsedVO getUsedIdx(int idx);
 
 	public List<UsedVO> getUsedMidList(String mid, int startIndexNo, int pageSize);
+
+	public List<FollowVO> getFollowerList(String mid);
+
+	public FollowVO getFollowerMid(String mid);
+
+	public List<UsedVO> getSaleUsedMidList(String mid, int startIndexNo, int pageSize);
+
+	public int setFollowInput(String followerMid, String followingMid);
+
+	public int setFollowDelete(String followerMid, String followingMid);
+
+	public void setViewCntUpdate(int idx);
+
+	public StoreVO getStoreMid(String mid);
+
+	public List<FollowVO> getFollowingList(String mid);
+
+	public List<LikeVO> getLikeMid(String mid);
+
+	public List<FollowVO> getFollowingCheckMid(String mid);
+
+	public UsedVO getNowUploadUsed(String mid);
+
+	public void setFollowUsedAlarmInput(int idx, String followerMid, String mid);
 
 }

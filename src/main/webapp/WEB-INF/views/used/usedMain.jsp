@@ -212,21 +212,21 @@
    							<hr/>
     						<c:forEach var="tVO" items="${tVOS }">
 	    						<li >
-	    							<a href="" ><div class="inner-c">${tVO.topCategoryName }</div></a>
+	    							<a href="${ctp}/used/usedCategorySearch?top=${tVO.idx}&mid=0&btm=0" ><div class="inner-c">${tVO.topCategoryName }</div></a>
 	    							<ul class="two-menu">
 	    								<div class="font-b">${tVO.topCategoryName}</div>
 	    								<hr/>
 			    						<c:forEach var="mVO" items="${mVOS }">
 		    								<c:if test="${tVO.idx == mVO.topCategoryIdx }">
 			    								<li>
-					    							<a href="" ><div class="inner-c">${mVO.midCategoryName }</div></a>
+					    							<a href="${ctp}/used/usedCategorySearch?top=${tVO.idx}&mid=${mVO.idx}&btm=0" ><div class="inner-c">${mVO.midCategoryName }</div></a>
 			    									<ul class="th-menu">
 			    										<div class="font-b">${mVO.midCategoryName}</div>
 	    												<hr/>
 							    						<c:forEach var="bVO" items="${bVOS}">
 				    										<c:if test="${mVO.idx == bVO.midCategoryIdx }">
 					    										<li>
-									    							<a href=""><div class="inner-c">${bVO.btmCategoryName }</div></a>
+									    							<a href="${ctp}/used/usedCategorySearch?top=${tVO.idx}&mid=${mVO.idx}&btm=${bVO.idx}"><div class="inner-c">${bVO.btmCategoryName }</div></a>
 					    										</li>
 				    										</c:if>
 							    						</c:forEach>

@@ -386,6 +386,8 @@ public class MemberController {
 		if(res != 0) {
 			// 메인 광고 화면 DB 저장
 			memberService.setMainAdInputMid(vo.getMid());
+			// 유저 상점 만들기
+			memberService.setUsedStoreInput(vo.getMid());
 			
 			return "redirect:/member/kakaoLogin?email="+vo.getEmail();
 		}
@@ -445,8 +447,11 @@ public class MemberController {
 		
 		if(res != 0) {
 			// 메인 광고 화면 DB 
-
 			memberService.setMainAdInputMid(vo.getMid());
+			
+			// 유저 상점 만들기
+			memberService.setUsedStoreInput(vo.getMid());
+			
 			return "redirect:/message/joinOk";
 		}
 		else return "redirect:/message/joinNo";

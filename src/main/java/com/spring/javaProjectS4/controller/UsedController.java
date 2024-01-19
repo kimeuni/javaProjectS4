@@ -1,5 +1,6 @@
 package com.spring.javaProjectS4.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -10,14 +11,19 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.spring.javaProjectS4.pagination.PageProcess;
 import com.spring.javaProjectS4.pagination.PageVO;
 import com.spring.javaProjectS4.service.UsedService;
 import com.spring.javaProjectS4.vo.BtmCategoryVO;
+import com.spring.javaProjectS4.vo.FollowUsedAlarmVO;
+import com.spring.javaProjectS4.vo.FollowVO;
+import com.spring.javaProjectS4.vo.LikeVO;
 import com.spring.javaProjectS4.vo.MemberVO;
 import com.spring.javaProjectS4.vo.MidCategoryVO;
+import com.spring.javaProjectS4.vo.StoreVO;
 import com.spring.javaProjectS4.vo.TopCategoryVO;
 import com.spring.javaProjectS4.vo.UsedVO;
 
@@ -95,6 +101,8 @@ public class UsedController {
 			@RequestParam(name="mid",defaultValue = "",required = false) String mid
 			) {
 		
+		content = content.replace("\n", "<br/>");
+		
 		// 지역 찾기 (서울/충남/충북 등..)
 		MemberVO mVO = usedService.getMemberMid(mid);
 		String [] region1 = null;
@@ -112,12 +120,28 @@ public class UsedController {
 			res = usedService.setUsedInput(imgs,imgsStr,title,topCategoryIdx,midCategoryIdx,btmCategoryIdx,usedState,exchange,money,Integer.parseInt(delivery),content,mid,region);
 		}
 		
-		if(res != 0) return "redirect:/message/usedInputOk";
+		
+		if(res != 0) {
+			// 해당 유저가 방금 등록한 글 가져오기
+			UsedVO usedVO = usedService.getNowUploadUsed(mid);
+			// 중고거래 게시물 등록시, following이 나인 사람이 있으면! followUsedAlarm에 추가
+			List<FollowVO> fuVOS = usedService.getFollowingCheckMid(mid);
+			if(fuVOS.size() != 0) {
+				for(int i=0; i<fuVOS.size(); i++) {
+					// 팔로우한 사람이 알림이 Y이면 followUsedAlarm에 추가
+					if(fuVOS.get(i).getAlarm().equals("Y")) {
+						usedService.setFollowUsedAlarmInput(usedVO.getIdx(),fuVOS.get(i).getFollowerMid(),mid);
+					}
+				}
+			}
+			
+			return "redirect:/message/usedInputOk";
+		}
 		else return "redirect:/message/usedInputNo";
 	}
 	
 	@RequestMapping(value = "/usedContent", method = RequestMethod.GET)
-	public String usedContentGet(Model model,
+	public String usedContentGet(Model model, HttpSession session,
 			@RequestParam(name="idx",defaultValue = "0",required = false) int idx,
 			@RequestParam(name="pag",defaultValue = "1",required = false) int pag,
 			@RequestParam(name="pageSize",defaultValue = "40",required = false) int pageSize
@@ -126,12 +150,32 @@ public class UsedController {
 		List<MidCategoryVO> mVOS = usedService.getMidCategoryList();
 		List<BtmCategoryVO> bVOS = usedService.getBtmCategoryList();
 		
-		// 들어온 글 불러오기
-		UsedVO usedVO = usedService.getUsedIdx(idx);
-		MemberVO memVO = usedService.getMemberMid(usedVO.getMid());
-		PageVO pageVO = pageProcess.totRecCnt(pag, pageSize, "used", "mid", usedVO.getMid());
-		List<UsedVO> usedVOS = usedService.getUsedMidList(usedVO.getMid(),pageVO.getStartIndexNo(),pageSize);
+		// 조회수 처리
+		ArrayList<String> boardContentIdx = (ArrayList)session.getAttribute("sBoardContentIdx");
+		if(boardContentIdx == null) {  
+			boardContentIdx = new ArrayList<String>();
+		}
+		String imsiContentIdx = "used" + idx; 
+		if(!boardContentIdx.contains(imsiContentIdx)) {
+			usedService.setViewCntUpdate(idx);
+			boardContentIdx.add(imsiContentIdx); 
+		}
+		session.setAttribute("sBoardContentIdx", boardContentIdx);
 		
+		// 들어온 글 불러오기
+		// 게시물 정보
+		UsedVO usedVO = usedService.getUsedIdx(idx);
+		// 유저 정보
+		MemberVO memVO = usedService.getMemberMid(usedVO.getMid());
+		// 해당 유저가 작성한 게시글 개수
+		PageVO pageVO1 = pageProcess.totRecCnt(pag, pageSize, "used", "mid", usedVO.getMid());
+		List<UsedVO> usedVOS = usedService.getUsedMidList(usedVO.getMid(),pageVO1.getStartIndexNo(),pageSize);
+		
+		// 해당 유저가 작성한 게시글 중 판매중인 상품 리스트만 가져오기
+		PageVO pageVO2 = pageProcess.totRecCnt(pag, pageSize, "used", "sale", usedVO.getMid());
+		List<UsedVO> saleUsedVOS = usedService.getSaleUsedMidList(usedVO.getMid(),pageVO2.getStartIndexNo(),pageSize);
+		
+		// 카테고리
 		String topCategoryName = "0";
 		String midCategoryName = "0";
 		String btmCategoryName = "0";
@@ -154,12 +198,79 @@ public class UsedController {
 			}
 		}
 		
+		// 팔로워 (해당 상점을 팔로우한 사람)
+		List<FollowVO> fVOS = usedService.getFollowerList(usedVO.getMid());
+		
+		// 해당 상점 팔로우한 사람 확인용 (로그인 한 사람만)
+		String mid = session.getAttribute("sMid") == null ? "" : (String)session.getAttribute("sMid");
+		if(!mid.equals("")) {
+			FollowVO fVO = usedService.getFollowerMid(mid);
+			
+			model.addAttribute("fVO",fVO);
+		}
+		
+		
 		model.addAttribute("usedVO",usedVO);
 		model.addAttribute("memVO",memVO);
-		model.addAttribute("usedVOS",usedVOS);
+		model.addAttribute("saleUsedVOS",saleUsedVOS);
+		model.addAttribute("saleCnt",saleUsedVOS.size());
+		model.addAttribute("usedCnt",usedVOS.size());
+		model.addAttribute("follower",fVOS.size());
 		model.addAttribute("topCategoryName",topCategoryName);
 		model.addAttribute("midCategoryName",midCategoryName);
 		model.addAttribute("btmCategoryName",btmCategoryName);
 		return "used/usedContent";
+	}
+	
+	// 팔로우 하기, 팔로우 취소
+	@ResponseBody
+	@RequestMapping(value = "/usedFollow",method = RequestMethod.POST)
+	public String usedFollowPost(String followerMid,String followingMid,String flag) {
+		int res = 0;
+		if(flag.equals("No")) {
+			res = usedService.setFollowDelete(followerMid,followingMid);
+		}
+		else if(flag.equals("Yes")){
+			res = usedService.setFollowInput(followerMid,followingMid);
+		}
+		
+		if(res != 0) return "1";
+		else return "2";
+	}
+	
+	// 상점 화면 이동
+	@RequestMapping(value = "/usedStore" ,method = RequestMethod.GET)
+	public String usedStoreGet(String mid, Model model,
+			@RequestParam(name="pag",defaultValue = "1",required = false) int pag,
+			@RequestParam(name="pageSize",defaultValue = "40",required = false) int pageSize
+			) {
+		
+		// 회원 정보
+		MemberVO memVO = usedService.getMemberMid(mid);
+		// 해당 회원 상점 정보
+		StoreVO stVO = usedService.getStoreMid(mid);
+		// 팔로잉 리스트 가져오기 (해당 상점이 팔로우한 사람)
+		List<FollowVO> fingVOS = usedService.getFollowingList(mid);
+		
+		// 팔로워 (해당 상점을 팔로우한 사람)
+		List<FollowVO> ferVOS = usedService.getFollowerList(mid);
+		
+		// 해당 유저가 작성한 게시글 개수 및 정보
+		PageVO pageVO1 = pageProcess.totRecCnt(pag, pageSize, "used", "mid",mid);
+		List<UsedVO> usedVOS = usedService.getUsedMidList(mid,pageVO1.getStartIndexNo(),pageSize);
+		
+		// 해당 유저가 찜한 개수
+		List<LikeVO> likeVOS = usedService.getLikeMid(mid);
+		
+		model.addAttribute("memVO",memVO);
+		model.addAttribute("stVO",stVO);
+		model.addAttribute("ferVOS",ferVOS);
+		model.addAttribute("ferCnt",ferVOS.size()); // 총 팔로잉 수
+		model.addAttribute("fingVOS",fingVOS);
+		model.addAttribute("fingCnt",fingVOS.size()); // 총 팔로워 수
+		model.addAttribute("usedVOS",usedVOS);
+		model.addAttribute("usedCnt",usedVOS.size()); // 총 상품수
+		model.addAttribute("likeCnt",likeVOS.size()); //총 찜 수
+		return "used/usedStore";
 	}
 }

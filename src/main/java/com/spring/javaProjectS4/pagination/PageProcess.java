@@ -84,6 +84,9 @@ public class PageProcess {
 			else if(part.equals("mid")) {
 				totRecCnt = usedDAO.getUsedMidRecCnt(searchString);
 			}
+			else if(part.equals("sale")) {
+				totRecCnt = usedDAO.getSaleUsedMidRecCnt(searchString);
+			}
 		}
 		
 		int totPage = (totRecCnt % pageSize)==0 ? (totRecCnt / pageSize) : (totRecCnt / pageSize) + 1;

@@ -222,4 +222,9 @@ public class MemberServiceImpl implements MemberService {
 		return memberDAO.setProfileNoImgUpdate( profile, mid);
 	}
 
+	@Override
+	public void setUsedStoreInput(String mid) {
+		memberDAO.setUsedStoreInput( mid);
+	}
+
 }

@@ -5,8 +5,12 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.spring.javaProjectS4.vo.BtmCategoryVO;
+import com.spring.javaProjectS4.vo.FollowUsedAlarmVO;
+import com.spring.javaProjectS4.vo.FollowVO;
+import com.spring.javaProjectS4.vo.LikeVO;
 import com.spring.javaProjectS4.vo.MemberVO;
 import com.spring.javaProjectS4.vo.MidCategoryVO;
+import com.spring.javaProjectS4.vo.StoreVO;
 import com.spring.javaProjectS4.vo.TopCategoryVO;
 import com.spring.javaProjectS4.vo.UsedVO;
 
@@ -29,8 +33,34 @@ public interface UsedDAO {
 
 	public UsedVO getUsedIdx(@Param("idx") int idx);
 
-	public int getUsedMidRecCnt(String searchString);
+	public int getUsedMidRecCnt(@Param("searchString") String searchString);
 
 	public List<UsedVO> getUsedMidList(@Param("mid") String mid,@Param("startIndexNo") int startIndexNo,@Param("pageSize") int pageSize);
+
+	public List<FollowVO> getFollowerList(@Param("mid") String mid);
+
+	public FollowVO getFollowerMid(@Param("mid") String mid);
+
+	public int getSaleUsedMidRecCnt(@Param("searchString") String searchString);
+
+	public List<UsedVO> getSaleUsedMidList(@Param("mid") String mid,@Param("startIndexNo") int startIndexNo,@Param("pageSize") int pageSize);
+
+	public int setFollowInput(@Param("followerMid") String followerMid,@Param("followingMid") String followingMid);
+
+	public int setFollowDelete(@Param("followerMid") String followerMid,@Param("followingMid") String followingMid);
+
+	public void setViewCntUpdate(@Param("idx") int idx);
+
+	public StoreVO getStoreMid(@Param("mid") String mid);
+
+	public List<FollowVO> getFollowingList(@Param("mid") String mid);
+
+	public List<LikeVO> getLikeMid(@Param("mid") String mid);
+
+	public List<FollowVO> getFollowingCheckMid(@Param("mid") String mid);
+
+	public UsedVO getNowUploadUsed(@Param("mid") String mid);
+
+	public void setFollowUsedAlarmInput(@Param("idx") int idx,@Param("followerMid") String followerMid,@Param("mid") String mid);
 	
 }
