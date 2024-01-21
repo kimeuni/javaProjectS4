@@ -10,8 +10,8 @@ create table noticeS(
 	readNum int default 0,							/* 조회수 */
 	openSw char(1) default 'Y'						/* 공개:Y 비공개:N */
 );
-
 select * from noticeS;
+select count(*),mem.mid from followS fos, memberS mem where fos.followingMid = fos.followingMid and fos.followingMid = mem.mid group by mem.mid;
 
 -- 이벤트 DB
 create table eventS(

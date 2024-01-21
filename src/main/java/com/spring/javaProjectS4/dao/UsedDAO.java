@@ -39,7 +39,7 @@ public interface UsedDAO {
 
 	public List<FollowVO> getFollowerList(@Param("mid") String mid);
 
-	public FollowVO getFollowerMid(@Param("mid") String mid);
+	public FollowVO getFollowerMid(@Param("mid") String mid,@Param("followingMid") String followingMid);
 
 	public int getSaleUsedMidRecCnt(@Param("searchString") String searchString);
 
@@ -53,7 +53,7 @@ public interface UsedDAO {
 
 	public StoreVO getStoreMid(@Param("mid") String mid);
 
-	public List<FollowVO> getFollowingList(@Param("mid") String mid);
+	public List<FollowVO> getFollowingList(@Param("mid") String mid,@Param("startIndexNo") int startIndexNo,@Param("pageSize") int pageSize);
 
 	public List<LikeVO> getLikeMid(@Param("mid") String mid);
 
@@ -62,5 +62,35 @@ public interface UsedDAO {
 	public UsedVO getNowUploadUsed(@Param("mid") String mid);
 
 	public void setFollowUsedAlarmInput(@Param("idx") int idx,@Param("followerMid") String followerMid,@Param("mid") String mid);
+
+	public FollowVO getFollowCheck(@Param("sMid")  String sMid,@Param("mid")  String mid);
+
+	public LikeVO getUsedContentLikeMidCheck(@Param("idx") int idx,@Param("mid") String mid);
+
+	public int setLikeInput(@Param("idx") int idx,@Param("mid") String mid);
+
+	public int setLikeDelete(@Param("idx") int idx,@Param("mid") String mid);
+
+	public List<UsedVO> getUsedLikeMidList(@Param("mid") String mid,@Param("startIndexNo") int startIndexNo,@Param("pageSize") int pageSize);
+
+	public int getUsedLikeMidRecCnt(@Param("mid") String searchString);
+
+	public void setUpdateTotLike(@Param("idx") int idx);
+
+	public void setDeleteTotLike(@Param("idx") int idx);
+
+	public List<MemberVO> getFollowingMemList(@Param("mid") String mid);
+
+	public List<UsedVO> getFollowingUsedList(@Param("mid") String mid);
+
+	public int getFollowingMidRecCnt(@Param("searchString") String searchString);
+
+	public List<FollowVO> getFollowingAllList(@Param("mid") String mid);
+
+	public List<MemberVO> getFollowerMemList(@Param("mid") String mid,@Param("startIndexNo") int startIndexNo,@Param("pageSize") int pageSize);
+
+	public int getFollowerMidRecCnt(@Param("searchString") String searchString);
+
+	public int setStoreSogeUpdate(@Param("storeIntroduce") String storeIntroduce,@Param("mid") String mid);
 	
 }

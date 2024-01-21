@@ -41,4 +41,7 @@ public class MemberVO {
 	private int totReportCnt;
 	
 	private int date_diff; // 탈퇴한지 30일이 지났는지 체크
+	private int start_date_diff; // 상점 오픈 일
+	private int usedCnt;	// 총 올린 글 수
+	private int followerCnt;	// 총 팔로워 수
 }

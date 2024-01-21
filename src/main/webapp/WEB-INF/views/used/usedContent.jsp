@@ -63,13 +63,16 @@
     		width: 33%;
     		/* justify-content: space-around; */
     	}
-    	.like-btn, .report-btn, .chat-btn{
+    	.like-btn, .report-btn, .chat-btn, .like-btn-n{
     		width: 150px;
     		height: 40px;
     		font-size: 1.1em;
     		font-weight: bold;
     		text-align: center;
     		line-height: 40px;
+    	}
+    	.like-btn-n{
+    		background-color: #FFC0CB;
     	}
     	.like-btn{
     		background-color: #aaa; 
@@ -220,6 +223,53 @@
     			}
     		});
     	}
+    	
+    	// 찜 누르기
+    	function likeUpdate(idx){
+    		let query = {
+    			idx : idx,
+    			mid : '${sMid}',
+    			flag : 'update'
+    		}
+    		$.ajax({
+    			url : "${ctp}/used/likeUpNDel",
+    			type : "post",
+    			data : query,
+    			success : function(res){
+    				if(res == "1"){
+    					location.reload();
+    				}
+    				else if(res == "2") alert("해당 게시물 찜에 실패하였습니다.")
+    			},
+    			error : function(){
+    				alert("전송오류(usedContent.jsp)")
+    			}
+    		});
+    	}
+    	
+    	// 찜 취소
+    	function likeDelete(idx){
+	   		let query = {
+	       			idx : idx,
+	       			mid : '${sMid}',
+	       			flag : 'delete'
+	       		}
+	   		$.ajax({
+    			url : "${ctp}/used/likeUpNDel",
+    			type : "post",
+    			data : query,
+    			success : function(res){
+    				if(res == "1"){
+    					location.reload();
+    				}
+    				else if(res == "2") alert("해당 게시물 찜 취소에 실패하였습니다.")
+    			},
+    			error : function(){
+    				alert("전송오류(usedContent.jsp)")
+    			}
+    		});
+    		
+    	}
     </script>
 </head>
 <body>
@@ -277,16 +327,21 @@
 				</div>
 				<div class="f-d mt-1">
 					<c:if test="${sMid != usedVO.mid }">
-						<div class="u-btns-flex"><a href="" class="like-btn">찜하기</a></div>
+						<c:if test="${empty likeVO }">
+							<div class="u-btns-flex"><a href="javascript:likeUpdate(${usedVO.idx})" class="like-btn"><i class="fa-solid fa-heart"></i> 찜하기</a></div>
+						</c:if>
+						<c:if test="${!empty likeVO }">
+							<div class="u-btns-flex"><a href="javascript:likeDelete(${usedVO.idx})" class="like-btn-n"><i class="fa-solid fa-heart-crack"></i> 찜취소</a></div>
+						</c:if>
 					</c:if>
 					<c:if test="${sMid != usedVO.mid }">
-						<div class="u-btns-flex"><a href="" class="chat-btn">채팅하기</a></div>
+						<div class="u-btns-flex"><a href="" class="chat-btn"><i class="fa-solid fa-comments"></i> 채팅하기</a></div>
 					</c:if>
 					<c:if test="${sMid != usedVO.mid }">
-						<div class="u-btns-flex"><a href="" class="report-btn">신고</a></div>
+						<div class="u-btns-flex"><a href="" class="report-btn"><i class="fa-solid fa-triangle-exclamation"></i> 신고</a></div>
 					</c:if>
 					<c:if test="${sMid == usedVO.mid }">
-						<div class="u-btns-flex"><a href="" class="management-btn">상점관리</a></div>
+						<div class="u-btns-flex"><a href="" class="management-btn"><i class="fa-solid fa-store"></i> 상점관리</a></div>
 					</c:if>
 				</div>
 			</div>

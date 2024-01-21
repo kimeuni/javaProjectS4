@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <c:set var="ctp" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
 <html>
@@ -14,6 +15,8 @@
     	#used-main-img-container{
     		background-color: #F1E5D4;
     		min-width: 100vw;
+    		height : 315px;
+    		
     	}
     	#used-main-img-text-div{
     		height: 315px;
@@ -32,7 +35,8 @@
     		font-size: 2.0em;
 		    font-weight: bold;
 		    margin-bottom: 20px;
-		    text-align: center;
+		    text-align: left;
+    		padding-left: 20%;
     	}
     	#used-usedinput-btn{
     		padding-left: 20%;
@@ -152,6 +156,18 @@
     		margin: 0 auto;
     		flex-wrap: wrap;
     	}
+    	#topBtn{
+		    position: fixed;
+		    bottom: 40px;
+		    right: 100px;
+		    display: none;
+		}
+    	#topBtn:hover{
+			cursor: pointer;
+		}
+		.on{
+			display: block !important;
+		}
     	.used-list-content-div{
     		display: flex;
     		width: 240px;
@@ -182,7 +198,24 @@
     		margin-top : 15px;
     		margin-bottom : 15px;
     	}
+    	
+    	
     </style>
+    <script>
+    	'used strict'
+    	
+    	$(window).scroll(function(){ //윈도우이에 스크롤이 일어났을 때
+			if($(this).scrollTop() > 355) { //현재 스크롤이 100px 아래로 갈시
+				$("#topBtn").addClass("on");  //화살표 추가
+			}
+			else {
+				$("#topBtn").removeClass("on");  //아닐 시 삭제
+			}
+			$("#topBtn").click(function(){
+				window.scrollTo({top:0,behavior:"smooth"}) //현재 페이지에서 특정 위치로 스크롤이동시키는 명령어  //만약 topBtn을 클릭했을 시 스크롤 위치 0 .. 그리고 부드럽게 올라가기
+			});
+		});  
+    </script>
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/include/header.jsp" />
@@ -198,7 +231,7 @@
    				</div>
     		</div>
     		<div id="used-img-right">
-    			<img src="${ctp}/data/images/중고거래.png" width="100%" height="315px" />
+    			<img src="${ctp}/data/images/다모아_중고거래.png" width="100%" height="315px" />
     		</div>
     	</div>
     </div>
@@ -251,14 +284,20 @@
     </div>
     <h2 class="used-list-container mg-10">최근 등록 상품</h2>
     <div class="used-list-container">
-    	<c:set var="ctn" value="0" />
     	<c:forEach var="usedVO" items="${usedVOS}">
     		<c:set var="sImg" value="${usedVO.imgs.split('/')}" />
 	    	<div class="used-list-content-div">
 	    		<div class="line-b">
 		    		<div><a href="${ctp}/used/usedContent?idx=${usedVO.idx}"><img src="${ctp}/data/used/${sImg[0]}" width="100%" height="218px"></a></div>
 		    		<div class="mt-1">
-			    		<div class="mt-5">${usedVO.title}</div>
+			    		<div class="mt-5">
+			    			<c:if test="${fn:length(usedVO.title) >13 }">
+			    				${fn:substring(usedVO.title,0,13)}...
+			    			</c:if> 
+			    			<c:if test="${fn:length(usedVO.title) <=13 }">
+			    				${usedVO.title}
+			    			</c:if> 
+			    		</div>
 			    		<div class="inner-flex-div mt-5">
 			    			<div>${usedVO.money}원</div>
 			    			<c:if test="${usedVO.second_diff <= 59}"><div class="inner-flex-end">${usedVO.second_diff}초 전</div></c:if>
@@ -275,7 +314,6 @@
 		    		</div>
 	    		</div>
 	    	</div>
-	    	<c:set var="cnt" value="${cnt +1}" />
     	</c:forEach>
     </div>
     <br/>
@@ -291,6 +329,10 @@
 		  	<c:if test="${pageVO.pag < pageVO.totPage}"><li class="page-item"><a class="page-link text-secondary" href="usedMain?pag=${pageVO.totPage}&pageSize=${pageVO.pageSize}"><i class="fa-solid fa-angles-right"></i></a></li></c:if>
 		</ul>
 	</div>
+</div>
+<!-- 누르면 맨 위로 올라가는 자동 스크롤 -->
+<div>
+	<h6 id="topBtn" class="text-right"><i class='far fa-arrow-alt-circle-up' style='font-size:36px; color: #aaa;'></i></h6>
 </div>
 <jsp:include page="/WEB-INF/views/include/footer.jsp" />
 </body>

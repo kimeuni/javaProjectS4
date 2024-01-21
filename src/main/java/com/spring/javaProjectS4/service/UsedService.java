@@ -36,7 +36,7 @@ public interface UsedService {
 
 	public List<FollowVO> getFollowerList(String mid);
 
-	public FollowVO getFollowerMid(String mid);
+	public FollowVO getFollowerMid(String mid, String followingMid);
 
 	public List<UsedVO> getSaleUsedMidList(String mid, int startIndexNo, int pageSize);
 
@@ -48,7 +48,7 @@ public interface UsedService {
 
 	public StoreVO getStoreMid(String mid);
 
-	public List<FollowVO> getFollowingList(String mid);
+	public List<FollowVO> getFollowingList(String mid, int startIndexNo, int pageSize);
 
 	public List<LikeVO> getLikeMid(String mid);
 
@@ -57,5 +57,29 @@ public interface UsedService {
 	public UsedVO getNowUploadUsed(String mid);
 
 	public void setFollowUsedAlarmInput(int idx, String followerMid, String mid);
+
+	public FollowVO getFollowCheck(String sMid, String mid);
+
+	public LikeVO getUsedContentLikeMidCheck(int idx, String mid);
+
+	public int setLikeInput(int idx, String mid);
+
+	public int setLikeDelete(int idx, String mid);
+
+	public List<UsedVO> getUsedLikeMidList(String mid, int startIndexNo, int pageSize);
+
+	public void setUpdateTotLike(int idx);
+
+	public void setDeleteTotLike(int idx);
+
+	public List<MemberVO> getFollowingMemList(String mid);
+
+	public List<UsedVO> getFollowingUsedList(String mid);
+
+	public List<FollowVO> getFollowingAllList(String mid);
+
+	public List<MemberVO> getFollowerMemList(String mid, int startIndexNo, int pageSize);
+
+	public int setStoreSogeUpdate(String storeIntroduce, String mid);
 
 }

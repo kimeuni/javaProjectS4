@@ -128,8 +128,8 @@ public class UsedServiceImpl implements UsedService {
 	}
 
 	@Override
-	public FollowVO getFollowerMid(String mid) {
-		return usedDAO.getFollowerMid( mid);
+	public FollowVO getFollowerMid(String mid, String followingMid) {
+		return usedDAO.getFollowerMid( mid,followingMid);
 	}
 
 	@Override
@@ -158,8 +158,8 @@ public class UsedServiceImpl implements UsedService {
 	}
 
 	@Override
-	public List<FollowVO> getFollowingList(String mid) {
-		return usedDAO.getFollowingList( mid);
+	public List<FollowVO> getFollowingList(String mid, int startIndexNo, int pageSize) {
+		return usedDAO.getFollowingList( mid,startIndexNo,pageSize);
 	}
 
 	@Override
@@ -180,5 +180,65 @@ public class UsedServiceImpl implements UsedService {
 	@Override
 	public void setFollowUsedAlarmInput(int idx, String followerMid, String mid) {
 		usedDAO.setFollowUsedAlarmInput( idx, followerMid,mid);
+	}
+
+	@Override
+	public FollowVO getFollowCheck(String sMid, String mid) {
+		return usedDAO.getFollowCheck( sMid, mid);
+	}
+
+	@Override
+	public LikeVO getUsedContentLikeMidCheck(int idx, String mid) {
+		return usedDAO.getUsedContentLikeMidCheck( idx, mid);
+	}
+
+	@Override
+	public int setLikeInput(int idx, String mid) {
+		return usedDAO.setLikeInput( idx, mid);
+	}
+
+	@Override
+	public int setLikeDelete(int idx, String mid) {
+		return usedDAO.setLikeDelete( idx, mid);
+	}
+
+	@Override
+	public List<UsedVO> getUsedLikeMidList(String mid, int startIndexNo, int pageSize) {
+		return usedDAO.getUsedLikeMidList( mid, startIndexNo, pageSize);
+	}
+
+	@Override
+	public void setUpdateTotLike(int idx) {
+		usedDAO.setUpdateTotLike( idx);
+	}
+
+	@Override
+	public void setDeleteTotLike(int idx) {
+		usedDAO.setDeleteTotLike( idx);
+	}
+
+	@Override
+	public List<MemberVO> getFollowingMemList(String mid) {
+		return usedDAO.getFollowingMemList( mid);
+	}
+
+	@Override
+	public List<UsedVO> getFollowingUsedList(String mid) {
+		return usedDAO.getFollowingUsedList( mid);
+	}
+
+	@Override
+	public List<FollowVO> getFollowingAllList(String mid) {
+		return usedDAO.getFollowingAllList(mid);
+	}
+
+	@Override
+	public List<MemberVO> getFollowerMemList(String mid, int startIndexNo, int pageSize) {
+		return usedDAO.getFollowerMemList( mid, startIndexNo, pageSize);
+	}
+
+	@Override
+	public int setStoreSogeUpdate(String storeIntroduce, String mid) {
+		return usedDAO.setStoreSogeUpdate( storeIntroduce, mid);
 	}
 }

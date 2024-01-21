@@ -88,6 +88,21 @@ public class PageProcess {
 				totRecCnt = usedDAO.getSaleUsedMidRecCnt(searchString);
 			}
 		}
+		if(section.equals("usedLike")) {
+			if(part.equals("")) {
+				totRecCnt = usedDAO.getUsedLikeMidRecCnt(searchString);
+			}
+		}
+		if(section.equals("following")) {
+			if(part.equals("")) {
+				totRecCnt = usedDAO.getFollowingMidRecCnt(searchString);
+			}
+		}
+		if(section.equals("follower")) {
+			if(part.equals("")) {
+				totRecCnt = usedDAO.getFollowerMidRecCnt(searchString);
+			}
+		}
 		
 		int totPage = (totRecCnt % pageSize)==0 ? (totRecCnt / pageSize) : (totRecCnt / pageSize) + 1;
 		int startIndexNo = (pag - 1) * pageSize;

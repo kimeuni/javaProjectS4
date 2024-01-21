@@ -11,7 +11,7 @@
 		select * from btmCategoryS order by idx;
 	</select>
 	<select id="getMemberMid" resultType="com.spring.javaProjectS4.vo.MemberVO">
-		select * from memberS where mid = #{mid};
+		select *,timestampdiff(day,startDate,now()) as start_date_diff from memberS where mid = #{mid};
 	</select>
 	<select id="getUsedAllList" resultType="com.spring.javaProjectS4.vo.UsedVO">
 		select *,timestampdiff(second,uploadDate,now()) as second_diff,timestampdiff(minute,uploadDate,now()) as minute_diff,
@@ -32,7 +32,10 @@
 		select count(*) from usedS where mid = #{searchString} and state = '판매중';
 	</select>
 	<select id="getUsedMidList" resultType="com.spring.javaProjectS4.vo.UsedVO">
-		select * from usedS where mid = #{mid} limit #{startIndexNo},#{pageSize};
+		select *,timestampdiff(second,uploadDate,now()) as second_diff,timestampdiff(minute,uploadDate,now()) as minute_diff,
+			timestampdiff(hour,uploadDate,now()) as hour_diff, timestampdiff(day,uploadDate,now()) as day_diff, 
+			timestampdiff(month,uploadDate,now()) as month_diff, timestampdiff(year,uploadDate,now()) as year_diff
+			 from usedS where mid = #{mid} order by uploadDate desc limit #{startIndexNo},#{pageSize};
 	</select>
 	<select id="getSaleUsedMidList" resultType="com.spring.javaProjectS4.vo.UsedVO">
 		select * from usedS where mid = #{mid} and state = '판매중' limit #{startIndexNo},#{pageSize};
@@ -41,10 +44,16 @@
 		select * from followS where followingMid = #{mid};
 	</select>
 	<select id="getFollowingList" resultType="com.spring.javaProjectS4.vo.FollowVO" >
-		select * from followS where followerMid = #{mid};
+		select fo.* from followS fo, memberS mem where fo.followerMid = #{mid} and mem.userDel = 'N' 
+		and fo.followerMid = mem.mid group by fo.followingMid order by fo.idx desc 
+		limit #{startIndexNo},#{pageSize};
+	</select>
+	<select id="getFollowingAllList" resultType="com.spring.javaProjectS4.vo.FollowVO" >
+		select fo.* from followS fo, memberS mem where fo.followerMid = #{mid} and 
+		mem.userDel = 'N' and fo.followerMid = mem.mid;
 	</select>
 	<select id="getFollowerMid" resultType="com.spring.javaProjectS4.vo.FollowVO">
-		select * from followS where followerMid = #{mid};
+		select * from followS where followerMid = #{mid} and followingMid = #{followingMid};
 	</select>
 	<select id="getStoreMid" resultType="com.spring.javaProjectS4.vo.StoreVO">
 		select * from storeS where mid = #{mid};
@@ -58,6 +67,42 @@
 	<select id="getNowUploadUsed" resultType="com.spring.javaProjectS4.vo.UsedVO">
 		select * from usedS where mid = #{mid} order by idx desc limit 1;
 	</select>
+	<select id="getFollowCheck"  resultType="com.spring.javaProjectS4.vo.FollowVO">
+		select * from followS where followerMid = #{sMid} and followingMid = #{mid};
+	</select>
+	<select id="getUsedContentLikeMidCheck" resultType="com.spring.javaProjectS4.vo.LikeVO">
+		select * from likeS where usedIdx = #{idx} and likeMid = #{mid};
+	</select>
+	<select id="getUsedLikeMidList" resultType="com.spring.javaProjectS4.vo.UsedVO">
+		select usd.* from usedS usd, likeS li where li.likeMid = #{mid} and 
+		usd.idx = li.usedIdx and usd.userDel = 'N' order by li.idx desc limit #{startIndexNo},#{pageSize};
+	</select>
+	<select id="getUsedLikeMidRecCnt" resultType="int">
+		select count(*) from likeS li, usedS usd where likeMid = #{mid} and 
+		usd.idx = li.usedIdx and usd.userDel = 'N';
+	</select>
+	<select id="getFollowingMemList" resultType="com.spring.javaProjectS4.vo.MemberVO">
+		select mem.* from memberS mem, followS fo where fo.followerMid = #{mid} and mem.userDel = 'N' and 
+		fo.followingMid = mem.mid group by fo.followingMid order by fo.idx desc;
+	</select>
+	<select id="getFollowingUsedList" resultType="com.spring.javaProjectS4.vo.UsedVO">
+		select usd.* from usedS usd, followS fo where fo.followerMid = #{mid} and usd.userDel = 'N' and 
+		fo.followingMid = usd.mid order by fo.idx desc;
+	</select>
+	<select id="getFollowingMidRecCnt" resultType="int">
+		select count(*) from memberS mem, followS fo where fo.followerMid = #{searchString} and 
+		fo.followingMid = mem.mid and mem.userDel = 'N';
+	</select>
+	<select id="getFollowerMemList" resultType="com.spring.javaProjectS4.vo.MemberVO">
+		select mem.*,(select count(*) from usedS usd where fo.followingMid = #{mid} and usd.mid = fo.followerMid) as usedCnt,
+		(select count(*) from followS fos where fos.followingMid = fos.followingMid and fos.followingMid = mem.mid group by mem.mid) as followerCnt 
+		from memberS mem, followS fo where fo.followingMid = #{mid} and fo.followerMid = mem.mid and mem.userDel = 'N' 
+		order by fo.idx desc limit #{startIndexNo},#{pageSize};
+	</select>
+	<select id="getFollowerMidRecCnt" resultType="int">
+		select count(*) from memberS mem, followS fo where fo.followingMid = #{searchString} and 
+		fo.followingMid = mem.mid and mem.userDel = 'N';
+	</select>
 	
 	<insert id="setUsedInput">
 		insert into usedS values (default,#{imgsStr},#{title},#{topCategoryIdx},#{midCategoryIdx},#{btmCategoryIdx},#{region},#{usedState},#{exchange},#{money},#{delivery},#{content},#{mid},default,default,default,default,default);
@@ -68,12 +113,27 @@
 	<insert id="setFollowUsedAlarmInput">
 		insert into followUsedAlarmS values (default,#{idx},#{mid},#{followerMid});
 	</insert>
+	<insert id="setLikeInput">
+		insert into likeS values (default,#{idx},#{mid},default);
+	</insert>
 	
 	<delete id="setFollowDelete">
 		delete from followS where followerMid = #{followerMid} and followingMid = #{followingMid};
 	</delete>
+	<delete id="setLikeDelete">
+		delete from likeS where usedIdx = #{idx} and likeMid = #{mid};
+	</delete>
 	
 	<update id="setViewCntUpdate">
 		update usedS set viewCnt = viewCnt + 1 where idx = #{idx};
+	</update>
+	<update id="setUpdateTotLike">
+		update usedS set totLike = totLike + 1 where idx = #{idx};
+	</update>
+	<update id="setDeleteTotLike">
+		update usedS set totLike = totLike - 1 where idx = #{idx};
+	</update>
+	<update id="setStoreSogeUpdate">
+		update storeS set storeIntroduce = #{storeIntroduce} where mid = #{mid};
 	</update>
 </mapper>

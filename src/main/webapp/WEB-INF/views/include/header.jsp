@@ -225,8 +225,8 @@
 							<ul>
 								<li><a href="${ctp}/used/usedInput">상품 판매</a></li>
 								<li><a href="${ctp}/used/usedStore?mid=${sMid}">내상점</a></li>
-								<li><a href="">찜목록</a></li>
-								<li><a href="">상점관리</a></li>
+								<li><a href="${ctp}/used/usedStoreLike?mid=${sMid}">찜목록</a></li>
+								<li><a href="${ctp}/used/usedStoreManagement?mid=${sMid}">상점관리</a></li>
 							</ul>
 						</li>
 						<li>
@@ -244,7 +244,7 @@
 					<nav id="gub-ul-nav-div">
 						<ul id="header-btm-ul">
 							<li><a href="${ctp}/used/usedMain">중고거래</a></li>
-							<li><a href="">커뮤니티</a></li>
+							<li><a href="${ctp}/community/communityMain">커뮤니티</a></li>
 							<li><a href="">모아모아</a></li>
 							<li><a href="${ctp}/board/noticeList">공지사항</a></li>
 						</ul>
