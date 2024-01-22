@@ -160,10 +160,10 @@
 					<div id="admin-main-menu-str">카테고리 관리 <i class="fa-solid fa-file-pen"></i></div>
 					<div id="go-btn-div">
 						<div id="top-input-go">
-							<a href="${ctp}/admin/memberUserDel">대분류 등록 이동 <i class="fa-solid fa-right-from-bracket"></i></a>
+							<a href="${ctp}/admin/topCategoryInput">대분류 등록 이동 <i class="fa-solid fa-right-from-bracket"></i></a>
 						</div>
 						<div id="mid-input-go">
-							<a href="${ctp}/admin/memberReport">중분류 등록 이동 <i class="fa-solid fa-right-from-bracket"></i></a>
+							<a href="${ctp}/admin/midCategoryInput">중분류 등록 이동 <i class="fa-solid fa-right-from-bracket"></i></a>
 						</div>
 						<div id="btm-input-go">
 							<a href="${ctp}/admin/memberReport">소분류 등록 이동 <i class="fa-solid fa-right-from-bracket"></i></a>

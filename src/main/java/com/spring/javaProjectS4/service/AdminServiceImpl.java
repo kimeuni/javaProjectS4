@@ -474,4 +474,49 @@ public class AdminServiceImpl implements AdminService {
 		return adminDAO.getMidBtmCategoryList( midCa);
 	}
 
+	@Override
+	public List<TopCategoryVO> getTopCategoryTableList(int startIndexNo, int pageSize) {
+		return adminDAO.getTopCategoryTableList( startIndexNo, pageSize);
+	}
+
+	@Override
+	public void setTopBtmCategoryDel(int idx) {
+		adminDAO.setTopBtmCategoryDel(idx);
+	}
+
+	@Override
+	public void setTopMidCategoryDel(int idx) {
+		adminDAO.setTopMidCategoryDel( idx);
+	}
+
+	@Override
+	public int setTopCategoryDel(int idx) {
+		return adminDAO.setTopCategoryDel( idx);
+	}
+
+	@Override
+	public int setTopCategoryInput(String topCategoryName) {
+		return adminDAO.setTopCategoryInput( topCategoryName);
+	}
+
+	@Override
+	public List<MidCategoryVO> getMidCategoryTableList(int startIndexNo, int pageSize) {
+		return adminDAO.getMidCategoryTableList( startIndexNo, pageSize);
+	}
+
+	@Override
+	public int setMidCategoryInput(String midCategoryName, int topCategoryIdx) {
+		return adminDAO.setMidCategoryInput( midCategoryName, topCategoryIdx);
+	}
+
+	@Override
+	public void setMidBtmCategoryDel(int idx) {
+		adminDAO.setMidBtmCategoryDel(idx);
+	}
+
+	@Override
+	public int setMidCategoryDel(int idx) {
+		return adminDAO.setMidCategoryDel(idx);
+	}
+
 }

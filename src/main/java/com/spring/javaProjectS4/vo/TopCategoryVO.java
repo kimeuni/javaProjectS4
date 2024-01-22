@@ -10,4 +10,9 @@ import lombok.ToString;
 public class TopCategoryVO {
 	private int idx;
 	private String topCategoryName;
+	
+	// 대분류 관리에서 사용
+	private int midCnt;
+	private int btmCnt;
+	private int usedCnt;
 }

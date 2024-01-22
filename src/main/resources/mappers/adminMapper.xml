@@ -84,6 +84,23 @@
 	<select id="getMidBtmCategoryList" resultType="com.spring.javaProjectS4.vo.BtmCategoryVO">
 		select * from btmCategoryS where midCategoryIdx = #{midCa};
 	</select>
+	<select id="getTopCategoryTableList" resultType="com.spring.javaProjectS4.vo.TopCategoryVO">
+		select toc.*,(select count(*) from midCategoryS mic where toc.idx = mic.topCategoryIdx ) as midCnt,
+		(select count(*) from btmCategoryS btc where toc.idx = btc.topCategoryIdx ) as btmCnt,
+		(select count(*) from usedS usd where usd.topCategoryIdx = toc.idx ) as usedCnt 
+		from topCategoryS toc, midCategoryS mi, btmCategoryS bt group by toc.idx order by toc.idx desc limit #{startIndexNo},#{pageSize};
+	</select>
+	<select id="getTopCategoryRecCnt" resultType="int">
+		select count(*) from topCategoryS;
+	</select>
+	<select id="getMidCategoryTableList" resultType="com.spring.javaProjectS4.vo.MidCategoryVO">
+		select mi.*,(select count(*) from btmCategoryS btc where mi.idx = btc.midCategoryIdx ) as btmCnt,
+		(select count(*) from usedS usd where usd.midCategoryIdx = mi.idx ) as usedCnt from 
+		 midCategoryS mi, btmCategoryS bt group by mi.idx order by mi.idx desc limit #{startIndexNo},#{pageSize};
+	</select>
+	<select id="getMidCategoryRecCnt" resultType="int">
+		select count(*) from midCategoryS;
+	</select>
 	
 	<insert id="setNoticeInput">
 		insert into noticeS values (default,#{vo.nickName},#{vo.title},#{vo.content},default,default,#{vo.openSw});
@@ -105,6 +122,12 @@
 	</insert>
 	<insert id="setAnsInput">
 		insert into answerS values (default,#{idx},#{content},default);
+	</insert>
+	<insert id="setTopCategoryInput">
+		insert into topCategoryS values (default,#{topCategoryName});
+	</insert>
+	<insert id="setMidCategoryInput">
+		insert into midCategoryS values (default,#{topCategoryIdx},#{midCategoryName})
 	</insert>
 	
 	<update id="setNoticeUpdate">
@@ -158,5 +181,20 @@
 	</delete>
 	<delete id="setAnsDel">
 		delete from answerS where askIdx = #{idx};
+	</delete>
+	<delete id="setTopBtmCategoryDel">
+		delete from btmCategoryS where topCategoryIdx = #{idx};
+	</delete>
+	<delete id="setTopMidCategoryDel">
+		delete from midCategoryS where topCategoryIdx = #{idx};
+	</delete>
+	<delete id="setTopCategoryDel">
+		delete from topCategoryS where idx = #{idx};
+	</delete>
+	<delete id="setMidBtmCategoryDel">
+		delete from btmCategoryS where midCategoryIdx = #{idx};
+	</delete>
+	<delete id="setMidCategoryDel">
+		delete from midCategoryS where idx = #{idx};
 	</delete>
 </mapper>

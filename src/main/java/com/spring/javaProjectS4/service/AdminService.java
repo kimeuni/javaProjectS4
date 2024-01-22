@@ -119,5 +119,23 @@ public interface AdminService {
 
 	public List<MidCategoryVO> getMidBtmCategoryList(int midCa);
 
+	public List<TopCategoryVO> getTopCategoryTableList(int startIndexNo, int pageSize);
+
+	public void setTopBtmCategoryDel(int idx);
+
+	public void setTopMidCategoryDel(int idx);
+
+	public int setTopCategoryDel(int idx);
+
+	public int setTopCategoryInput(String topCategoryName);
+
+	public List<MidCategoryVO> getMidCategoryTableList(int startIndexNo, int pageSize);
+
+	public int setMidCategoryInput(String midCategoryName, int topCategoryIdx);
+
+	public void setMidBtmCategoryDel(int idx);
+
+	public int setMidCategoryDel(int idx);
+
 
 }

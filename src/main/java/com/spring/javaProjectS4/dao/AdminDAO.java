@@ -122,6 +122,28 @@ public interface AdminDAO {
 
 	public List<MidCategoryVO> getMidBtmCategoryList(@Param("midCa") int midCa);
 
+	public List<TopCategoryVO> getTopCategoryTableList(@Param("startIndexNo") int startIndexNo,@Param("pageSize") int pageSize);
+
+	public int getTopCategoryRecCnt();
+
+	public void setTopBtmCategoryDel(@Param("idx") int idx);
+
+	public void setTopMidCategoryDel(@Param("idx") int idx);
+
+	public int setTopCategoryDel(@Param("idx") int idx);
+
+	public int setTopCategoryInput(@Param("topCategoryName") String topCategoryName);
+
+	public List<MidCategoryVO> getMidCategoryTableList(@Param("startIndexNo") int startIndexNo,@Param("pageSize") int pageSize);
+
+	public int getMidCategoryRecCnt();
+
+	public int setMidCategoryInput(@Param("midCategoryName") String midCategoryName,@Param("topCategoryIdx") int topCategoryIdx);
+
+	public void setMidBtmCategoryDel(@Param("idx") int idx);
+
+	public int setMidCategoryDel(@Param("idx") int idx);
+
 
 
 }

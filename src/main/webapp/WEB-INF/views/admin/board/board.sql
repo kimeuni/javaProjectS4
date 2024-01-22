@@ -12,7 +12,11 @@ create table noticeS(
 );
 select * from noticeS;
 select count(*),mem.mid from followS fos, memberS mem where fos.followingMid = fos.followingMid and fos.followingMid = mem.mid group by mem.mid;
+select mi.*,(select count(*) from btmCategoryS btc where mi.idx = btc.midCategoryIdx ) as btmCnt,
+(select count(*) from usedS usd where usd.midCategoryIdx = mi.idx ) as usedCnt from 
+ midCategoryS mi, btmCategoryS bt group by mi.idx;
 
+select count(*) from midCategoryS where toc.idx = mi.topCategoryIdx group by toc.idx;
 -- 이벤트 DB
 create table eventS(
 	idx int not null auto_increment primary key,

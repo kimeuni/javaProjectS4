@@ -11,4 +11,7 @@ public class MidCategoryVO {
 	private int idx;
 	private int topCategoryIdx;
 	private String midCategoryName;
+	
+	private int btmCnt;
+	private int usedCnt;
 }

@@ -103,6 +103,16 @@ public class PageProcess {
 				totRecCnt = usedDAO.getFollowerMidRecCnt(searchString);
 			}
 		}
+		if(section.equals("topCategory")) {
+			if(part.equals("")) {
+				totRecCnt = adminDAO.getTopCategoryRecCnt();
+			}
+		}
+		if(section.equals("midCategory")) {
+			if(part.equals("")) {
+				totRecCnt = adminDAO.getMidCategoryRecCnt();
+			}
+		}
 		
 		int totPage = (totRecCnt % pageSize)==0 ? (totRecCnt / pageSize) : (totRecCnt / pageSize) + 1;
 		int startIndexNo = (pag - 1) * pageSize;

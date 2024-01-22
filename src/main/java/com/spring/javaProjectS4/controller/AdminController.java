@@ -793,7 +793,7 @@ public class AdminController {
 		
 		model.addAttribute("tVOS",tVOS);
 		model.addAttribute("menuCk","카테고리관리");
-		return "admin/board/categoryManag";
+		return "admin/used/categoryManag";
 	}
 	
 	// top 카테고리 클릭시, mid 카테고리 가져오기
@@ -807,8 +807,99 @@ public class AdminController {
 	@ResponseBody
 	@RequestMapping(value = "/midBtmCategory",method = RequestMethod.POST)
 	public List<MidCategoryVO> midBtmCategoryPost(int midCa) {
-		System.out.println(midCa);
 		return adminService.getMidBtmCategoryList(midCa);
+	}
+	
+	// 대분류 카테고리 등록 화면 이동
+	@RequestMapping(value = "/topCategoryInput", method = RequestMethod.GET)
+	public String topCategoryInputGet(Model model,
+			@RequestParam(name="pag", defaultValue = "1", required = false) int pag,
+			@RequestParam(name="pageSize", defaultValue = "5", required = false) int pageSize
+			) {
+		// 띄울 대분류 가져오기
+		PageVO pageVO = pageProcess.totRecCnt(pag, pageSize, "topCategory", "", "");
+		List<TopCategoryVO> topVOS = adminService.getTopCategoryTableList(pageVO.getStartIndexNo(),pageSize);
+		
+		List<TopCategoryVO> tVOS = adminService.getTopCategoryList();
+		
+		model.addAttribute("tVOS",tVOS);
+		model.addAttribute("pageVO",pageVO);
+		model.addAttribute("topVOS",topVOS);
+		model.addAttribute("menuCk","카테고리관리");
+		return "admin/used/topCategoryInput";
+	}
+	
+	// 대분류 카테고리 등록 처리
+	@ResponseBody
+	@RequestMapping(value = "/topCategoryInput", method = RequestMethod.POST)
+	public String topCategoryInputPost(String topCategoryName) {
+		
+		int res = adminService.setTopCategoryInput(topCategoryName);
+		
+		if(res != 0) return "1";
+		else return "2";
+	}
+	
+	// 대분류, 중분류, 소분류 삭제
+	@ResponseBody
+	@RequestMapping(value = "/topMidBtmCategoryDel", method = RequestMethod.POST)
+	public String topMidBtmCategoryDelPost(@RequestParam(name="idx", defaultValue = "0", required = false) int idx) {
+		// 소분류 삭제
+		adminService.setTopBtmCategoryDel(idx);
+		
+		// 중분류 삭제
+		adminService.setTopMidCategoryDel(idx);
+		
+		// 대분류 삭제
+		int res = adminService.setTopCategoryDel(idx);
+		
+		if(res !=0 ) return "1";
+		else return "2";
+	}
+	
+	// 중분류 카테고리 등록 화면 이동
+	@RequestMapping(value = "/midCategoryInput", method = RequestMethod.GET)
+	public String midCategoryInputGet(Model model,
+			@RequestParam(name="pag", defaultValue = "1", required = false) int pag,
+			@RequestParam(name="pageSize", defaultValue = "5", required = false) int pageSize
+			) {
+		// 띄울 중분류 가져오기
+		PageVO pageVO = pageProcess.totRecCnt(pag, pageSize, "midCategory", "", "");
+		List<MidCategoryVO> midVOS = adminService.getMidCategoryTableList(pageVO.getStartIndexNo(),pageSize);
+		
+		List<TopCategoryVO> tVOS = adminService.getTopCategoryList();
+		
+		model.addAttribute("tVOS",tVOS);
+		model.addAttribute("pageVO",pageVO);
+		model.addAttribute("midVOS",midVOS);
+		model.addAttribute("menuCk","카테고리관리");
+		return "admin/used/midCategoryInput";
+	}
+	
+	// 중분류 카테고리 등록 처리
+	@ResponseBody
+	@RequestMapping(value = "/midCategoryInput", method = RequestMethod.POST)
+	public String midCategoryInputPost(String midCategoryName,
+			@RequestParam(name="topCategoryIdx", defaultValue = "0", required = false) int topCategoryIdx
+			) {
+		int res = adminService.setMidCategoryInput(midCategoryName,topCategoryIdx);
+		if(res != 0) return "1";
+		else return "2";
+	}
+	
+	// 중분류 카테고리 등록 - 중분류,소분류 삭제
+	@ResponseBody
+	@RequestMapping(value = "/midBtmCategoryDel", method = RequestMethod.POST)
+	public String midBtmCategoryDelPost(@RequestParam(name="idx", defaultValue = "0", required = false) int idx) {
+		
+		//소분류 삭제
+		adminService.setMidBtmCategoryDel(idx);
+		
+		// 중분류 삭제
+		int res = adminService.setMidCategoryDel(idx);
+		
+		if(res != 0) return "1";
+		else return "2";
 	}
 	
 	// 메일 전송을 위한 메소드
