@@ -22,12 +22,15 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.spring.javaProjectS4.dao.AdminDAO;
 import com.spring.javaProjectS4.vo.AnswerVO;
 import com.spring.javaProjectS4.vo.AskVO;
+import com.spring.javaProjectS4.vo.BtmCategoryVO;
 import com.spring.javaProjectS4.vo.EventMailVO;
 import com.spring.javaProjectS4.vo.FAQVO;
 import com.spring.javaProjectS4.vo.MainAdvertisementVO;
 import com.spring.javaProjectS4.vo.MemberVO;
+import com.spring.javaProjectS4.vo.MidCategoryVO;
 import com.spring.javaProjectS4.vo.NoticeVO;
 import com.spring.javaProjectS4.vo.ReasonTitleVO;
+import com.spring.javaProjectS4.vo.TopCategoryVO;
 import com.spring.javaProjectS4.vo.UserReportVO;
 
 @Service
@@ -444,6 +447,31 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public void setAnsDel(int idx) {
 		adminDAO.setAnsDel( idx);
+	}
+
+	@Override
+	public List<TopCategoryVO> getTopCategoryList() {
+		return adminDAO.getTopCategoryList();
+	}
+
+	@Override
+	public List<MidCategoryVO> getMidCategoryList() {
+		return adminDAO.getMidCategoryList();
+	}
+
+	@Override
+	public List<BtmCategoryVO> getBtmCategoryList() {
+		return adminDAO.getBtmCategoryList();
+	}
+
+	@Override
+	public List<MidCategoryVO> getTopMidCategoryList(int top) {
+		return adminDAO.getTopMidCategoryList(top);
+	}
+
+	@Override
+	public List<MidCategoryVO> getMidBtmCategoryList(int midCa) {
+		return adminDAO.getMidBtmCategoryList( midCa);
 	}
 
 }

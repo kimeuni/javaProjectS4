@@ -36,13 +36,12 @@
     	#admin-main-right-inner-content{
     		margin: 0 auto;
     		width: 100%;
-    		margin-top: 110px; 
-    		margin-bottom: 60px; 
+    		margin-top: 80px; 
+    		margin-bottom: 20px; 
     	}
     	#admin-main-menu{
     		margin: 0 auto;
     		width : 75%;
-    		border: 1px solid;
     		border-radius : 5px;
     		padding: 20px;
     		background-color: #fff;

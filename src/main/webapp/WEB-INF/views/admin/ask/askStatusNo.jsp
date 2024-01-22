@@ -43,7 +43,6 @@
     	#admin-main-menu{
     		margin: 0 auto;
     		width : 90%;
-    		border: 1px solid;
     		border-radius : 5px;
     		padding: 20px;
     		background-color: #fff;

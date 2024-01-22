@@ -178,6 +178,39 @@
     		font-size: 1.1em;
     		font-weight: bold;
     	}
+    	
+    	/* 신고창 */
+		#complaint{
+			position: fixed;
+			top:25%;
+			left: 50%;
+    		transform: translate(-50%, 0);
+			width: 450px;
+			border: 1px solid gray;
+			background-color:#fff;
+		}
+		#cpstyle{
+			text-align:center;
+			padding: 30px;
+		}
+		.complaint-top-str{
+			text-align:center; 
+			background-color:#252525; 
+			color:#fff; 
+			height:50px; 
+			line-height:50px;
+		}
+		.cp-mid-str1{
+			text-align: left; 
+			margin-bottom: 5px;
+		}
+		.cp-mid-str2{
+			text-align: left; 
+			margin-bottom: 15px;
+		}
+		#otherWhy{
+			resize: none;
+		}
     </style>
     <script>
     	'use strict'
@@ -226,25 +259,33 @@
     	
     	// 찜 누르기
     	function likeUpdate(idx){
-    		let query = {
-    			idx : idx,
-    			mid : '${sMid}',
-    			flag : 'update'
-    		}
-    		$.ajax({
-    			url : "${ctp}/used/likeUpNDel",
-    			type : "post",
-    			data : query,
-    			success : function(res){
-    				if(res == "1"){
-    					location.reload();
-    				}
-    				else if(res == "2") alert("해당 게시물 찜에 실패하였습니다.")
-    			},
-    			error : function(){
-    				alert("전송오류(usedContent.jsp)")
-    			}
-    		});
+    		let mid = '${sMid}';
+			if(mid == ""){
+				alert("로그인 후 이용 가능한 서비스 입니다.");
+				location.href="${ctp}/member/login"
+			}
+			else{
+				let query = {
+	    			idx : idx,
+	    			mid : '${sMid}',
+	    			flag : 'update'
+	    		}
+	    		$.ajax({
+	    			url : "${ctp}/used/likeUpNDel",
+	    			type : "post",
+	    			data : query,
+	    			success : function(res){
+	    				if(res == "1"){
+	    					location.reload();
+	    				}
+	    				else if(res == "2") alert("해당 게시물 찜에 실패하였습니다.")
+	    			},
+	    			error : function(){
+	    				alert("전송오류(usedContent.jsp)")
+	    			}
+	    		});
+			}
+    		
     	}
     	
     	// 찜 취소
@@ -268,8 +309,87 @@
     				alert("전송오류(usedContent.jsp)")
     			}
     		});
-    		
     	}
+    	
+    	
+    	
+    	//게시판 들어왔을 때 신고창 숨기기 및 신고기타사유 적는 곳 숨기기
+		$(function() {
+			$("#complaint").hide();
+			$("#cpWhyOther").hide();
+		});
+		
+		// 신고버튼 눌렀을 시, 신고창 뜨게 하기
+		function cpCheck(){
+			let mid = '${sMid}';
+			if(mid == ""){
+				alert("로그인 후 이용 가능한 서비스 입니다.");
+				location.href="${ctp}/member/login"
+			}
+			else{
+				$("#complaint").show();
+			}
+		}
+		
+		// "기타"를 선택했을 시, 화면 보이기 혹은 가리기
+		function cpWhyCheck(){
+			let cpWhy = $("#cpWhy").val();
+			if(cpWhy == '기타'){
+				$("#cpWhyOther").show();
+			}
+			else {
+				$("#cpWhyOther").hide();
+			}
+		};
+		
+		// 신고창에서 취소 버튼
+		function cCheck(){
+			$("#complaint").hide();
+			$("#cpWhyOther").hide();
+		}
+		
+		// 신고창 신고하기 버튼
+		function cpCheckOk() {
+			let cpWhy = $("#cpWhy").val();
+			let otherWhy =$("#otherWhy").val();
+			
+			if(cpWhy.trim() == "" ){
+				alert("신고 사유를 선택해주세요.")
+				return false;
+			}
+			else if(cpWhy == "기타" && otherWhy.trim() == ""){
+				alert("신고 사유를 선택해주세요.")
+				$("#otherWhy").focus();
+				return false;
+			}
+			else {
+				let cpWhy = $("#cpWhy").val();
+				let otherWhy = $("#otherWhy").val();
+				
+				let query = {
+					idx : ${usedVO.idx},
+					cpWhy : cpWhy,
+					otherWhy : otherWhy,
+					mid : '${sMid}',
+					usedMid : '${usedVO.mid}'
+				}
+				$.ajax({
+					url : "${ctp}/used/usedReport",
+					type : "post",
+					data : query,
+					success : function(res){
+						if(res == "1") {
+							alert("신고가 완료되었습니다.")
+							location.reload();
+						}
+						else alert("신고에 실패하였습니다.")
+					},
+					error : function(){
+						alert("전송 오류");
+					}
+				});
+			}
+		}
     </script>
 </head>
 <body>
@@ -338,10 +458,10 @@
 						<div class="u-btns-flex"><a href="" class="chat-btn"><i class="fa-solid fa-comments"></i> 채팅하기</a></div>
 					</c:if>
 					<c:if test="${sMid != usedVO.mid }">
-						<div class="u-btns-flex"><a href="" class="report-btn"><i class="fa-solid fa-triangle-exclamation"></i> 신고</a></div>
+						<div class="u-btns-flex"><a href="javascript:cpCheck()" class="report-btn"><i class="fa-solid fa-triangle-exclamation"></i> 신고</a></div>
 					</c:if>
 					<c:if test="${sMid == usedVO.mid }">
-						<div class="u-btns-flex"><a href="" class="management-btn"><i class="fa-solid fa-store"></i> 상점관리</a></div>
+						<div class="u-btns-flex"><a href="${ctp}/used/usedStoreManagement?mid=${usedVO.mid}" class="management-btn"><i class="fa-solid fa-store"></i> 상점관리</a></div>
 					</c:if>
 				</div>
 			</div>
@@ -416,6 +536,34 @@
 		</div>
 	</div>
 	<hr class="bor-b" />
+</div>
+<!-- 게시글 신고창 -->
+<div id="complaint">
+	<div class="complaint-top-str">신고하기</div>
+	<div id="cpstyle">
+		<div class="cp-mid-str1" >신고 게시판 : ${usedVO.title}</div>
+		<div class="cp-mid-str2" >신고자 : ${sMid}</div>
+		<div>
+			<select name="cpWhy" id="cpWhy" class="form-control" onchange="cpWhyCheck()">
+				<option value="">신고 사유</option>
+				<option value="광고성 콘텐츠(상점)예요">광고성 콘텐츠(상점)예요</option>
+				<option value="상품 정보가 부정확해요">상품 정보가 부정확해요</option>
+				<option value="거래금지 품목으로 판단돼요">거래금지 품목으로 판단돼요</option>
+				<option value="사기가 의심돼요(외부 채널 유도)">사기가 의심돼요(외부 채널 유도)</option>
+				<option value="전문 업자 같아요">전문 업자 같아요</option>
+				<option value="기타">기타</option>
+			</select>
+		</div>
+		<div id="cpWhyOther" class="mt-2">
+			<hr/>
+			<textarea rows="4" id="otherWhy" class="form-control"></textarea>
+			<div></div>
+		</div>
+		<div class="text-center mt-3">
+			<a href="javascript:cpCheckOk()" class="btn btn-danger">신고하기</a>
+			<a href="javascript:cCheck()" class="btn btn-secondary">취소하기</a>
+		</div>
+	</div>
 </div>
 <jsp:include page="/WEB-INF/views/include/footer.jsp" />
 <script>

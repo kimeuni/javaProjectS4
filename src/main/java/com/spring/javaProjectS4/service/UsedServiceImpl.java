@@ -1,5 +1,6 @@
 package com.spring.javaProjectS4.service;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -240,5 +241,64 @@ public class UsedServiceImpl implements UsedService {
 	@Override
 	public int setStoreSogeUpdate(String storeIntroduce, String mid) {
 		return usedDAO.setStoreSogeUpdate( storeIntroduce, mid);
+	}
+
+	@Override
+	public void setFollowUsedAlarmDel(String followerMid, String followingMid) {
+		usedDAO.setFollowUsedAlarmDel( followerMid, followingMid);
+	}
+
+	@Override
+	public int getUsedMidListCnt(String mid) {
+		return usedDAO.getUsedMidListCnt( mid);
+	}
+
+	@Override
+	public int setFollowAlarmN(String sMid, String followingMid) {
+		return usedDAO.setFollowAlarmN( sMid, followingMid);
+	}
+
+	@Override
+	public int setFollowAlarmY(String sMid, String followingMid) {
+		return usedDAO.setFollowAlarmY( sMid, followingMid);
+	}
+
+	@Override
+	public void setUsedUpUpdate(int idx) {
+		usedDAO.setUsedUpUpdate(idx);
+	}
+
+	@Override
+	public void setUsedIdxDelete(int idx, String imgs) {
+		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
+		String realPath = request.getSession().getServletContext().getRealPath("/resources/data/");
+		
+		String[] img = imgs.split("/");
+		
+		String oFilePath = "";
+		
+		// 이미지 삭제
+		for(int i=0; i<img.length; i++) {
+			oFilePath = realPath + "used/" + img[i];
+			
+			fileDelete(oFilePath);
+		}
+		usedDAO.setUsedIdxDelete(idx);
+	}
+
+	// 이미지 삭제
+	private void fileDelete(String origFilePath) {
+		File delFile = new File(origFilePath);
+		if(delFile.exists()) delFile.delete();
+	}
+
+	@Override
+	public int setStateUpdate(int idx, String state) {
+		return usedDAO.setStateUpdate( idx, state);
+	}
+
+	@Override
+	public int setUsedReportInput(int idx, String reason, String mid, String usedMid) {
+		return usedDAO.setUsedReportInput( idx, reason, mid, usedMid);
 	}
 }

@@ -6,12 +6,15 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.spring.javaProjectS4.vo.AnswerVO;
 import com.spring.javaProjectS4.vo.AskVO;
+import com.spring.javaProjectS4.vo.BtmCategoryVO;
 import com.spring.javaProjectS4.vo.EventMailVO;
 import com.spring.javaProjectS4.vo.FAQVO;
 import com.spring.javaProjectS4.vo.MainAdvertisementVO;
 import com.spring.javaProjectS4.vo.MemberVO;
+import com.spring.javaProjectS4.vo.MidCategoryVO;
 import com.spring.javaProjectS4.vo.NoticeVO;
 import com.spring.javaProjectS4.vo.ReasonTitleVO;
+import com.spring.javaProjectS4.vo.TopCategoryVO;
 import com.spring.javaProjectS4.vo.UserReportVO;
 
 public interface AdminService {
@@ -105,6 +108,16 @@ public interface AdminService {
 	public AnswerVO getAnswerAskIdx(int idx);
 
 	public void setAnsDel(int idx);
+
+	public List<TopCategoryVO> getTopCategoryList();
+
+	public List<MidCategoryVO> getMidCategoryList();
+
+	public List<BtmCategoryVO> getBtmCategoryList();
+
+	public List<MidCategoryVO> getTopMidCategoryList(int top);
+
+	public List<MidCategoryVO> getMidBtmCategoryList(int midCa);
 
 
 }

@@ -69,6 +69,21 @@
 	<select id="getAnswerAskIdx" resultType="com.spring.javaProjectS4.vo.AnswerVO">
 		select * from answerS where askIdx = #{idx};
 	</select>
+	<select id="getTopCategoryList" resultType="com.spring.javaProjectS4.vo.TopCategoryVO">
+		select * from topCategoryS order by idx;
+	</select>
+	<select id="getMidCategoryList" resultType="com.spring.javaProjectS4.vo.MidCategoryVO">
+		select * from midCategoryS order by idx;
+	</select>
+	<select id="getBtmCategoryList" resultType="com.spring.javaProjectS4.vo.BtmCategoryVO">
+		select * from btmCategoryS order by idx;
+	</select>
+	<select id="getTopMidCategoryList" resultType="com.spring.javaProjectS4.vo.MidCategoryVO">
+		select * from midCategoryS where topCategoryIdx = #{top};
+	</select>
+	<select id="getMidBtmCategoryList" resultType="com.spring.javaProjectS4.vo.BtmCategoryVO">
+		select * from btmCategoryS where midCategoryIdx = #{midCa};
+	</select>
 	
 	<insert id="setNoticeInput">
 		insert into noticeS values (default,#{vo.nickName},#{vo.title},#{vo.content},default,default,#{vo.openSw});

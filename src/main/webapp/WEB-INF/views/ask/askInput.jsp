@@ -133,8 +133,22 @@
     			$("#content-text-cnt").html(str);
     			
     			if(content.length > 300){
+	    			$("#content-text-cnt").html("(300/300)");
     				alert("문의 내용은 300글자까지 가능합니다.")
     				$("#content").val(content.substring(0,300));
+    			}
+    		});
+    	});
+    	$(function() {
+    		$("#title").on("keyup",function() {
+	    		let title = $("#title").val();
+    			str = '('+ title.length +'/40)';
+    			$("#title-text-cnt").html(str);
+    			
+    			if(title.length > 40){
+	    			$("#title-text-cnt").html("(40/40)");
+    				alert("문의 제목은 40글자까지 가능합니다.")
+    				$("#title").val(content.substring(0,40));
     			}
     		});
     	});
@@ -261,8 +275,8 @@
 		<h2>1:1 문의하기</h2>
 		<form name="askForm" method="post" enctype="multipart/form-data" >
 			<div id="ask-div">
-				<div>문의 제목<span class="pli-c">＊</span></div>
-				<div><input type="text" name="title" id="title" required /></div>
+				<div>문의 제목<span class="pli-c">＊</span><span id="title-text-cnt">(0/40)</span></div>
+				<div><input type="text" name="title" id="title" maxlength="40" required /></div>
 				<div>유형 선택<span class="pli-c">＊</span></div>
 				<div>
 					<select name="category"  id="category">

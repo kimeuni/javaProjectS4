@@ -26,12 +26,15 @@ import com.spring.javaProjectS4.pagination.PageVO;
 import com.spring.javaProjectS4.service.AdminService;
 import com.spring.javaProjectS4.vo.AnswerVO;
 import com.spring.javaProjectS4.vo.AskVO;
+import com.spring.javaProjectS4.vo.BtmCategoryVO;
 import com.spring.javaProjectS4.vo.EventMailVO;
 import com.spring.javaProjectS4.vo.FAQVO;
 import com.spring.javaProjectS4.vo.MainAdvertisementVO;
 import com.spring.javaProjectS4.vo.MemberVO;
+import com.spring.javaProjectS4.vo.MidCategoryVO;
 import com.spring.javaProjectS4.vo.NoticeVO;
 import com.spring.javaProjectS4.vo.ReasonTitleVO;
+import com.spring.javaProjectS4.vo.TopCategoryVO;
 import com.spring.javaProjectS4.vo.UserReportVO;
 
 @Controller
@@ -781,6 +784,31 @@ public class AdminController {
 			adminService.setaskStatusNoDel(Integer.parseInt(idx),vo.getImgs());
 			return "1";
 		}
+	}
+	
+	// 카테고리 관리
+	@RequestMapping(value = "/categoryManag", method = RequestMethod.GET)
+	public String categoryManagGet(Model model) {
+		List<TopCategoryVO> tVOS = adminService.getTopCategoryList();
+		
+		model.addAttribute("tVOS",tVOS);
+		model.addAttribute("menuCk","카테고리관리");
+		return "admin/board/categoryManag";
+	}
+	
+	// top 카테고리 클릭시, mid 카테고리 가져오기
+	@ResponseBody
+	@RequestMapping(value = "/topMidCategory",method = RequestMethod.POST)
+	public List<MidCategoryVO> topMidCategoryPost(int topCa) {
+		return adminService.getTopMidCategoryList(topCa);
+	}
+	
+	// mid 카테고리 클릭시, btm 카테고리 가져오기
+	@ResponseBody
+	@RequestMapping(value = "/midBtmCategory",method = RequestMethod.POST)
+	public List<MidCategoryVO> midBtmCategoryPost(int midCa) {
+		System.out.println(midCa);
+		return adminService.getMidBtmCategoryList(midCa);
 	}
 	
 	// 메일 전송을 위한 메소드

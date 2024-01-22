@@ -37,13 +37,12 @@
     	#admin-advertisement-right-inner-content{
     		margin: 0 auto;
     		width: 70%;
-    		margin-top: 90px; 
-    		margin-bottom: 40px; 
+    		margin-top: 80px; 
+    		margin-bottom: 20px; 
     	}
     	#admin-advertisement-menu{
     		margin: 0 auto;
     		width : 100%;
-    		border: 1px solid;
     		border-radius : 5px;
     		padding: 20px;
     		background-color: #fff;

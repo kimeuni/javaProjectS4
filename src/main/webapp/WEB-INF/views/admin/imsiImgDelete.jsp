@@ -42,7 +42,6 @@
     	#imsi-del-menu{
     		margin: 0 auto;
     		width : 85%;
-    		border: 1px solid;
     		border-radius : 5px;
     		padding: 20px;
     		background-color: #fff;

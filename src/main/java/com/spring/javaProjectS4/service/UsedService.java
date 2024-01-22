@@ -82,4 +82,21 @@ public interface UsedService {
 
 	public int setStoreSogeUpdate(String storeIntroduce, String mid);
 
+	public void setFollowUsedAlarmDel(String followerMid, String followingMid);
+
+	public int getUsedMidListCnt(String mid);
+
+	public int setFollowAlarmN(String sMid, String followingMid);
+
+	public int setFollowAlarmY(String sMid, String followingMid);
+
+	public void setUsedUpUpdate(int idx);
+
+	public void setUsedIdxDelete(int idx, String imgs);
+
+	public int setStateUpdate(int idx, String state);
+
+	public int setUsedReportInput(int idx, String reason, String mid, String usedMid);
+
+
 }

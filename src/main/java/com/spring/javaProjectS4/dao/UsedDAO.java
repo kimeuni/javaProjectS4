@@ -92,5 +92,21 @@ public interface UsedDAO {
 	public int getFollowerMidRecCnt(@Param("searchString") String searchString);
 
 	public int setStoreSogeUpdate(@Param("storeIntroduce") String storeIntroduce,@Param("mid") String mid);
+
+	public void setFollowUsedAlarmDel(@Param("followerMid") String followerMid,@Param("followingMid") String followingMid);
+
+	public int getUsedMidListCnt(@Param("mid") String mid);
+
+	public int setFollowAlarmN(@Param("sMid") String sMid,@Param("followingMid") String followingMid);
+
+	public int setFollowAlarmY(@Param("sMid") String sMid,@Param("followingMid") String followingMid);
+
+	public void setUsedUpUpdate(@Param("idx") int idx);
+
+	public void setUsedIdxDelete(@Param("idx") int idx);
+
+	public int setStateUpdate(@Param("idx") int idx,@Param("state") String state);
+
+	public int setUsedReportInput(@Param("idx") int idx,@Param("reason") String reason,@Param("mid") String mid,@Param("usedMid") String usedMid);
 	
 }

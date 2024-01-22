@@ -140,6 +140,7 @@ public class UsedController {
 		else return "redirect:/message/usedInputNo";
 	}
 	
+	// 중고거래 글 상세보기
 	@RequestMapping(value = "/usedContent", method = RequestMethod.GET)
 	public String usedContentGet(Model model, HttpSession session,
 			@RequestParam(name="idx",defaultValue = "0",required = false) int idx,
@@ -229,8 +230,12 @@ public class UsedController {
 	@ResponseBody
 	@RequestMapping(value = "/usedFollow",method = RequestMethod.POST)
 	public String usedFollowPost(String followerMid,String followingMid,String flag) {
+		System.out.println(followerMid);
+		System.out.println(followingMid);
 		int res = 0;
 		if(flag.equals("No")) {
+			// 팔로우 게시물 알림이 있으면 모두 삭제
+			usedService.setFollowUsedAlarmDel(followerMid,followingMid);
 			res = usedService.setFollowDelete(followerMid,followingMid);
 		}
 		else if(flag.equals("Yes")){
@@ -280,7 +285,7 @@ public class UsedController {
 		// 팔로워 (해당 상점을 팔로우한 사람)
 		List<FollowVO> ferVOS = usedService.getFollowerList(mid);
 		
-		// 해당 유저가 작성한 게시글 개수 및 정보
+		// 해당 유저가 작성한 게시글 정보
 		PageVO pageVO = pageProcess.totRecCnt(pag, pageSize, "used", "mid",mid);
 		List<UsedVO> usedVOS = usedService.getUsedMidList(mid,pageVO.getStartIndexNo(),pageSize);
 		
@@ -291,8 +296,16 @@ public class UsedController {
 		// 카테고리 가져오기
 		// 대분류
 		
+		// 해당 유저가 작성한 게시글 개수
+		int usedCnt  = usedService.getUsedMidListCnt(mid);
 		
-		// 해당 상점 팔로우 유무
+		// 해당 상점 팔로우한 사람 확인용 (로그인 한 사람만)
+		String sMid = session.getAttribute("sMid") == null ? "" : (String)session.getAttribute("sMid");
+		if(!mid.equals("")) {
+			FollowVO fVO = usedService.getFollowerMid(sMid,mid);
+			
+			model.addAttribute("fVO",fVO);
+		}
 		
 		
 		model.addAttribute("memVO",memVO);
@@ -303,7 +316,7 @@ public class UsedController {
 		model.addAttribute("fingCnt",fingVOS.size()); // 총 팔로잉 수
 		model.addAttribute("usedVOS",usedVOS);
 		model.addAttribute("pageVO",pageVO);
-		model.addAttribute("usedCnt",usedVOS.size()); // 총 상품수
+		model.addAttribute("usedCnt",usedCnt); // 총 상품수
 		model.addAttribute("likeCnt",likeVOS.size()); //총 찜 수
 		model.addAttribute("topC",topC);
 		model.addAttribute("midC",midC);
@@ -338,6 +351,18 @@ public class UsedController {
 		PageVO pageVO = pageProcess.totRecCnt(pag, pageSize, "usedLike", "",mid);
 		List<UsedVO> usedLikeVOS = usedService.getUsedLikeMidList(mid,pageVO.getStartIndexNo(),pageSize);
 		
+
+		// 해당 상점 팔로우한 사람 확인용 (로그인 한 사람만)
+		String sMid = session.getAttribute("sMid") == null ? "" : (String)session.getAttribute("sMid");
+		if(!mid.equals("")) {
+			FollowVO fVO = usedService.getFollowerMid(sMid,mid);
+			
+			model.addAttribute("fVO",fVO);
+		}
+		
+		// 해당 유저가 작성한 게시글 개수
+		int usedCnt  = usedService.getUsedMidListCnt(mid);
+		
 		model.addAttribute("memVO",memVO);
 		model.addAttribute("stVO",stVO);
 		model.addAttribute("ferVOS",ferVOS);
@@ -346,7 +371,7 @@ public class UsedController {
 		model.addAttribute("fingCnt",fingVOS.size()); // 총 팔로잉 수
 		model.addAttribute("usedVOS",usedVOS);
 		model.addAttribute("pageVO",pageVO);
-		model.addAttribute("usedCnt",usedVOS.size()); // 총 상품수
+		model.addAttribute("usedCnt",usedCnt); // 총 상품수
 		model.addAttribute("likeCnt",likeVOS.size()); //총 찜 수
 		model.addAttribute("usedLikeVOS",usedLikeVOS);
 		
@@ -382,6 +407,16 @@ public class UsedController {
 		// 해당 유저가 찜한 개수
 		List<LikeVO> likeVOS = usedService.getLikeMid(mid);
 		
+		// 해당 상점 팔로우한 사람 확인용 (로그인 한 사람만)
+		String sMid = session.getAttribute("sMid") == null ? "" : (String)session.getAttribute("sMid");
+		if(!mid.equals("")) {
+			FollowVO fVO = usedService.getFollowerMid(sMid,mid);
+			
+			model.addAttribute("fVO",fVO);
+		}
+		
+		// 해당 유저가 작성한 게시글 개수
+		int usedCnt  = usedService.getUsedMidListCnt(mid);
 		
 		model.addAttribute("memVO",memVO);
 		model.addAttribute("stVO",stVO);
@@ -391,7 +426,7 @@ public class UsedController {
 		model.addAttribute("fingCnt",fingsVOS.size()); // 총 팔로잉 수
 		model.addAttribute("usedVOS",usedVOS);
 		model.addAttribute("pageVO",pageVO);
-		model.addAttribute("usedCnt",usedVOS.size()); // 총 상품수
+		model.addAttribute("usedCnt",usedCnt); // 총 상품수
 		model.addAttribute("likeCnt",likeVOS.size()); //총 찜 수
 		model.addAttribute("fingMemVOS",fingMemVOS);
 		model.addAttribute("fingUsedVOS",fingUsedVOS);
@@ -425,6 +460,17 @@ public class UsedController {
 		PageVO pageVO = pageProcess.totRecCnt(pag, pageSize, "follower", "",mid);
 		List<MemberVO> ferMemVOS = usedService.getFollowerMemList(mid,pageVO.getStartIndexNo(),pageSize);
 		
+		// 해당 상점 팔로우한 사람 확인용 (로그인 한 사람만)
+		String sMid = session.getAttribute("sMid") == null ? "" : (String)session.getAttribute("sMid");
+		if(!mid.equals("")) {
+			FollowVO fVO = usedService.getFollowerMid(sMid,mid);
+			
+			model.addAttribute("fVO",fVO);
+		}
+
+		// 해당 유저가 작성한 게시글 개수
+		int usedCnt  = usedService.getUsedMidListCnt(mid);
+		
 		model.addAttribute("memVO",memVO);
 		model.addAttribute("stVO",stVO);
 		model.addAttribute("ferVOS",ferVOS);
@@ -433,7 +479,7 @@ public class UsedController {
 		model.addAttribute("fingCnt",fingVOS.size()); // 총 팔로잉 수
 		model.addAttribute("usedVOS",usedVOS);
 		model.addAttribute("pageVO",pageVO);
-		model.addAttribute("usedCnt",usedVOS.size()); // 총 상품수
+		model.addAttribute("usedCnt",usedCnt); // 총 상품수
 		model.addAttribute("likeCnt",likeVOS.size()); //총 찜 수
 		model.addAttribute("ferMemVOS",ferMemVOS);
 		
@@ -444,7 +490,7 @@ public class UsedController {
 	@RequestMapping(value = "/usedStoreManagement" , method = RequestMethod.GET)
 	public String usedStoreManagementGet(String mid, Model model,HttpSession session,
 			@RequestParam(name="pag",defaultValue = "1",required = false) int pag,
-			@RequestParam(name="pageSize",defaultValue = "25",required = false) int pageSize){
+			@RequestParam(name="pageSize",defaultValue = "5",required = false) int pageSize){
 		// 회원 정보
 		MemberVO memVO = usedService.getMemberMid(mid);
 		// 해당 회원 상점 정보
@@ -461,7 +507,17 @@ public class UsedController {
 		
 		// 해당 유저가 찜한 개수
 		List<LikeVO> likeVOS = usedService.getLikeMid(mid);
-		
+
+		// 해당 상점 팔로우한 사람 확인용 (로그인 한 사람만)
+		String sMid = session.getAttribute("sMid") == null ? "" : (String)session.getAttribute("sMid");
+		if(!mid.equals("")) {
+			FollowVO fVO = usedService.getFollowerMid(sMid,mid);
+			
+			model.addAttribute("fVO",fVO);
+		}
+
+		// 해당 유저가 작성한 게시글 개수
+		int usedCnt  = usedService.getUsedMidListCnt(mid);
 		
 		model.addAttribute("memVO",memVO);
 		model.addAttribute("stVO",stVO);
@@ -471,18 +527,110 @@ public class UsedController {
 		model.addAttribute("fingCnt",fingVOS.size()); // 총 팔로잉 수
 		model.addAttribute("usedVOS",usedVOS);
 		model.addAttribute("pageVO",pageVO);
-		model.addAttribute("usedCnt",usedVOS.size()); // 총 상품수
+		model.addAttribute("usedCnt",usedCnt); // 총 상품수
 		model.addAttribute("likeCnt",likeVOS.size()); //총 찜 수
 		
 		return "used/usedStoreManagement";
 	}
 	
+	// 내상점 소개 업데이트
 	@ResponseBody
 	@RequestMapping(value = "/StoreSogeUpdate", method = RequestMethod.POST)
 	public String StoreSogeUpdatePost(String storeIntroduce, String mid) {
 		storeIntroduce = storeIntroduce.replace("\n", "<br/>");
 		
 		int res = usedService.setStoreSogeUpdate(storeIntroduce,mid);
+		
+		if(res != 0) return "1";
+		else return "2";
+	}
+	
+	// 팔로우 알람 Y N 변경 처리
+	@ResponseBody
+	@RequestMapping(value = "/followAlarmYN", method = RequestMethod.POST)
+	public String followAlarmYNPost(String sMid ,String followingMid, String flag) {
+		int res = 0;
+		if(flag.equals("N")) {
+			res = usedService.setFollowAlarmN(sMid,followingMid);
+		}
+		else if(flag.equals("Y")) {
+			res = usedService.setFollowAlarmY(sMid,followingMid);
+		}
+		
+		if(res != 0 ) return "1";
+		else return "2";
+	}
+	
+	// 상점관리- UP 버튼
+	@ResponseBody
+	@RequestMapping(value = "/usedUpUpdate", method = RequestMethod.POST)
+	public String usedUpUpdatePost(@RequestParam(name="idx", defaultValue = "0", required = false) String idx) {
+
+		String[] idxArr = null;
+		if(idx.indexOf("/") != -1) {
+			idxArr = idx.split("/");
+			// Up
+			for(int i=0; i<idxArr.length; i++) {
+				
+				usedService.setUsedUpUpdate(Integer.parseInt(idxArr[i]));
+			}
+			return "1";
+		}
+		else {
+			usedService.setUsedUpUpdate(Integer.parseInt(idx));
+			return "1";
+		}
+	}
+	
+	// 상점관리 - 삭제 버튼
+	@ResponseBody
+	@RequestMapping(value = "/usedIdxDelete", method = RequestMethod.POST)
+	public String usedIdxDeletePost(@RequestParam(name="idx", defaultValue = "0", required = false) String idx) {
+
+		String[] idxArr = null;
+		if(idx.indexOf("/") != -1) {
+			idxArr = idx.split("/");
+			// 삭제
+			for(int i=0; i<idxArr.length; i++) {
+				UsedVO uVO = usedService.getUsedIdx(Integer.parseInt(idxArr[i]));
+				usedService.setUsedIdxDelete(Integer.parseInt(idxArr[i]),uVO.getImgs());
+			}
+			return "1";
+		}
+		else {
+			UsedVO uVO = usedService.getUsedIdx(Integer.parseInt(idx));
+			usedService.setUsedIdxDelete(Integer.parseInt(idx),uVO.getImgs());
+			return "1";
+		}
+	}
+	
+	// 상점관리 - 판매상태 업데이트
+	@ResponseBody
+	@RequestMapping(value = "/stateUpdate",method = RequestMethod.POST)
+	public String stateUpdatePost(@RequestParam(name="idx", defaultValue = "0", required = false) int idx,
+			String state) {
+		System.out.println(state);
+		System.out.println(idx);
+		int res = usedService.setStateUpdate(idx,state);
+		
+		if(res != 0) return "1";
+		else return "2";
+	}
+	
+	// 상세보기 - 신고 처리
+	@ResponseBody
+	@RequestMapping(value = "/usedReport", method = RequestMethod.POST)
+	public String usedReportPost(@RequestParam(name="idx", defaultValue = "0", required = false) int idx,
+			String cpWhy, String otherWhy, String mid, String usedMid
+			) {
+		
+		int res = 0;
+		if(cpWhy.equals("기타")) {
+			res = usedService.setUsedReportInput(idx,otherWhy,mid,usedMid);
+		}
+		else {
+			res = usedService.setUsedReportInput(idx,cpWhy,mid,usedMid);
+		}
 		
 		if(res != 0) return "1";
 		else return "2";

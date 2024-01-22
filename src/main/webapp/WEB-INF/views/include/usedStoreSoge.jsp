@@ -107,6 +107,7 @@
 	// 수정 화면 보이기
 	function storeUpdateShow(){
 		$(".show-store-soge-div").hide();
+		$(".show-store-soge-div-m").hide();
 		$(".input-store-div").show();
 		$("#store-soge-update-ok").show();
 		$("#store-soge-update").hide();
@@ -115,7 +116,6 @@
 	// 상점 소개 수정하기
 	function storeUpdate(mid){
 		let storeIntroduce = $("#store-soge").val();
-		alert(storeIntroduce);
 		let query = {
 			storeIntroduce : storeIntroduce,
 			mid : mid
@@ -133,6 +133,90 @@
 			}
 		});
 	}
+	
+	// 해당 상점 알림 N
+	function fAlarmNo(sMid,followingMid){
+		let query = {
+			sMid : sMid,
+			followingMid : followingMid,
+			flag : 'N'
+		}
+		$.ajax({
+			url : "${ctp}/used/followAlarmYN",
+			type : "post",
+			data : query,
+			success : function(res){
+				if(res == "1") location.reload();
+				else if(res == "2") alert("알림 끄기에 실패하였습니다.")
+			},
+			error : function(){
+				alert("전송오류(usedStoreSoge.jsp)")
+			}
+		});
+	}
+	
+	// 해당 상점 알림 Y
+	function fAlarmYes(sMid,followingMid){
+		let query = {
+			sMid : sMid,
+			followingMid : followingMid,
+			flag : 'Y'
+		}
+		$.ajax({
+			url : "${ctp}/used/followAlarmYN",
+			type : "post",
+			data : query,
+			success : function(res){
+				if(res == "1") location.reload();
+				else if(res == "2") alert("알림 켜기에 실패하였습니다.")
+			},
+			error : function(){
+				alert("전송오류(usedStoreSoge.jsp)")
+			}
+		});
+	}
+	
+	// 팔로우 취소
+	function followNo(followingMid){
+		let query = {
+				followerMid : '${sMid}',
+				followingMid : followingMid,
+				flag : "No"
+		}
+		$.ajax({
+			url : "${ctp}/used/usedFollow",
+			type : "post",
+			data : query,
+			success : function(res){
+				if(res == "1") location.reload();
+				else if(res == "2") alert("팔로우 취소에 실패하였습니다.");
+			},
+			error : function(){
+				alert("전송오류(usedContent.jsp)");
+			}
+		});
+	}
+	
+	// 팔로우 하기
+	function followYes(followingMid){
+		let query = {
+				followerMid : '${sMid}',
+				followingMid : followingMid,
+				flag : "Yes"
+		}
+		$.ajax({
+			url : "${ctp}/used/usedFollow",
+			type : "post",
+			data : query,
+			success : function(res){
+				if(res == "1") location.reload();
+				else if(res == "2") alert("팔로우에 실패하였습니다.");
+			},
+			error : function(){
+				alert("전송오류(usedContent.jsp)");
+			}
+		});
+	}
 </script>
 <div id="profile-img-div">
 	<img src="${ctp}/data/member/${memVO.profile}"/>
@@ -143,18 +227,18 @@
 			<div id="f-nick">${memVO.nickName}</div>
 			<c:if test="${sMid != memVO.mid && sMid != null}">
 				<c:if test="${empty fVO }">
-					<div class="f-follow"><a href=""><i class="fa-solid fa-user-plus"></i> 팔로우</a></div>
+					<div class="f-follow"><a href="javascript:followYes('${memVO.mid}')"><i class="fa-solid fa-user-plus"></i> 팔로우</a></div>
 				</c:if>
 				<c:if test="${!empty fVO }">
 					<div id="f-follow-alarm">
 						<c:if test="${fVO.alarm == 'Y' }">
-							<a href="" class="f-alarm-ok"><div><i class="fa-regular fa-bell-slash"></i></div></a>
+							<a href="javascript:fAlarmNo('${sMid}','${memVO.mid}')" class="f-alarm-ok"><div><i class="fa-regular fa-bell-slash"></i></div></a>
 						</c:if>
 						<c:if test="${fVO.alarm != 'Y' }">
-							<a href=""><div><i class="fa-solid fa-bell"></i></div></a>
+							<a href="javascript:fAlarmYes('${sMid}','${memVO.mid}')"><div><i class="fa-solid fa-bell"></i></div></a>
 						</c:if>
 					</div>
-					<div class="f-follow"><a href=""><i class="fa-solid fa-user-check"></i> 팔로잉</a></div>
+					<div class="f-follow"><a href="javascript:followNo('${memVO.mid}')"><i class="fa-solid fa-user-check"></i> 팔로잉</a></div>
 				</c:if>
 			</c:if>
 		</div>

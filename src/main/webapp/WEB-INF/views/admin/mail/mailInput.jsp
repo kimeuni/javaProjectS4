@@ -38,12 +38,11 @@
     		margin: 0 auto;
     		width: 70%;
     		margin-top: 80px; 
-    		margin-bottom: 30px; 
+    		margin-bottom: 20px; 
     	}
     	#admin-mail-menu{
     		margin: 0 auto;
     		width : 100%;
-    		border: 1px solid;
     		border-radius : 5px;
     		padding: 20px;
     		background-color: #fff;

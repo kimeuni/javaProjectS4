@@ -83,7 +83,6 @@ create table midCategoryS(
 	
 	foreign key (topCategoryIdx) references topCategory (idx)
 );
-
 insert into midCategory values(default,8,'스킨케어');
 insert into midCategory values(default,8,'색조메이크업');
 insert into midCategory values(default,8,'베이스메이크업');
@@ -166,6 +165,19 @@ create table followUsedAlarmS(
 );
 
 drop table followUsedAlarm;
+
+-- 중고거래 신고 들어온 거 확인 (신고 들어오고 관리자가 문제 있다고 생각하면 userreports에 추가)
+create table usedReportS(
+	idx int not null auto_increment primary key,	/* 고유번호 */
+	usedIdx int not null,							/* 신고된 게시글 idx */
+	usedMid varchar(17) not null,					/* 신고된 게시글 작성자 */
+	reportMid varchar(17) not null,					/* 신고자 */
+	rDate datetime default now(),					/* 신고날 */
+	reason varchar(301) not null,					/* 신고 이유 */
+	
+	foreign key (usedIdx) references usedS (idx)
+);
+
 
 -- 알림
 

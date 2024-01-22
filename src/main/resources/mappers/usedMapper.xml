@@ -103,6 +103,9 @@
 		select count(*) from memberS mem, followS fo where fo.followingMid = #{searchString} and 
 		fo.followingMid = mem.mid and mem.userDel = 'N';
 	</select>
+	<select id="getUsedMidListCnt" resultType="int">
+		select count(*) from usedS where mid = #{mid};
+	</select>
 	
 	<insert id="setUsedInput">
 		insert into usedS values (default,#{imgsStr},#{title},#{topCategoryIdx},#{midCategoryIdx},#{btmCategoryIdx},#{region},#{usedState},#{exchange},#{money},#{delivery},#{content},#{mid},default,default,default,default,default);
@@ -116,12 +119,21 @@
 	<insert id="setLikeInput">
 		insert into likeS values (default,#{idx},#{mid},default);
 	</insert>
+	<insert id="setUsedReportInput">
+		insert into usedReportS values (default,#{idx},#{usedMid},#{mid},default,#{reason});
+	</insert>
 	
 	<delete id="setFollowDelete">
 		delete from followS where followerMid = #{followerMid} and followingMid = #{followingMid};
 	</delete>
 	<delete id="setLikeDelete">
 		delete from likeS where usedIdx = #{idx} and likeMid = #{mid};
+	</delete>
+	<delete id="setFollowUsedAlarmDel">
+		delete from followUsedAlarmS where alarmMid = #{followerMid} and UpUsedMid = #{followingMid};
+	</delete>
+	<delete id="setUsedIdxDelete">
+		delete from usedS where idx = #{idx};
 	</delete>
 	
 	<update id="setViewCntUpdate">
@@ -135,5 +147,17 @@
 	</update>
 	<update id="setStoreSogeUpdate">
 		update storeS set storeIntroduce = #{storeIntroduce} where mid = #{mid};
+	</update>
+	<update id="setFollowAlarmN">
+		update followS set alarm = 'N' where followerMid = #{sMid} and followingMid = #{followingMid};
+	</update>
+	<update id="setFollowAlarmY">
+		update followS set alarm = 'Y' where followerMid = #{sMid} and followingMid = #{followingMid};
+	</update>
+	<update id="setUsedUpUpdate">
+		update usedS set uploadDate = now() where idx = #{idx};
+	</update>
+	<update id="setStateUpdate">
+		update usedS set state = #{state} where idx = #{idx};
 	</update>
 </mapper>

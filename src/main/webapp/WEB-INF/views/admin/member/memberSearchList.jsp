@@ -37,13 +37,12 @@
     	#admin-memberList-right-inner-content{
     		margin: 0 auto;
     		width: 70%;
-    		margin-top: 110px; 
-    		margin-bottom: 60px; 
+    		margin-top: 80px; 
+    		margin-bottom: 20px; 
     	}
     	#admin-memberList-inner-content{
     		margin: 0 auto;
     		width : 100%;
-    		border: 1px solid;
     		border-radius : 5px;
     		padding: 20px;
     		background-color: #fff;
@@ -297,14 +296,14 @@
 					<br/>
 					<div class="text-center">
 						<ul class="pagination justify-content-center">
-						    <c:if test="${pageVO.pag > 1}"><li class="page-item"><a class="page-link text-secondary" href="memberSearchList?pag=1&pageSize=${pageVO.pageSize}">첫페이지</a></li></c:if>
-						  	<c:if test="${pageVO.curBlock > 0}"><li class="page-item"><a class="page-link text-secondary" href="memberSearchList?pag=${(pageVO.curBlock-1)*pageVO.blockSize+1}&pageSize=${pageVO.pageSize}&part=${part}&searchString=${searchString}">이전블록</a></li></c:if>
+						    <c:if test="${pageVO.pag > 1}"><li class="page-item"><a class="page-link text-secondary" href="memberSearchList?pag=1&pageSize=${pageVO.pageSize}"><i class="fa-solid fa-angles-left"></i></a></li></c:if>
+						  	<c:if test="${pageVO.curBlock > 0}"><li class="page-item"><a class="page-link text-secondary" href="memberSearchList?pag=${(pageVO.curBlock-1)*pageVO.blockSize+1}&pageSize=${pageVO.pageSize}&part=${part}&searchString=${searchString}"><i class="fa-solid fa-angle-left"></i></a></li></c:if>
 						  	<c:forEach var="i" begin="${(pageVO.curBlock*pageVO.blockSize)+1}" end="${(pageVO.curBlock*pageVO.blockSize)+pageVO.blockSize}" varStatus="st">
 							    <c:if test="${i <= pageVO.totPage && i == pageVO.pag}"><li class="page-item active"><a class="page-link bg-secondary border-secondary" href="memberSearchList?pag=${i}&pageSize=${pageVO.pageSize}&part=${part}&searchString=${searchString}">${i}</a></li></c:if>
 							    <c:if test="${i <= pageVO.totPage && i != pageVO.pag}"><li class="page-item"><a class="page-link text-secondary" href="memberSearchList?pag=${i}&pageSize=${pageVO.pageSize}&part=${part}&searchString=${searchString}">${i}</a></li></c:if>
 						  	</c:forEach>
-						  	<c:if test="${pageVO.curBlock < pageVO.lastBlock}"><li class="page-item"><a class="page-link text-secondary" href="memberSearchList?pag=${(pageVO.curBlock+1)*pageVO.blockSize+1}&pageSize=${pageVO.pageSize}&part=${part}&searchString=${searchString}">다음블록</a></li></c:if>
-						  	<c:if test="${pageVO.pag < pageVO.totPage}"><li class="page-item"><a class="page-link text-secondary" href="memberSearchList?pag=${pageVO.totPage}&pageSize=${pageVO.pageSize}&part=${part}&searchString=${searchString}">마지막페이지</a></li></c:if>
+						  	<c:if test="${pageVO.curBlock < pageVO.lastBlock}"><li class="page-item"><a class="page-link text-secondary" href="memberSearchList?pag=${(pageVO.curBlock+1)*pageVO.blockSize+1}&pageSize=${pageVO.pageSize}&part=${part}&searchString=${searchString}"><i class="fa-solid fa-angle-right"></i></a></li></c:if>
+						  	<c:if test="${pageVO.pag < pageVO.totPage}"><li class="page-item"><a class="page-link text-secondary" href="memberSearchList?pag=${pageVO.totPage}&pageSize=${pageVO.pageSize}&part=${part}&searchString=${searchString}"><i class="fa-solid fa-angles-right"></i></a></li></c:if>
 						</ul>
 					</div>
 				</div>
