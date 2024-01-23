@@ -290,7 +290,7 @@
     		<c:set var="sImg" value="${usedVO.imgs.split('/')}" />
 	    	<div class="used-list-content-div">
 	    		<div class="line-b">
-		    		<div><a href="${ctp}/used/usedContent?idx=${usedVO.idx}"><img src="${ctp}/data/used/${sImg[0]}" width="100%" height="218px"></a></div>
+		    		<div><a href="${ctp}/used/usedContent?idx=${usedVO.idx}"><img src="${ctp}/data/used/${sImg[0]}" width="218px" height="218px"></a></div>
 		    		<div class="mt-1">
 			    		<div class="mt-5">
 			    			<c:if test="${fn:length(usedVO.title) >13 }">

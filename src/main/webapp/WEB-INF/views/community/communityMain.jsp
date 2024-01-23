@@ -110,7 +110,38 @@
     		margin-top : 15px;
     		margin-bottom : 15px;
     	}
+    	.f-d{
+    		display: flex;
+    	}
+    	.mgp-top{
+    		margin: 20px 0px;
+    		padding-left: 10px;
+    	}
+    	.f-d-1{
+    		display: flex;
+    		width: 15%;
+    	}
+    	.f-d-9{
+    		display: flex;
+    		width: 85%;
+    	}
+    	.pd-1{
+    		padding: 15px;
+    	}
+    	#content{
+    		font-size: 1.2em;
+    		resize: none;
+    		outline: none;
+    		border: 1px solid #ddd;
+    	}
     </style>
+    <script>
+    	'use strict'
+    	
+    	$(function(){
+    		$("#att_zone").hide();
+    	});
+    </script>
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/include/header.jsp" />
@@ -123,7 +154,7 @@
     			</div>
     			<div id="community-usedinput-btn">
     				<c:if test="${sMid != null }">
-	    				<button onclick="location.href='${ctp}/used/usedInput'">글 올리기</button>
+	    				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">글 올리기</button>
 	    			</c:if>
    				</div>
     		</div>
@@ -156,6 +187,213 @@
 		</ul>
 	</div>
 </div>
+
+<!-- The Modal -->
+<div class="modal fade" id="myModal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+    	<div class="f-d mgp-top">
+    		커뮤니티 작성하기
+    	</div>
+      	<div class="f-d pd-1">
+      		<div class="f-d-1">
+      			<img src="${ctp}/data/member/${memVO.profile}" width="90px" height="90px;">
+      		</div>
+      		<div class="f-d-9">
+      			<textarea rows="4" style="width: 100%" name="content" id="content" placeholder="즐거운 일상을 공유해봐요"></textarea>
+	      		<div class="f-d">
+	      			<div id='att_zone'></div>
+	      		</div>
+      		</div>
+      		<div><input type="file" name="imgs" id="imgs" multiple /></div>
+      	</div>
+    </div>
+  </div>
+</div>
 <jsp:include page="/WEB-INF/views/include/footer.jsp" />
+<script>
+	
+	( /* att_zone : 이미지들이 들어갈 위치 id, btn : file tag id */
+    imageView = function imageView(att_zone, btn){
+
+    var attZone = document.getElementById(att_zone);
+    var imgs = document.getElementById(btn)
+    var maxFileCnt = 4;
+    var sel_files = [];
+    
+    // 이미지와 체크 박스를 감싸고 있는 div 속성
+    var div_style = 'display:inline-block;position:relative;'
+                  + 'width:150px;height:120px;margin:5px;border:1px solid #eee;z-index:1';
+    // 미리보기 이미지 속성
+    var img_style = 'width:100%;height:100%;z-index:none';
+    // 이미지안에 표시되는 체크박스의 속성
+    var chk_style = 'width:30px;height:30px;line-height:20px;position:absolute;font-size:24px;'
+                  + 'right:0px;bottom:0px;z-index:99;background-color:rgba(255,255,255,0.1);color:#f00';
+  
+    imgs.onchange = function(e){
+      var files = e.target.files;
+      console.log('Selected files:', files);
+      var fileArr = Array.prototype.slice.call(files)
+      
+       // 허용할 확장자 배열
+	  var allowedExtensions = ["jpg", "jpeg", "png"];
+	
+	  // 파일 확장자 체크
+	  for (var i = 0; i < fileArr.length; i++) {
+	    var file = fileArr[i];
+	    var extension = file.name.split('.').pop().toLowerCase();
+	    
+	    if (allowedExtensions.indexOf(extension) === -1) {
+	      alert("허용되지 않는 파일 형식입니다. (jpg, jpeg, png만 허용)");
+	      if (imgs) {
+	        imgs.value = "";
+	      }
+	      return;
+	    }
+	  }
+      
+      if (sel_files.length + fileArr.length > maxFileCnt) {
+        alert("이미지는 "+maxFileCnt+"개 올리실 수 있습니다.");
+        if (imgs) {
+            imgs.value = "";
+        }
+        return;
+      }
+      for(f of fileArr){
+        imageLoader(f);
+      }
+      
+   	  // 새로운 파일이 추가될 때만 imgs.files 업데이트
+      updateImgFiles();
+    }  
+    
+    
+    /*첨부된 이미리즐을 배열에 넣고 미리보기 */
+    imageLoader = function(file){
+    	
+    	if(sel_files.length == 0){
+    		$("#att_zone").hide();
+    	}
+   	    if (sel_files.length >= maxFileCnt) {
+          alert("이미지는 "+maxFileCnt+"개 올리실 수 있습니다.");
+          return;
+        }
+    	
+      sel_files.push(file);
+      var reader = new FileReader();
+      reader.onload = function(ee){
+    	    let img = document.createElement('img');
+    	    img.setAttribute('style', img_style);
+    	    img.src = ee.target.result;
+    	    attZone.appendChild(makeDiv(img, file));
+    	  };
+    	  
+    	  reader.readAsDataURL(file);
+    	}
+    
+    /*첨부된 파일이 있는 경우 checkbox와 함께 attZone에 추가할 div를 만들어 반환 */
+    makeDiv = function(img, file){
+      var div = document.createElement('div')
+      div.setAttribute('style', div_style)
+      
+      var btn = document.createElement('input')
+      btn.setAttribute('type', 'button')
+      btn.setAttribute('value', 'x')
+      btn.setAttribute('delFile', file.name);
+      btn.setAttribute('style', chk_style);
+      btn.onclick = function(ev){
+        var ele = ev.srcElement;
+        var delFile = ele.getAttribute('delFile');
+        for(var i=0; i<sel_files.length; i++){
+          if(delFile== sel_files[i].name){
+            sel_files.splice(i, 1);      
+          }
+        }
+        
+        dt = new DataTransfer();
+        for(f in sel_files) {
+          var file = sel_files[f];
+          dt.items.add(file);
+        }
+        
+        imgs.files = dt.files;
+        var p = ele.parentNode;
+        attZone.removeChild(p)
+        
+        updateImgFiles();
+      }
+      
+   	  // 파일이 제거될 때마다 imgs.files 업데이트
+      updateImgFiles();
+      
+      div.appendChild(img)
+      div.appendChild(btn)
+      
+      return div
+    }
+ // 새로운 파일이 추가될 때만 imgs.files 업데이트
+    updateImgFiles = function () {
+        var dt = new DataTransfer();
+        for (var f in sel_files) {
+            var file = sel_files[f];
+            dt.items.add(file);
+        }
+        imgs.files = dt.files;
+
+        // 비활성화 상태 업데이트는 여기서 진행
+        updateDisabledState();
+    };
+
+    // 이미지가 제거될 때마다 비활성화 상태를 업데이트
+    updateImgFiles = function () {
+        var dt = new DataTransfer();
+        for (var f in sel_files) {
+            var file = sel_files[f];
+            dt.items.add(file);
+        }
+        imgs.files = dt.files;
+
+        // 비활성화 상태 업데이트는 여기서 진행
+        updateDisabledState();
+    };
+
+    // 파일 추가 및 제거 시 파일 input 엘리먼트의 비활성화 상태를 업데이트
+    updateDisabledState = function () {
+        var inputElement = document.getElementById(btn);
+
+        if (sel_files.length >= maxFileCnt) {
+            inputElement.disabled = true;
+        } else {
+            inputElement.disabled = false;
+        }
+        
+        if(sel_files.length > 0){
+    		$("#att_zone").show();
+    	}
+    };
+/*     
+ 	// 새로운 파일이 추가될 때마다 imgs.files 업데이트
+    updateImgFiles = function () {
+    	 var dt = new DataTransfer();
+    	  for (var f in sel_files) {
+    	    var file = sel_files[f];
+    	    dt.items.add(file);
+    	  }
+    	  imgs.files = dt.files;
+    	  
+    	  var inputElement = document.getElementById(btn);
+
+          if (sel_files.length >= maxFileCnt) {
+              inputElement.disabled = true;
+          } else {
+              inputElement.disabled = false;
+          }
+    	  
+    };
+     */
+  }
+)('att_zone', 'imgs')
+
+</script>
 </body>
 </html>

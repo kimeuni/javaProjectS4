@@ -285,10 +285,13 @@
     				return false;
     			}
     			else {
+    				document.getElementById("imgs").removeAttribute("disabled");
 	    			usedForm.submit();
     			}
     		}
     		else {
+    			document.getElementById("imgs").removeAttribute("disabled");
+    			
     			usedForm.submit();
     		}
     	}
@@ -311,7 +314,7 @@
 						<div class="u-f-d">
 							<div style="color: #ccc; margin-top: 10px; font-size: 0.7em;">
 								- 제일 먼저 등록한 그림이 메인 그림으로 설정됩니다.<br/><br/>
-								- 이미지를 1개씩 등록하셨다면 임시파일을 1개 더 넣어 x 버튼을 눌러주세요.
+								- 이미지는 최대 <br/><span class="pil">8개까지 가능</span>합니다.
 							</div>
 						</div>
 					</div>
@@ -374,7 +377,8 @@
 					<span id="btm-category-str"></span>
 				</div>
 				<div class="ctg-str-pil-div">
-					- 대분류는 필수로 선택해야합니다.
+					- 대분류는 필수로 선택해야합니다.<br/>
+					- 카테고리를 상세하게 설정하면 물건이 팔릴 확률이 올라갑니다.
 				</div>
 			</div>
 			<hr/>
@@ -439,7 +443,7 @@
 
     var attZone = document.getElementById(att_zone);
     var imgs = document.getElementById(btn)
-    var maxFileCnt = 5;
+    var maxFileCnt = 8;
     var sel_files = [];
     
     // 이미지와 체크 박스를 감싸고 있는 div 속성
@@ -476,7 +480,6 @@
       if (sel_files.length + fileArr.length > maxFileCnt) {
         alert("이미지는 "+maxFileCnt+"개 올리실 수 있습니다.");
         if (imgs) {
-            // imgs가 정의되어 있을 때만 imgs.value 비우기
             imgs.value = "";
         }
         return;
@@ -522,7 +525,7 @@
       btn.onclick = function(ev){
         var ele = ev.srcElement;
         var delFile = ele.getAttribute('delFile');
-        for(var i=0 ;i<sel_files.length; i++){
+        for(var i=0; i<sel_files.length; i++){
           if(delFile== sel_files[i].name){
             sel_files.splice(i, 1);      
           }
@@ -538,6 +541,7 @@
         var p = ele.parentNode;
         attZone.removeChild(p)
         
+        updateImgFiles();
       }
       
    	  // 파일이 제거될 때마다 imgs.files 업데이트
@@ -548,6 +552,43 @@
       
       return div
     }
+ // 새로운 파일이 추가될 때만 imgs.files 업데이트
+    updateImgFiles = function () {
+        var dt = new DataTransfer();
+        for (var f in sel_files) {
+            var file = sel_files[f];
+            dt.items.add(file);
+        }
+        imgs.files = dt.files;
+
+        // 비활성화 상태 업데이트는 여기서 진행
+        updateDisabledState();
+    };
+
+    // 이미지가 제거될 때마다 비활성화 상태를 업데이트
+    updateImgFiles = function () {
+        var dt = new DataTransfer();
+        for (var f in sel_files) {
+            var file = sel_files[f];
+            dt.items.add(file);
+        }
+        imgs.files = dt.files;
+
+        // 비활성화 상태 업데이트는 여기서 진행
+        updateDisabledState();
+    };
+
+    // 파일 추가 및 제거 시 파일 input 엘리먼트의 비활성화 상태를 업데이트
+    updateDisabledState = function () {
+        var inputElement = document.getElementById(btn);
+
+        if (sel_files.length >= maxFileCnt) {
+            inputElement.disabled = true;
+        } else {
+            inputElement.disabled = false;
+        }
+    };
+/*     
  	// 새로운 파일이 추가될 때마다 imgs.files 업데이트
     updateImgFiles = function () {
     	 var dt = new DataTransfer();
@@ -556,7 +597,17 @@
     	    dt.items.add(file);
     	  }
     	  imgs.files = dt.files;
+    	  
+    	  var inputElement = document.getElementById(btn);
+
+          if (sel_files.length >= maxFileCnt) {
+              inputElement.disabled = true;
+          } else {
+              inputElement.disabled = false;
+          }
+    	  
     };
+     */
   }
 )('att_zone', 'imgs')
 
