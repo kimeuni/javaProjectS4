@@ -301,4 +301,14 @@ public class UsedServiceImpl implements UsedService {
 	public int setUsedReportInput(int idx, String reason, String mid, String usedMid) {
 		return usedDAO.setUsedReportInput( idx, reason, mid, usedMid);
 	}
+
+	@Override
+	public void setUsedReportNoDelete(int idx) {
+		usedDAO.setUsedReportNoDelete( idx);
+	}
+
+	@Override
+	public void setfollowUsedAlarmDel(int idx) {
+		usedDAO.setfollowUsedAlarmDel( idx);
+	}
 }

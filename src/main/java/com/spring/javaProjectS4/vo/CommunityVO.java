@@ -7,11 +7,12 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class BtmCategoryVO {
+public class CommunityVO {
 	private int idx;
-	private int topCategoryIdx;
-	private int midCategoryIdx;
-	private String btmCategoryName;
+	private String mid;
+	private String content;
+	private String imgs;
+	private String cDate;
+	private String region;
 	
-	private int usedCnt;
 }

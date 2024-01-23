@@ -14,4 +14,6 @@ public class UsedReportVO {
 	private String reportMid;
 	private String rDate;
 	private String reason;
+	
+	private String title;
 }

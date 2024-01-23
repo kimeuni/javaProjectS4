@@ -122,7 +122,9 @@
 	    			당신의 즐거운<br/> 일상을 공유
     			</div>
     			<div id="community-usedinput-btn">
-	    			<button onclick="location.href='${ctp}/used/usedInput'">글 올리기</button>
+    				<c:if test="${sMid != null }">
+	    				<button onclick="location.href='${ctp}/used/usedInput'">글 올리기</button>
+	    			</c:if>
    				</div>
     		</div>
     		<div id="community-img-right">

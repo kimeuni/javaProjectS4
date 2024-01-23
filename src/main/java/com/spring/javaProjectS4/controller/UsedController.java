@@ -593,6 +593,14 @@ public class UsedController {
 			// 삭제
 			for(int i=0; i<idxArr.length; i++) {
 				UsedVO uVO = usedService.getUsedIdx(Integer.parseInt(idxArr[i]));
+				
+				// 게시물 신고된 거 삭제
+				usedService.setUsedReportNoDelete(Integer.parseInt(idxArr[i]));
+				
+				// 게시물 팔로우 알림 삭제
+				usedService.setfollowUsedAlarmDel(Integer.parseInt(idxArr[i]));
+				
+				// 게시물 삭제
 				usedService.setUsedIdxDelete(Integer.parseInt(idxArr[i]),uVO.getImgs());
 			}
 			return "1";
@@ -623,6 +631,7 @@ public class UsedController {
 	public String usedReportPost(@RequestParam(name="idx", defaultValue = "0", required = false) int idx,
 			String cpWhy, String otherWhy, String mid, String usedMid
 			) {
+		otherWhy = otherWhy.replace("\n", "<br/>");
 		
 		int res = 0;
 		if(cpWhy.equals("기타")) {

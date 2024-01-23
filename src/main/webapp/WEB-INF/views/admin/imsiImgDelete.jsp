@@ -188,7 +188,7 @@
 								<td>${st.count}</td>
 								<td><img src="${ctp}/data/ckeditor/${file}" width="60px" height="60px"/></td>
 								<td>${file}</td>
-								<td><button onclick="imsiImgDel('${file}')">계정 삭제</button></td>
+								<td><button onclick="imsiImgDel('${file}')">삭제</button></td>
 							</tr>
 						</c:forEach>
 					</table>

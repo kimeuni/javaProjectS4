@@ -98,5 +98,9 @@ public interface UsedService {
 
 	public int setUsedReportInput(int idx, String reason, String mid, String usedMid);
 
+	public void setUsedReportNoDelete(int idx);
+
+	public void setfollowUsedAlarmDel(int idx);
+
 
 }

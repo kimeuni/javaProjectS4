@@ -15,6 +15,8 @@ import com.spring.javaProjectS4.vo.MidCategoryVO;
 import com.spring.javaProjectS4.vo.NoticeVO;
 import com.spring.javaProjectS4.vo.ReasonTitleVO;
 import com.spring.javaProjectS4.vo.TopCategoryVO;
+import com.spring.javaProjectS4.vo.UsedReportVO;
+import com.spring.javaProjectS4.vo.UsedVO;
 import com.spring.javaProjectS4.vo.UserReportVO;
 
 public interface AdminService {
@@ -136,6 +138,24 @@ public interface AdminService {
 	public void setMidBtmCategoryDel(int idx);
 
 	public int setMidCategoryDel(int idx);
+
+	public List<BtmCategoryVO> getBtmCategoryTableList(int startIndexNo, int pageSize);
+
+	public int setBtmCategoryInput(String btmCategoryName, int topCategoryIdx, int midCategoryIdx);
+
+	public int setBtmCategoryDel(int idx);
+
+	public List<UsedReportVO> getUsedReportList(int startIndexNo, int pageSize);
+
+	public int setUsedReportNoDelete(int idx);
+
+	public UsedVO getUsedIdx(int usedIdx);
+
+	public void setUsedIdxDelete(int usedIdx, String imgs);
+
+	public void setfollowUsedAlarmDel(int usedIdx);
+
+	public UsedReportVO getUsedReportIdx(int idx);
 
 
 }

@@ -101,6 +101,26 @@
 	<select id="getMidCategoryRecCnt" resultType="int">
 		select count(*) from midCategoryS;
 	</select>
+	<select id="getBtmCategoryTableList" resultType="com.spring.javaProjectS4.vo.BtmCategoryVO">
+		select *,(select count(*) from usedS usd where usd.btmCategoryIdx = bt.idx ) as usedCnt from 
+		 btmCategoryS bt order by bt.idx desc limit #{startIndexNo},#{pageSize};
+	</select>
+	<select id="getBtmCategoryRecCnt" resultType="int">
+		select count(*) from btmCategoryS;
+	</select>
+	<select id="getUsedReportList" resultType="com.spring.javaProjectS4.vo.UsedReportVO">
+		select *,(select title from usedS usd where usd.idx = usr.usedIdx ) as title from usedReportS usr order by usr.idx desc limit #{startIndexNo},#{pageSize};
+	</select>
+	<select id="getUsedReportRecCnt" resultType="int">
+		select count(*) from usedReportS;
+	</select>
+	<select id="getUsedIdx" resultType="com.spring.javaProjectS4.vo.UsedVO">
+		select * from usedS where idx = #{usedIdx};
+	</select>
+	<select id="getUsedReportIdx" resultType="com.spring.javaProjectS4.vo.UsedReportVO">
+		select * from usedReportS where idx = #{idx};
+	</select>
+	
 	
 	<insert id="setNoticeInput">
 		insert into noticeS values (default,#{vo.nickName},#{vo.title},#{vo.content},default,default,#{vo.openSw});
@@ -128,6 +148,9 @@
 	</insert>
 	<insert id="setMidCategoryInput">
 		insert into midCategoryS values (default,#{topCategoryIdx},#{midCategoryName})
+	</insert>
+	<insert id="setBtmCategoryInput">
+		insert into btmCategoryS values (default,#{topCategoryIdx},#{midCategoryIdx},#{btmCategoryName});
 	</insert>
 	
 	<update id="setNoticeUpdate">
@@ -196,5 +219,17 @@
 	</delete>
 	<delete id="setMidCategoryDel">
 		delete from midCategoryS where idx = #{idx};
+	</delete>
+	<delete id="setBtmCategoryDel">
+		delete from btmCategoryS where idx = #{idx};
+	</delete>
+	<delete id="setUsedReportNoDelete">
+		delete from usedReportS where usedIdx = #{idx};
+	</delete>
+	<delete id="setUsedIdxDelete">
+		delete from usedS where idx = #{usedIdx};
+	</delete>
+	<delete id="setfollowUsedAlarmDel">
+		delete from followUsedAlarmS where usedIdx = #{usedIdx};
 	</delete>
 </mapper>

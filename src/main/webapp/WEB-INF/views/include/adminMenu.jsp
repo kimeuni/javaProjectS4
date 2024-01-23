@@ -111,7 +111,7 @@
 			$("#ask-menu-up").show();
 			$("#admin-ask-inner-menu").show();
 		}
-		else if('${menuCk}' == '카테고리관리'){
+		else if('${menuCk}' == '카테고리관리' || '${menuCk}' == '중고거래신고관리'){
 			$("#board-menu-down").hide();
 			$("#board-menu-up").show();
 			$("#admin-board-inner-menu").show();
@@ -284,7 +284,7 @@
 		</div>
 		<div id="admin-board-inner-menu">
 			<a href="${ctp}/admin/categoryManag"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> 카테고리 관리</div></a>
-			<a href="${ctp}/admin/memberList"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> 중고거래 신고 관리</div></a>
+			<a href="${ctp}/admin/usedReportList"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> 중고거래 신고 관리</div></a>
 		</div>
 		<div id="notice-menu-down">
 			<a href="javascript:noticeManagementDown()"><div class="admin-inner-menu-n"><i class="fa-solid fa-chevron-right"></i> 공지 관리</div></a>

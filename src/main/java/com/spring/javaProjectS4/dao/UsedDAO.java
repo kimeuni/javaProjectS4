@@ -108,5 +108,9 @@ public interface UsedDAO {
 	public int setStateUpdate(@Param("idx") int idx,@Param("state") String state);
 
 	public int setUsedReportInput(@Param("idx") int idx,@Param("reason") String reason,@Param("mid") String mid,@Param("usedMid") String usedMid);
+
+	public void setUsedReportNoDelete(@Param("idx") int idx);
+
+	public void setfollowUsedAlarmDel(@Param("idx") int idx);
 	
 }

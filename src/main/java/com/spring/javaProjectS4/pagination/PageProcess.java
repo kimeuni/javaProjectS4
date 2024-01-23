@@ -113,6 +113,16 @@ public class PageProcess {
 				totRecCnt = adminDAO.getMidCategoryRecCnt();
 			}
 		}
+		if(section.equals("btmCategory")) {
+			if(part.equals("")) {
+				totRecCnt = adminDAO.getBtmCategoryRecCnt();
+			}
+		}
+		if(section.equals("usedReport")) {
+			if(part.equals("")) {
+				totRecCnt = adminDAO.getUsedReportRecCnt();
+			}
+		}
 		
 		int totPage = (totRecCnt % pageSize)==0 ? (totRecCnt / pageSize) : (totRecCnt / pageSize) + 1;
 		int startIndexNo = (pag - 1) * pageSize;

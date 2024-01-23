@@ -31,6 +31,8 @@ import com.spring.javaProjectS4.vo.MidCategoryVO;
 import com.spring.javaProjectS4.vo.NoticeVO;
 import com.spring.javaProjectS4.vo.ReasonTitleVO;
 import com.spring.javaProjectS4.vo.TopCategoryVO;
+import com.spring.javaProjectS4.vo.UsedReportVO;
+import com.spring.javaProjectS4.vo.UsedVO;
 import com.spring.javaProjectS4.vo.UserReportVO;
 
 @Service
@@ -517,6 +519,64 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public int setMidCategoryDel(int idx) {
 		return adminDAO.setMidCategoryDel(idx);
+	}
+
+	@Override
+	public List<BtmCategoryVO> getBtmCategoryTableList(int startIndexNo, int pageSize) {
+		return adminDAO.getBtmCategoryTableList( startIndexNo, pageSize);
+	}
+
+	@Override
+	public int setBtmCategoryInput(String btmCategoryName, int topCategoryIdx, int midCategoryIdx) {
+		return adminDAO.setBtmCategoryInput( btmCategoryName, topCategoryIdx, midCategoryIdx);
+	}
+
+	@Override
+	public int setBtmCategoryDel(int idx) {
+		return adminDAO.setBtmCategoryDel( idx);
+	}
+
+	@Override
+	public List<UsedReportVO> getUsedReportList(int startIndexNo, int pageSize) {
+		return adminDAO.getUsedReportList(startIndexNo,pageSize);
+	}
+
+	@Override
+	public int setUsedReportNoDelete(int idx) {
+		return adminDAO.setUsedReportNoDelete(idx);
+	}
+
+	@Override
+	public UsedVO getUsedIdx(int usedIdx) {
+		return adminDAO.getUsedIdx( usedIdx);
+	}
+
+	@Override
+	public void setUsedIdxDelete(int usedIdx, String imgs) {
+		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
+		String realPath = request.getSession().getServletContext().getRealPath("/resources/data/");
+		
+		String[] img = imgs.split("/");
+		
+		String oFilePath = "";
+		
+		// 이미지 삭제
+		for(int i=0; i<img.length; i++) {
+			oFilePath = realPath + "used/" + img[i];
+			
+			fileDelete(oFilePath);
+		}
+		adminDAO.setUsedIdxDelete( usedIdx);
+	}
+
+	@Override
+	public void setfollowUsedAlarmDel(int usedIdx) {
+		adminDAO.setfollowUsedAlarmDel( usedIdx);
+	}
+
+	@Override
+	public UsedReportVO getUsedReportIdx(int idx) {
+		return adminDAO.getUsedReportIdx( idx);
 	}
 
 }

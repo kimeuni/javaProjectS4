@@ -556,7 +556,7 @@
 		</div>
 		<div id="cpWhyOther" class="mt-2">
 			<hr/>
-			<textarea rows="4" id="otherWhy" class="form-control"></textarea>
+			<textarea rows="4" id="otherWhy" class="form-control" maxlength="300"></textarea>
 			<div></div>
 		</div>
 		<div class="text-center mt-3">

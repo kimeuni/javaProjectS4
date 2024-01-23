@@ -135,6 +135,12 @@
 	<delete id="setUsedIdxDelete">
 		delete from usedS where idx = #{idx};
 	</delete>
+	<delete id="setUsedReportNoDelete">
+		delete from usedReportS where usedIdx = #{idx};
+	</delete>
+	<delete id="setfollowUsedAlarmDel">
+		delete from followUsedAlarmS where usedIdx = #{idx};
+	</delete>
 	
 	<update id="setViewCntUpdate">
 		update usedS set viewCnt = viewCnt + 1 where idx = #{idx};

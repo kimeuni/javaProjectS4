@@ -166,7 +166,7 @@
 							<a href="${ctp}/admin/midCategoryInput">중분류 등록 이동 <i class="fa-solid fa-right-from-bracket"></i></a>
 						</div>
 						<div id="btm-input-go">
-							<a href="${ctp}/admin/memberReport">소분류 등록 이동 <i class="fa-solid fa-right-from-bracket"></i></a>
+							<a href="${ctp}/admin/btmCategoryInput">소분류 등록 이동 <i class="fa-solid fa-right-from-bracket"></i></a>
 						</div>
 					</div>
 					<h3>현재 등록된 카테고리 리스트</h3>

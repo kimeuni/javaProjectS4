@@ -35,6 +35,8 @@ import com.spring.javaProjectS4.vo.MidCategoryVO;
 import com.spring.javaProjectS4.vo.NoticeVO;
 import com.spring.javaProjectS4.vo.ReasonTitleVO;
 import com.spring.javaProjectS4.vo.TopCategoryVO;
+import com.spring.javaProjectS4.vo.UsedReportVO;
+import com.spring.javaProjectS4.vo.UsedVO;
 import com.spring.javaProjectS4.vo.UserReportVO;
 
 @Controller
@@ -900,6 +902,158 @@ public class AdminController {
 		
 		if(res != 0) return "1";
 		else return "2";
+	}
+	
+
+	// 소분류 카테고리 등록 화면 이동
+	@RequestMapping(value = "/btmCategoryInput", method = RequestMethod.GET)
+	public String btmCategoryInputGet(Model model,
+			@RequestParam(name="pag", defaultValue = "1", required = false) int pag,
+			@RequestParam(name="pageSize", defaultValue = "5", required = false) int pageSize
+			) {
+		// 띄울 소분류 가져오기
+		PageVO pageVO = pageProcess.totRecCnt(pag, pageSize, "btmCategory", "", "");
+		List<BtmCategoryVO> btmVOS = adminService.getBtmCategoryTableList(pageVO.getStartIndexNo(),pageSize);
+		
+		List<TopCategoryVO> tVOS = adminService.getTopCategoryList();
+		List<MidCategoryVO> mVOS = adminService.getMidCategoryList();
+		
+		model.addAttribute("tVOS",tVOS);
+		model.addAttribute("mVOS",mVOS);
+		model.addAttribute("pageVO",pageVO);
+		model.addAttribute("btmVOS",btmVOS);
+		model.addAttribute("menuCk","카테고리관리");
+		return "admin/used/btmCategoryInput";
+	}
+	
+	// 소분류 카테고리 등록처리
+	@ResponseBody
+	@RequestMapping(value = "/btmCategoryInput", method = RequestMethod.POST)
+	public String btmCategoryInputPost(String btmCategoryName, int topCategoryIdx, int midCategoryIdx) {
+		int res = adminService.setBtmCategoryInput(btmCategoryName,topCategoryIdx,midCategoryIdx);
+		if(res != 0 ) return "1";
+		else return "2";
+	}
+	
+	// 소분류 카테고리-top 카테고리 클릭시, mid 카테고리 가져오기
+	@ResponseBody
+	@RequestMapping(value = "/topMidChategoryShow",method = RequestMethod.POST)
+	public List<MidCategoryVO> topMidChategoryShowPost(@RequestParam(name="topCategoryIdx", defaultValue = "0", required = false) int topCategoryIdx) {
+		return adminService.getTopMidCategoryList(topCategoryIdx);
+	}
+	
+	// 소분류 카테고리 삭제 처리
+	@ResponseBody
+	@RequestMapping(value = "/btmCategoryDel", method = RequestMethod.POST)
+	public String btmCategoryDelPost(@RequestParam(name="idx", defaultValue = "0", required = false) int idx) {
+		
+		int res = adminService.setBtmCategoryDel(idx);
+		
+		if(res != 0) return "1";
+		else return "2";
+	}
+	
+	// 중고거래 신고 리스트 화면 이동
+	@RequestMapping(value = "/usedReportList", method = RequestMethod.GET)
+	public String usedReportListGet(Model model,
+			@RequestParam(name="pag", defaultValue = "1", required = false) int pag,
+			@RequestParam(name="pageSize", defaultValue = "10", required = false) int pageSize
+			) {
+		// 신고된 중고거래 리스트 불러오기
+		PageVO pageVO = pageProcess.totRecCnt(pag, pageSize, "usedReport", "", "");
+		List<UsedReportVO> usedRVOS = adminService.getUsedReportList(pageVO.getStartIndexNo(),pageSize);
+		
+		model.addAttribute("usedRVOS",usedRVOS);
+		model.addAttribute("pageVO",pageVO);
+		model.addAttribute("menuCk","중고거래신고관리");
+		return "admin/used/usedReportList";
+	}
+	
+	// 중고거래 신고관리 - 문제 없음 처리
+	@ResponseBody
+	@RequestMapping(value = "/usedReportNo", method = RequestMethod.POST)
+	public String usedReportNoPost(@RequestParam(name="idx", defaultValue = "0", required = false) int idx) {
+		int res = adminService.setUsedReportNoDelete(idx);
+		
+		if(res != 0) return "1";
+		else return "2";
+	}
+	
+	// 중고거래 신고관리 - 신고처리
+	@ResponseBody
+	@RequestMapping(value = "/usedReportYes", method = RequestMethod.POST)
+	public String usedReportYesPost(String usedMid, String reason,
+			@RequestParam(name="usedIdx", defaultValue = "0", required = false) int usedIdx) {
+		
+		int res = 0;
+		
+		// 해당 유저 신고처리
+		adminService.setUserReportInput("used", usedIdx, usedMid,reason );
+		res = adminService.setMemberReportCntUpdate(usedMid);
+		
+		// 신고된 글 삭제
+		res = adminService.setUsedReportNoDelete(usedIdx);
+		
+		// 신고된 글 팔로우 알림 삭제
+		adminService.setfollowUsedAlarmDel(usedIdx);
+		
+		// 신고된 게시글 삭제
+		UsedVO uVO = adminService.getUsedIdx(usedIdx);
+		adminService.setUsedIdxDelete(usedIdx,uVO.getImgs());
+		
+		if(res != 0) return "1";
+		else return "2";
+	}
+	
+	// 중고거래 신고관리 상세보기
+	@RequestMapping(value = "/usedReportContent", method = RequestMethod.GET)
+	public String usedReportContentGet(Model model,
+			@RequestParam(name="idx", defaultValue = "0", required = false) int idx,
+			@RequestParam(name="pag", defaultValue = "1", required = false) int pag,
+			@RequestParam(name="pageSize", defaultValue = "10", required = false) int pageSize
+			) {
+		
+		//해당 신고 글 정보 가져오기
+		UsedReportVO usedRVO = adminService.getUsedReportIdx(idx);
+		// 해당 신고글 게시글 가져오기
+		UsedVO usedVO = adminService.getUsedIdx(usedRVO.getUsedIdx());
+		
+		// 카테고리
+		List<TopCategoryVO> tVOS = adminService.getTopCategoryList();
+		List<MidCategoryVO> mVOS = adminService.getMidCategoryList();
+		List<BtmCategoryVO> bVOS = adminService.getBtmCategoryList();
+		
+		String topCategoryName = "0";
+		String midCategoryName = "0";
+		String btmCategoryName = "0";
+		for(int i=0; i<tVOS.size(); i++) {
+			if(usedVO.getTopCategoryIdx() == tVOS.get(i).getIdx()) {
+				topCategoryName = tVOS.get(i).getTopCategoryName();
+				break;
+			}
+		}
+		for(int i=0; i<mVOS.size(); i++) {
+			if(usedVO.getMidCategoryIdx() == mVOS.get(i).getIdx()) {
+				midCategoryName = mVOS.get(i).getMidCategoryName();
+				break;
+			}
+		}
+		for(int i=0; i<bVOS.size(); i++) {
+			if(usedVO.getBtmCategoryIdx() == bVOS.get(i).getIdx()) {
+				btmCategoryName = bVOS.get(i).getBtmCategoryName();
+				break;
+			}
+		}
+		
+		model.addAttribute("usedRVO",usedRVO);
+		model.addAttribute("usedVO",usedVO);
+		model.addAttribute("pageSize",pageSize);
+		model.addAttribute("pag",pag);
+		model.addAttribute("topCategoryName",topCategoryName);
+		model.addAttribute("midCategoryName",midCategoryName);
+		model.addAttribute("btmCategoryName",btmCategoryName);
+		model.addAttribute("menuCk","중고거래신고관리");
+		return "admin/used/usedReportContent";
 	}
 	
 	// 메일 전송을 위한 메소드

@@ -145,13 +145,6 @@
     		color: #fff;
     		text-decoration: none;
     	}
-    	
-    	#att_zone {
-		  width: 100%;
-		  min-height: 150px;
-		  padding: 10px;
-		  border: 1px solid #ddd;
-		}
     </style>
     <script>
     	'use strict'
@@ -181,6 +174,37 @@
 				$("#delivery-input").html(str);
 			}
 			else $("#delivery-input").html(str);
+    	}
+    	
+    	function midCategoryOpen(idx,mVOS){
+    		/* 
+    		let topCategoryIdxArray = [];
+    		let topCategoryStringArray = [];
+	
+    		let nextIdx = mVOS.substring(mVOS.indexOf("topCategoryIdx=")+15);
+    		let nextString = mVOS.substring(mVOS.indexOf("midCategoryName=")+16);
+    		let sw = true;
+    		while(sw){
+    			topCategoryIdxArray.push(nextIdx.substring(0,nextIdx.indexOf("midCategoryName"))); 
+    			topCategoryStringArray.push(nextString.substring(0,nextString.indexOf(")")));
+    			
+    			if(nextIdx.indexOf(",") == -1) sw = false;
+    			else {
+    				nextIdx = nextIdx.substring(nextIdx.indexOf("midCategoryName")+15);
+    				nextString = nextString.substring(nextString.indexOf(")")+16);
+    			}
+    		}
+    		
+    		alert(topCategoryIdxArray);
+    		alert(topCategoryStringArray);
+    		
+    		alert(mVOS);
+    		let str = '';
+    		for(let i=0; i<10; i++){
+    			str += '<li>'+i+'</li>';
+    		}
+    		$("#mid-c-name").html(str);
+    		 */
     	}
     	
     	// 대분류 선택
@@ -220,7 +244,6 @@
     		$("#btm-category-str").html("> " + name);
     	}
     	
-    	
     	// 중고거래 등록
     	function usedInput(){
     		let imgs = $("#imgs").val();
@@ -237,6 +260,9 @@
     		let ragMoney = /^[0-9]{2,9}$/;
     		let ragDelivery = /^[0-9]{3,6}$/;
     		
+    		//alert(top);
+    		//alert(mid);
+    		//alert(btm);
     		if(imgs == ""){
     			alert("상품 이미지를 선택해주세요.");
     			$("#imgs").focus();
@@ -305,27 +331,11 @@
 			</div>
 			<hr class="top-hr"/>
 			<div class="u-f-d">
-				<div class="f-r-str">
-					<div style="width: 100%">
-						상품이미지<span class="pil">*</span>
-						<div class="u-f-d">
-							<div style="color: #ccc; margin-top: 10px; font-size: 0.7em;">
-								- 제일 먼저 등록한 그림이 메인 그림으로 설정됩니다.<br/><br/>
-								- 이미지를 1개씩 등록하셨다면 임시파일을 1개 더 넣어 x 버튼을 눌러주세요.
-							</div>
-						</div>
-					</div>
-				</div>
+				<div class="f-r-str">상품이미지<span class="pil">*</div>
 				<div class="f-l-input">
-					<div id='image_preview'>
-					    <input type='file' id='imgs' name='imgs' accept=".jpg , .png , .jpeg"  multiple='multiple' />
-					    <div id='att_zone'></div>
-					</div>
+					<input type="file" name="imgs" id="imgs" multiple/>
 				</div>
 			</div>
-			 <ul class="lst_thumb">
-
-   			</ul>
 			<hr/>
 			<div class="u-f-d">
 				<div class="f-r-str">상품명<span class="pil">*</div>
@@ -432,134 +442,5 @@
 	</form>
 </div>
 <jsp:include page="/WEB-INF/views/include/footer.jsp" />
-<script>
-	
-	( /* att_zone : 이미지들이 들어갈 위치 id, btn : file tag id */
-    imageView = function imageView(att_zone, btn){
-
-    var attZone = document.getElementById(att_zone);
-    var imgs = document.getElementById(btn)
-    var maxFileCnt = 5;
-    var sel_files = [];
-    
-    // 이미지와 체크 박스를 감싸고 있는 div 속성
-    var div_style = 'display:inline-block;position:relative;'
-                  + 'width:150px;height:120px;margin:5px;border:1px solid #eee;z-index:1';
-    // 미리보기 이미지 속성
-    var img_style = 'width:100%;height:100%;z-index:none';
-    // 이미지안에 표시되는 체크박스의 속성
-    var chk_style = 'width:30px;height:30px;line-height:20px;position:absolute;font-size:24px;'
-                  + 'right:0px;bottom:0px;z-index:99;background-color:rgba(255,255,255,0.1);color:#f00';
-  
-    imgs.onchange = function(e){
-      var files = e.target.files;
-      console.log('Selected files:', files);
-      var fileArr = Array.prototype.slice.call(files)
-      
-       // 허용할 확장자 배열
-	  var allowedExtensions = ["jpg", "jpeg", "png"];
-	
-	  // 파일 확장자 체크
-	  for (var i = 0; i < fileArr.length; i++) {
-	    var file = fileArr[i];
-	    var extension = file.name.split('.').pop().toLowerCase();
-	    
-	    if (allowedExtensions.indexOf(extension) === -1) {
-	      alert("허용되지 않는 파일 형식입니다. (jpg, jpeg, png만 허용)");
-	      if (imgs) {
-	        imgs.value = "";
-	      }
-	      return;
-	    }
-	  }
-      
-      if (sel_files.length + fileArr.length > maxFileCnt) {
-        alert("이미지는 "+maxFileCnt+"개 올리실 수 있습니다.");
-        if (imgs) {
-            // imgs가 정의되어 있을 때만 imgs.value 비우기
-            imgs.value = "";
-        }
-        return;
-      }
-      for(f of fileArr){
-        imageLoader(f);
-      }
-      
-   	  // 새로운 파일이 추가될 때만 imgs.files 업데이트
-      updateImgFiles();
-    }  
-    
-    
-    /*첨부된 이미리즐을 배열에 넣고 미리보기 */
-    imageLoader = function(file){
-   	    if (sel_files.length >= maxFileCnt) {
-          alert("이미지는 "+maxFileCnt+"개 올리실 수 있습니다.");
-          return;
-        }
-    	
-      sel_files.push(file);
-      var reader = new FileReader();
-      reader.onload = function(ee){
-    	    let img = document.createElement('img');
-    	    img.setAttribute('style', img_style);
-    	    img.src = ee.target.result;
-    	    attZone.appendChild(makeDiv(img, file));
-    	  };
-    	  
-    	  reader.readAsDataURL(file);
-    	}
-    
-    /*첨부된 파일이 있는 경우 checkbox와 함께 attZone에 추가할 div를 만들어 반환 */
-    makeDiv = function(img, file){
-      var div = document.createElement('div')
-      div.setAttribute('style', div_style)
-      
-      var btn = document.createElement('input')
-      btn.setAttribute('type', 'button')
-      btn.setAttribute('value', 'x')
-      btn.setAttribute('delFile', file.name);
-      btn.setAttribute('style', chk_style);
-      btn.onclick = function(ev){
-        var ele = ev.srcElement;
-        var delFile = ele.getAttribute('delFile');
-        for(var i=0 ;i<sel_files.length; i++){
-          if(delFile== sel_files[i].name){
-            sel_files.splice(i, 1);      
-          }
-        }
-        
-        dt = new DataTransfer();
-        for(f in sel_files) {
-          var file = sel_files[f];
-          dt.items.add(file);
-        }
-        
-        imgs.files = dt.files;
-        var p = ele.parentNode;
-        attZone.removeChild(p)
-        
-      }
-      
-   	  // 파일이 제거될 때마다 imgs.files 업데이트
-      updateImgFiles();
-      
-      div.appendChild(img)
-      div.appendChild(btn)
-      
-      return div
-    }
- 	// 새로운 파일이 추가될 때마다 imgs.files 업데이트
-    updateImgFiles = function () {
-    	 var dt = new DataTransfer();
-    	  for (var f in sel_files) {
-    	    var file = sel_files[f];
-    	    dt.items.add(file);
-    	  }
-    	  imgs.files = dt.files;
-    };
-  }
-)('att_zone', 'imgs')
-
-</script>
 </body>
 </html>

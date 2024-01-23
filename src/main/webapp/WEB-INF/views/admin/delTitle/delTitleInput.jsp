@@ -85,15 +85,14 @@
 		    border-bottom: 1px solid;
     	}
     	#delTitle-title-list-content{
-    		height: 400px;
+    		min-height: 400px;
     		padding: 20px 0px;
     	}
     	#delTitle-list{
     		width: 100%;
     		border: 1px solid;
     		border-radius: 5px;
-    		overflow: auto;
-    		height : 360px;
+    		min-height : 360px;
     		display: inline-block;
     	}
     	.delTitle-List-input:hover{

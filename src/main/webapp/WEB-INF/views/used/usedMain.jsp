@@ -227,7 +227,9 @@
 	    			행복을 나누는 거래
     			</div>
     			<div id="used-usedinput-btn">
-	    			<button onclick="location.href='${ctp}/used/usedInput'">상품 올리기</button>
+    				<c:if test="${sMid != null }">
+		    			<button onclick="location.href='${ctp}/used/usedInput'">상품 올리기</button>
+    				</c:if>
    				</div>
     		</div>
     		<div id="used-img-right">

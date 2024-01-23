@@ -105,7 +105,7 @@
     		margin : 0 auto;
     		justify-content: centet;
     		display: flex;
-    		width: 40%;
+    		width: 80%;
     		border: 1px solid #eee;
     		padding: 10px;
     	}
@@ -116,10 +116,26 @@
     		font-weight: bold;
     		margin-bottom: 10px;
     	}
-    	.tName-input{
-    		width: 80%;
+    	.bTCa-select{
+    		width: 20%;	
     	}
-    	.tName-input input[type="text"]{
+    	.bTCa-select select{
+    		width: 80%;
+    		height: 40px;
+    		border: 1px solid #ddd;
+    	}
+    	.bMCa-select{
+    		width: 20%;	
+    	}
+    	.bMCa-select select{
+    		width: 80%;
+    		height: 40px;
+    		border: 1px solid #ddd;
+    	}
+    	.bName-input{
+    		width: 50%;
+    	}
+    	.bName-input input[type="text"]{
     		width: 100%;
     		height: 40px;
     		outline: none;
@@ -127,15 +143,15 @@
     		border-bottom: 1px solid;
     		padding-left: 10px;
     	}
-    	.tName-cnt{
+    	.bName-cnt{
     		line-height: 40px;
     		margin-left: 20px;
     	}
-    	.tName-up-btn{
+    	.bName-up-btn{
     		margin-left: auto;
     		margin-top: 20px;
     	}
-    	.tName-up-btn a{
+    	.bName-up-btn a{
     		display : flex;
     		justify-content : center;
     		text-decoration: none;
@@ -192,30 +208,30 @@
     		});
     	}
     	
-    	// 대분류 cnt 세기
+    	// 소분류 cnt 세기
     	$(function() {
-    		$("#topCategoryName").on("keyup", function(){
-    			let topCategoryName = $("#topCategoryName").val();
-    			$(".tName-cnt").html("("+ topCategoryName.length +"/15)");
+    		$("#btmCategoryName").on("keyup", function(){
+    			let btmCategoryName = $("#btmCategoryName").val();
+    			$(".bName-cnt").html("("+ btmCategoryName.length +"/15)");
     			
-    			if(topCategoryName.length > 15){
-	    			$(".tName-cnt").html("(15/15)");
-	    			$("#topCategoryName").val(topCategoryName.substring(0,15));
-    				alert("대분류는 15글자까지 가능합니다.")
+    			if(btmCategoryName.length > 15){
+	    			$(".bName-cnt").html("(15/15)");
+	    			$("#btmCategoryName").val(btmCategoryName.substring(0,15));
+    				alert("소분류는 15글자까지 가능합니다.")
     			}
     		});
     	});
     	
-    	// 대분류 삭제
+    	// 소분류 삭제
     	function topCategoryDel(usedCnt,idx){
     		if(usedCnt > 0){
     			alert("사용중인 카테고리는 삭제하실 수 었습니다.");
     		}
     		else {
-    			let ans = confirm("대분류 삭제시 해당 대분류와 관련된 중분류,소분류 또한 삭제됩니다. 삭제하시겠습니까?");
+    			let ans = confirm("소분류를 삭제하시겠습니까?");
     			if(ans){
     				$.ajax({
-    					url : "${ctp}/admin/topMidBtmCategoryDel",
+    					url : "${ctp}/admin/btmCategoryDel",
     					type : "post",
     					data : {idx : idx},
     					success : function(res){
@@ -226,35 +242,72 @@
     						else if(res == "2") alert("삭제에 실패하였습니다.")
     					},
     					error : function(){
-    						alert("전송오류(topCategoryInput.jsp)")
+    						alert("전송오류(btmCategoryInput.jsp)")
     					}
     				});
     			}
     		}
     	}
     	
-    	// 대분류 등록
-    	function topCategoryInput(){
-    		let topCategoryName = $("#topCategoryName").val();
+    	// 중분류 등록
+    	function btmCategoryInput(){
+    		let btmCategoryName = $("#btmCategoryName").val();
+    		let topCategoryIdx = $("#topCategoryIdx").val();
+    		let midCategoryIdx = $("#midCategoryIdx").val();
     		
-    		if(topCategoryName.trim() ==""){
-    			alert("등록할 대분류를 입력하세요.");
+    		if(topCategoryIdx == ""){
+    			alert("대분류를 선택하세요.");
+    			return false;
+    		}
+    		else if(midCategoryIdx == ""){
+    			alert("중분류를 선택하세요.");
+    			return false;
+    		}
+    		else if(btmCategoryName.trim() ==""){
+    			alert("등록할 중분류를 입력하세요.");
     			return false;
     		}
     		else{
+    			let query = {
+   					btmCategoryName : btmCategoryName,
+   					topCategoryIdx : topCategoryIdx,
+   					midCategoryIdx : midCategoryIdx
+    			}
     			$.ajax({
-    				url : "${ctp}/admin/topCategoryInput",
+    				url : "${ctp}/admin/btmCategoryInput",
     				type : "post",
-    				data : {topCategoryName : topCategoryName},
+    				data : query,
     				success : function(res){
     					if(res == "1") location.reload();
-    					else if(res == "2") alert("대분류 등록에 실패하였습니다.");
+    					else if(res == "2") alert("소분류 등록에 실패하였습니다.");
     				},
     				error : function(){
-    					alert("전송오류(topCategoryInput.jsp)")
+    					alert("전송오류(btmCategoryInput.jsp)")
     				}
     			});
     		}
+    	}
+    	
+    	// 대분류 선택시 중분류 가져오기
+    	function topcategory(){
+    		let topCategoryIdx = topCIdxForm.topCategoryIdx.value;
+    		let str = ''
+    		
+    		$.ajax({
+    			url : "${ctp}/admin/topMidChategoryShow",
+    			type : "post",
+    			data : {topCategoryIdx : topCategoryIdx},
+    			success : function(vos){
+    				for(let i=0; i<vos.length; i++){
+	    				str += '<option value="'+ vos[i].idx +'">'+ vos[i].midCategoryName +'</option>';
+    				}
+    				
+    				$("#midCategoryIdx").html(str);
+    			},
+    			error : function(){
+    				alert("전송오류(btmCategoryInput.jsp)");
+    			}
+    		});
     	}
     </script>
 </head>
@@ -265,29 +318,44 @@
 			<div id="top-menu-str">카테고리 관리</div>
 			<div id="admin-main-right-inner-content">
 				<div id="admin-main-menu">
-					<div id="admin-main-menu-str">카테고리 관리 | 대분류 등록 <i class="fa-solid fa-file-pen"></i></div>
+					<div id="admin-main-menu-str">카테고리 관리 | 소분류 등록 <i class="fa-solid fa-file-pen"></i></div>
 					<div id="go-btn-div">
 						<div id="top-input-go">
-							<a href="${ctp}/admin/midCategoryInput">중분류 등록 이동 <i class="fa-solid fa-right-from-bracket"></i></a>
+							<a href="${ctp}/admin/topCategoryInput">대분류 등록 이동 <i class="fa-solid fa-right-from-bracket"></i></a>
 						</div>
 						<div id="mid-input-go">
-							<a href="${ctp}/admin/btmCategoryInput">소분류 등록 이동 <i class="fa-solid fa-right-from-bracket"></i></a>
+							<a href="${ctp}/admin/midCategoryInput">중분류 등록 이동 <i class="fa-solid fa-right-from-bracket"></i></a>
 						</div>
 						<div id="btm-input-go">
 							<a href="${ctp}/admin/categoryManag">카테고리 리스트 이동 <i class="fa-solid fa-right-from-bracket"></i></a>
 						</div>
 					</div>
-					<h3>대분류 카테고리 관리</h3>
+					<h3>소분류 카테고리 관리</h3>
 					<div class="f-d">
 						<div class="f-8-b">
 							<div style="width: 100%">
-								<div class="categ-str">대분류 등록</div>
+								<div class="categ-str">소분류 등록</div>
 								<div class="f-d">
-									<div class="tName-input"><input type="text" name="topCategoryName" id="topCategoryName" maxlength="15" placeholder="대분류 명"/></div>
-									<div class="tName-cnt">(0/15)</div>
+									<div class="bTCa-select">
+										<form name="topCIdxForm">
+											<select name="topCategoryIdx" id="topCategoryIdx" onchange="topcategory()">
+												<option value="">대분류명 선택</option>
+												<c:forEach var="tVO" items="${tVOS}">
+													<option value="${tVO.idx}">${tVO.topCategoryName}</option>
+												</c:forEach>
+											</select>
+										</form>
+									</div>
+									<div class="bMCa-select">
+										<select name="midCategoryIdx" id="midCategoryIdx" >
+											<option value="">중분류명 선택</option>
+										</select>
+									</div>
+									<div class="bName-input"><input type="text" name="btmCategoryName" id="btmCategoryName" maxlength="15" placeholder="소분류 명"/></div>
+									<div class="bName-cnt">(0/15)</div>
 								</div>
 								<div class="f-d">
-									<div class="tName-up-btn"><a href="javascript:topCategoryInput()">대분류 등록</a></div>
+									<div class="bName-up-btn"><a href="javascript:btmCategoryInput()">소분류 등록</a></div>
 								</div>
 							</div>
 						</div>
@@ -299,21 +367,33 @@
 								<tr>
 									<th>번호</th>
 									<th>대분류명</th>
-									<th>중분류 개수</th>
-									<th>소분류 개수</th>
+									<th>중분류명</th>
+									<th>소분류명</th>
 									<th>등록된 글 수</th>
 									<th>기능</th>
 								</tr>
 							</thead>
 							<c:set var="curScrStartNo" value="${pageVO.curScrStartNo }"></c:set>
-							<c:forEach var="topVO" items="${topVOS}">
+							<c:forEach var="btmVO" items="${btmVOS}">
 								<tr>
 									<td>${curScrStartNo }</td>
-									<td>${topVO.topCategoryName }</td>
-									<td>${topVO.midCnt }</td>
-									<td>${topVO.btmCnt }</td>
-									<td>${topVO.usedCnt }</td>
-									<td><a href="javascript:topCategoryDel(${topVO.usedCnt},${topVO.idx})">삭제</a></td>
+									<td>
+										<c:forEach var="tVO" items="${tVOS}">
+											<c:if test="${tVO.idx == btmVO.topCategoryIdx }">
+											${tVO.topCategoryName}
+											</c:if>
+										</c:forEach>
+									</td>
+									<td>
+										<c:forEach var="mVO" items="${mVOS}">
+											<c:if test="${mVO.idx == btmVO.midCategoryIdx }">
+											${mVO.midCategoryName}
+											</c:if>
+										</c:forEach>
+									</td>
+									<td>${btmVO.btmCategoryName }</td>
+									<td>${btmVO.usedCnt }</td>
+									<td><a href="javascript:topCategoryDel(${btmVO.usedCnt},${btmVO.idx})">삭제</a></td>
 								</tr>
 								<c:set var="curScrStartNo" value="${curScrStartNo-1}"></c:set>
 							</c:forEach>
@@ -323,14 +403,14 @@
 						<br/>
 						<div class="text-center">
 							<ul class="pagination justify-content-center">
-							    <c:if test="${pageVO.pag > 1}"><li class="page-item"><a class="page-link text-secondary" href="topCategoryInput?pag=1&pageSize=${pageVO.pageSize}"><i class="fa-solid fa-angles-left"></i></a></li></c:if>
-							  	<c:if test="${pageVO.curBlock > 0}"><li class="page-item"><a class="page-link text-secondary" href="topCategoryInput?pag=${(pageVO.curBlock-1)*pageVO.blockSize+1}&pageSize=${pageVO.pageSize}"><i class="fa-solid fa-angle-left"></i></a></li></c:if>
+							    <c:if test="${pageVO.pag > 1}"><li class="page-item"><a class="page-link text-secondary" href="btmCategoryInput?pag=1&pageSize=${pageVO.pageSize}"><i class="fa-solid fa-angles-left"></i></a></li></c:if>
+							  	<c:if test="${pageVO.curBlock > 0}"><li class="page-item"><a class="page-link text-secondary" href="btmCategoryInput?pag=${(pageVO.curBlock-1)*pageVO.blockSize+1}&pageSize=${pageVO.pageSize}"><i class="fa-solid fa-angle-left"></i></a></li></c:if>
 							  	<c:forEach var="i" begin="${(pageVO.curBlock*pageVO.blockSize)+1}" end="${(pageVO.curBlock*pageVO.blockSize)+pageVO.blockSize}" varStatus="st">
-								    <c:if test="${i <= pageVO.totPage && i == pageVO.pag}"><li class="page-item active"><a class="page-link bg-secondary border-secondary" href="topCategoryInput?pag=${i}&pageSize=${pageVO.pageSize}">${i}</a></li></c:if>
-								    <c:if test="${i <= pageVO.totPage && i != pageVO.pag}"><li class="page-item"><a class="page-link text-secondary" href="topCategoryInput?pag=${i}&pageSize=${pageVO.pageSize}">${i}</a></li></c:if>
+								    <c:if test="${i <= pageVO.totPage && i == pageVO.pag}"><li class="page-item active"><a class="page-link bg-secondary border-secondary" href="btmCategoryInput?pag=${i}&pageSize=${pageVO.pageSize}">${i}</a></li></c:if>
+								    <c:if test="${i <= pageVO.totPage && i != pageVO.pag}"><li class="page-item"><a class="page-link text-secondary" href="btmCategoryInput?pag=${i}&pageSize=${pageVO.pageSize}">${i}</a></li></c:if>
 							  	</c:forEach>
-							  	<c:if test="${pageVO.curBlock < pageVO.lastBlock}"><li class="page-item"><a class="page-link text-secondary" href="topCategoryInput?pag=${(pageVO.curBlock+1)*pageVO.blockSize+1}&pageSize=${pageVO.pageSize}"><i class="fa-solid fa-angle-right"></i></a></li></c:if>
-							  	<c:if test="${pageVO.pag < pageVO.totPage}"><li class="page-item"><a class="page-link text-secondary" href="topCategoryInput?pag=${pageVO.totPage}&pageSize=${pageVO.pageSize}"><i class="fa-solid fa-angles-right"></i></a></li></c:if>
+							  	<c:if test="${pageVO.curBlock < pageVO.lastBlock}"><li class="page-item"><a class="page-link text-secondary" href="btmCategoryInput?pag=${(pageVO.curBlock+1)*pageVO.blockSize+1}&pageSize=${pageVO.pageSize}"><i class="fa-solid fa-angle-right"></i></a></li></c:if>
+							  	<c:if test="${pageVO.pag < pageVO.totPage}"><li class="page-item"><a class="page-link text-secondary" href="btmCategoryInput?pag=${pageVO.totPage}&pageSize=${pageVO.pageSize}"><i class="fa-solid fa-angles-right"></i></a></li></c:if>
 							</ul>
 						</div>
 					</div>

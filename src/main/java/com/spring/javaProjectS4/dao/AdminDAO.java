@@ -16,6 +16,8 @@ import com.spring.javaProjectS4.vo.MidCategoryVO;
 import com.spring.javaProjectS4.vo.NoticeVO;
 import com.spring.javaProjectS4.vo.ReasonTitleVO;
 import com.spring.javaProjectS4.vo.TopCategoryVO;
+import com.spring.javaProjectS4.vo.UsedReportVO;
+import com.spring.javaProjectS4.vo.UsedVO;
 import com.spring.javaProjectS4.vo.UserReportVO;
 
 public interface AdminDAO {
@@ -143,6 +145,28 @@ public interface AdminDAO {
 	public void setMidBtmCategoryDel(@Param("idx") int idx);
 
 	public int setMidCategoryDel(@Param("idx") int idx);
+
+	public List<BtmCategoryVO> getBtmCategoryTableList(@Param("startIndexNo") int startIndexNo,@Param("pageSize") int pageSize);
+
+	public int getBtmCategoryRecCnt();
+
+	public int setBtmCategoryInput(@Param("btmCategoryName") String btmCategoryName,@Param("topCategoryIdx") int topCategoryIdx,@Param("midCategoryIdx") int midCategoryIdx);
+
+	public int setBtmCategoryDel(@Param("idx") int idx);
+
+	public List<UsedReportVO> getUsedReportList(@Param("startIndexNo") int startIndexNo,@Param("pageSize") int pageSize);
+
+	public int getUsedReportRecCnt();
+
+	public int setUsedReportNoDelete(@Param("idx") int idx);
+
+	public UsedVO getUsedIdx(@Param("usedIdx") int usedIdx);
+
+	public void setUsedIdxDelete(@Param("usedIdx") int usedIdx);
+
+	public void setfollowUsedAlarmDel(@Param("usedIdx") int usedIdx);
+
+	public UsedReportVO getUsedReportIdx(@Param("idx") int idx);
 
 
 

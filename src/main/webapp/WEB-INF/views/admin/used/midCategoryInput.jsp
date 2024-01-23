@@ -200,7 +200,7 @@
     		});
     	}
     	
-    	// 대분류 cnt 세기
+    	// 중분류 cnt 세기
     	$(function() {
     		$("#midCategoryName").on("keyup", function(){
     			let midCategoryName = $("#midCategoryName").val();
@@ -215,7 +215,7 @@
     	});
     	
     	// 중분류 삭제
-    	function topCategoryDel(usedCnt,idx){
+    	function midCategoryDel(usedCnt,idx){
     		if(usedCnt > 0){
     			alert("사용중인 카테고리는 삭제하실 수 었습니다.");
     		}
@@ -288,7 +288,7 @@
 							<a href="${ctp}/admin/topCategoryInput">대분류 등록 이동 <i class="fa-solid fa-right-from-bracket"></i></a>
 						</div>
 						<div id="mid-input-go">
-							<a href="${ctp}/admin/memberReport">소분류 등록 이동 <i class="fa-solid fa-right-from-bracket"></i></a>
+							<a href="${ctp}/admin/btmCategoryInput">소분류 등록 이동 <i class="fa-solid fa-right-from-bracket"></i></a>
 						</div>
 						<div id="btm-input-go">
 							<a href="${ctp}/admin/categoryManag">카테고리 리스트 이동 <i class="fa-solid fa-right-from-bracket"></i></a>
@@ -344,7 +344,7 @@
 									<td>${midVO.midCategoryName }</td>
 									<td>${midVO.btmCnt }</td>
 									<td>${midVO.usedCnt }</td>
-									<td><a href="javascript:topCategoryDel(${midVO.usedCnt},${midVO.idx})">삭제</a></td>
+									<td><a href="javascript:midCategoryDel(${midVO.usedCnt},${midVO.idx})">삭제</a></td>
 								</tr>
 								<c:set var="curScrStartNo" value="${curScrStartNo-1}"></c:set>
 							</c:forEach>
