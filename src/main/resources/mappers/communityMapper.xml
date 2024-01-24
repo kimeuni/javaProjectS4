@@ -17,8 +17,39 @@
 		(select count(*) from bookmarkS bms where bms.part = 'community' and bms.partIdx = comu.idx ) as bookmarkCnt
 		from communityS comu where userDel = 'N' order by idx desc limit #{startIndexNo},#{pageSize};
 	</select>
+	<select id="getCommunityIdx" resultType="com.spring.javaProjectS4.vo.CommunityVO">
+		select * from communityS where idx = #{idx};
+	</select>
 	
 	<insert id="setCommunityInput">
 		insert into communityS values (default,#{mid},#{content},#{imgsStr},default,#{region},default);
 	</insert>
+	<insert id="setGoodYes">
+		insert into goodS values (default,#{part},#{idx},#{mid},default,default)
+	</insert>
+	<insert id="setBookmarkYes">
+		insert into bookmarkS values (default,#{part},#{idx},#{mid},default);
+	</insert>
+	<insert id="setReplyInput">
+		insert into replyS values (default,#{part},#{idx},#{mid},#{content},default,default,default);
+	</insert>
+	
+	<delete id="setGoodNo">
+		delete from goodS where goodMid = #{mid} and part = #{part} and partIdx = #{idx};
+	</delete>
+	<delete id="setBookmarkNo">
+		delete from bookmarkS where bookmarkMid = #{mid} and part = #{part} and partIdx = #{idx};
+	</delete>
+	<delete id="setCommunityDel">
+		delete from communityS where idx = #{idx};
+	</delete>
+	<delete id="setCommunityReplyAllDel">
+		delete from replyS where part = #{part} and partIdx = #{idx};
+	</delete>
+	<delete id="setCommunityGoodAllDel">
+		delete from goodS where part = #{part} and partIdx = #{idx};
+	</delete>
+	<delete id="setCommunityBookmarkDel">
+		delete from bookmarkS where part = #{part} and partIdx = #{idx};
+	</delete>
 </mapper>

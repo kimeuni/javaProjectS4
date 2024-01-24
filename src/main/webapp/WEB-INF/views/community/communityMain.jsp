@@ -200,6 +200,15 @@
 			line-height: 60px;
 			border-left: 1px solid #ddd;
 		}
+		.f-d-menu{
+			height: 60px;
+			display: flex;
+			width: 100%;
+			justify-content: center;
+			font-size: 1.5em;
+			line-height: 60px;
+			border-left: 1px solid #ddd;
+		}
 		.checked-yes{
 			background-color: #fff;
 		}
@@ -262,20 +271,63 @@
 		}
 		.menu-c{
 			position: relative;
+			margin-left: auto;
 		}
 		.reply-input button{
 			background-color: rgba(0,0,0,0);
 			border: 0px;
 		}
+		.report-del-btn{
+			position: absolute;
+		}
+		.report-del-container{
+			margin-left: auto; 
+			padding-right: 20px;
+			padding-top: 10px
+		}
+		.report-del-container ul{
+			margin: 0px;
+			padding: 0px;
+			list-style: none;
+		}
+		.inner-li-report-del-btn hr{
+			margin: 3px;
+		}
+		.inner-li-report-del-btn{
+			text-align: center;
+			width: 80px;
+			border: 1px solid;
+			position: absolute;
+			background-color: #fff;
+			padding: 5px !important;
+			display: none;
+		}
+		.inner-li-report-del-btn a{
+			text-decoration: none;
+			color: #000;
+		}
+		.ul-report-del-btn:hover .inner-li-report-del-btn{
+			display: block;
+		}
+		.comu-content:hover{
+			background-color: #eee;
+		}
+		.comu-content-inner{
+			width: 100%;
+		}
+		.comu-content-inner a{
+			display : flex;
+			width : 100%;
+			min-height: 50px;
+			text-decoration: none;
+			color: #000;
+		}
+		.reply-good-bookmark-btn a{
+			text-decoration: none;
+		}
     </style>
     <script>
     	'use strict'
-    	
-    	
-    	$(function(){
-    		$(".reply-close").hide();
-    		$(".reply-content-div").hide();
-    	});
     	
     	$(function(){
     		$("#att_zone").hide();
@@ -336,30 +388,166 @@
     		
     	}
     	
-    	function replyCloseBtn(){
-    		$(".reply-close").hide();
-    		$(".reply-input").show();
-    		
-    		$(".reply-content-div").slideUp();
-    	}
-    	// 신고 및 삭제 보이기
-    	function menuC(){
-    	}
-    	
+    	// 댓글 모달에 값 넘기기
     	function modalView(nickName, mid,idx){
     		$("#rMid").html(mid);
     		$("#rNickName").html(nickName);
     		$("#rIdx").val(idx);
     	}
     	
+    	// 댓글 업로드
     	function replyUpload(){
     		let content = $("#rContent").val();
     		let idx = $("#rIdx").val();
     		let mid = "${sMid}";
     		
-    		alert(content);
-    		alert(idx);
-    		alert(mid);
+    		if(content.trim() == ""){
+    			alert("댓글을 입력해주세요.");
+    			$("#rContent").focus();
+    		}
+    		else {
+    			let query = {
+    				content : content,
+    				idx : idx,
+    				mid : mid
+    			}
+    			$.ajax({
+    				url : "${ctp}/community/communityReplyInput",
+    				type : "post",
+    				data : query,
+    				success : function(res){
+    					if(res == "1") location.reload();
+    					else if(res == "2") alert("댓글 게시에 실패하였습니다.");
+    				},
+    				error : function(){
+    					alert("전송오류(communityMain.jsp)")
+    				}
+    			});
+    		}
+    	}
+    	
+    	// 좋아요 누르기
+    	function goodYes(idx){
+    		let mid = '${sMid}';
+    		let part = 'community';
+
+    		let query = {
+    			idx : idx,
+    			mid : mid,
+    			part : part,
+    			flag : "yes"
+    		}
+    		$.ajax({
+    			url : "${ctp}/community/communityGood",
+    			type : "post",
+    			data : query,
+    			success : function(res){
+    				if(res == "1") location.reload();
+    				else if(res == "2") alert("좋아요 실패");
+    			},
+    			error : function(){
+    				alert("전송오류(communityMain.jsp)")
+    			}
+    		});
+    	}
+    	
+    	// 좋아요 취소
+    	function goodNo(idx){
+    		let mid = '${sMid}';
+    		let part = 'community';
+
+    		let query = {
+    			idx : idx,
+    			mid : mid,
+    			part : part,
+    			flag : "no"
+    		}
+    		$.ajax({
+    			url : "${ctp}/community/communityGood",
+    			type : "post",
+    			data : query,
+    			success : function(res){
+    				if(res == "1") location.reload();
+    				else if(res == "2") alert("좋아요 실패");
+    			},
+    			error : function(){
+    				alert("전송오류(communityMain.jsp)")
+    			}
+    		});
+    	}
+    	
+    	// 북마크 선택
+    	function bookmarkYes(idx){
+    		let mid = '${sMid}';
+    		let part = 'community';
+
+    		let query = {
+    			idx : idx,
+    			mid : mid,
+    			part : part,
+    			flag : "yes"
+    		}
+    		$.ajax({
+    			url : "${ctp}/community/communityBookmark",
+    			type : "post",
+    			data : query,
+    			success : function(res){
+    				if(res == "1") location.reload();
+    				else if(res == "2") alert("북마크 실패");
+    			},
+    			error : function(){
+    				alert("전송오류(communityMain.jsp)")
+    			}
+    		});
+    	}
+    	
+    	// 북마크 취소
+    	function bookmarkNo(idx){
+    		let mid = '${sMid}';
+    		let part = 'community';
+
+    		let query = {
+    			idx : idx,
+    			mid : mid,
+    			part : part,
+    			flag : "no"
+    		}
+    		$.ajax({
+    			url : "${ctp}/community/communityBookmark",
+    			type : "post",
+    			data : query,
+    			success : function(res){
+    				if(res == "1") location.reload();
+    				else if(res == "2") alert("북마크 해제 실패");
+    			},
+    			error : function(){
+    				alert("전송오류(communityMain.jsp)")
+    			}
+    		});
+    	}
+    	
+    	// 해당 게시글 상세보기 화면 이동
+    	function comuContentInnerGo(pag,pageSize,idx){
+    		location.href="${ctp}/used/usedMain"
+    	}
+    	
+    	// 글 삭제
+    	function cDelBtn(idx){
+    		let ans = confirm("해당 글을 삭제하시겠습니까?");
+    		if(ans){
+    			$.ajax({
+    				url : "${ctp}/community/communityDel",
+    				type : "post",
+    				data : {idx : idx},
+    				success : function(res){
+    					if(res == "1") location.reload();
+    					else if(res == "2") alert("게시글 삭제에 실패하였습니다.");
+    				},
+    				error : function(){
+    					alert("전송오류(communityMain.jsp)")
+    				}
+    			});
+    		}
     	}
     </script>
 </head>
@@ -402,20 +590,40 @@
 	    	<div class="f-d-8" >
 	    		<div style="width: 100%">
     				<div class="f-d f-sc">
-    					<div class="f-d-3-menu checked-yes">전체</div>
-    					<div class="f-d-3-menu checked-no">지역</div>
-    					<div class="f-d-3-menu checked-no">팔로우</div>
+    					<c:if test="${sMid != null }">
+	    					<div class="f-d-3-menu checked-yes">전체</div>
+	    					<div class="f-d-3-menu checked-no">지역</div>
+	    					<div class="f-d-3-menu checked-no">팔로우</div>
+    					</c:if>
+    					<c:if test="${sMid == null }">
+	    					<div class="f-d-menu checked-yes">전체</div>
+    					</c:if>
     				</div>
 		    		<c:forEach var="comVO" items="${comVOS }">
 		    			<c:set var="img" value="${comVO.imgs.split('/')}" />
 		    			<div class="f-d">
-		    				<div style="margin-left: auto; padding-right: 20px;padding-top: 10px">
-			    				<a href="javascript:menuC()" class="menu-c"><i class="fa-solid fa-bars"></i></a>
+	    					<c:if test="${sMid != null }">
+		    				<div class="report-del-container">
+		    					<ul class="ul-report-del-btn">
+		    						<li>
+					    				<a href="javascript:menuC()" class="menu-c"><i class="fa-solid fa-bars"></i></a>
+					    				<ul class="inner-li-report-del-btn">
+					    					<c:if test="${sMid == comVO.mid }">
+						    					<li><a href="javascript:cDelBtn(${comVO.idx })">삭제</a></li>
+						    					<hr/>
+					    					</c:if>
+					    					<li><a href="javascript:cReportBtn(${comVO.idx })">신고</a></li>
+					    				</ul>
+		    						</li>
+		    					</ul>
 		    				</div>
+	    					</c:if>
 	    				</div>
-		    			<div class="f-d btb pd">
+		    			<div class="f-d btb pd comu-content">
 		    				<div class="f-d-1-img profile-img">
-			    				<a href=""><img src="${ctp}/data/member/${comVO.profile}" ></a>
+		    					<div>
+				    				<a href=""><img src="${ctp}/data/member/${comVO.profile}" ></a>
+		    					</div>
 		    				</div>
 		    				<div class="f-d-9 pd-i">
 		    					<div style="width: 100%">
@@ -423,7 +631,11 @@
 				    					<div class="pr-1">${comVO.nickName }</div>
 				    					<div style="color: #aaa">@${comVO.mid}</div>
 		    						</div>
-		    						<div class="f-d pt-2">${comVO.content }</div>
+		    						<div class="f-d pt-2 comu-content-inner">
+		    							<div style="width: 100%">
+			    							<a href="javascript:comuContentInnerGo('${comVO.idx}','${pageVO.pag }','${pageVO.pageSize}')">${comVO.content }</a>
+		    							</div>
+	    							</div>
 		    						<div class="f-d pt-2 ">
 		    							<c:if test="${empty img}">
 		    							</c:if>
@@ -460,15 +672,25 @@
 		    								</div>
 		    							</c:if>
 		    						</div>
-		    						<div class="f-d mt-2">
+		    						<div class="f-d mt-2 reply-good-bookmark-btn">
 		    							<c:if test="${sMid == null }">
-			    							<div class="f-d-3" style="color: #aaa"><a><i class="fa-regular fa-comment"></i></a></div>
+			    							<div class="f-d-3" style="color: #aaa"><a><i class="fa-regular fa-comment"> ${comVO.replyCnt }</i></a></div>
 		    							</c:if>
 		    							<c:if test="${sMid != null }">
-			    							<div class="f-d-3 reply-input"><button type="button" data-toggle="modal" data-target="#replyModal" onclick="modalView('${comVO.nickName}','${comVO.mid }','${comVO.idx }')"><i class="fa-regular fa-comment"></i></button></div>
+			    							<div class="f-d-3 reply-input"><button type="button" data-toggle="modal" data-target="#replyModal" onclick="modalView('${comVO.nickName}','${comVO.mid }','${comVO.idx }')"><i class="fa-regular fa-comment"></i> ${comVO.replyCnt }</button></div>
 		    							</c:if>
-		    							<div class="f-d-3"><a href=""><i class="fa-regular fa-heart"></i></a></div>
-		    							<div class="f-d-3"><a href=""><i class="fa-regular fa-bookmark"></i></a></div>
+		    							<c:if test="${comVO.midGoodCheck == 0 }">
+			    							<div class="f-d-3 "><a href="javascript:goodYes(${comVO.idx})"><i class="fa-regular fa-heart"></i> ${comVO.goodCnt }</a></div>
+		    							</c:if>
+		    							<c:if test="${comVO.midGoodCheck == 1 }">
+			    							<div class="f-d-3 " style="color: pink"><a href="javascript:goodNo(${comVO.idx})"><i class="fa-solid fa-heart"></i> ${comVO.goodCnt }</a></div>
+		    							</c:if>
+		    							<c:if test="${comVO.midBookmarkCheck == 0 }">
+			    							<div class="f-d-3"><a href="javascript:bookmarkYes(${comVO.idx})"><i class="fa-regular fa-bookmark"></i> ${comVO.bookmarkCnt }</a></div>
+		    							</c:if>
+		    							<c:if test="${comVO.midBookmarkCheck == 1 }">
+			    							<div class="f-d-3" style="color: blue"><a href="javascript:bookmarkNo(${comVO.idx})"><i class="fa-solid fa-bookmark"></i> ${comVO.bookmarkCnt }</a></div>
+		    							</c:if>
 		    						</div>
 		    					</div>
 		    				</div>

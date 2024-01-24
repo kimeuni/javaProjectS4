@@ -1,5 +1,6 @@
 package com.spring.javaProjectS4.service;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -90,6 +91,77 @@ public class CommunityServiceImpl implements CommunityService {
 	@Override
 	public List<CommunityVO> getCommunityList(int startIndexNo, int pageSize, String sMid) {
 		return communityDAO.getCommunityList( startIndexNo, pageSize,sMid);
+	}
+
+	@Override
+	public int setGoodYes(int idx, String mid, String part) {
+		return communityDAO.setGoodYes( idx, mid, part);
+	}
+
+	@Override
+	public int setGoodNo(int idx, String mid, String part) {
+		return communityDAO.setGoodNo( idx, mid, part);
+	}
+
+	@Override
+	public int setBookmarkYes(int idx, String mid, String part) {
+		return communityDAO.setBookmarkYes( idx, mid, part);
+	}
+
+	@Override
+	public int setBookmarkNo(int idx, String mid, String part) {
+		return communityDAO.setBookmarkNo( idx, mid, part);
+	}
+
+	@Override
+	public int setReplyInput(int idx, String mid, String content, String part) {
+		return communityDAO.setReplyInput( idx, mid, content, part);
+	}
+
+	@Override
+	public CommunityVO getCommunityIdx(int idx) {
+		return communityDAO.getCommunityIdx( idx);
+	}
+
+	@Override
+	public int setCommunityDel(int idx, String imgs) {
+		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
+		String realPath = request.getSession().getServletContext().getRealPath("/resources/data/");
+		
+		String[] img = imgs.split("/");
+		
+		String oFilePath = "";
+		
+		// 이미지 삭제
+		if(!imgs.equals("")) {
+			for(int i=0; i<img.length; i++) {
+				oFilePath = realPath + "community/" + img[i];
+				
+				fileDelete(oFilePath);
+			}
+		}
+		return communityDAO.setCommunityDel( idx);
+	}
+	
+	// 이미지 삭제
+	private void fileDelete(String origFilePath) {
+		File delFile = new File(origFilePath);
+		if(delFile.exists()) delFile.delete();
+	}
+
+	@Override
+	public void setCommunityReplyAllDel(String part, int idx) {
+		communityDAO.setCommunityReplyAllDel( part, idx);
+	}
+
+	@Override
+	public void setCommunityGoodAllDel(String part, int idx) {
+		communityDAO.setCommunityGoodAllDel( part, idx);
+	}
+
+	@Override
+	public void setCommunityBookmarkDel(String part, int idx) {
+		communityDAO.setCommunityBookmarkDel( part, idx);
 	}
 
 	
