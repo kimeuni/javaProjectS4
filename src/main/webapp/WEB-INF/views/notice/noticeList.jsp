@@ -146,6 +146,10 @@
     			location.href="${ctp}/board/noticeSearch?part=title&searchString="+searchString;
     		}
     	}
+    	
+    	function eventBtn(){
+    		alert("현재 이벤트 준비중 입니다.")
+    	}
     </script>
 </head>
 <body>
@@ -166,7 +170,7 @@
 		</div>
 		<div id="ul-li-container">
 			<ul>
-				<a href="${ctp}/board/noticeList"><li class="notice-list-li">공지사항</li></a><a href=""><li class="event-li">이벤트</li></a><a href="${ctp}/board/FAQList"><li class="FAQ-li">자주하는 질문</li></a>
+				<a href="${ctp}/board/noticeList"><li class="notice-list-li">공지사항</li></a><a href="javascript:eventBtn()"><li class="event-li">이벤트</li></a><a href="${ctp}/board/FAQList"><li class="FAQ-li">자주하는 질문</li></a>
 			</ul>
 		</div>
 		<div id="notice-list-ul-li">

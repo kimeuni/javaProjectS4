@@ -15,4 +15,12 @@ public class CommunityVO {
 	private String cDate;
 	private String region;
 	
+	private String profile;
+	private String nickName;
+	
+	private int midGoodCheck;
+	private int goodCnt;
+	private int replyCnt;
+	private int midBookmarkCheck;
+	private int bookmarkCnt;
 }

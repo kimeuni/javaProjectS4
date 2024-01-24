@@ -51,65 +51,6 @@
     		border: 1px solid #553830;
     		background-color: #553830;
     	}
-    	#community-main-menu-container{
-    		background-color: #F3CF98;
-    		position: sticky;
-  			top: 80px;
-  			min-width: 100vw;
-			z-index: 100;
-    	}
-    	#community-menu-flex{
-    		display: flex;
-    		width: 1200px;
-    		height: 60px;
-    		margin: 0 auto;
-    		color: #553830;
-    	}
-    	#menu-div{
-    		margin-left: 30px;
-    	}
-    	.inner-c{
-    		padding-top: 3px;
-    		padding-bottom: 3px;
-    		padding-left: 10px;
-    	}
-    	.community-list-container{
-    		display: flex;
-    		min-height: 20px;
-    		width: 1200px;
-    		margin: 0 auto;
-    		flex-wrap: wrap;
-    	}
-    	.community-list-content-div{
-    		display: flex;
-    		width: 240px;
-    		padding: 10px;
-    	}
-    	.line-b{
-    		border: 1px solid #ccc;
-    	}
-    	.mt-1{
-    		margin: 7px;
-    	}
-    	.inner-flex-div{
-    		display: flex;
-    	}
-    	.inner-flex-end{
-    		margin-left: auto;
-    	}
-    	.w-2{
-    		min-width: 50px;
-    	}
-    	.ml-a{
-    		margin-left: auto;
-    	}
-    	.mt-5{
-    		margin-top: 7px !important;
-    	}
-    	.mg-10{
-    		margin-top : 15px;
-    		margin-bottom : 15px;
-    	}
     	.f-d{
     		display: flex;
     	}
@@ -132,15 +73,294 @@
     		font-size: 1.2em;
     		resize: none;
     		outline: none;
-    		border: 1px solid #ddd;
+    		border: 0px
     	}
+    	#rContent{
+    		font-size: 1.2em;
+    		resize: none;
+    		outline: none;
+    		border: 0px
+    	}
+    	.f-b-ddd{
+    		border: 1px solid #ddd;
+    		padding: 5px;
+    	}
+    	.f-a{
+    		flex-wrap: wrap;
+    	}
+    	#file-btns-div input[type="file"]{
+    		position : absolute;
+    		height: 1px;
+    		width: 1px;
+    		margin: -1px;
+    		overflow: hidden;
+    	}
+    	.la-f{
+    		height: 30px;
+    		line-height: 30px;
+    	}
+    	.la-f:hover{
+    		color: #F3CF98;
+    	}
+    	.content-cnt{
+    		margin-left: auto;
+    		padding-right: 15px;
+    		height: 30px;
+    		line-height: 30px;
+    	}
+    	.content-reply-cnt{
+    		margin-left: auto;
+    		padding-right: 15px;
+    		height: 30px;
+    		line-height: 30px;
+    	}
+    	.content-upload-btn a{
+    		justify-content : center;
+    		display : flex;
+    		width: 100px;
+    		background-color: #5E5756;
+    		color: #fff;
+    		height: 30px;
+    		border-radius: 5px;
+    		line-height: 30px;
+    		text-decoration: none;
+    	}
+    	#community-list-container{
+    		width: 1200px;
+    		margin: 0 auto;
+    	}
+    	
+		.f-d-2{
+			display : flex;
+			position: sticky;
+			top: 80px;
+			width: 25%;
+			max-height: 600px;
+		}
+		.f-d-8{
+			display: flex;
+			width: 75%;
+			border-left: 1px solid #ddd;
+			border-right: 1px solid #ddd;
+		}
+		.btb{
+			border-bottom: 1px solid #ddd;
+		}
+		.f-d-1-img{
+			display: flex;
+			width: 10%;
+		}
+		.f-d-9{
+			display: flex;
+			width: 90%;
+		}
+		.profile-img img{
+			width: 60px;
+			height: 60px;
+			border-radius: 100%
+		}
+		.pd{
+			padding-bottom: 30px;
+			padding-top: 10px;
+			padding-left: 70px;
+			padding-right: 70px;
+		}
+		.pd-i{
+			padding-bottom: 10px;
+			padding-top: 10px;
+			padding-left: 30px;
+			padding-right: 30px;
+		}
+		.heit{
+			height: 300px;
+			overflow: hidden;
+			border: 1px solid #ddd;
+			border-radius: 5px;
+		}
+		.f-d-5{
+			display: flex;
+			width: 50%;
+			flex-wrap: wrap;
+		}
+		.heit-150{
+			height: 150px;
+		}
+		.f-sc{
+			display : flex;
+			position: sticky;
+			top: 80px;
+			z-index: 100
+		}
+		.f-d-3-menu{
+			height: 60px;
+			display: flex;
+			width: 33.39%;
+			justify-content: center;
+			font-size: 1.5em;
+			line-height: 60px;
+			border-left: 1px solid #ddd;
+		}
+		.checked-yes{
+			background-color: #fff;
+		}
+		.checked-no{
+			background-color: #eee;
+		}
+		.f-d-3{
+			height: 25px;
+			display: flex;
+			width: 33.39%;
+			font-size : 1.2em;
+			justify-content: center;
+			vertical-align: middle;
+			margin-top: 10px; 
+		}
+		.main-home-btn , .profile-go-btn , .good-go-btn , .bookmark-go-btn  {
+			margin-top: 15px;
+		}
+		.comu-up-btn {
+			margin-top: 100px;
+			margin-bottom: 40px;
+			text-align: center;
+		}
+		.comu-up-btn button{
+			margin: 0 auto;
+			display : flex;
+			justify-content: center;
+			padding: 0px;
+			font-size: 1.3em;
+			margin-top: 5px;
+			width : 150px;
+			height : 40px;
+			line-height : 40px;
+			text-decoration: none;
+			background-color: #5E5756;
+			border: 1px solid #5E5756;
+			border-radius: 5px;
+			color: #fff;
+			font-weight: bold;
+		} 
+		.comu-up-btn button:hover{
+			background-color: #553830;
+			border: 1px solid #553830;
+		}
+		.main-home-btn a, .profile-go-btn a, .bookmark-go-btn a{
+			display : flex;
+			padding-left: 15px;
+			font-size: 1.5em;
+			width: 100%;
+			margin-top: 5px;
+			text-decoration: none;
+		}
+		.main-home-btn a:hover, .profile-go-btn a:hover, .bookmark-go-btn a:hover{
+			color: #553830;
+		
+		}
+		.menu-c:hover{
+			text-decoration: none;
+			color: #000;
+		}
+		.menu-c{
+			position: relative;
+		}
+		.reply-input button{
+			background-color: rgba(0,0,0,0);
+			border: 0px;
+		}
     </style>
     <script>
     	'use strict'
     	
+    	
+    	$(function(){
+    		$(".reply-close").hide();
+    		$(".reply-content-div").hide();
+    	});
+    	
     	$(function(){
     		$("#att_zone").hide();
     	});
+    	
+    	let str = '';
+    	// 글자 길이 체크
+    	$(function() {
+    		$("#content").on("keyup",function() {
+	    		let content = $("#content").val();
+    			str = '('+ content.length +'/140)';
+    			$(".content-cnt").html(str);
+    			
+    			if(content.length > 140){
+	    			$(".content-cnt").html("(140/140)");
+    				alert("내용은 140글자까지 가능합니다.")
+    				$("#content").val(content.substring(0,140));
+    			}
+    		});
+    	});
+    	// 댓글 글자 길이 체크
+    	$(function() {
+    		$("#rContent").on("keyup",function() {
+	    		let content = $("#rContent").val();
+    			str = '('+ content.length +'/140)';
+    			$(".content-reply-cnt").html(str);
+    			
+    			if(content.length > 140){
+	    			$(".content-reply-cnt").html("(140/140)");
+    				alert("내용은 140글자까지 가능합니다.")
+    				$("#rContent").val(content.substring(0,140));
+    			}
+    		});
+    	});
+    	
+    	// 게시글 등록하기
+    	function communityUpload(){
+    		let content = $("#content").val();
+    		
+    		if(content.trim() == ""){
+    			alert("내용을 입력해주세요.");
+    			$("#content").focus();
+    			return false;
+    		}
+    		else{
+    			document.getElementById("imgs").removeAttribute("disabled");
+    			
+    			communityForm.submit();
+    		}
+    	}
+    	
+    	// 댓글 입력창 보이기
+    	function replyInputBtn(){
+    		$(".reply-close").show();
+    		$(".reply-input").hide();
+    		
+    		$(".reply-content-div").slideDown();
+    		
+    	}
+    	
+    	function replyCloseBtn(){
+    		$(".reply-close").hide();
+    		$(".reply-input").show();
+    		
+    		$(".reply-content-div").slideUp();
+    	}
+    	// 신고 및 삭제 보이기
+    	function menuC(){
+    	}
+    	
+    	function modalView(nickName, mid,idx){
+    		$("#rMid").html(mid);
+    		$("#rNickName").html(nickName);
+    		$("#rIdx").val(idx);
+    	}
+    	
+    	function replyUpload(){
+    		let content = $("#rContent").val();
+    		let idx = $("#rIdx").val();
+    		let mid = "${sMid}";
+    		
+    		alert(content);
+    		alert(idx);
+    		alert(mid);
+    	}
     </script>
 </head>
 <body>
@@ -163,50 +383,182 @@
     		</div>
     	</div>
     </div>
-    <div id="community-main-menu-container">
-    	<div id="community-menu-flex">
-    		<div>
-    		
-    		</div>
+    <!-- 커뉴니티 글 보이기 -->
+    <div id="community-list-container">
+    	<div class="f-d">
+	    	<div class="f-d-2">
+	    		<div style="width: 100%">
+		    		<div class="main-home-btn"><a href="${ctp}/community/communityMain"><i class="fa-solid fa-house"></i>&nbsp;&nbsp; 홈으로</a></div>
+		    		<hr/>
+		    		<div class="profile-go-btn"><a href=""><i class="fa-solid fa-user"></i>&nbsp;&nbsp; 프로필</a></div>
+		    		<hr/>
+		    		<div class="bookmark-go-btn"><a href=""><i class="fa-solid fa-bookmark"></i>&nbsp;&nbsp; 북마크</a></div>
+		    		<hr/>
+		    		<c:if test="${sMid != null }">
+			    		<div class="comu-up-btn"><button type="button" data-toggle="modal" data-target="#myModal"> 글 올리기</button></div>
+		    		</c:if>
+	    		</div>
+	    	</div>
+	    	<div class="f-d-8" >
+	    		<div style="width: 100%">
+    				<div class="f-d f-sc">
+    					<div class="f-d-3-menu checked-yes">전체</div>
+    					<div class="f-d-3-menu checked-no">지역</div>
+    					<div class="f-d-3-menu checked-no">팔로우</div>
+    				</div>
+		    		<c:forEach var="comVO" items="${comVOS }">
+		    			<c:set var="img" value="${comVO.imgs.split('/')}" />
+		    			<div class="f-d">
+		    				<div style="margin-left: auto; padding-right: 20px;padding-top: 10px">
+			    				<a href="javascript:menuC()" class="menu-c"><i class="fa-solid fa-bars"></i></a>
+		    				</div>
+	    				</div>
+		    			<div class="f-d btb pd">
+		    				<div class="f-d-1-img profile-img">
+			    				<a href=""><img src="${ctp}/data/member/${comVO.profile}" ></a>
+		    				</div>
+		    				<div class="f-d-9 pd-i">
+		    					<div style="width: 100%">
+		    						<div class="f-d">
+				    					<div class="pr-1">${comVO.nickName }</div>
+				    					<div style="color: #aaa">@${comVO.mid}</div>
+		    						</div>
+		    						<div class="f-d pt-2">${comVO.content }</div>
+		    						<div class="f-d pt-2 ">
+		    							<c:if test="${empty img}">
+		    							</c:if>
+		    							<c:if test="${fn:length(img) == 1 && !empty img[0]}">
+		    								<div class="heit"><a href="${ctp}/data/community/${img[0]}" target="_blank"><img src="${ctp}/data/community/${img[0]}" width="100%"/></a></div>
+		    							</c:if>
+		    							<c:if test="${fn:length(img) == 2 && !empty img[0]}">
+		    								<div class="f-d heit">
+		    									<div class="f-d-5">
+				    								<div class=""><a href="${ctp}/data/community/${img[0]}" target="_blank"><img src="${ctp}/data/community/${img[0]}" width="100%" /></a></div>
+		    									</div>
+		    									<div class="f-d-5">
+				    								<div class=""><a href="${ctp}/data/community/${img[1]}" target="_blank"><img src="${ctp}/data/community/${img[1]}" width="100%"/></a></div>
+		    									</div>
+		    								</div>
+		    							</c:if>
+		    							<c:if test="${fn:length(img) == 3 && !empty img[0]}">
+		    								<div class="f-d-5 heit">
+			    								<div class=><a href="${ctp}/data/community/${img[0]}" target="_blank"><img src="${ctp}/data/community/${img[0]}" width="100%" /></a></div>
+		    								</div>
+		    								<div class="f-d-5 heit" >
+			    								<a href="${ctp}/data/community/${img[1]}" target="_blank" class="heit-150"><img src="${ctp}/data/community/${img[1]}" width="100%" /></a>
+			    								<a href="${ctp}/data/community/${img[2]}" target="_blank" class="heit-150"><img src="${ctp}/data/community/${img[2]}" width="100%" /></a>
+		    								</div>
+		    							</c:if>
+		    							<c:if test="${fn:length(img) == 4 && !empty img[0]}">
+		    								<div class="f-d-5 heit">
+			    								<a href="${ctp}/data/community/${img[0]}" target="_blank" class="heit-150"><img src="${ctp}/data/community/${img[0]}" width="100%" /></a>
+			    								<a href="${ctp}/data/community/${img[1]}" target="_blank" class="heit-150"><img src="${ctp}/data/community/${img[1]}" width="100%" /></a>
+		    								</div>
+		    								<div class="f-d-5 heit" >
+			    								<a href="${ctp}/data/community/${img[2]}" target="_blank" class="heit-150"><img src="${ctp}/data/community/${img[2]}" width="100%" /></a>
+			    								<a href="${ctp}/data/community/${img[3]}" target="_blank" class="heit-150"><img src="${ctp}/data/community/${img[3]}" width="100%" /></a>
+		    								</div>
+		    							</c:if>
+		    						</div>
+		    						<div class="f-d mt-2">
+		    							<c:if test="${sMid == null }">
+			    							<div class="f-d-3" style="color: #aaa"><a><i class="fa-regular fa-comment"></i></a></div>
+		    							</c:if>
+		    							<c:if test="${sMid != null }">
+			    							<div class="f-d-3 reply-input"><button type="button" data-toggle="modal" data-target="#replyModal" onclick="modalView('${comVO.nickName}','${comVO.mid }','${comVO.idx }')"><i class="fa-regular fa-comment"></i></button></div>
+		    							</c:if>
+		    							<div class="f-d-3"><a href=""><i class="fa-regular fa-heart"></i></a></div>
+		    							<div class="f-d-3"><a href=""><i class="fa-regular fa-bookmark"></i></a></div>
+		    						</div>
+		    					</div>
+		    				</div>
+		    			</div>
+		    		</c:forEach>
+			    <br/>
+				<div class="text-center">
+					<ul class="pagination justify-content-center">
+					    <c:if test="${pageVO.pag > 1}"><li class="page-item"><a class="page-link text-secondary" href="communityMain?pag=1&pageSize=${pageVO.pageSize}"><i class="fa-solid fa-angles-left"></i></a></li></c:if>
+					  	<c:if test="${pageVO.curBlock > 0}"><li class="page-item"><a class="page-link text-secondary" href="communityMain?pag=${(pageVO.curBlock-1)*pageVO.blockSize+1}&pageSize=${pageVO.pageSize}"><i class="fa-solid fa-angle-left"></i></a></li></c:if>
+					  	<c:forEach var="i" begin="${(pageVO.curBlock*pageVO.blockSize)+1}" end="${(pageVO.curBlock*pageVO.blockSize)+pageVO.blockSize}" varStatus="st">
+						    <c:if test="${i <= pageVO.totPage && i == pageVO.pag}"><li class="page-item active"><a class="page-link bg-secondary border-secondary" href="communityMain?pag=${i}&pageSize=${pageVO.pageSize}">${i}</a></li></c:if>
+						    <c:if test="${i <= pageVO.totPage && i != pageVO.pag}"><li class="page-item"><a class="page-link text-secondary" href="communityMain?pag=${i}&pageSize=${pageVO.pageSize}">${i}</a></li></c:if>
+					  	</c:forEach>
+					  	<c:if test="${pageVO.curBlock < pageVO.lastBlock}"><li class="page-item"><a class="page-link text-secondary" href="communityMain?pag=${(pageVO.curBlock+1)*pageVO.blockSize+1}&pageSize=${pageVO.pageSize}"><i class="fa-solid fa-angle-right"></i></a></li></c:if>
+					  	<c:if test="${pageVO.pag < pageVO.totPage}"><li class="page-item"><a class="page-link text-secondary" href="communityMain?pag=${pageVO.totPage}&pageSize=${pageVO.pageSize}"><i class="fa-solid fa-angles-right"></i></a></li></c:if>
+					</ul>
+				</div>
+	    		</div>
+		   	</div>
     	</div>
     </div>
-    <!-- 커뉴니티 글 보이기 -->
-    
-    
-    <br/>
-	<div class="text-center">
-		<ul class="pagination justify-content-center">
-		    <c:if test="${pageVO.pag > 1}"><li class="page-item"><a class="page-link text-secondary" href="communityMain?pag=1&pageSize=${pageVO.pageSize}"><i class="fa-solid fa-angles-left"></i></a></li></c:if>
-		  	<c:if test="${pageVO.curBlock > 0}"><li class="page-item"><a class="page-link text-secondary" href="communityMain?pag=${(pageVO.curBlock-1)*pageVO.blockSize+1}&pageSize=${pageVO.pageSize}"><i class="fa-solid fa-angle-left"></i></a></li></c:if>
-		  	<c:forEach var="i" begin="${(pageVO.curBlock*pageVO.blockSize)+1}" end="${(pageVO.curBlock*pageVO.blockSize)+pageVO.blockSize}" varStatus="st">
-			    <c:if test="${i <= pageVO.totPage && i == pageVO.pag}"><li class="page-item active"><a class="page-link bg-secondary border-secondary" href="communityMain?pag=${i}&pageSize=${pageVO.pageSize}">${i}</a></li></c:if>
-			    <c:if test="${i <= pageVO.totPage && i != pageVO.pag}"><li class="page-item"><a class="page-link text-secondary" href="communityMain?pag=${i}&pageSize=${pageVO.pageSize}">${i}</a></li></c:if>
-		  	</c:forEach>
-		  	<c:if test="${pageVO.curBlock < pageVO.lastBlock}"><li class="page-item"><a class="page-link text-secondary" href="communityMain?pag=${(pageVO.curBlock+1)*pageVO.blockSize+1}&pageSize=${pageVO.pageSize}"><i class="fa-solid fa-angle-right"></i></a></li></c:if>
-		  	<c:if test="${pageVO.pag < pageVO.totPage}"><li class="page-item"><a class="page-link text-secondary" href="communityMain?pag=${pageVO.totPage}&pageSize=${pageVO.pageSize}"><i class="fa-solid fa-angles-right"></i></a></li></c:if>
-		</ul>
-	</div>
 </div>
 
-<!-- The Modal -->
+<!-- 글올리기 -->
 <div class="modal fade" id="myModal">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
-    	<div class="f-d mgp-top">
-    		커뮤니티 작성하기
-    	</div>
-      	<div class="f-d pd-1">
-      		<div class="f-d-1">
-      			<img src="${ctp}/data/member/${memVO.profile}" width="90px" height="90px;">
-      		</div>
-      		<div class="f-d-9">
-      			<textarea rows="4" style="width: 100%" name="content" id="content" placeholder="즐거운 일상을 공유해봐요"></textarea>
-	      		<div class="f-d">
-	      			<div id='att_zone'></div>
+    	<form name="communityForm" method="post" enctype="multipart/form-data">
+	    	<div class="f-d mgp-top">
+	    		<div class="pl-2">커뮤니티 작성하기</div>
+	    		<div style="color: #aaa; margin-left: auto; margin-right: 15px;">-이미지 최대 4개</div>
+	    	</div>
+	      	<div class="f-d pd-1">
+	      		<div class="f-d-1">
+	      			<img src="${ctp}/data/member/${memVO.profile}" width="90px" height="90px" style="border-radius: 100%" >
 	      		</div>
-      		</div>
-      		<div><input type="file" name="imgs" id="imgs" multiple /></div>
-      	</div>
+	      		<div class="f-d-9 f-a f-b-ddd">
+	      			<div style="width: 100%">
+	      				<div class="f-d">
+		      				<textarea rows="5" style="width: 100%" name="content" required id="content" maxlength="140" placeholder="즐거운 일상을 공유해보세요"></textarea>
+	      				</div>
+	      			</div>
+		      		<div style="width: 100%;">
+			      		<div class="f-d">
+			      			<div id='att_zone'></div>
+			      		</div>
+		      		</div>
+	      		</div>
+	      	</div>
+	      	<div class="f-d f-b-ddd pl-4">
+		  		<div id="file-btns-div">
+		  			<label for="imgs" class="la-f"><div><i class="fa-solid fa-image"></i>이미지등록</div></label>
+		  			<input type="file" name="imgs" id="imgs" multiple />
+		  		</div>
+		  		<div class="content-cnt">(0/140)</div>
+		  		<div class="content-upload-btn"><a href="javascript:communityUpload()" >게시하기</a></div>
+	      	</div>
+	      	<input type="hidden" name="mid" id="mid" value="${sMid}" />
+      	</form>
+    </div>
+  </div>
+</div>
+
+<!-- 댓글 -->
+<div class="modal fade" id="replyModal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+    	<div class="f-d ">
+	    	<div style="width: 100%;">
+	    		<div class="p-3" style="color: #aaa"><span id="rNickName"></span>(@<span id="rMid"></span><span>)님께 답변</span></div>
+	    		<div class="f-d pd-1">
+		      		<div class="f-d-1">
+		      			<img src="${ctp}/data/member/${memVO.profile}" width="90px" height="90px" style="border-radius: 100%" >
+		      		</div>
+		      		<div class="f-d-9 f-a f-b-ddd">
+		      			<div style="width: 100%">
+		      				<div class="f-d">
+			      				<textarea rows="5" style="width: 100%" name="rContent" required id="rContent" maxlength="140" placeholder="답글 게시하기"></textarea>
+		      				</div>
+		      			</div>
+		      		</div>
+		      	</div>
+	      		<div class="f-d f-b-ddd pl-4">
+			  		<div class="content-reply-cnt">(0/140)</div>
+			  		<div class="content-upload-btn"><a href="javascript:replyUpload()" >게시하기</a></div>
+		      	</div>
+		      	<input type="hidden" id="rIdx" name="rIdx" />
+	    	</div>
+    	</div>
     </div>
   </div>
 </div>
@@ -371,26 +723,6 @@
     		$("#att_zone").show();
     	}
     };
-/*     
- 	// 새로운 파일이 추가될 때마다 imgs.files 업데이트
-    updateImgFiles = function () {
-    	 var dt = new DataTransfer();
-    	  for (var f in sel_files) {
-    	    var file = sel_files[f];
-    	    dt.items.add(file);
-    	  }
-    	  imgs.files = dt.files;
-    	  
-    	  var inputElement = document.getElementById(btn);
-
-          if (sel_files.length >= maxFileCnt) {
-              inputElement.disabled = true;
-          } else {
-              inputElement.disabled = false;
-          }
-    	  
-    };
-     */
   }
 )('att_zone', 'imgs')
 

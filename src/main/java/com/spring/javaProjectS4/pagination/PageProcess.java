@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.spring.javaProjectS4.dao.AdminDAO;
 import com.spring.javaProjectS4.dao.BoardDAO;
+import com.spring.javaProjectS4.dao.CommunityDAO;
 import com.spring.javaProjectS4.dao.MemberDAO;
 import com.spring.javaProjectS4.dao.UsedDAO;
 
@@ -21,6 +22,9 @@ public class PageProcess {
 	
 	@Autowired
 	UsedDAO usedDAO;
+	
+	@Autowired
+	CommunityDAO communityDAO;
 	
 	// section = 게시판, 자료실 현재 글 위치
 	// part = ex)자료실 안에 들어있는 카테고리
@@ -121,6 +125,11 @@ public class PageProcess {
 		if(section.equals("usedReport")) {
 			if(part.equals("")) {
 				totRecCnt = adminDAO.getUsedReportRecCnt();
+			}
+		}
+		if(section.equals("community")) {
+			if(part.equals("")) {
+				totRecCnt = communityDAO.getCommunityRecCnt();
 			}
 		}
 		

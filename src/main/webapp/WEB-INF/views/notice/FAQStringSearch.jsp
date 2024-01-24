@@ -164,11 +164,24 @@
     	
 		// 1:1 문의하기 화면 띄우기
     	function askInputOpen(){
-    		let url = "${ctp}/ask/askInput";
-        	let winName = "1:1 문의하기";
-        	let opt = "width=600px, height=850px, top=100px, left=500px " 
-        	
-       		childWindow = window.open(url,winName,opt)
+    		let mid = '${sMid}';
+    		
+			if(mid == ""){
+				alert("로그인 후 이용 가능한 서비스 입니다.");
+				location.href="${ctp}/member/login"
+			}
+			else{
+	    		let url = "${ctp}/ask/askInput";
+	        	let winName = "1:1 문의하기";
+	        	let opt = "width=600px, height=850px, top=100px, left=500px " 
+	        	
+	       		childWindow = window.open(url,winName,opt)
+			}
+			
+    	}
+    	
+    	function eventBtn(){
+    		alert("현재 이벤트 준비중 입니다.")
     	}
     </script>
 </head>
@@ -190,7 +203,7 @@
 		</div>
 		<div id="ul-li-container">
 			<ul>
-				<a href="${ctp}/board/noticeList"><li class="notice-list-li">공지사항</li></a><a href=""><li class="event-li">이벤트</li></a><a href="${ctp}/board/FAQList"><li class="FAQ-li">자주하는 질문</li></a>
+				<a href="${ctp}/board/noticeList"><li class="notice-list-li">공지사항</li></a><a href="javascript:eventBtn()"><li class="event-li">이벤트</li></a><a href="${ctp}/board/FAQList"><li class="FAQ-li">자주하는 질문</li></a>
 			</ul>
 		</div>
 		<div>

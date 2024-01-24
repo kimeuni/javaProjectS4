@@ -4,4 +4,21 @@
 	<select id="getMemberMid" resultType="com.spring.javaProjectS4.vo.MemberVO">
 		select * from memberS where mid = #{mid};
 	</select>
+	<select id="getCommunityRecCnt" resultType="int">
+		select count(*) from communityS where userDel = 'N';
+	</select>
+	<select id="getCommunityList" resultType="com.spring.javaProjectS4.vo.CommunityVO">
+		select *,(select profile from memberS mem where comu.mid = mem.mid ) as profile,
+		(select nickName from memberS mem where comu.mid = mem.mid ) as nickName,
+		(select count(*) from goodS gds where gds.part = 'community' and gds.partIdx = comu.idx and gds.goodMid = #{sMid} ) as midGoodCheck,
+		(select count(*) from goods gds where gds.part = 'community' and gds.partIdx = comu.idx) as goodCnt,
+		(select count(*) from replyS rps where rps.part = 'community' and rps.partIdx = comu.idx ) as replyCnt,
+		(select count(*) from bookmarkS bms where bms.part = 'community' and bms.partIdx = comu.idx and bms.bookmarkMid = #{sMid} ) as midBookmarkCheck,
+		(select count(*) from bookmarkS bms where bms.part = 'community' and bms.partIdx = comu.idx ) as bookmarkCnt
+		from communityS comu where userDel = 'N' order by idx desc limit #{startIndexNo},#{pageSize};
+	</select>
+	
+	<insert id="setCommunityInput">
+		insert into communityS values (default,#{mid},#{content},#{imgsStr},default,#{region},default);
+	</insert>
 </mapper>

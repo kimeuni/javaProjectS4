@@ -531,6 +531,7 @@
           }
         }
         
+        // 재배치
         dt = new DataTransfer();
         for(f in sel_files) {
           var file = sel_files[f];
@@ -552,7 +553,7 @@
       
       return div
     }
- // 새로운 파일이 추가될 때만 imgs.files 업데이트
+    // 새로운 파일이 추가될 때만 imgs.files 업데이트
     updateImgFiles = function () {
         var dt = new DataTransfer();
         for (var f in sel_files) {

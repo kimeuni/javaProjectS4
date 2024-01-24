@@ -74,6 +74,14 @@ public class MessageController {
 			model.addAttribute("msg", "상품 등록에 실패하였습니다.");
 			model.addAttribute("url","used/usedInput");
 		}
+		else if(msgFalg.equals("communityInputY")) {
+			model.addAttribute("msg", "글이 등록되었습니다.");
+			model.addAttribute("url","community/communityMain");
+		}
+		else if(msgFalg.equals("communityInputN")) {
+			model.addAttribute("msg", "글이 등록에 실패하였습니다.");
+			model.addAttribute("url","community/communityMain");
+		}
 		return "include/message";
 	}
 }
