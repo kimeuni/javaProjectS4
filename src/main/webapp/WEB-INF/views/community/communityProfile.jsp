@@ -447,7 +447,7 @@
     					else if(res == "2") alert("댓글 게시에 실패하였습니다.");
     				},
     				error : function(){
-    					alert("전송오류(communityMain.jsp)")
+    					alert("전송오류(communityProfile.jsp)")
     				}
     			});
     		}
@@ -479,7 +479,7 @@
 	    				else if(res == "2") alert("좋아요 실패");
 	    			},
 	    			error : function(){
-	    				alert("전송오류(communityMain.jsp)")
+	    				alert("전송오류(communityProfile.jsp)")
 	    			}
 	    		});
     		}
@@ -510,7 +510,7 @@
 	    				else if(res == "2") alert("좋아요 실패");
 	    			},
 	    			error : function(){
-	    				alert("전송오류(communityMain.jsp)")
+	    				alert("전송오류(communityProfile.jsp)")
 	    			}
 	    		});
     		}
@@ -541,7 +541,7 @@
 	    				else if(res == "2") alert("북마크 실패");
 	    			},
 	    			error : function(){
-	    				alert("전송오류(communityMain.jsp)")
+	    				alert("전송오류(communityProfile.jsp)")
 	    			}
 	    		});
     		}
@@ -572,7 +572,7 @@
 	    				else if(res == "2") alert("북마크 해제 실패");
 	    			},
 	    			error : function(){
-	    				alert("전송오류(communityMain.jsp)")
+	    				alert("전송오류(communityProfile.jsp)")
 	    			}
 	    		});
     		}
@@ -596,7 +596,7 @@
     					else if(res == "2") alert("게시글 삭제에 실패하였습니다.");
     				},
     				error : function(){
-    					alert("전송오류(communityMain.jsp)")
+    					alert("전송오류(communityProfile.jsp)")
     				}
     			});
     		}
@@ -650,23 +650,6 @@
 <body>
 <jsp:include page="/WEB-INF/views/include/header.jsp" />
 <div id="community-main-container">
-    <div id="community-main-img-container">
-    	<div id="community-main-img-text-div">
-    		<div id="community-text-left">
-    			<div id="community-text-div">
-	    			당신의 즐거운<br/> 일상을 공유
-    			</div>
-    			<div id="community-usedinput-btn">
-    				<c:if test="${sMid != null }">
-	    				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">글 올리기</button>
-	    			</c:if>
-   				</div>
-    		</div>
-    		<div id="community-img-right">
-    			<img src="${ctp}/data/images/다모아_커뮤니티.png" width="100%" height="315px" />
-    		</div>
-    	</div>
-    </div>
     <!-- 커뉴니티 글 보이기 -->
     <div id="community-list-container">
     	<div class="f-d">
@@ -674,7 +657,7 @@
 	    		<div style="width: 100%">
 		    		<div class="main-home-btn"><a href="${ctp}/community/communityMain"><i class="fa-solid fa-house"></i>&nbsp;&nbsp; 홈으로</a></div>
 		    		<hr/>
-		    		<div class="profile-go-btn"><a href="${ctp}/community/communityProfile?mid=${sMid}"><i class="fa-solid fa-user"></i>&nbsp;&nbsp; 프로필</a></div>
+		    		<div class="profile-go-btn"><a href=""><i class="fa-solid fa-user"></i>&nbsp;&nbsp; 프로필</a></div>
 		    		<hr/>
 		    		<div class="bookmark-go-btn"><a href=""><i class="fa-solid fa-bookmark"></i>&nbsp;&nbsp; 북마크</a></div>
 		    		<hr/>
@@ -686,14 +669,7 @@
 	    	<div class="f-d-8" >
 	    		<div style="width: 100%">
     				<div class="f-d f-sc">
-    					<c:if test="${sMid != null }">
-	    					<div class="f-d-3-menu checked-yes">전체</div>
-	    					<div class="f-d-3-menu checked-no">지역</div>
-	    					<div class="f-d-3-menu checked-no">팔로우</div>
-    					</c:if>
-    					<c:if test="${sMid == null }">
-	    					<div class="f-d-menu checked-yes">전체</div>
-    					</c:if>
+    					<div class="f-d-menu checked-yes">전체</div>
     				</div>
 		    		<c:forEach var="comVO" items="${comVOS }">
 		    			<c:set var="img" value="${comVO.imgs.split('/')}" />
@@ -719,7 +695,7 @@
 		    			<div class="f-d btb pd comu-content">
 		    				<div class="f-d-1-img profile-img">
 		    					<div>
-				    				<a href="${ctp}/community/communityProfile?mid=${comVO.mid}"><img src="${ctp}/data/member/${comVO.profile}" ></a>
+				    				<a href=""><img src="${ctp}/data/member/${comVO.profile}" ></a>
 		    					</div>
 		    				</div>
 		    				<div class="f-d-9 pd-i">
@@ -803,14 +779,14 @@
 			    <br/>
 				<div class="text-center">
 					<ul class="pagination justify-content-center">
-					    <c:if test="${pageVO.pag > 1}"><li class="page-item"><a class="page-link text-secondary" href="communityMain?pag=1&pageSize=${pageVO.pageSize}"><i class="fa-solid fa-angles-left"></i></a></li></c:if>
-					  	<c:if test="${pageVO.curBlock > 0}"><li class="page-item"><a class="page-link text-secondary" href="communityMain?pag=${(pageVO.curBlock-1)*pageVO.blockSize+1}&pageSize=${pageVO.pageSize}"><i class="fa-solid fa-angle-left"></i></a></li></c:if>
+					    <c:if test="${pageVO.pag > 1}"><li class="page-item"><a class="page-link text-secondary" href="communityProfile?pag=1&pageSize=${pageVO.pageSize}&mid=${mid}"><i class="fa-solid fa-angles-left"></i></a></li></c:if>
+					  	<c:if test="${pageVO.curBlock > 0}"><li class="page-item"><a class="page-link text-secondary" href="communityProfile?pag=${(pageVO.curBlock-1)*pageVO.blockSize+1}&pageSize=${pageVO.pageSize}&mid=${mid}"><i class="fa-solid fa-angle-left"></i></a></li></c:if>
 					  	<c:forEach var="i" begin="${(pageVO.curBlock*pageVO.blockSize)+1}" end="${(pageVO.curBlock*pageVO.blockSize)+pageVO.blockSize}" varStatus="st">
-						    <c:if test="${i <= pageVO.totPage && i == pageVO.pag}"><li class="page-item active"><a class="page-link bg-secondary border-secondary" href="communityMain?pag=${i}&pageSize=${pageVO.pageSize}">${i}</a></li></c:if>
-						    <c:if test="${i <= pageVO.totPage && i != pageVO.pag}"><li class="page-item"><a class="page-link text-secondary" href="communityMain?pag=${i}&pageSize=${pageVO.pageSize}">${i}</a></li></c:if>
+						    <c:if test="${i <= pageVO.totPage && i == pageVO.pag}"><li class="page-item active"><a class="page-link bg-secondary border-secondary" href="communityProfile?pag=${i}&pageSize=${pageVO.pageSize}&mid=${mid}">${i}</a></li></c:if>
+						    <c:if test="${i <= pageVO.totPage && i != pageVO.pag}"><li class="page-item"><a class="page-link text-secondary" href="communityProfile?pag=${i}&pageSize=${pageVO.pageSize}&mid=${mid}">${i}</a></li></c:if>
 					  	</c:forEach>
-					  	<c:if test="${pageVO.curBlock < pageVO.lastBlock}"><li class="page-item"><a class="page-link text-secondary" href="communityMain?pag=${(pageVO.curBlock+1)*pageVO.blockSize+1}&pageSize=${pageVO.pageSize}"><i class="fa-solid fa-angle-right"></i></a></li></c:if>
-					  	<c:if test="${pageVO.pag < pageVO.totPage}"><li class="page-item"><a class="page-link text-secondary" href="communityMain?pag=${pageVO.totPage}&pageSize=${pageVO.pageSize}"><i class="fa-solid fa-angles-right"></i></a></li></c:if>
+					  	<c:if test="${pageVO.curBlock < pageVO.lastBlock}"><li class="page-item"><a class="page-link text-secondary" href="communityProfile?pag=${(pageVO.curBlock+1)*pageVO.blockSize+1}&pageSize=${pageVO.pageSize}&mid=${mid}"><i class="fa-solid fa-angle-right"></i></a></li></c:if>
+					  	<c:if test="${pageVO.pag < pageVO.totPage}"><li class="page-item"><a class="page-link text-secondary" href="communityProfile?pag=${pageVO.totPage}&pageSize=${pageVO.pageSize}&mid=${mid}"><i class="fa-solid fa-angles-right"></i></a></li></c:if>
 					</ul>
 				</div>
 	    		</div>

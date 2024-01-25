@@ -132,6 +132,11 @@ public class PageProcess {
 				totRecCnt = communityDAO.getCommunityRecCnt();
 			}
 		}
+		if(section.equals("communityProfile")) {
+			if(part.equals("")) {
+				totRecCnt = communityDAO.getCommunityMidRecCnt(searchString);
+			}
+		}
 		
 		int totPage = (totRecCnt % pageSize)==0 ? (totRecCnt / pageSize) : (totRecCnt / pageSize) + 1;
 		int startIndexNo = (pag - 1) * pageSize;

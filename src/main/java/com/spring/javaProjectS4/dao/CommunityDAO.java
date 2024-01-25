@@ -50,5 +50,9 @@ public interface CommunityDAO {
 
 	public int communityReportInput(@Param("idx") int idx,@Param("mid") String mid,@Param("sMid") String sMid,@Param("reason") String reason,@Param("part") String part);
 
+	public List<CommunityVO> getCommunityMidList(@Param("mid") String mid,@Param("sMid") String sMid,@Param("startIndexNo") int startIndexNo,@Param("pageSize") int pageSize);
+
+	public int getCommunityMidRecCnt(@Param("searchString") String searchString);
+
 
 }

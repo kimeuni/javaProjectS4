@@ -195,5 +195,10 @@ public class CommunityServiceImpl implements CommunityService {
 		return communityDAO.communityReportInput( idx, mid, sMid, reason, part);
 	}
 
+	@Override
+	public List<CommunityVO> getCommunityMidList(String mid, String sMid, int startIndexNo, int pageSize) {
+		return communityDAO.getCommunityMidList( mid,sMid,startIndexNo,pageSize);
+	}
+
 	
 }

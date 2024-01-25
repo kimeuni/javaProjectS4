@@ -64,8 +64,8 @@ public class CommunityController {
 	// 커뮤니티 글 등록처리
 	@RequestMapping(value = "/communityMain",method = RequestMethod.POST)
 	public String communityMainPost(MultipartHttpServletRequest imgs,
-			@RequestParam(name="mid",defaultValue = "",required = false)String mid,
-			@RequestParam(name="content",defaultValue = "",required = false)String content
+			@RequestParam(name="mid",defaultValue = "",required = false) String mid,
+			@RequestParam(name="content",defaultValue = "",required = false) String content
 			) {
 		// 지역 찾기 (서울/충남/충북 등..)
 		MemberVO mVO = communityService.getMemberMid(mid);
@@ -89,7 +89,7 @@ public class CommunityController {
 	// 좋아요 하기 및 취소
 	@ResponseBody
 	@RequestMapping(value = "/communityGood", method = RequestMethod.POST)
-	public String communityGoodPost(@RequestParam(name="idx",defaultValue = "",required = false)int idx,
+	public String communityGoodPost(@RequestParam(name="idx",defaultValue = "",required = false) int idx,
 			String mid, String flag, String part
 			) {
 		int res = 0;
@@ -109,7 +109,7 @@ public class CommunityController {
 	// 북마크 하기 및 취소
 	@ResponseBody
 	@RequestMapping(value = "/communityBookmark", method = RequestMethod.POST)
-	public String communityBookmarkPost(@RequestParam(name="idx",defaultValue = "",required = false)int idx,
+	public String communityBookmarkPost(@RequestParam(name="idx",defaultValue = "",required = false) int idx,
 			String mid, String flag, String part
 			) {
 		int res = 0;
@@ -129,7 +129,7 @@ public class CommunityController {
 	// 커뮤니티 댓글 달기
 	@ResponseBody
 	@RequestMapping(value = "/communityReplyInput", method = RequestMethod.POST)
-	public String communityReplyInputPost(@RequestParam(name="idx",defaultValue = "",required = false)int idx,
+	public String communityReplyInputPost(@RequestParam(name="idx",defaultValue = "",required = false) int idx,
 			String mid, String content) {
 		
 		content = content.replace("<", "&lt;");
@@ -144,7 +144,7 @@ public class CommunityController {
 	// 커뮤니티 글 삭제
 	@ResponseBody
 	@RequestMapping(value = "/communityDel", method = RequestMethod.POST)
-	public String communityDelPost(@RequestParam(name="idx",defaultValue = "",required = false)int idx) {
+	public String communityDelPost(@RequestParam(name="idx",defaultValue = "",required = false) int idx) {
 		CommunityVO comVO = communityService.getCommunityIdx(idx);
 		
 		// 댓글 삭제
@@ -166,9 +166,9 @@ public class CommunityController {
 	// 커뮤니티 상세보기 들어가기
 	@RequestMapping(value = "/communityContent", method = RequestMethod.GET)
 	public String communityContentGet(Model model,HttpSession session,
-			@RequestParam(name="idx",defaultValue = "",required = false)int idx,
-			@RequestParam(name="pag",defaultValue = "",required = false)int pag,
-			@RequestParam(name="pageSize",defaultValue = "",required = false)int pageSize
+			@RequestParam(name="idx",defaultValue = "",required = false) int idx,
+			@RequestParam(name="pag",defaultValue = "",required = false) int pag,
+			@RequestParam(name="pageSize",defaultValue = "",required = false) int pageSize
 			) {
 		// 로그인한 사람의 아이디로 계정 정보 가져오기
 		String sMid = session.getAttribute("sMid")== null ? "" : (String)session.getAttribute("sMid");
@@ -196,7 +196,7 @@ public class CommunityController {
 	// 커뮤니티 상세보기 - 댓글 삭제 처리
 	@ResponseBody
 	@RequestMapping(value = "/communityReplyDel", method = RequestMethod.POST)
-	public String communityReplyDelPost(@RequestParam(name="idx",defaultValue = "",required = false)int idx) {
+	public String communityReplyDelPost(@RequestParam(name="idx",defaultValue = "",required = false) int idx) {
 		
 		int res = communityService.setCommunityReplyDel(idx);
 		
@@ -209,8 +209,8 @@ public class CommunityController {
 	@ResponseBody
 	@RequestMapping(value = "/communityRerplyInput",method = RequestMethod.POST)
 	public String communityRerplyInputPost(
-			@RequestParam(name="comuIdx",defaultValue = "",required = false)int comuIdx,
-			@RequestParam(name="reIdx",defaultValue = "",required = false)int reIdx,
+			@RequestParam(name="comuIdx",defaultValue = "",required = false) int comuIdx,
+			@RequestParam(name="reIdx",defaultValue = "",required = false) int reIdx,
 			String mid, String content
 			) {
 		
@@ -227,7 +227,7 @@ public class CommunityController {
 	// 커뮤니티 글 신고
 	@ResponseBody
 	@RequestMapping(value = "/communityContentReport", method = RequestMethod.POST)
-	public String communityContentReportPost(@RequestParam(name="idx",defaultValue = "",required = false)int idx,
+	public String communityContentReportPost(@RequestParam(name="idx",defaultValue = "",required = false) int idx,
 			String mid, String sMid, String reason
 			) {
 		
@@ -235,5 +235,31 @@ public class CommunityController {
 		
 		if(res != 0 ) return "1";
 		else return "2";
+	}
+	
+	// 커뮤니티 프로필
+	@RequestMapping(value = "/communityProfile", method = RequestMethod.GET)
+	public String communityProfileGet(Model model, String mid,HttpSession session,
+			@RequestParam(name="pag",defaultValue = "1",required = false) int pag,
+			@RequestParam(name="pageSize",defaultValue = "2",required = false) int pageSize
+			) {
+		// 로그인한 사람의 아이디로 계정 정보 가져오기
+		String sMid = session.getAttribute("sMid")== null ? "" : (String)session.getAttribute("sMid");
+		MemberVO memVO = communityService.getMemberMid(sMid);
+		
+		// 해당 멤버 정보
+		
+		// 해당 멤버가 적은 글 리스트 목록
+		PageVO pageVO = pageProcess.totRecCnt(pag, pageSize, "communityProfile", "", mid);
+		System.out.println(pageVO);
+		List<CommunityVO> comVOS = communityService.getCommunityMidList(mid,sMid,pageVO.getStartIndexNo(),pageSize);
+		System.out.println(comVOS);
+		
+		
+		model.addAttribute("mid",mid);
+		model.addAttribute("memVO",memVO);
+		model.addAttribute("comVOS",comVOS);
+		model.addAttribute("pageVO",pageVO);
+		return "community/communityProfile";
 	}
 }

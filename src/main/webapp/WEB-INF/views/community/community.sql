@@ -15,6 +15,17 @@ create table communityS(
 
 drop table communityS;
 
+select *,timestampdiff(second,cDate,now()) as second_diff,
+		timestampdiff(minute,cDate,now()) as minute_diff,
+		timestampdiff(hour,cDate,now()) as hour_diff,
+		(select profile from memberS mem where comu.mid = mem.mid ) as profile,
+		(select nickName from memberS mem where comu.mid = mem.mid ) as nickName,
+		(select count(*) from goodS gds where gds.part = 'community' and gds.partIdx = comu.idx and gds.goodMid = 'muni12' ) as midGoodCheck,
+		(select count(*) from goods gds where gds.part = 'community' and gds.partIdx = comu.idx and gds.userDel = 'N') as goodCnt,
+		(select count(*) from replyS rps where rps.part = 'community' and rps.partIdx = comu.idx and rps.userDel = 'N') as replyCnt,
+		(select count(*) from bookmarkS bms where bms.part = 'community' and bms.partIdx = comu.idx and bms.bookmarkMid = 'muni12' ) as midBookmarkCheck,
+		(select count(*) from bookmarkS bms where bms.part = 'community' and bms.partIdx = comu.idx and bms.userDel = 'N') as bookmarkCnt
+		from communityS comu where userDel = 'N' and comu.mid = 'admin' order by idx desc ;
 
 -- 좋아요
 create table goodS(

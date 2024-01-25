@@ -49,5 +49,7 @@ public interface CommunityService {
 
 	public int communityReportInput(int idx, String mid, String sMid, String reason, String part);
 
+	public List<CommunityVO> getCommunityMidList(String mid, String sMid, int startIndexNo, int pageSize);
+
 
 }
