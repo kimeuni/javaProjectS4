@@ -47,8 +47,19 @@ create table replyS(
 	mid varchar(17) not null,
 	content varchar(141) not null,
 	rDate datetime default now(),
-	parentsReplyIdx int,
+	parentsReplyIdx int default 0,
 	userDel char(1) default 'N',
 	
 	foreign key (mid) references memberS (mid)
+);
+
+-- 커뮤니티 글,댓글 신고 리스트
+create table communityReportS(
+	idx int not null auto_increment primary key,	/* 고유번호 */
+	part varchar(10) not null,						/* 신고된 곳 (community/reply) */
+	partIdx int not null,							/* 신고된 게시글 idx */
+	mid varchar(17) not null,						/* 신고된 게시글 작성자 */
+	reportMid varchar(17) not null,					/* 신고자 */
+	rDate datetime default now(),					/* 신고날 */
+	reason varchar(30) not null						/* 신고 이유 */
 );

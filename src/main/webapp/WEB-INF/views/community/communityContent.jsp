@@ -6,7 +6,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>커뮤니티</title>
+    <title>커뮤니티 | ${comVO.content}</title>
     <jsp:include page="/WEB-INF/views/include/bs4.jsp" />
     <style>
     	#community-main-container{
@@ -169,7 +169,7 @@
 			padding-bottom: 10px;
 			padding-top: 10px;
 			padding-left: 30px;
-			padding-right: 30px;
+			padding-right: 10px;
 		}
 		.heit{
 			height: 300px;
@@ -207,13 +207,6 @@
 			justify-content: center;
 			font-size: 1.5em;
 			line-height: 60px;
-			border-left: 1px solid #ddd;
-		}
-		.checked-yes{
-			background-color: #fff;
-		}
-		.checked-no{
-			background-color: #eee;
 		}
 		.f-d-3{
 			height: 25px;
@@ -309,8 +302,8 @@
 		.ul-report-del-btn:hover .inner-li-report-del-btn{
 			display: block;
 		}
-		.comu-content:hover{
-			background-color: #eee;
+		.comu-content{
+			flex-wrap: wrap;
 		}
 		.comu-content-inner{
 			width: 100%;
@@ -330,6 +323,31 @@
 		}
 		.replyhover button:hover {
 			color : green;
+		}
+		.comu-main-go{
+			justify-content: flex-start;
+		}
+		.comu-main-go a{
+			display: flex;
+			width: 50px;
+			font-size: 1.6em;
+			height: 40px;
+			justify-content: center;
+			text-decoration: none;
+			color: #000;
+			padding-left: 20px;
+			margin-top: 10px;
+		}
+		.bt-1{
+			border-top: 1px solid #ddd;
+		}
+		#loginNoReply{
+			resize: none;
+			outline: none;
+		}
+		#replyContent{
+			resize: none;
+			outline: none;
 		}
 		.select-report-community {
 			text-align: center;
@@ -361,6 +379,7 @@
     	});
     	
     	let str = '';
+    	
     	// 글자 길이 체크
     	$(function() {
     		$("#content").on("keyup",function() {
@@ -377,15 +396,15 @@
     	});
     	// 댓글 글자 길이 체크
     	$(function() {
-    		$("#rContent").on("keyup",function() {
-	    		let content = $("#rContent").val();
+    		$("#replyContent").on("keyup",function() {
+	    		let content = $("#replyContent").val();
     			str = '('+ content.length +'/140)';
     			$(".content-reply-cnt").html(str);
     			
     			if(content.length > 140){
 	    			$(".content-reply-cnt").html("(140/140)");
     				alert("내용은 140글자까지 가능합니다.")
-    				$("#rContent").val(content.substring(0,140));
+    				$("#replyContent").val(content.substring(0,140));
     			}
     		});
     	});
@@ -406,33 +425,14 @@
     		}
     	}
     	
-    	// 댓글 모달에 값 넘기기
-    	function modalView(nickName, mid,idx,content,img){
-    		
-    		console.log(nickName);
-    		console.log(mid);
-    		console.log(idx);
-    		console.log(content);
-    		console.log(img);
-    		
-    		$("#rMid").html(mid);
-    		$("#rNickName").html(nickName);
-    		$("#rContentM").html(content);
-    		$("#rIdx").val(idx);
-    		$("#imgSrc").attr("src","${ctp}/data/member/"+img);
-    		
-
-    	}
-    	
     	// 댓글 업로드
-    	function replyUpload(){
-    		let content = $("#rContent").val();
-    		let idx = $("#rIdx").val();
+    	function replyUpload(idx){
+    		let content = $("#replyContent").val();
     		let mid = "${sMid}";
     		
     		if(content.trim() == ""){
     			alert("댓글을 입력해주세요.");
-    			$("#rContent").focus();
+    			$("#replyContent").focus();
     		}
     		else {
     			let query = {
@@ -460,12 +460,11 @@
     		let mid = '${sMid}';
     		let part = 'community';
 
-    		
     		if(mid.trim() == ""){
     			alert("로그인 후 이용 가능한 서비스 입니다.");
     			location.href="${ctp}/member/login"
     		}
-    		else{
+    		else {
 	    		let query = {
 	    			idx : idx,
 	    			mid : mid,
@@ -496,7 +495,7 @@
     			alert("로그인 후 이용 가능한 서비스 입니다.");
     			location.href="${ctp}/member/login"
     		}
-    		else{
+    		else {
 	    		let query = {
 	    			idx : idx,
 	    			mid : mid,
@@ -527,7 +526,7 @@
     			alert("로그인 후 이용 가능한 서비스 입니다.");
     			location.href="${ctp}/member/login"
     		}
-    		else{
+    		else {
 	    		let query = {
 	    			idx : idx,
 	    			mid : mid,
@@ -558,7 +557,7 @@
     			alert("로그인 후 이용 가능한 서비스 입니다.");
     			location.href="${ctp}/member/login"
     		}
-    		else{
+    		else {
 	    		let query = {
 	    			idx : idx,
 	    			mid : mid,
@@ -580,11 +579,6 @@
     		}
     	}
     	
-    	// 해당 게시글 상세보기 화면 이동
-    	function comuContentInnerGo(pag,pageSize,idx){
-    		location.href="${ctp}/used/usedMain"
-    	}
-    	
     	// 글 삭제
     	function cDelBtn(idx){
     		let ans = confirm("해당 글을 삭제하시겠습니까?");
@@ -594,27 +588,102 @@
     				type : "post",
     				data : {idx : idx},
     				success : function(res){
-    					if(res == "1") location.reload();
+    					if(res == "1") location.href="${ctp}/community/communityMain";
     					else if(res == "2") alert("게시글 삭제에 실패하였습니다.");
     				},
     				error : function(){
-    					alert("전송오류(communityMain.jsp)")
+    					alert("전송오류(communityMain.jsp)");
     				}
     			});
     		}
     	}
     	
-    	// 게시글 신고 모달창 값 전달
+    	function replyFocus(){
+    		$("#replyContent").focus();
+    	}
+    	
+    	// 댓글 대댓글 삭제
+    	function replyDel(idx){
+    		let ans = confirm("해당 댓글을 삭제하시겠습니까?");
+    		
+    		if(ans){
+	    		$.ajax({
+	    			url : "${ctp}/community/communityReplyDel",
+	    			type : "post",
+	    			data : {idx : idx},
+	    			success : function(res){
+	    				if(res == "1") location.reload();
+						else if(res == "2") alert("댓글 삭제에 실패하였습니다.");
+	    			},
+	    			error : function(){
+	    				alert("전송오류(communityContent.jsp)");
+	    			}
+	    		});
+    		}
+    	}
+    	
+    	$(function(){
+        	$(".replyCloseBtn").hide();
+        });
+        
+        // 대댓글 박스 보여주기
+        function replyShow(idx) {
+        	$("#replyShowBtn"+idx).hide();
+        	$("#replyCloseBtn"+idx).show();
+        	$("#replyDemo"+idx).slideDown(100);
+        }
+        
+        // 대댓글 박스 감추기
+        function replyClose(idx) {
+        	$("#replyShowBtn"+idx).show();
+        	$("#replyCloseBtn"+idx).hide();
+        	$("#replyDemo"+idx).slideUp(300);
+        }
+        
+        // 대댓글(부모글의 답변글) 입력처리
+        function replyCheckRe(comuIdx, reIdx, Idx) {
+        	let content = $("#contentRe"+Idx).val();
+        	if(content.trim() == "") {
+        		alert("답변글을 입력하세요!");
+        		$("#contentRe"+Idx).focus();
+        		return false;
+        	}
+        	let query = {
+       			comuIdx : comuIdx,
+       			reIdx : reIdx,
+     			mid	: '${sMid}',
+      			content	: content
+        	}
+        	
+        	$.ajax({
+        		url  : "${ctp}/community/communityRerplyInput",
+        		type : "post",
+        		data : query,
+        		success:function(res) {
+        			if(res == "1") {
+        				location.reload();
+        			}
+        			else {
+        				alert("대댓글 입력에 실패하였습니다.");
+        			}
+        		},
+        		error : function() {
+        			alert("전송오류(communityContent.jsp)");
+        		}
+        	});
+        }
+        
+        // 게시글 신고 모달창 값 전달
         function reportContentModal(idx,mid,nickName){
         	$("#communityReportIdx").val(idx);
         	$("#communityReportMid").val(mid);
         	$(".communityReportMid").html(mid);
         	$("#communityReportNickName").html(nickName);
         }
-
+        
         // 게시글 신고
         function communityReportBtn(){
-        	let idx = $("#communityReportIdx").val();
+        	let idx = $("#communityReportIdx").val(); 
         	let mid = $("#communityReportMid").val();
         	let reason = $("#communityReportSelect").val();
         	let sMid = '${sMid}';
@@ -646,29 +715,13 @@
         			}
         		});
         	}
+        	
         }
     </script>
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/include/header.jsp" />
 <div id="community-main-container">
-    <div id="community-main-img-container">
-    	<div id="community-main-img-text-div">
-    		<div id="community-text-left">
-    			<div id="community-text-div">
-	    			당신의 즐거운<br/> 일상을 공유
-    			</div>
-    			<div id="community-usedinput-btn">
-    				<c:if test="${sMid != null }">
-	    				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">글 올리기</button>
-	    			</c:if>
-   				</div>
-    		</div>
-    		<div id="community-img-right">
-    			<img src="${ctp}/data/images/다모아_커뮤니티.png" width="100%" height="315px" />
-    		</div>
-    	</div>
-    </div>
     <!-- 커뉴니티 글 보이기 -->
     <div id="community-list-container">
     	<div class="f-d">
@@ -688,16 +741,9 @@
 	    	<div class="f-d-8" >
 	    		<div style="width: 100%">
     				<div class="f-d f-sc">
-    					<c:if test="${sMid != null }">
-	    					<div class="f-d-3-menu checked-yes">전체</div>
-	    					<div class="f-d-3-menu checked-no">지역</div>
-	    					<div class="f-d-3-menu checked-no">팔로우</div>
-    					</c:if>
-    					<c:if test="${sMid == null }">
-	    					<div class="f-d-menu checked-yes">전체</div>
-    					</c:if>
+    					<div class="comu-main-go"><a href="${ctp}/community/communityMain?pag=${pag}&pageSize=${pageSize}"><i class="fa-solid fa-angle-left"></i></a></div>
+    					<div class="f-d-menu" style="background-color: #fff">커뮤니티 상세보기</div>
     				</div>
-		    		<c:forEach var="comVO" items="${comVOS }">
 		    			<c:set var="img" value="${comVO.imgs.split('/')}" />
 		    			<div class="f-d">
 	    					<c:if test="${sMid != null }">
@@ -708,6 +754,7 @@
 					    				<ul class="inner-li-report-del-btn">
 					    					<c:if test="${sMid == comVO.mid }">
 						    					<li><a href="javascript:cDelBtn(${comVO.idx })">삭제</a></li>
+						    					<hr/>
 					    					</c:if>
 					    					<c:if test="${sMid != comVO.mid }">
 						    					<li><a href="#" onclick="reportContentModal('${comVO.idx}','${comVO.mid}','${comVO.nickName}')" data-toggle="modal" data-target="#reportContentModal">신고</a></li>
@@ -729,17 +776,13 @@
 		    						<div class="f-d">
 				    					<div class="pr-1">${comVO.nickName }</div>
 				    					<div style="color: #aaa">@${comVO.mid}</div>
-				    					<div style="margin-left: auto;color: gray">
-				    						<c:if test="${comVO.second_diff <= 59}"><div class="inner-flex-end">${comVO.second_diff}초</div></c:if>
-							    			<c:if test="${comVO.second_diff > 59 && comVO.minute_diff <= 59}"><div class="inner-flex-end">${comVO.minute_diff}분</div></c:if>
-							    			<c:if test="${comVO.minute_diff > 59 && comVO.hour_diff <=23}"><div class="inner-flex-end">${comVO.hour_diff}시간</div></c:if>
-							    			<c:if test="${comVO.hour_diff > 23}"><div class="inner-flex-end">${fn:substring(comVO.CDate,0,10)}</div></c:if>
-				    						
+				    					<div style="margin-left: auto">
+				    						${fn:substring(comVO.CDate,0,16)}
 				    					</div>
 		    						</div>
 		    						<div class="f-d pt-2 comu-content-inner">
 		    							<div style="width: 100%">
-			    							<a href="communityContent?idx=${comVO.idx}&pag=${pageVO.pag }&pageSize=${pageVO.pageSize}">${comVO.content }</a>
+			    							${comVO.content }
 		    							</div>
 	    							</div>
 		    						<div class="f-d pt-2 ">
@@ -780,10 +823,10 @@
 		    						</div>
 		    						<div class="f-d mt-2 reply-good-bookmark-btn">
 		    							<c:if test="${sMid == null }">
-			    							<div class="f-d-3 replyhover " style="color: #aaa"><a><i class="fa-regular fa-comment"> ${comVO.replyCnt }</i></a></div>
+			    							<div class="f-d-3 replyhover" style="color: #aaa"><a><i class="fa-regular fa-comment"> ${comVO.replyCnt }</i></a></div>
 		    							</c:if>
 		    							<c:if test="${sMid != null }">
-			    							<div class="f-d-3 replyhover reply-input"><button type="button" data-toggle="modal" data-target="#replyModal" onclick="modalView('${comVO.nickName}','${comVO.mid }','${comVO.idx }','${fn:replace(comVO.content,'<br/>','\\n') }','${comVO.profile }')"><i class="fa-regular fa-comment"></i> ${comVO.replyCnt }</button></div>
+			    							<div class="f-d-3 replyhover reply-input"><button type="button" onclick="replyFocus()"><i class="fa-regular fa-comment"></i> ${comVO.replyCnt }</button></div>
 		    							</c:if>
 		    							<c:if test="${comVO.midGoodCheck == 0 }">
 			    							<div class="f-d-3 goodhover"><a href="javascript:goodYes(${comVO.idx})"><i class="fa-regular fa-heart"></i> ${comVO.goodCnt }</a></div>
@@ -792,29 +835,186 @@
 			    							<div class="f-d-3 goodhover" style="color: pink"><a href="javascript:goodNo(${comVO.idx})"><i class="fa-solid fa-heart"></i> ${comVO.goodCnt }</a></div>
 		    							</c:if>
 		    							<c:if test="${comVO.midBookmarkCheck == 0 }">
-			    							<div class="f-d-3"><a href="javascript:bookmarkYes(${comVO.idx})"><i class="fa-regular fa-bookmark"></i> ${comVO.bookmarkCnt }</a></div>
+			    							<div class="f-d-3 "><a href="javascript:bookmarkYes(${comVO.idx})"><i class="fa-regular fa-bookmark"></i> ${comVO.bookmarkCnt }</a></div>
 		    							</c:if>
 		    							<c:if test="${comVO.midBookmarkCheck == 1 }">
-			    							<div class="f-d-3" style="color: blue"><a href="javascript:bookmarkNo(${comVO.idx})"><i class="fa-solid fa-bookmark"></i> ${comVO.bookmarkCnt }</a></div>
+			    							<div class="f-d-3 " style="color: blue"><a href="javascript:bookmarkNo(${comVO.idx})"><i class="fa-solid fa-bookmark"></i> ${comVO.bookmarkCnt }</a></div>
 		    							</c:if>
 		    						</div>
 		    					</div>
 		    				</div>
+		    				<!-- 댓글 입력 창 -->
+	    					<div style="width: 100%">
+	    						<c:if test="${sMid != null }">
+			    					<div class="f-d bt-1 pt-2 pb-2">
+				    					<div class="f-d-1-img profile-img">
+					    					<div>
+							    				<a href=""><img src="${ctp}/data/member/${memVO.profile}" ></a>
+					    					</div>
+					    				</div>
+					    				<div class="f-d-9 pd-i">
+					    					<div style="width: 100%">
+					    						<div class="f-d">
+							    					<div class="pr-1">${memVO.nickName }</div>
+							    					<div style="color: #aaa">@${memVO.mid}</div>
+					    						</div>
+				    							<div class="pt-2"><textarea rows="3" maxlength="140" style="width: 100%" id="replyContent" placeholder="답글 게시하기"></textarea></div>
+				    							<div class="pr-2">
+				    								<div class="f-d">
+					    								<div class="content-reply-cnt">(0/140)</div>
+					    								<div><a href="javascript:replyUpload(${comVO.idx })">게시하기</a></div>
+				    								</div>
+				    							</div>
+					    					</div>
+					    				</div>
+			    					</div>
+	    						</c:if>
+	    						<c:if test="${sMid == null }">
+			    					<div class="f-d bt-1 pt-3 mt-2">
+				    					<div class="f-d-1-img profile-img">
+					    					<div>
+							    				<img src="${ctp}/data/member/no_img.png" >
+					    					</div>
+					    				</div>
+					    				<div class="f-d-9 pd-i">
+					    					<div style="width: 100%">
+					    						<div class="f-d">
+							    					<div class="pr-1"> 비회원 </div>
+					    						</div>
+				    							<div><a href="${ctp}/member/login"><textarea rows="2" style="width: 100%" id="loginNoReply" readonly placeholder="로그인 후 이용 가능한 서비스 입니다."></textarea></a></div>
+					    					</div>
+					    				</div>
+			    					</div>
+	    						</c:if>
+		    				<!-- 올라온 댓글 보기 -->
+		    				<c:forEach var="reVO" items="${reVOS }">
+		    					<c:if test="${reVO.parentsReplyIdx == 0 }">
+			    					<div class="f-d bt-1 pt-2 pb-2">
+				    					<div class="f-d-1-img profile-img">
+					    					<div>
+							    				<a href=""><img src="${ctp}/data/member/${reVO.profile}" ></a>
+					    					</div>
+					    				</div>
+					    				<div class="f-d-9 pd-i">
+					    					<div style="width: 100%">
+					    						<div class="f-d">
+							    					<div class="pr-1">${reVO.nickName }</div>
+							    					<div style="color: #aaa">@${reVO.mid}</div>
+							    					<c:if test="${sMid != null }">
+								    					<div style="margin-left: auto;" class="pr-1">
+								    						<div class="f-d">
+										    					<c:if test="${sMid == reVO.mid}">
+											    					<div class="pr-3"><a href="javascript:replyDel(${reVO.idx})">삭제</a></div>
+										    					</c:if>
+										    					<div class="pr-3">
+										    						<a href="javascript:replyShow(${reVO.idx})" id="replyShowBtn${reVO.idx}">대댓글</a>
+											    					<a href="javascript:replyClose(${reVO.idx})" id="replyCloseBtn${reVO.idx}" class="replyCloseBtn" >대댓글</a>
+									    						</div>
+									    						<c:if test="${sMid != reVO.mid}">
+										    						<div class="pr-3"><a href="javascript:replyReport(${reVO.idx})">신고</a></div>
+										    					</c:if>
+								    						</div>
+								    					</div>
+							    					</c:if>
+					    						</div>
+					    						<div class="f-d pt-2 comu-content-inner">
+					    							<div style="width: 100%">
+						    							${reVO.content }
+					    							</div>
+				    							</div>
+			    							</div>
+					    				</div>
+			    					</div>
+			    					
+			    					<!-- 대댓글 -->
+			    					<div class="f-d bt-1 pt-2 pb-2 pl-5" id="replyDemo${reVO.idx}" style="display: none;">
+				    					<div class="f-d-1-img profile-img">
+					    					<div>
+							    				<a href=""><img src="${ctp}/data/member/${memVO.profile}" ></a>
+					    					</div>
+					    				</div>
+					    				<div class="f-d-9 pd-i">
+					    					<div style="width: 100%">
+					    						<div class="f-d">
+							    					<div class="pr-1">${memVO.nickName }</div>
+							    					<div style="color: #aaa">@${memVO.mid}</div>
+					    						</div>
+				    							<div class="pt-2"><textarea rows="3" maxlength="140" style="width: 100%" id="contentRe${reVO.idx}" placeholder="답글 게시하기"></textarea></div>
+				    							<div class="pr-2">
+				    								<div class="f-d" style="justify-content: flex-end;">
+					    								<div><a href="javascript:replyCheckRe(${comVO.idx },${reVO.idx},${reVO.idx})">게시하기</a></div>
+				    								</div>
+				    							</div>
+					    					</div>
+					    				</div>
+			    					</div>
+		    					</c:if>
+		    					<c:forEach var="rerVO" items="${rerVOS }">
+		    					<c:if test="${rerVO.parentsReplyIdx == reVO.idx}">
+			    					<div class="f-d bt-1 pt-2 pb-2 pl-5">
+				    					<div class="f-d-1-img profile-img">
+					    					<div>
+							    				<a href=""><img src="${ctp}/data/member/${rerVO.profile}" ></a>
+					    					</div>
+					    				</div>
+					    				<div class="f-d-9 pd-i">
+					    					<div style="width: 100%">
+					    						<div class="f-d">
+							    					<div class="pr-1">${rerVO.nickName }</div>
+							    					<div style="color: #aaa">@${rerVO.mid}</div>
+							    					<c:if test="${sMid != null }">
+								    					<div style="margin-left: auto;" class="pr-1">
+								    						<div class="f-d">
+										    					<c:if test="${sMid == rerVO.mid}">
+											    					<div class="pr-3"><a href="javascript:replyDel(${rerVO.idx})">삭제</a></div>
+										    					</c:if>
+										    					<div class="pr-3">
+											    					<a href="javascript:replyShow(${rerVO.idx})" id="replyShowBtn${rerVO.idx}">대댓글</a>
+											    					<a href="javascript:replyClose(${rerVO.idx})" id="replyCloseBtn${rerVO.idx}" class="replyCloseBtn" >대댓글</a>
+										    					</div>
+										    					<c:if test="${sMid != rerVO.mid}">
+											    					<div class="pr-3"><a href="javascript:replyReport(${rerVO.idx})">신고</a></div>
+										    					</c:if>
+								    						</div>
+								    					</div>
+							    					</c:if>
+					    						</div>
+					    						<div class="f-d pt-2 comu-content-inner">
+					    							<div style="width: 100%">
+						    							${rerVO.content }
+					    							</div>
+				    							</div>
+			    							</div>
+					    				</div>
+			    					</div>
+			    					
+			    					<!-- 대댓글 -->
+			    					<div class="f-d bt-1 pt-2 pb-2 pl-5"  id="replyDemo${rerVO.idx}" style="display: none;">
+				    					<div class="f-d-1-img profile-img">
+					    					<div>
+							    				<a href=""><img src="${ctp}/data/member/${memVO.profile}" ></a>
+					    					</div>
+					    				</div>
+					    				<div class="f-d-9 pd-i">
+					    					<div style="width: 100%">
+					    						<div class="f-d">
+							    					<div class="pr-1">${memVO.nickName }</div>
+							    					<div style="color: #aaa">@${memVO.mid}</div>
+					    						</div>
+				    							<div class="pt-2"><textarea rows="3" maxlength="140" style="width: 100%" id="contentRe${rerVO.idx}" placeholder="답글 게시하기"></textarea></div>
+				    							<div class="pr-2">
+				    								<div class="f-d" style="justify-content: flex-end;">
+					    								<div><a href="javascript:replyCheckRe(${comVO.idx },${rerVO.parentsReplyIdx},${rerVO.idx})">게시하기</a></div>
+				    								</div>
+				    							</div>
+					    					</div>
+					    				</div>
+			    					</div>
+		    					</c:if>
+		    					</c:forEach>
+		    				</c:forEach>
+		    				</div>
 		    			</div>
-		    		</c:forEach>
-			    <br/>
-				<div class="text-center">
-					<ul class="pagination justify-content-center">
-					    <c:if test="${pageVO.pag > 1}"><li class="page-item"><a class="page-link text-secondary" href="communityMain?pag=1&pageSize=${pageVO.pageSize}"><i class="fa-solid fa-angles-left"></i></a></li></c:if>
-					  	<c:if test="${pageVO.curBlock > 0}"><li class="page-item"><a class="page-link text-secondary" href="communityMain?pag=${(pageVO.curBlock-1)*pageVO.blockSize+1}&pageSize=${pageVO.pageSize}"><i class="fa-solid fa-angle-left"></i></a></li></c:if>
-					  	<c:forEach var="i" begin="${(pageVO.curBlock*pageVO.blockSize)+1}" end="${(pageVO.curBlock*pageVO.blockSize)+pageVO.blockSize}" varStatus="st">
-						    <c:if test="${i <= pageVO.totPage && i == pageVO.pag}"><li class="page-item active"><a class="page-link bg-secondary border-secondary" href="communityMain?pag=${i}&pageSize=${pageVO.pageSize}">${i}</a></li></c:if>
-						    <c:if test="${i <= pageVO.totPage && i != pageVO.pag}"><li class="page-item"><a class="page-link text-secondary" href="communityMain?pag=${i}&pageSize=${pageVO.pageSize}">${i}</a></li></c:if>
-					  	</c:forEach>
-					  	<c:if test="${pageVO.curBlock < pageVO.lastBlock}"><li class="page-item"><a class="page-link text-secondary" href="communityMain?pag=${(pageVO.curBlock+1)*pageVO.blockSize+1}&pageSize=${pageVO.pageSize}"><i class="fa-solid fa-angle-right"></i></a></li></c:if>
-					  	<c:if test="${pageVO.pag < pageVO.totPage}"><li class="page-item"><a class="page-link text-secondary" href="communityMain?pag=${pageVO.totPage}&pageSize=${pageVO.pageSize}"><i class="fa-solid fa-angles-right"></i></a></li></c:if>
-					</ul>
-				</div>
 	    		</div>
 		   	</div>
     	</div>
@@ -857,57 +1057,6 @@
 	      	</div>
 	      	<input type="hidden" name="mid" id="mid" value="${sMid}" />
       	</form>
-    </div>
-  </div>
-</div>
-
-<!-- 댓글 -->
-<div class="modal fade" id="replyModal">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-    	<div class="f-d ">
-	    	<div style="width: 100%;">
-	    		<!-- <div class="p-3" style="color: #aaa"><span id="rNickName"></span>(@<span id="rMid"></span><span>)님께 답변</span></div> -->
-	    		<div class="f-d btb pd comu-content">
-		    		<div class="f-d-1-img profile-img">
-	   					<div>
-		    				<a href=""><img id="imgSrc"/></a>
-	   					</div>
-	   				</div>
-	   				<div class="f-d-9 pd-i">
-	   					<div style="width: 100%">
-	   						<div class="f-d">
-		    					<div class="pr-1"><span id="rNickName"></span></div>
-		    					<div style="color: #aaa">@<span id="rMid"></span></div>
-	   						</div>
-	   						<div class="f-d pt-2 comu-content-inner">
-	   							<div style="width: 100%">
-	    							<span id="rContentM"></span>
-	   							</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="pl-3 pt-3">답글 달기</div>
-	    		<div class="f-d pd-1">
-		      		<div class="f-d-1">
-		      			<img src="${ctp}/data/member/${memVO.profile}" width="90px" height="90px" style="border-radius: 100%" >
-		      		</div>
-		      		<div class="f-d-9 f-a f-b-ddd">
-		      			<div style="width: 100%">
-		      				<div class="f-d">
-			      				<textarea rows="5" style="width: 100%" name="rContent" required id="rContent" maxlength="140" placeholder="답글 게시하기"></textarea>
-		      				</div>
-		      			</div>
-		      		</div>
-		      	</div>
-	      		<div class="f-d f-b-ddd pl-4">
-			  		<div class="content-reply-cnt">(0/140)</div>
-			  		<div class="content-upload-btn"><a href="javascript:replyUpload()" >게시하기</a></div>
-		      	</div>
-		      	<input type="hidden" id="rIdx" name="rIdx" />
-	    	</div>
-    	</div>
     </div>
   </div>
 </div>

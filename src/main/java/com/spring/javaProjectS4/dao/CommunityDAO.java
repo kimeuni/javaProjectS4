@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.spring.javaProjectS4.vo.CommunityVO;
 import com.spring.javaProjectS4.vo.MemberVO;
+import com.spring.javaProjectS4.vo.ReplyVO;
 
 public interface CommunityDAO {
 
@@ -36,6 +37,18 @@ public interface CommunityDAO {
 	public void setCommunityGoodAllDel(@Param("part") String part,@Param("idx") int idx);
 
 	public void setCommunityBookmarkDel(@Param("part") String part,@Param("idx") int idx);
+
+	public CommunityVO getCommunityMidIdx(@Param("idx") int idx,@Param("sMid") String sMid);
+
+	public List<ReplyVO> getCommunityIdxReply(@Param("idx") int idx,@Param("sMid") String sMid);
+
+	public List<ReplyVO> getCommunityIdxReRply(@Param("idx") int idx,@Param("sMid") String sMid);
+
+	public int setCommunityReplyDel(@Param("idx") int idx);
+
+	public int setCommunityReRplyInput(@Param("comuIdx") int comuIdx,@Param("reIdx") int reIdx,@Param("mid") String mid,@Param("content") String content);
+
+	public int communityReportInput(@Param("idx") int idx,@Param("mid") String mid,@Param("sMid") String sMid,@Param("reason") String reason,@Param("part") String part);
 
 
 }

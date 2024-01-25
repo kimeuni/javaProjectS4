@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.spring.javaProjectS4.dao.CommunityDAO;
 import com.spring.javaProjectS4.vo.CommunityVO;
 import com.spring.javaProjectS4.vo.MemberVO;
+import com.spring.javaProjectS4.vo.ReplyVO;
 
 @Service
 public class CommunityServiceImpl implements CommunityService {
@@ -162,6 +163,36 @@ public class CommunityServiceImpl implements CommunityService {
 	@Override
 	public void setCommunityBookmarkDel(String part, int idx) {
 		communityDAO.setCommunityBookmarkDel( part, idx);
+	}
+
+	@Override
+	public CommunityVO getCommunityMidIdx(int idx, String sMid) {
+		return communityDAO.getCommunityMidIdx( idx, sMid);
+	}
+
+	@Override
+	public List<ReplyVO> getCommunityIdxReply(int idx, String sMid) {
+		return communityDAO.getCommunityIdxReply( idx, sMid);
+	}
+
+	@Override
+	public List<ReplyVO> getCommunityIdxReRply(int idx, String sMid) {
+		return communityDAO.getCommunityIdxReRply( idx, sMid);
+	}
+
+	@Override
+	public int setCommunityReplyDel(int idx) {
+		return communityDAO.setCommunityReplyDel( idx);
+	}
+
+	@Override
+	public int setCommunityReRplyInput(int comuIdx, int reIdx, String mid, String content) {
+		return communityDAO.setCommunityReRplyInput( comuIdx, reIdx, mid, content);
+	}
+
+	@Override
+	public int communityReportInput(int idx, String mid, String sMid, String reason, String part) {
+		return communityDAO.communityReportInput( idx, mid, sMid, reason, part);
 	}
 
 	

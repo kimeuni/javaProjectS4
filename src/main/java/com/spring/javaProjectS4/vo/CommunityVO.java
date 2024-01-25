@@ -23,4 +23,9 @@ public class CommunityVO {
 	private int replyCnt;
 	private int midBookmarkCheck;
 	private int bookmarkCnt;
+	
+	// 게시글 올린 시간 체크
+	private String second_diff;
+	private String minute_diff;
+	private String hour_diff;
 }

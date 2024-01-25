@@ -8,17 +8,42 @@
 		select count(*) from communityS where userDel = 'N';
 	</select>
 	<select id="getCommunityList" resultType="com.spring.javaProjectS4.vo.CommunityVO">
-		select *,(select profile from memberS mem where comu.mid = mem.mid ) as profile,
+		select *,timestampdiff(second,cDate,now()) as second_diff,
+		timestampdiff(minute,cDate,now()) as minute_diff,
+		timestampdiff(hour,cDate,now()) as hour_diff,
+		(select profile from memberS mem where comu.mid = mem.mid ) as profile,
 		(select nickName from memberS mem where comu.mid = mem.mid ) as nickName,
 		(select count(*) from goodS gds where gds.part = 'community' and gds.partIdx = comu.idx and gds.goodMid = #{sMid} ) as midGoodCheck,
-		(select count(*) from goods gds where gds.part = 'community' and gds.partIdx = comu.idx) as goodCnt,
-		(select count(*) from replyS rps where rps.part = 'community' and rps.partIdx = comu.idx ) as replyCnt,
+		(select count(*) from goods gds where gds.part = 'community' and gds.partIdx = comu.idx and gds.userDel = 'N') as goodCnt,
+		(select count(*) from replyS rps where rps.part = 'community' and rps.partIdx = comu.idx and rps.userDel = 'N') as replyCnt,
 		(select count(*) from bookmarkS bms where bms.part = 'community' and bms.partIdx = comu.idx and bms.bookmarkMid = #{sMid} ) as midBookmarkCheck,
-		(select count(*) from bookmarkS bms where bms.part = 'community' and bms.partIdx = comu.idx ) as bookmarkCnt
+		(select count(*) from bookmarkS bms where bms.part = 'community' and bms.partIdx = comu.idx and bms.userDel = 'N') as bookmarkCnt
 		from communityS comu where userDel = 'N' order by idx desc limit #{startIndexNo},#{pageSize};
 	</select>
 	<select id="getCommunityIdx" resultType="com.spring.javaProjectS4.vo.CommunityVO">
-		select * from communityS where idx = #{idx};
+		select * from communityS comu where idx = #{idx};
+	</select>
+	<select id="getCommunityMidIdx" resultType="com.spring.javaProjectS4.vo.CommunityVO">
+		select *,(select profile from memberS mem where comu.mid = mem.mid ) as profile,
+		(select nickName from memberS mem where comu.mid = mem.mid ) as nickName,
+		(select count(*) from goodS gds where gds.part = 'community' and gds.partIdx = comu.idx and gds.goodMid = #{sMid} ) as midGoodCheck,
+		(select count(*) from goods gds where gds.part = 'community' and gds.partIdx = comu.idx and gds.userDel = 'N') as goodCnt,
+		(select count(*) from replyS rps where rps.part = 'community' and rps.partIdx = comu.idx and rps.userDel = 'N') as replyCnt,
+		(select count(*) from bookmarkS bms where bms.part = 'community' and bms.partIdx = comu.idx and bms.bookmarkMid = #{sMid} ) as midBookmarkCheck,
+		(select count(*) from bookmarkS bms where bms.part = 'community' and bms.partIdx = comu.idx and bms.userDel = 'N') as bookmarkCnt
+		 from communityS comu where idx = #{idx};
+	</select>
+	<select id="getCommunityIdxReply" resultType="com.spring.javaProjectS4.vo.ReplyVO">
+		select *,(select profile from memberS mem where rps.mid = mem.mid ) as profile,
+		(select nickName from memberS mem where rps.mid = mem.mid ) as nickName,
+		(select count(*) from goodS gds where gds.part = 'reply' and gds.partIdx = rps.idx and gds.goodMid = #{sMid} ) as midGoodCheck,
+		(select count(*) from goods gds where gds.part = 'reply' and gds.partIdx = rps.idx and gds.userDel = 'N') as goodCnt 
+		from replyS rps where part = 'community' and partIdx = #{idx}  and userDel = 'N' order by idx desc;
+	</select>
+	<select id="getCommunityIdxReRply" resultType="com.spring.javaProjectS4.vo.ReplyVO">
+		select *,(select profile from memberS mem where rps.mid = mem.mid ) as profile,
+		(select nickName from memberS mem where rps.mid = mem.mid ) as nickName
+		from replyS rps where part = 'community' and partIdx = #{idx} and parentsReplyIdx != 0 and userDel = 'N';
 	</select>
 	
 	<insert id="setCommunityInput">
@@ -32,6 +57,12 @@
 	</insert>
 	<insert id="setReplyInput">
 		insert into replyS values (default,#{part},#{idx},#{mid},#{content},default,default,default);
+	</insert>
+	<insert id="setCommunityReRplyInput">
+		insert into replyS values (default,'community',#{comuIdx},#{mid},#{content},default,#{reIdx},default);
+	</insert>
+	<insert id="communityReportInput">
+		insert into communityReportS values (default,#{part},#{idx},#{mid},#{sMid},default,#{reason});
 	</insert>
 	
 	<delete id="setGoodNo">
@@ -51,5 +82,8 @@
 	</delete>
 	<delete id="setCommunityBookmarkDel">
 		delete from bookmarkS where part = #{part} and partIdx = #{idx};
+	</delete>
+	<delete id="setCommunityReplyDel">
+		delete from replyS where idx = #{idx};
 	</delete>
 </mapper>

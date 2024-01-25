@@ -7,16 +7,12 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class ReplyVO {
+public class CommunityReportVO {
 	private int idx;
 	private String part;
 	private int partIdx;
 	private String mid;
-	private String content;
+	private String reportMid;
 	private String rDate;
-	private int parentsReplyIdx;
-	private String userDel;
-	
-	private String profile;
-	private String nickName;
+	private String reason;
 }

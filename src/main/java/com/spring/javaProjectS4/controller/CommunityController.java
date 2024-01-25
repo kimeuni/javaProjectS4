@@ -18,6 +18,7 @@ import com.spring.javaProjectS4.pagination.PageVO;
 import com.spring.javaProjectS4.service.CommunityService;
 import com.spring.javaProjectS4.vo.CommunityVO;
 import com.spring.javaProjectS4.vo.MemberVO;
+import com.spring.javaProjectS4.vo.ReplyVO;
 
 @Controller
 @RequestMapping("/community")
@@ -159,6 +160,80 @@ public class CommunityController {
 		int res = communityService.setCommunityDel(idx,comVO.getImgs());
 		
 		if(res != 0) return "1";
+		else return "2";
+	}
+	
+	// 커뮤니티 상세보기 들어가기
+	@RequestMapping(value = "/communityContent", method = RequestMethod.GET)
+	public String communityContentGet(Model model,HttpSession session,
+			@RequestParam(name="idx",defaultValue = "",required = false)int idx,
+			@RequestParam(name="pag",defaultValue = "",required = false)int pag,
+			@RequestParam(name="pageSize",defaultValue = "",required = false)int pageSize
+			) {
+		// 로그인한 사람의 아이디로 계정 정보 가져오기
+		String sMid = session.getAttribute("sMid")== null ? "" : (String)session.getAttribute("sMid");
+		
+		MemberVO memVO = communityService.getMemberMid(sMid);
+		
+		// 화면에 뿌릴 상세보기 내용
+		CommunityVO comVO = communityService.getCommunityMidIdx(idx,sMid);
+		
+		// 해당 글의 댓글 가져오기
+		List<ReplyVO> reVOS = communityService.getCommunityIdxReply(idx,sMid);
+		
+		// 해당 글의 대댓글 가져오기
+		List<ReplyVO> rerVOS = communityService.getCommunityIdxReRply(idx,sMid);
+		
+		model.addAttribute("comVO",comVO);
+		model.addAttribute("memVO",memVO);
+		model.addAttribute("reVOS",reVOS);
+		model.addAttribute("rerVOS",rerVOS);
+		model.addAttribute("pag",pag);
+		model.addAttribute("pageSize",pageSize);
+		return "community/communityContent";
+	}
+	
+	// 커뮤니티 상세보기 - 댓글 삭제 처리
+	@ResponseBody
+	@RequestMapping(value = "/communityReplyDel", method = RequestMethod.POST)
+	public String communityReplyDelPost(@RequestParam(name="idx",defaultValue = "",required = false)int idx) {
+		
+		int res = communityService.setCommunityReplyDel(idx);
+		
+		if(res != 0) return "1";
+		else return "2";
+	}
+	
+	
+	// 커뮤니티 상세보기 - 대댓글 등록처리
+	@ResponseBody
+	@RequestMapping(value = "/communityRerplyInput",method = RequestMethod.POST)
+	public String communityRerplyInputPost(
+			@RequestParam(name="comuIdx",defaultValue = "",required = false)int comuIdx,
+			@RequestParam(name="reIdx",defaultValue = "",required = false)int reIdx,
+			String mid, String content
+			) {
+		
+		content = content.replace("<", "&lt;");
+		content = content.replace(">", "&gt;");
+		content = content.replace("\n", "<br/>");
+		
+		int res = communityService.setCommunityReRplyInput(comuIdx,reIdx,mid,content);
+		
+		if(res != 0) return "1";
+		else return "2";
+	}
+	
+	// 커뮤니티 글 신고
+	@ResponseBody
+	@RequestMapping(value = "/communityContentReport", method = RequestMethod.POST)
+	public String communityContentReportPost(@RequestParam(name="idx",defaultValue = "",required = false)int idx,
+			String mid, String sMid, String reason
+			) {
+		
+		int res = communityService.communityReportInput(idx,mid,sMid,reason,"community");
+		
+		if(res != 0 ) return "1";
 		else return "2";
 	}
 }

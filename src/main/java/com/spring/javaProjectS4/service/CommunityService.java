@@ -6,6 +6,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.spring.javaProjectS4.vo.CommunityVO;
 import com.spring.javaProjectS4.vo.MemberVO;
+import com.spring.javaProjectS4.vo.ReplyVO;
 
 public interface CommunityService {
 
@@ -35,6 +36,18 @@ public interface CommunityService {
 	public void setCommunityGoodAllDel(String part, int idx);
 
 	public void setCommunityBookmarkDel(String part, int idx);
+
+	public CommunityVO getCommunityMidIdx(int idx, String sMid);
+
+	public List<ReplyVO> getCommunityIdxReply(int idx, String sMid);
+
+	public List<ReplyVO> getCommunityIdxReRply(int idx, String sMid);
+
+	public int setCommunityReplyDel(int idx);
+
+	public int setCommunityReRplyInput(int comuIdx, int reIdx, String mid, String content);
+
+	public int communityReportInput(int idx, String mid, String sMid, String reason, String part);
 
 
 }

@@ -122,7 +122,7 @@
     	.one-menu li:hover{
     		background-color: #EBDDCC;
     	}
-    	.menu-list li{
+    	.menu-list .one-menu li{
     		width: 300px;
     	}
     	.one-menu{
