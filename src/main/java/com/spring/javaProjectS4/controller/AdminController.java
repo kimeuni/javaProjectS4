@@ -30,6 +30,7 @@ import com.spring.javaProjectS4.vo.BtmCategoryVO;
 import com.spring.javaProjectS4.vo.EventMailVO;
 import com.spring.javaProjectS4.vo.FAQVO;
 import com.spring.javaProjectS4.vo.MainAdvertisementVO;
+import com.spring.javaProjectS4.vo.MapVO;
 import com.spring.javaProjectS4.vo.MemberVO;
 import com.spring.javaProjectS4.vo.MidCategoryVO;
 import com.spring.javaProjectS4.vo.NoticeVO;
@@ -1054,6 +1055,27 @@ public class AdminController {
 		model.addAttribute("btmCategoryName",btmCategoryName);
 		model.addAttribute("menuCk","중고거래신고관리");
 		return "admin/used/usedReportContent";
+	}
+	
+	// 찾아오는 길 등록 화면
+	@RequestMapping(value = "/addressInput", method = RequestMethod.GET)
+	public String damoaAddressInputGet(Model model) {
+		// map에 등록된 제일 최신 1개 가져오기
+		MapVO mapVO = adminService.getMapOne();
+		
+		model.addAttribute("mapVO",mapVO);
+		return "admin/address/addressInput";
+	}
+	
+	// 찾아오는 길 등록 처리
+	@ResponseBody
+	@RequestMapping(value = "/addressInput", method = RequestMethod.POST)
+	public String damoaAddressInputPost(MapVO vo) {
+		
+		int res = adminService.getMapInput(vo);
+		
+		if(res != 0) return "1";
+		else return "2";
 	}
 	
 	// 메일 전송을 위한 메소드

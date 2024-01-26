@@ -172,13 +172,3 @@ create table usedReportS(
 	
 	foreign key (usedIdx) references usedS (idx)
 );
-
-
--- 알림
-
-
--- 커뮤니티 게시판 DB
-
-
--- 좋아요 DB (커뮤니티, 모아모아)
-

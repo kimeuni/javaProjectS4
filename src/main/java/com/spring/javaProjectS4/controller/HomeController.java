@@ -28,6 +28,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.spring.javaProjectS4.service.HomeService;
 import com.spring.javaProjectS4.vo.UserShowAdvertisementVO;
 import com.spring.javaProjectS4.vo.MainAdvertisementVO;
+import com.spring.javaProjectS4.vo.MapVO;
 import com.spring.javaProjectS4.vo.MemberVO;
 
 @Controller
@@ -131,6 +132,13 @@ public class HomeController {
 		else return "redirect:/message/askInputNo";
 	}
 	
+	@RequestMapping(value = "/address", method = RequestMethod.GET)
+	public String addressGet(Model model) {
+		MapVO mapVO = homeService.getMapOne();
+		
+		model.addAttribute("mapVO",mapVO);
+		return "address/address";
+	}
 	
 	
 }

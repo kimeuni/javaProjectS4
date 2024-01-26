@@ -2,6 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <c:set var="ctp" value="${pageContext.request.contextPath}"/>
+<% pageContext.setAttribute("newLine", "\n"); %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -415,6 +416,9 @@
     		console.log(content);
     		console.log(img);
     		
+    		content = content.replaceAll("<", "&lt;");
+    		content = content.replaceAll(">", "&gt;");
+    		
     		$("#rMid").html(mid);
     		$("#rNickName").html(nickName);
     		$("#rContentM").html(content);
@@ -673,12 +677,12 @@
 	    	<div class="f-d-2">
 	    		<div style="width: 100%">
 		    		<div class="main-home-btn"><a href="${ctp}/community/communityMain"><i class="fa-solid fa-house"></i>&nbsp;&nbsp; 홈으로</a></div>
-		    		<hr/>
-		    		<div class="profile-go-btn"><a href="${ctp}/community/communityProfile?mid=${sMid}"><i class="fa-solid fa-user"></i>&nbsp;&nbsp; 프로필</a></div>
-		    		<hr/>
-		    		<div class="bookmark-go-btn"><a href=""><i class="fa-solid fa-bookmark"></i>&nbsp;&nbsp; 북마크</a></div>
-		    		<hr/>
 		    		<c:if test="${sMid != null }">
+			    		<hr/>
+			    		<div class="profile-go-btn"><a href="${ctp}/community/communityProfile?mid=${sMid}"><i class="fa-solid fa-user"></i>&nbsp;&nbsp; 프로필</a></div>
+			    		<hr/>
+			    		<div class="bookmark-go-btn"><a href=""><i class="fa-solid fa-bookmark"></i>&nbsp;&nbsp; 북마크</a></div>
+			    		<hr/>
 			    		<div class="comu-up-btn"><button type="button" data-toggle="modal" data-target="#myModal"> 글 올리기</button></div>
 		    		</c:if>
 	    		</div>
@@ -719,7 +723,7 @@
 		    			<div class="f-d btb pd comu-content">
 		    				<div class="f-d-1-img profile-img">
 		    					<div>
-				    				<a href="${ctp}/community/communityProfile?mid=${comVO.mid}"><img src="${ctp}/data/member/${comVO.profile}" ></a>
+				    				<a href="${ctp}/community/communityProfile?mid=${comVO.mid}&pag=${pageVO.pag}&pageSize=${pageVO.pageSize}"><img src="${ctp}/data/member/${comVO.profile}" ></a>
 		    					</div>
 		    				</div>
 		    				<div class="f-d-9 pd-i">
@@ -749,10 +753,10 @@
 		    							<c:if test="${fn:length(img) == 2 && !empty img[0]}">
 		    								<div class="f-d heit">
 		    									<div class="f-d-5">
-				    								<div class=""><a href="${ctp}/data/community/${img[0]}" target="_blank"><img src="${ctp}/data/community/${img[0]}" width="100%" /></a></div>
+				    								<div ><a href="${ctp}/data/community/${img[0]}" target="_blank"><img src="${ctp}/data/community/${img[0]}" width="100%" /></a></div>
 		    									</div>
 		    									<div class="f-d-5">
-				    								<div class=""><a href="${ctp}/data/community/${img[1]}" target="_blank"><img src="${ctp}/data/community/${img[1]}" width="100%"/></a></div>
+				    								<div ><a href="${ctp}/data/community/${img[1]}" target="_blank"><img src="${ctp}/data/community/${img[1]}" width="100%"/></a></div>
 		    									</div>
 		    								</div>
 		    							</c:if>
@@ -781,7 +785,9 @@
 			    							<div class="f-d-3 replyhover " style="color: #aaa"><a><i class="fa-regular fa-comment"> ${comVO.replyCnt }</i></a></div>
 		    							</c:if>
 		    							<c:if test="${sMid != null }">
-			    							<div class="f-d-3 replyhover reply-input"><button type="button" data-toggle="modal" data-target="#replyModal" onclick="modalView('${comVO.nickName}','${comVO.mid }','${comVO.idx }','${fn:replace(comVO.content,'<br/>',' ') }','${comVO.profile }')"><i class="fa-regular fa-comment"></i> ${comVO.replyCnt }</button></div>
+		    								<c:set var="content" value="${fn:replace(comVO.content,newLine, '<br/>') }"/>
+		    								<c:set var="content" value="${fn:replace(content,'<br/>', ' ') }"/>
+			    							<div class="f-d-3 replyhover reply-input"><button type="button" data-toggle="modal" data-target="#replyModal" onclick="modalView('${comVO.nickName}','${comVO.mid }','${comVO.idx }','${content }','${comVO.profile }')"><i class="fa-regular fa-comment"></i> ${comVO.replyCnt }</button></div>
 		    							</c:if>
 		    							<c:if test="${comVO.midGoodCheck == 0 }">
 			    							<div class="f-d-3 goodhover"><a href="javascript:goodYes(${comVO.idx})"><i class="fa-regular fa-heart"></i> ${comVO.goodCnt }</a></div>

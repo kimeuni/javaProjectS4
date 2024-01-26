@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.spring.javaProjectS4.dao.HomeDAO;
 import com.spring.javaProjectS4.vo.UserShowAdvertisementVO;
 import com.spring.javaProjectS4.vo.MainAdvertisementVO;
+import com.spring.javaProjectS4.vo.MapVO;
 import com.spring.javaProjectS4.vo.MemberVO;
 
 @Service
@@ -101,6 +102,11 @@ public class HomeServiceImpl implements HomeService {
 			fos.write(data);
 			fos.close();
 		}
+	}
+
+	@Override
+	public MapVO getMapOne() {
+		return homeDAO.getMapOne();
 	}
 
 }

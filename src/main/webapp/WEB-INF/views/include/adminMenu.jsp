@@ -329,6 +329,9 @@
 			<a href="${ctp}/admin/imsiImgDelete"><div class="admin-inner-menu-n">임시파일 삭제</div></a>
 		</div>
 		<div>
+			<a href="${ctp}/admin/addressInput"><div class="admin-inner-menu-n">찾아오는 길 등록</div></a>
+		</div>
+		<div>
 			<a href="${ctp}/admin/adminMain"><div class="admin-inner-menu-n">통계</div></a>
 		</div>
 	</div>

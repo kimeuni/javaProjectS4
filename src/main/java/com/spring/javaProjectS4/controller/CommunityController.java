@@ -16,7 +16,9 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.spring.javaProjectS4.pagination.PageProcess;
 import com.spring.javaProjectS4.pagination.PageVO;
 import com.spring.javaProjectS4.service.CommunityService;
+import com.spring.javaProjectS4.vo.CommunityProfileVO;
 import com.spring.javaProjectS4.vo.CommunityVO;
+import com.spring.javaProjectS4.vo.FollowVO;
 import com.spring.javaProjectS4.vo.MemberVO;
 import com.spring.javaProjectS4.vo.ReplyVO;
 
@@ -166,9 +168,11 @@ public class CommunityController {
 	// 커뮤니티 상세보기 들어가기
 	@RequestMapping(value = "/communityContent", method = RequestMethod.GET)
 	public String communityContentGet(Model model,HttpSession session,
-			@RequestParam(name="idx",defaultValue = "",required = false) int idx,
-			@RequestParam(name="pag",defaultValue = "",required = false) int pag,
-			@RequestParam(name="pageSize",defaultValue = "",required = false) int pageSize
+			@RequestParam(name="idx",defaultValue = "0",required = false) int idx,
+			@RequestParam(name="pag",defaultValue = "1",required = false) int pag,
+			@RequestParam(name="pageSize",defaultValue = "2",required = false) int pageSize,
+			@RequestParam(name="flag",defaultValue = "",required = false) String flag,
+			@RequestParam(name="mid",defaultValue = "",required = false) String mid
 			) {
 		// 로그인한 사람의 아이디로 계정 정보 가져오기
 		String sMid = session.getAttribute("sMid")== null ? "" : (String)session.getAttribute("sMid");
@@ -184,10 +188,13 @@ public class CommunityController {
 		// 해당 글의 대댓글 가져오기
 		List<ReplyVO> rerVOS = communityService.getCommunityIdxReRply(idx,sMid);
 		
+		
 		model.addAttribute("comVO",comVO);
 		model.addAttribute("memVO",memVO);
 		model.addAttribute("reVOS",reVOS);
 		model.addAttribute("rerVOS",rerVOS);
+		model.addAttribute("flag",flag);
+		model.addAttribute("mid",mid);
 		model.addAttribute("pag",pag);
 		model.addAttribute("pageSize",pageSize);
 		return "community/communityContent";
@@ -240,26 +247,38 @@ public class CommunityController {
 	// 커뮤니티 프로필
 	@RequestMapping(value = "/communityProfile", method = RequestMethod.GET)
 	public String communityProfileGet(Model model, String mid,HttpSession session,
+			@RequestParam(name="idx",defaultValue = "0",required = false) int idx,
 			@RequestParam(name="pag",defaultValue = "1",required = false) int pag,
-			@RequestParam(name="pageSize",defaultValue = "2",required = false) int pageSize
+			@RequestParam(name="pageSize",defaultValue = "2",required = false) int pageSize,
+			@RequestParam(name="flag",defaultValue = "",required = false) String flag
 			) {
 		// 로그인한 사람의 아이디로 계정 정보 가져오기
 		String sMid = session.getAttribute("sMid")== null ? "" : (String)session.getAttribute("sMid");
 		MemberVO memVO = communityService.getMemberMid(sMid);
 		
-		// 해당 멤버 정보
+		// 해당 프로필 회원 정보
+		CommunityProfileVO proVO = communityService.getCommunityProfileMid(mid); 
 		
 		// 해당 멤버가 적은 글 리스트 목록
 		PageVO pageVO = pageProcess.totRecCnt(pag, pageSize, "communityProfile", "", mid);
-		System.out.println(pageVO);
 		List<CommunityVO> comVOS = communityService.getCommunityMidList(mid,sMid,pageVO.getStartIndexNo(),pageSize);
-		System.out.println(comVOS);
 		
+		// 해당 상점 팔로우한 사람 확인용 (로그인 한 사람만)
+		if(!mid.equals("")) {
+			FollowVO fVO = communityService.getFollowerMid(sMid,mid);
+			
+			model.addAttribute("fVO",fVO);
+		}
 		
 		model.addAttribute("mid",mid);
+		model.addAttribute("flag",flag);
 		model.addAttribute("memVO",memVO);
+		model.addAttribute("proVO",proVO);
 		model.addAttribute("comVOS",comVOS);
 		model.addAttribute("pageVO",pageVO);
+		model.addAttribute("pag",pag);
+		model.addAttribute("idx",idx);
+		model.addAttribute("pageSize",pageSize);
 		return "community/communityProfile";
 	}
 }

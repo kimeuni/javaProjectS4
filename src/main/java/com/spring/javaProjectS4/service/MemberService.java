@@ -73,4 +73,6 @@ public interface MemberService {
 
 	public void setUsedStoreInput(String mid);
 
+	public void setCommunityProfileInput(String mid);
+
 }

@@ -62,6 +62,9 @@
 	<insert id="setUsedStoreInput">
 		insert into storeS values (default,#{mid},'',default);
 	</insert>
+	<insert id="setCommunityProfileInput">
+		insert into communityProfileS values (default,#{mid},'',default);
+	</insert>
 	
 	<update id="setKakaoFirstUpdatInfor">
 		update memberS set mid = #{mid}, address = #{address}, gender = #{gender}, adYN = #{adYN} where email = #{email} and token = 'kakao';

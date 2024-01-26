@@ -18,7 +18,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.spring.javaProjectS4.dao.CommunityDAO;
+import com.spring.javaProjectS4.vo.CommunityProfileVO;
 import com.spring.javaProjectS4.vo.CommunityVO;
+import com.spring.javaProjectS4.vo.FollowVO;
 import com.spring.javaProjectS4.vo.MemberVO;
 import com.spring.javaProjectS4.vo.ReplyVO;
 
@@ -198,6 +200,16 @@ public class CommunityServiceImpl implements CommunityService {
 	@Override
 	public List<CommunityVO> getCommunityMidList(String mid, String sMid, int startIndexNo, int pageSize) {
 		return communityDAO.getCommunityMidList( mid,sMid,startIndexNo,pageSize);
+	}
+
+	@Override
+	public CommunityProfileVO getCommunityProfileMid(String mid) {
+		return communityDAO.getCommunityProfileMid( mid);
+	}
+
+	@Override
+	public FollowVO getFollowerMid(String sMid, String mid) {
+		return communityDAO.getFollowerMid( sMid, mid);
 	}
 
 	

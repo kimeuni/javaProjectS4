@@ -6,7 +6,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>커뮤니티</title>
+    <title>${proVO.nickName} @${proVO.mid}</title>
     <jsp:include page="/WEB-INF/views/include/bs4.jsp" />
     <style>
     	#community-main-container{
@@ -204,10 +204,11 @@
 			height: 60px;
 			display: flex;
 			width: 100%;
-			justify-content: center;
+			justify-content: left;
 			font-size: 1.5em;
 			line-height: 60px;
 			border-left: 1px solid #ddd;
+			padding-left: 35px;
 		}
 		.checked-yes{
 			background-color: #fff;
@@ -352,6 +353,120 @@
 			border-radius: 5px;
 			text-decoration: none;
 		}
+		.comu-main-go a{
+			display: flex;
+			width: 50px;
+			font-size: 1.1em;
+			height: 40px;
+			justify-content: center;
+			text-decoration: none;
+			color: #000;
+			margin-top: 19px;
+			padding-right: 20px;
+		}
+		.pro-header-img-div{
+			list-style: none;
+			margin: 0px;
+			padding: 0px;
+		}
+		.pro-header-img-div ul{
+			list-style: none;
+			margin: 0px;
+			padding: 0px;
+		}
+		.pro-header-img-div{
+			position: relative;
+		}
+		.pro-header-img-div:hover .pro-header-file-div{
+			display: block;
+		}
+		.pro-header-file-div img{
+			width: 100%;
+			height: 100%;
+			cursor: pointer;
+		}
+		.pro-header-file-div input[type="button"]{
+			height: 1px;
+    		width: 1px;
+    		margin: -1px;
+    		overflow: hidden;
+			position: absolute;
+			border: 0px;
+			background-color: rgba(0,0,0,0);
+		}
+		.pro-header-file-div{
+			position: absolute;
+			width: 100px;
+			height: 100px;
+			top: 25%;
+			left : 40%;
+			display: none;
+		}
+		.pro-profile-text-div{
+			padding: 20px
+		}
+		.f-follow{
+			display : flex;
+			margin-left: auto;
+			line-height: 55px;
+			text-align: center;
+			justify-content: center;
+		}
+		.f-follow a{
+			padding: 3px;
+			border: 1px solid;
+			width: 100px;
+			line-height: 30px;
+			text-decoration: none;
+			color: #000;
+			border-radius: 5px;
+		}
+		.store-info-str{
+			padding-right: 20px;
+		}
+		#f-follow-alarm{
+			display : flex;
+			line-height: 55px;
+			padding-left: 20px;
+			text-align: center;
+		}
+		#f-follow-alarm a{
+			width: 30px;
+			height: 30px;
+			line-height : 30px;
+			border: 1px solid;
+			text-decoration: none;
+			color: #000;
+			margin: 10px;
+		}
+		.f-alarm-ok{
+			background-color: #faf1f2;
+			color: red !important;
+			border: 1px solid red !important;
+		}
+		.used-shop-go-btn{
+			display : flex;
+			line-height: 55px;
+			text-align: center;
+			justify-content: flex-end; 
+			margin-left: auto;
+		}
+		.used-shop-go-btn a{
+			padding: 10px;
+			border: 1px solid #5E5756;
+			width: 100px;
+			line-height: 30px !important;
+			text-decoration: none;
+			color: #fff;
+			border-radius: 5px;
+			background-color: #5E5756
+		}
+		.pro-nickName-div{
+			font-weight: bold;
+			font-size: 1.2em;
+			margin-top: 10px;
+			margin-bottom: 5px;
+		}
     </style>
     <script>
     	'use strict'
@@ -414,6 +529,9 @@
     		console.log(idx);
     		console.log(content);
     		console.log(img);
+    		
+    		content = content.replaceAll("<", "&lt;");
+    		content = content.replaceAll(">", "&gt;");
     		
     		$("#rMid").html(mid);
     		$("#rNickName").html(nickName);
@@ -656,12 +774,12 @@
 	    	<div class="f-d-2">
 	    		<div style="width: 100%">
 		    		<div class="main-home-btn"><a href="${ctp}/community/communityMain"><i class="fa-solid fa-house"></i>&nbsp;&nbsp; 홈으로</a></div>
-		    		<hr/>
-		    		<div class="profile-go-btn"><a href=""><i class="fa-solid fa-user"></i>&nbsp;&nbsp; 프로필</a></div>
-		    		<hr/>
-		    		<div class="bookmark-go-btn"><a href=""><i class="fa-solid fa-bookmark"></i>&nbsp;&nbsp; 북마크</a></div>
-		    		<hr/>
 		    		<c:if test="${sMid != null }">
+			    		<hr/>
+			    		<div class="profile-go-btn"><a href="${ctp}/community/communityProfile?mid=${sMid}"><i class="fa-solid fa-user"></i>&nbsp;&nbsp; 프로필</a></div>
+			    		<hr/>
+			    		<div class="bookmark-go-btn"><a href=""><i class="fa-solid fa-bookmark"></i>&nbsp;&nbsp; 북마크</a></div>
+			    		<hr/>
 			    		<div class="comu-up-btn"><button type="button" data-toggle="modal" data-target="#myModal"> 글 올리기</button></div>
 		    		</c:if>
 	    		</div>
@@ -669,7 +787,75 @@
 	    	<div class="f-d-8" >
 	    		<div style="width: 100%">
     				<div class="f-d f-sc">
-    					<div class="f-d-menu checked-yes">전체</div>
+    					<div class="f-d-menu checked-yes">
+    						<c:if test="${empty flag}">
+	    						<div class="comu-main-go"><a href="${ctp}/community/communityMain"><i class="fa-solid fa-angle-left"></i></a></div>
+    						</c:if>
+    						<c:if test="${flag == 'comuContent'}">
+	    						<div class="comu-main-go"><a href="${ctp}/community/communityContent?pag=${pag}&pageSize=${pageSize}&idx=${idx}"><i class="fa-solid fa-angle-left"></i></a></div>
+    						</c:if>
+    						<div>${proVO.nickName} &nbsp;&nbsp; <span style="color: gray; font-size: 0.8em;">${proVO.comuCnt} 게시물</span></div>
+    					</div>
+    				</div>
+    				<div class="f-d">
+    					<div style="width: 100%">
+	    					<div>
+	    						<c:if test="${sMid == proVO.mid }">
+	    							<ul class="pro-header-img-div">
+	    								<li> <img src="${ctp}/data/communityProfile/${proVO.headerImg}" width="100%" height="250px" />
+	    									<ul class="pro-header-file-div">
+	    										<li>
+	    											<label for="headerImg"><img src="${ctp}/data/communityProfile/추가.png"></label>
+	    											<input type="button" name="headerImg" id="headerImg" onclick="">
+	    										</li>
+	    									</ul>
+	    								</li>
+	    							</ul>
+	    						</c:if>
+	    						<c:if test="${sMid != proVO.mid }">
+		    						<img src="${ctp}/data/communityProfile/${proVO.headerImg}" width="100%" height="250px" />
+	    						</c:if>
+    						</div>
+    						<div class="pro-profile-text-div">
+	    						<div class="f-d">
+			    					<div class="pro-img-div">
+			    						<img src="${ctp}/data/member/${proVO.profile}" width="80px" height="80px">
+		    						</div>
+	    							<div>
+	    								<c:if test="${sMid != proVO.mid && sMid != null}">
+	    									<div class="f-d">
+											<c:if test="${empty fVO }">
+		    									<div class="f-d" style="justify-content: flex-end;">
+													<div class="f-follow"><a href="javascript:followYes('${proVO.mid}')"><i class="fa-solid fa-user-plus"></i> 팔로우</a></div>
+												</div>
+											</c:if>
+											<c:if test="${!empty fVO }">
+												<div id="f-follow-alarm">
+													<c:if test="${fVO.alarm == 'Y' }">
+														<a href="javascript:fAlarmNo('${sMid}','${proVO.mid}')" class="f-alarm-ok"><div><i class="fa-regular fa-bell-slash"></i></div></a>
+													</c:if>
+													<c:if test="${fVO.alarm != 'Y' }">
+														<a href="javascript:fAlarmYes('${sMid}','${proVO.mid}')"><div><i class="fa-solid fa-bell"></i></div></a>
+													</c:if>
+												</div>
+												<div class="f-d " style="justify-content: flex-end; margin: auto; margin-left: auto">
+													<div class="f-follow"><a href="javascript:followNo('${proVO.mid}')"><i class="fa-solid fa-user-check"></i> 팔로잉</a></div>
+												</div>
+											</c:if>
+											</div>
+										</c:if>
+	    							</div>
+	    							<div class="used-shop-go-btn"><div><a href="${ctp}/used/usedStore?mid=${proVO.mid}">상점보기 <i class="fa-solid fa-right-to-bracket"></i></a></div></div>
+	    						</div>
+		    					<div class="pro-nickName-div">${proVO.nickName }</div>
+		    					<div class="pro-mid-div" >@${proVO.mid }</div>
+		    					<div class="pro-comuSoge-div" >${proVO.communityIntroduce }</div>
+		    					<div class="f-d">
+		    						<div>팔로우 중</div>
+		    						<div>팔로워</div>
+		    					</div>
+	    					</div>
+    					</div>
     				</div>
 		    		<c:forEach var="comVO" items="${comVOS }">
 		    			<c:set var="img" value="${comVO.imgs.split('/')}" />
@@ -713,7 +899,7 @@
 		    						</div>
 		    						<div class="f-d pt-2 comu-content-inner">
 		    							<div style="width: 100%">
-			    							<a href="communityContent?idx=${comVO.idx}&pag=${pageVO.pag }&pageSize=${pageVO.pageSize}">${comVO.content }</a>
+			    							<a href="communityContent?idx=${comVO.idx}&pag=${pageVO.pag }&pageSize=${pageVO.pageSize}&flag=profile&mid=${comVO.mid}">${comVO.content }</a>
 		    							</div>
 	    							</div>
 		    						<div class="f-d pt-2 ">

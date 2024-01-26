@@ -11,6 +11,7 @@ import com.spring.javaProjectS4.vo.BtmCategoryVO;
 import com.spring.javaProjectS4.vo.EventMailVO;
 import com.spring.javaProjectS4.vo.FAQVO;
 import com.spring.javaProjectS4.vo.MainAdvertisementVO;
+import com.spring.javaProjectS4.vo.MapVO;
 import com.spring.javaProjectS4.vo.MemberVO;
 import com.spring.javaProjectS4.vo.MidCategoryVO;
 import com.spring.javaProjectS4.vo.NoticeVO;
@@ -167,6 +168,10 @@ public interface AdminDAO {
 	public void setfollowUsedAlarmDel(@Param("usedIdx") int usedIdx);
 
 	public UsedReportVO getUsedReportIdx(@Param("idx") int idx);
+
+	public int getMapInput(@Param("vo") MapVO vo);
+
+	public MapVO getMapOne();
 
 
 

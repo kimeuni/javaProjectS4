@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.spring.javaProjectS4.vo.CommunityProfileVO;
 import com.spring.javaProjectS4.vo.CommunityVO;
+import com.spring.javaProjectS4.vo.FollowVO;
 import com.spring.javaProjectS4.vo.MemberVO;
 import com.spring.javaProjectS4.vo.ReplyVO;
 
@@ -50,6 +52,10 @@ public interface CommunityService {
 	public int communityReportInput(int idx, String mid, String sMid, String reason, String part);
 
 	public List<CommunityVO> getCommunityMidList(String mid, String sMid, int startIndexNo, int pageSize);
+
+	public CommunityProfileVO getCommunityProfileMid(String mid);
+
+	public FollowVO getFollowerMid(String sMid, String mid);
 
 
 }

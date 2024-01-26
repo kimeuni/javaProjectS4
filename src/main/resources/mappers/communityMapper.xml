@@ -61,6 +61,15 @@
 		(select nickName from memberS mem where rps.mid = mem.mid ) as nickName
 		from replyS rps where part = 'community' and partIdx = #{idx} and parentsReplyIdx != 0 and userDel = 'N';
 	</select>
+	<select id="getCommunityProfileMid" resultType="com.spring.javaProjectS4.vo.CommunityProfileVO">
+		select *,(select profile from memberS mem where mem.mid = prof.mid ) as profile,
+		(select nickName from memberS mem where mem.mid = prof.mid) as nickName,
+		(select count(*) from communityS comu where comu.mid = prof.mid) as comuCnt
+		 from communityProfileS prof where mid = #{mid};
+	</select>
+	<select id="getFollowerMid" resultType="com.spring.javaProjectS4.vo.FollowVO">
+		select * from followS where followerMid = #{sMid} and followingMid = #{mid};
+	</select>
 	
 	<insert id="setCommunityInput">
 		insert into communityS values (default,#{mid},#{content},#{imgsStr},default,#{region},default);
@@ -72,10 +81,10 @@
 		insert into bookmarkS values (default,#{part},#{idx},#{mid},default);
 	</insert>
 	<insert id="setReplyInput">
-		insert into replyS values (default,#{part},#{idx},#{mid},#{content},default,default,default);
+		insert into replyS values (default,#{part},#{idx},#{mid},#{content},default,default,default,default);
 	</insert>
 	<insert id="setCommunityReRplyInput">
-		insert into replyS values (default,'community',#{comuIdx},#{mid},#{content},default,#{reIdx},default);
+		insert into replyS values (default,'community',#{comuIdx},#{mid},#{content},default,#{reIdx},default,default);
 	</insert>
 	<insert id="communityReportInput">
 		insert into communityReportS values (default,#{part},#{idx},#{mid},#{sMid},default,#{reason});

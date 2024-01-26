@@ -728,12 +728,12 @@
 	    	<div class="f-d-2">
 	    		<div style="width: 100%">
 		    		<div class="main-home-btn"><a href="${ctp}/community/communityMain"><i class="fa-solid fa-house"></i>&nbsp;&nbsp; 홈으로</a></div>
-		    		<hr/>
-		    		<div class="profile-go-btn"><a href=""><i class="fa-solid fa-user"></i>&nbsp;&nbsp; 프로필</a></div>
-		    		<hr/>
-		    		<div class="bookmark-go-btn"><a href=""><i class="fa-solid fa-bookmark"></i>&nbsp;&nbsp; 북마크</a></div>
-		    		<hr/>
 		    		<c:if test="${sMid != null }">
+			    		<hr/>
+			    		<div class="profile-go-btn"><a href="${ctp}/community/communityProfile?mid=${sMid}"><i class="fa-solid fa-user"></i>&nbsp;&nbsp; 프로필</a></div>
+			    		<hr/>
+			    		<div class="bookmark-go-btn"><a href=""><i class="fa-solid fa-bookmark"></i>&nbsp;&nbsp; 북마크</a></div>
+			    		<hr/>
 			    		<div class="comu-up-btn"><button type="button" data-toggle="modal" data-target="#myModal"> 글 올리기</button></div>
 		    		</c:if>
 	    		</div>
@@ -741,7 +741,12 @@
 	    	<div class="f-d-8" >
 	    		<div style="width: 100%">
     				<div class="f-d f-sc">
-    					<div class="comu-main-go"><a href="${ctp}/community/communityMain?pag=${pag}&pageSize=${pageSize}"><i class="fa-solid fa-angle-left"></i></a></div>
+    					<c:if test="${empty flag}">
+	    					<div class="comu-main-go"><a href="${ctp}/community/communityMain?pag=${pag}&pageSize=${pageSize}"><i class="fa-solid fa-angle-left"></i></a></div>
+    					</c:if>
+    					<c:if test="${flag == 'profile'}">
+	    					<div class="comu-main-go"><a href="${ctp}/community/communityProfile?pag=${pag}&pageSize=${pageSize}&mid=${mid}"><i class="fa-solid fa-angle-left"></i></a></div>
+    					</c:if>
     					<div class="f-d-menu" style="background-color: #fff">커뮤니티 상세보기</div>
     				</div>
 		    			<c:set var="img" value="${comVO.imgs.split('/')}" />
@@ -768,7 +773,7 @@
 		    			<div class="f-d btb pd comu-content">
 		    				<div class="f-d-1-img profile-img">
 		    					<div>
-				    				<a href=""><img src="${ctp}/data/member/${comVO.profile}" ></a>
+				    				<a href="${ctp}/community/communityProfile?mid=${comVO.mid}&flag=comuContent&idx=${comVO.idx}"><img src="${ctp}/data/member/${comVO.profile}" ></a>
 		    					</div>
 		    				</div>
 		    				<div class="f-d-9 pd-i">

@@ -26,6 +26,7 @@ import com.spring.javaProjectS4.vo.BtmCategoryVO;
 import com.spring.javaProjectS4.vo.EventMailVO;
 import com.spring.javaProjectS4.vo.FAQVO;
 import com.spring.javaProjectS4.vo.MainAdvertisementVO;
+import com.spring.javaProjectS4.vo.MapVO;
 import com.spring.javaProjectS4.vo.MemberVO;
 import com.spring.javaProjectS4.vo.MidCategoryVO;
 import com.spring.javaProjectS4.vo.NoticeVO;
@@ -577,6 +578,16 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public UsedReportVO getUsedReportIdx(int idx) {
 		return adminDAO.getUsedReportIdx( idx);
+	}
+
+	@Override
+	public int getMapInput(MapVO vo) {
+		return adminDAO.getMapInput( vo);
+	}
+
+	@Override
+	public MapVO getMapOne() {
+		return adminDAO.getMapOne();
 	}
 
 }

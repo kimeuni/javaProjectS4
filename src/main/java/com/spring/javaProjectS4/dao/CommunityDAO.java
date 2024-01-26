@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.spring.javaProjectS4.vo.CommunityProfileVO;
 import com.spring.javaProjectS4.vo.CommunityVO;
+import com.spring.javaProjectS4.vo.FollowVO;
 import com.spring.javaProjectS4.vo.MemberVO;
 import com.spring.javaProjectS4.vo.ReplyVO;
 
@@ -53,6 +55,10 @@ public interface CommunityDAO {
 	public List<CommunityVO> getCommunityMidList(@Param("mid") String mid,@Param("sMid") String sMid,@Param("startIndexNo") int startIndexNo,@Param("pageSize") int pageSize);
 
 	public int getCommunityMidRecCnt(@Param("searchString") String searchString);
+
+	public CommunityProfileVO getCommunityProfileMid(@Param("mid") String mid);
+
+	public FollowVO getFollowerMid(@Param("sMid") String sMid,@Param("mid") String mid);
 
 
 }

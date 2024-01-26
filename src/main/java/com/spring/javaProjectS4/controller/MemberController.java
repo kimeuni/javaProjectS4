@@ -389,6 +389,9 @@ public class MemberController {
 			// 유저 상점 만들기
 			memberService.setUsedStoreInput(vo.getMid());
 			
+			// 커뮤니티 프로필 만들기 
+			memberService.setCommunityProfileInput(vo.getMid());
+			
 			return "redirect:/member/kakaoLogin?email="+vo.getEmail();
 		}
 		else return "redirect:/message/kakaoLoginNo";
@@ -451,6 +454,9 @@ public class MemberController {
 			
 			// 유저 상점 만들기
 			memberService.setUsedStoreInput(vo.getMid());
+			
+			// 커뮤니티 프로필 만들기 
+			memberService.setCommunityProfileInput(vo.getMid());
 			
 			return "redirect:/message/joinOk";
 		}

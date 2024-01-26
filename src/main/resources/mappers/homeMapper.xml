@@ -10,6 +10,9 @@
 	<select id="getMemberMid" resultType="com.spring.javaProjectS4.vo.MemberVO">
 		select * from memberS where mid = #{mid};
 	</select>
+	<select id="getMapOne" resultType="com.spring.javaProjectS4.vo.MapVO">
+		select * from mapS order by idx desc limit 1;
+	</select>
 	
 	<insert id="setAskInput">
 		insert into askS values (default,#{mid},#{title},#{content},#{imgStr},#{category},default,default,#{reportShop})

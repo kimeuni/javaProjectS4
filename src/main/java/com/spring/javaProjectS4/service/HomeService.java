@@ -5,6 +5,7 @@ import com.spring.javaProjectS4.vo.UserShowAdvertisementVO;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.spring.javaProjectS4.vo.MainAdvertisementVO;
+import com.spring.javaProjectS4.vo.MapVO;
 import com.spring.javaProjectS4.vo.MemberVO;
 
 public interface HomeService {
@@ -19,4 +20,6 @@ public interface HomeService {
 
 	public int setAskInput(String mid, String title, String content, MultipartHttpServletRequest imgs, String category,
 			String reportShop, String imgStr);
+
+	public MapVO getMapOne();
 }

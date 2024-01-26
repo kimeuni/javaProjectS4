@@ -227,4 +227,9 @@ public class MemberServiceImpl implements MemberService {
 		memberDAO.setUsedStoreInput( mid);
 	}
 
+	@Override
+	public void setCommunityProfileInput(String mid) {
+		memberDAO.setCommunityProfileInput(mid);
+	}
+
 }

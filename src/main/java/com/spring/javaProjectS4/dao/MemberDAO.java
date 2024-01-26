@@ -75,4 +75,6 @@ public interface MemberDAO {
 
 	public void setUsedStoreInput(@Param("mid") String mid);
 
+	public void setCommunityProfileInput(@Param("mid") String mid);
+
 }

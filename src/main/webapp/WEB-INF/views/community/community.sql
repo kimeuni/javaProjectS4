@@ -60,6 +60,7 @@ create table replyS(
 	rDate datetime default now(),
 	parentsReplyIdx int default 0,
 	userDel char(1) default 'N',
+	alarm char(1) default 'Y',
 	
 	foreign key (mid) references memberS (mid)
 );
@@ -74,3 +75,15 @@ create table communityReportS(
 	rDate datetime default now(),					/* 신고날 */
 	reason varchar(30) not null						/* 신고 이유 */
 );
+
+-- 커뮤니티 프로필
+create table communityProfileS(
+	idx int not null auto_increment primary key,	/* 고유번호 */
+	mid varchar(17) not null,						/* 누구 상점인지 */
+	communityIntroduce text,						/* 커뮤니티 소개 */
+	headerImg varchar(80) default '기본헤더.png',		/* 헤더 이미지 */
+	
+	foreign key (mid) references memberS (mid)
+);
+
+drop table communityProfileS

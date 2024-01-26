@@ -120,6 +120,9 @@
 	<select id="getUsedReportIdx" resultType="com.spring.javaProjectS4.vo.UsedReportVO">
 		select * from usedReportS where idx = #{idx};
 	</select>
+	<select id="getMapOne" resultType="com.spring.javaProjectS4.vo.MapVO">
+		select * from mapS order by idx desc limit 1;
+	</select>
 	
 	
 	<insert id="setNoticeInput">
@@ -151,6 +154,9 @@
 	</insert>
 	<insert id="setBtmCategoryInput">
 		insert into btmCategoryS values (default,#{topCategoryIdx},#{midCategoryIdx},#{btmCategoryName});
+	</insert>
+	<insert id="getMapInput">
+		insert into mapS values (default,#{vo.place},#{vo.address},#{vo.latitude},#{vo.longitude},default)
 	</insert>
 	
 	<update id="setNoticeUpdate">
