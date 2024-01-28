@@ -673,6 +673,51 @@
         	});
         }
         
+        // 댓글 신고 모달창 값 전달
+        function reportReplyModal(idx,mid,nickName){
+        	$("#communityReportReIdx").val(idx);
+        	$("#communityReportReMid").val(mid);
+        	$(".communityReportReMid").html(mid);
+        	$("#communityReportReNickName").html(nickName);
+        }
+        
+        // 댓글 신고
+        function communityReportReBtn(){
+        	let idx = $("#communityReportReIdx").val(); 
+        	let mid = $("#communityReportReMid").val();
+        	let reason = $("#communityReportReSelect").val();
+        	let sMid = '${sMid}';
+        	
+        	if(reason.trim() == ""){
+        		alert("신고 이유를 선택해주세요.");
+        		return false;
+        	}
+        	else {
+        		let query = {
+        			idx : idx,
+        			mid : mid,
+        			reason : reason,
+        			sMid : sMid
+        		}
+        		$.ajax({
+        			url : "${ctp}/community/communityReplyReport",
+        			type : "post",
+        			data :query,
+        			success : function(res){
+        				if(res == "1") {
+        					alert("신고처리 되었습니다.");
+        					location.reload();
+        				}
+        				else if(res == "2") alert("신고처리에 실패하였습니다.");
+        			},
+        			error : function(){
+        				alert("전송오류(communityContent.jsp)");
+        			}
+        		});
+        	}
+        	
+        }
+        
         // 게시글 신고 모달창 값 전달
         function reportContentModal(idx,mid,nickName){
         	$("#communityReportIdx").val(idx);
@@ -732,7 +777,7 @@
 			    		<hr/>
 			    		<div class="profile-go-btn"><a href="${ctp}/community/communityProfile?mid=${sMid}"><i class="fa-solid fa-user"></i>&nbsp;&nbsp; 프로필</a></div>
 			    		<hr/>
-			    		<div class="bookmark-go-btn"><a href=""><i class="fa-solid fa-bookmark"></i>&nbsp;&nbsp; 북마크</a></div>
+			    		<div class="bookmark-go-btn"><a href="${ctp}/community/communityBookmark?mid=${sMid}"><i class="fa-solid fa-bookmark"></i>&nbsp;&nbsp; 북마크</a></div>
 			    		<hr/>
 			    		<div class="comu-up-btn"><button type="button" data-toggle="modal" data-target="#myModal"> 글 올리기</button></div>
 		    		</c:if>
@@ -759,7 +804,6 @@
 					    				<ul class="inner-li-report-del-btn">
 					    					<c:if test="${sMid == comVO.mid }">
 						    					<li><a href="javascript:cDelBtn(${comVO.idx })">삭제</a></li>
-						    					<hr/>
 					    					</c:if>
 					    					<c:if test="${sMid != comVO.mid }">
 						    					<li><a href="#" onclick="reportContentModal('${comVO.idx}','${comVO.mid}','${comVO.nickName}')" data-toggle="modal" data-target="#reportContentModal">신고</a></li>
@@ -916,7 +960,7 @@
 											    					<a href="javascript:replyClose(${reVO.idx})" id="replyCloseBtn${reVO.idx}" class="replyCloseBtn" >대댓글</a>
 									    						</div>
 									    						<c:if test="${sMid != reVO.mid}">
-										    						<div class="pr-3"><a href="javascript:replyReport(${reVO.idx})">신고</a></div>
+									    							<div class="pr-3"><a href="#" onclick="reportReplyModal('${reVO.idx}','${reVO.mid}','${reVO.nickName}')" data-toggle="modal" data-target="#reportReplyModal">신고</a></li></div>
 										    					</c:if>
 								    						</div>
 								    					</div>
@@ -924,7 +968,12 @@
 					    						</div>
 					    						<div class="f-d pt-2 comu-content-inner">
 					    							<div style="width: 100%">
-						    							${reVO.content }
+					    								<c:if test="${reVO.content == '해당 댓글은 삭제되었습니다.' }">
+							    							<div style="color: #aaa">${reVO.content }</div>
+					    								</c:if>
+					    								<c:if test="${reVO.content != '해당 댓글은 삭제되었습니다.' }">
+							    							${reVO.content }
+					    								</c:if>
 					    							</div>
 				    							</div>
 			    							</div>
@@ -978,7 +1027,7 @@
 											    					<a href="javascript:replyClose(${rerVO.idx})" id="replyCloseBtn${rerVO.idx}" class="replyCloseBtn" >대댓글</a>
 										    					</div>
 										    					<c:if test="${sMid != rerVO.mid}">
-											    					<div class="pr-3"><a href="javascript:replyReport(${rerVO.idx})">신고</a></div>
+										    						<div class="pr-3"><a href="#" onclick="reportReplyModal('${rerVO.idx}','${rerVO.mid}','${rerVO.nickName}')" data-toggle="modal" data-target="#reportReplyModal">신고</a></li></div>
 										    					</c:if>
 								    						</div>
 								    					</div>
@@ -1096,6 +1145,40 @@
     	</div>
     	<input type="hidden" id="communityReportIdx">
     	<input type="hidden" id="communityReportMid">
+    </div>
+  </div>
+</div>
+
+<!-- 댓글 신고 -->
+<div class="modal fade" id="reportReplyModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+    	<div class="f-d p-4">
+    		<div style="width: 100%">
+    		<div class="pb-2"><span id="communityReportReNickName"></span><span style="color: #aaa"> (@<span class="communityReportReMid"></span>)</span>님의 글을 신고</div>
+    		<div>이 댓글에 어떤 문제가 있나요?</div>
+    		<hr/>
+	    		<div class="select-report-community">
+	    			<select name="communityReportReSelect" id="communityReportReSelect">
+	    				<option value="">신고할 내용을 선택해주세요.</option>
+	    				<option value="불법촬영">전자통신사업법에 의거하여 불법촬영등 신고</option>
+	    				<option value="관심없음">관심없는 게시물</option>
+	    				<option value="스팸">의심스럽거나 스팸</option>
+	    				<option value="민감한사진">민감한 사진을 보여주고 있음</option>
+	    				<option value="유해한내용">가학적이거나 유해한 내용</option>
+	    				<option value="오해소지">오해의 소지가 있음</option>
+	    				<option value="자해자살표현">자해 또는 자살 의도를 표현하고 있음</option>
+	    			</select>
+	    		</div>
+			<div class="mt-3 ">
+				<div class="f-d communitiy-report-btns">
+					<a href="javascript:communityReportReBtn()">신고 하기</a>
+				</div>
+			</div>
+    		</div>
+    	</div>
+    	<input type="hidden" id="communityReportReIdx">
+    	<input type="hidden" id="communityReportReMid">
     </div>
   </div>
 </div>

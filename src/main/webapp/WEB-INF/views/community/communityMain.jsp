@@ -201,14 +201,23 @@
 			line-height: 60px;
 			border-left: 1px solid #ddd;
 		}
-		.f-d-menu{
+		.f-d-3-menu a{
+			width : 100%;
 			height: 60px;
-			display: flex;
+			text-decoration: none;
+			color: #000;
+			text-align: center;
+		}
+		.f-d-menu a{
+			display : flex;
+			height: 60px;
 			width: 100%;
 			justify-content: center;
 			font-size: 1.5em;
 			line-height: 60px;
 			border-left: 1px solid #ddd;
+			text-decoration: none;
+			color: #000;
 		}
 		.checked-yes{
 			background-color: #fff;
@@ -681,7 +690,7 @@
 			    		<hr/>
 			    		<div class="profile-go-btn"><a href="${ctp}/community/communityProfile?mid=${sMid}"><i class="fa-solid fa-user"></i>&nbsp;&nbsp; 프로필</a></div>
 			    		<hr/>
-			    		<div class="bookmark-go-btn"><a href=""><i class="fa-solid fa-bookmark"></i>&nbsp;&nbsp; 북마크</a></div>
+			    		<div class="bookmark-go-btn"><a href="${ctp}/community/communityBookmark?mid=${sMid}"><i class="fa-solid fa-bookmark"></i>&nbsp;&nbsp; 북마크</a></div>
 			    		<hr/>
 			    		<div class="comu-up-btn"><button type="button" data-toggle="modal" data-target="#myModal"> 글 올리기</button></div>
 		    		</c:if>
@@ -691,12 +700,14 @@
 	    		<div style="width: 100%">
     				<div class="f-d f-sc">
     					<c:if test="${sMid != null }">
-	    					<div class="f-d-3-menu checked-yes">전체</div>
-	    					<div class="f-d-3-menu checked-no">지역</div>
-	    					<div class="f-d-3-menu checked-no">팔로우</div>
+	    					<div class="f-d-3-menu checked-yes"><a href="${ctp}/community/communityMain">전체</a></div>
+	    					<div class="f-d-3-menu checked-no"><a href="${ctp}/community/communityRegion?region=${region}">지역</a></div>
+	    					<div class="f-d-3-menu checked-no"><a href="">팔로우</a></div>
     					</c:if>
     					<c:if test="${sMid == null }">
-	    					<div class="f-d-menu checked-yes">전체</div>
+    						<div style="width: 100%">
+		    					<div class="f-d-menu checked-yes"><a href="${ctp}/community/communityMain">전체</a></div>
+    						</div>
     					</c:if>
     				</div>
 		    		<c:forEach var="comVO" items="${comVOS }">
@@ -723,7 +734,7 @@
 		    			<div class="f-d btb pd comu-content">
 		    				<div class="f-d-1-img profile-img">
 		    					<div>
-				    				<a href="${ctp}/community/communityProfile?mid=${comVO.mid}&pag=${pageVO.pag}&pageSize=${pageVO.pageSize}"><img src="${ctp}/data/member/${comVO.profile}" ></a>
+				    				<a href="${ctp}/community/communityProfile?mid=${comVO.mid}"><img src="${ctp}/data/member/${comVO.profile}" ></a>
 		    					</div>
 		    				</div>
 		    				<div class="f-d-9 pd-i">
@@ -785,9 +796,8 @@
 			    							<div class="f-d-3 replyhover " style="color: #aaa"><a><i class="fa-regular fa-comment"> ${comVO.replyCnt }</i></a></div>
 		    							</c:if>
 		    							<c:if test="${sMid != null }">
-		    								<c:set var="content" value="${fn:replace(comVO.content,newLine, '<br/>') }"/>
-		    								<c:set var="content" value="${fn:replace(content,'<br/>', ' ') }"/>
-			    							<div class="f-d-3 replyhover reply-input"><button type="button" data-toggle="modal" data-target="#replyModal" onclick="modalView('${comVO.nickName}','${comVO.mid }','${comVO.idx }','${content }','${comVO.profile }')"><i class="fa-regular fa-comment"></i> ${comVO.replyCnt }</button></div>
+		    								<c:set var="content" value="${fn:replace(comVO.content,'<br/>', ' ') }"/>
+			    							<div class="f-d-3 replyhover reply-input"><button type="button" data-toggle="modal" data-target="#replyModal" onclick="modalView('${comVO.nickName}','${comVO.mid }','${comVO.idx }','${content}','${comVO.profile }')"><i class="fa-regular fa-comment"></i> ${comVO.replyCnt }</button></div>
 		    							</c:if>
 		    							<c:if test="${comVO.midGoodCheck == 0 }">
 			    							<div class="f-d-3 goodhover"><a href="javascript:goodYes(${comVO.idx})"><i class="fa-regular fa-heart"></i> ${comVO.goodCnt }</a></div>

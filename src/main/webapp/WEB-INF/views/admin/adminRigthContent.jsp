@@ -63,7 +63,7 @@
 			<div id="top-menu-str">관리자 메인</div>
 			<div id="admin-main-right-inner-content">
 				<div id="admin-main-menu">
-					<div id="admin-main-menu-str">메인화면 광고 등록 <i class="fa-solid fa-file-pen"></i></div>
+					<div id="admin-main-menu-str">메인화면 광고 등록 <i class="fa-solid fa-image"></i><i class="fa-solid fa-pen"></i></div>
 					
 				</div>
 			</div>

@@ -240,19 +240,31 @@
 		<div class="gnb-inner">
 			<div id="gnb-btm-nav-size">
 				<div id="gnb-btm-nav-align">
-					<span><a href="http://localhost:9090/javaProjectS4/"><img src="${ctp}/data/images/다모아로고1.png" height="60px" id="logo-img"></a></span>
-					<nav id="gub-ul-nav-div">
-						<ul id="header-btm-ul">
-							<li><a href="${ctp}/used/usedMain">중고거래</a></li>
-							<li><a href="${ctp}/community/communityMain">커뮤니티</a></li>
-							<li><a href="">모아모아</a></li>
-							<li><a href="${ctp}/board/noticeList">공지사항</a></li>
-						</ul>
-					</nav>
-					<span id="header-search-span">
-			            <input type="text" name="searchN" id="searchN" value="${search}"  />
-			            <a href="javascript:mainSearch()" style="padding: 10px;"><i class="fa-solid fa-magnifying-glass" ></i></a>
-		            </span>
+					<div style="display: flex;">
+						<div style="display: flex;">
+							<c:if test="${damoa == null }">
+								<div><a href="http://localhost:9090/javaProjectS4/"><img src="${ctp}/data/images/다모아로고1.png" height="60px" id="logo-img"></a></div>
+							</c:if>
+							<c:if test="${damoa != null }">
+								<div><a href="http://localhost:9090/javaProjectS4/"><img src="${ctp}/data/images/다모아로고1.png" style="margin-top: 11px" height="60px" id="logo-img"></a></div>
+							</c:if>
+						</div>
+						<div style="display: flex;">
+							<nav id="gub-ul-nav-div">
+								<ul id="header-btm-ul">
+									<li><a href="${ctp}/used/usedMain">중고거래</a></li>
+									<li><a href="${ctp}/community/communityMain">커뮤니티</a></li>
+									<li><a href="${ctp}/board/noticeList">공지사항</a></li>
+								</ul>
+							</nav>
+						</div>
+						<div style="display: flex;">
+							<div id="header-search-span">
+					            <input type="text" name="searchN" id="searchN" value="${search}"  />
+					            <a href="javascript:mainSearch()" style="padding: 10px;"><i class="fa-solid fa-magnifying-glass" ></i></a>
+				            </div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

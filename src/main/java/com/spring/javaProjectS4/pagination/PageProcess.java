@@ -137,6 +137,16 @@ public class PageProcess {
 				totRecCnt = communityDAO.getCommunityMidRecCnt(searchString);
 			}
 		}
+		if(section.equals("bookmark")) {
+			if(part.equals("")) {
+				totRecCnt = communityDAO.getCommunityBookmarkMidRecCnt(searchString);
+			}
+		}
+		if(section.equals("comuRegion")) {
+			if(part.equals("")) {
+				totRecCnt = communityDAO.getComuRegionRecCnt(searchString);
+			}
+		}
 		
 		int totPage = (totRecCnt % pageSize)==0 ? (totRecCnt / pageSize) : (totRecCnt / pageSize) + 1;
 		int startIndexNo = (pag - 1) * pageSize;

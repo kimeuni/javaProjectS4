@@ -20,7 +20,7 @@
 		select count(*) from memberS where userDel = 'Y';
 	</select>
 	<select id="getNoticeAllList" resultType="com.spring.javaProjectS4.vo.NoticeVO">
-		select *,timestampdiff(hour,nDate,now()) as hour_diff,dateDiff(now(),nDate) as date_diff from noticeS order by idx desc limit #{startIndexNo},#{pageSize};
+		select *,timestampdiff(hour,nDate,now()) as hour_diff,dateDiff(now(),nDate) as date_diff from noticeS order by nDate desc limit #{startIndexNo},#{pageSize};
 	</select>
 	<select id="getNoticeIdx" resultType="com.spring.javaProjectS4.vo.NoticeVO">
 		select * from noticeS where idx = #{idx};
@@ -123,6 +123,9 @@
 	<select id="getMapOne" resultType="com.spring.javaProjectS4.vo.MapVO">
 		select * from mapS order by idx desc limit 1;
 	</select>
+	<select id="getEmoticonList" resultType="com.spring.javaProjectS4.vo.EmoticonVO">
+		select * from emoticonS order by idx desc;
+	</select>
 	
 	
 	<insert id="setNoticeInput">
@@ -157,6 +160,9 @@
 	</insert>
 	<insert id="getMapInput">
 		insert into mapS values (default,#{vo.place},#{vo.address},#{vo.latitude},#{vo.longitude},default)
+	</insert>
+	<insert id="setEmoticonInput">
+		insert into emoticonS values (default,#{imgStr},default);
 	</insert>
 	
 	<update id="setNoticeUpdate">
@@ -237,5 +243,8 @@
 	</delete>
 	<delete id="setfollowUsedAlarmDel">
 		delete from followUsedAlarmS where usedIdx = #{usedIdx};
+	</delete>
+	<delete id="setEmoticonDel">
+		delete from emoticonS where idx = #{idx};
 	</delete>
 </mapper>

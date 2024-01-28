@@ -57,5 +57,31 @@ public interface CommunityService {
 
 	public FollowVO getFollowerMid(String sMid, String mid);
 
+	public int getParentsReplyIdx(int idx);
+
+	public ReplyVO getCommunityOneIdxReply(int idx);
+
+	public int getCommunityReplyDelTextUpdate(int idx);
+
+	public int setComuProHeaderImgUpdate(MultipartHttpServletRequest headerImgs, String headerImg, String mid);
+
+	public void setHeaderImgDel(String headerImg);
+
+	public int setComuProSogeUpdate(String communityIntroduce, String mid);
+
+	public void setFollowUsedAlarmDel(String followerMid, String followingMid);
+
+	public int setFollowDelete(String followerMid, String followingMid);
+
+	public int setFollowInput(String followerMid, String followingMid);
+
+	public int setFollowAlarmN(String sMid, String followingMid);
+
+	public int setFollowAlarmY(String sMid, String followingMid);
+
+	public List<CommunityVO> getComuBookmarkMidList(int startIndexNo, int pageSize, String mid);
+
+	public List<CommunityVO> getComuRegionList(String region, String sMid, int startIndexNo, int pageSize);
+
 
 }

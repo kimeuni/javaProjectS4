@@ -7,15 +7,41 @@
     <meta charset="UTF-8">
     <title>찾아오시는 길 | ${mapVO.place }</title>
     <jsp:include page="/WEB-INF/views/include/bs4.jsp" />
+    <style>
+    	#map-address-container{
+    		width: 1024px;
+   	 		margin: 0 auto;
+    	}
+    	#map-address-container hr{
+    		margin: 0 auto;
+    		width: 30%;
+    		border: 2px solid #5E5756;
+    	}
+    	#map{
+    		margin: 10px 0px;
+    	}
+    	.address-text-div{
+    		margin: 30px 0px;
+    	}
+    </style>
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/include/header.jsp" />
-    <div class="f-d">
-    	<div style="width: 100%">
-    		<h2>찾아오는 길</h2>
-			<hr/>
-			<div id="map" style="width:100%;height:350px;"></div>
-    	</div>
+	<div id="map-address-container">
+	    <div class="f-d text-center">
+	    	<div style="width: 100%">
+	    		<h2>찾아오는 길</h2>
+				<hr/>
+				<div id="map" style="width:100%;height:350px;"></div>
+	    	</div>
+	    </div>
+	    <div class="f-d">
+	    	<div style="width: 100%">
+	    		<div class="address-text-div">
+			    	<h3>주소 : ${mapVO.address }</h3>
+	    		</div>
+	    	</div>
+	    </div>
     </div>
 <jsp:include page="/WEB-INF/views/include/footer.jsp" />
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=feb7c4c19e6c057416316d3cdb528c05"></script>

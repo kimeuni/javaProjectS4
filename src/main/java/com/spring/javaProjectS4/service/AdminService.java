@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.spring.javaProjectS4.vo.AnswerVO;
 import com.spring.javaProjectS4.vo.AskVO;
 import com.spring.javaProjectS4.vo.BtmCategoryVO;
+import com.spring.javaProjectS4.vo.EmoticonVO;
 import com.spring.javaProjectS4.vo.EventMailVO;
 import com.spring.javaProjectS4.vo.FAQVO;
 import com.spring.javaProjectS4.vo.MainAdvertisementVO;
@@ -161,6 +162,12 @@ public interface AdminService {
 	public int getMapInput(MapVO vo);
 
 	public MapVO getMapOne();
+
+	public int setEmoticonInput(MultipartHttpServletRequest img, String imgStr);
+
+	public List<EmoticonVO> getEmoticonList();
+
+	public int setEmoticonDel(int idx, String img);
 
 
 }

@@ -60,5 +60,33 @@ public interface CommunityDAO {
 
 	public FollowVO getFollowerMid(@Param("sMid") String sMid,@Param("mid") String mid);
 
+	public int getParentsReplyIdx(@Param("idx") int idx);
+
+	public ReplyVO getCommunityOneIdxReply(@Param("idx") int idx);
+
+	public int getCommunityReplyDelTextUpdate(@Param("idx") int idx);
+
+	public int setComuProHeaderImgUpdate(@Param("headerImg") String headerImg,@Param("mid") String mid);
+
+	public int setComuProSogeUpdate(@Param("communityIntroduce") String communityIntroduce,@Param("mid") String mid);
+
+	public void setFollowUsedAlarmDel(@Param("followerMid") String followerMid,@Param("followingMid") String followingMid);
+
+	public int setFollowDelete(@Param("followerMid") String followerMid,@Param("followingMid") String followingMid);
+
+	public int setFollowInput(@Param("followerMid") String followerMid,@Param("followingMid") String followingMid);
+
+	public int setFollowAlarmN(@Param("sMid") String sMid,@Param("followingMid") String followingMid);
+
+	public int setFollowAlarmY(@Param("sMid") String sMid,@Param("followingMid") String followingMid);
+
+	public int getCommunityBookmarkMidRecCnt(@Param("searchString") String searchString);
+
+	public List<CommunityVO> getComuBookmarkMidList(@Param("startIndexNo") int startIndexNo,@Param("pageSize") int pageSize,@Param("mid") String mid);
+
+	public List<CommunityVO> getComuRegionList(@Param("region") String region,@Param("sMid") String sMid,@Param("startIndexNo") int startIndexNo,@Param("pageSize") int pageSize);
+
+	public int getComuRegionRecCnt(@Param("searchString") String searchString);
+
 
 }

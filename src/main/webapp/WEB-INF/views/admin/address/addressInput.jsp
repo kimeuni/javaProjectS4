@@ -57,6 +57,21 @@
     	.f-d{
     		display: flex;
     	}
+    	.bnt-input-style input[type="text"]{
+    		width: 300px;
+    		height: 35px;
+    		border: 1px solid #ccc;
+    		padding-left: 15px;
+    		margin-top: 10px;
+    	}
+    	.bnt-input-style input[type="button"]{
+    		width: 150px;
+    		height: 35px;
+    		border: 1px solid #315eb2;
+    		color: #fff;
+    		background-color: #315eb2;
+    		border-radius: 5px;
+    	}
     </style>
     <script>
     	'use strict'
@@ -112,19 +127,21 @@
 			<div id="admin-main-right-inner-content">
 				<div id="admin-main-menu">
 					<div id="admin-main-menu-str">찾아오는 길 등록 <i class="fa-solid fa-file-pen"></i></div>
-					<div class="f-d">
+					<div class="f-d text-left">
 						<div style="width: 100%">
-							<h2>클릭한 지점에 마커를 표시하여 찾오는 길 등록</h2>
+							<hr/>
+								1. 지도를 클릭하여 지도에 표시할 찾아올 위치를 등록해주세요. <br/>
+								2. 등록할 사이트(장소명)을 입력해주세요.	<br/>
+								3. 등록할 주소를 입력해주세요.	<br/>
+								4. 등록된 주소 및 장소가 없다면 장소명은 '다모아' | 주소명은 '충청북도 청주시 서원구 사직대로 109 4층' 가 자동 설정됩니다.
 							<hr/>
 							<div id="map" style="width:100%;height:350px;"></div>
 							<p><b>지도의 위치를 클릭하여 찾아오는 길을 등록해주세요. </b></p>
 							<c:if test="${mapVO != null }">
 								<div class="f-d">
 									<div style="width: 100%">
-										<div>현재 위치한 위도 : ${mapVO.latitude }</div>
-										<div>현재 위치한 경도 : ${mapVO.longitude }</div>
-										<div>현재 등록된 장소명 : ${mapVO.place }</div>
-										<div>현재 등록된 주소 : ${mapVO.address }</div>
+										<div>현재 위치한 위도 : ${mapVO.latitude } | 현재 위치한 경도 : ${mapVO.longitude }</div>
+										<div>현재 등록된 장소명 : ${mapVO.place } | 현재 등록된 주소 : ${mapVO.address }</div>
 									</div>
 								</div>
 							</c:if>
@@ -159,14 +176,14 @@
 	    // 마커 위치를 클릭한 위치로 옮깁니다
 	    marker.setPosition(latlng);
 	    
-	    var message = '클릭한 위치의 위도는 ' + latlng.getLat() + ' 이고, ';
-	    message += '경도는 ' + latlng.getLng() + ' 입니다';
+	    var message = '<hr/>';
+	    
+	    message += '클릭한 위치의 위도는 ' + latlng.getLat() + ' 이고, ';
+	    message += '경도는 ' + latlng.getLng() + ' 입니다 &nbsp;&nbsp;';
 	    message += '<input type="button" value="처음위치로복귀" onclick="location.reload()"; /> <br/>';
-	    message += '<p>선택한 지점의 장소명 : <input type="text" name="place" id="place" /></p>';
-	    message += '<p>선택한 지점의 주소 : <input type="text" name="address" id="address" /></p>';
-	    message += '<p><input type="button" value="장소저장" onclick="addressSave('+ latlng.getLat() +', '+ latlng.getLng() +')" class="btn btn-success btn-sm" /></p>';
-	    message += '';
-	    message += '';
+	    message += '<div class="bnt-input-style">선택한 지점의 장소명 : <input type="text" name="place" id="place" /></div>';
+	    message += '<div class="bnt-input-style">선택한 지점의 주소 : <input type="text" name="address" id="address" /></div>';
+	    message += '<div class="bnt-input-style"><input type="button" value="장소저장" onclick="addressSave('+ latlng.getLat() +', '+ latlng.getLng() +')"/></div>';
 	    
 	    var resultDiv = document.getElementById('clickLatlng'); 
 	    resultDiv.innerHTML = message;

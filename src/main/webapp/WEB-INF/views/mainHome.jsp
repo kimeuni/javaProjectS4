@@ -71,6 +71,64 @@
 		width: 48%;
 		display: inline-block;
 	}
+	.f-d{
+		display: flex;
+	}
+	#used-container{
+		background-color: #FFF8F1;
+		min-width: 100vw;
+	}
+	.used-container{
+		width: 1024px;
+		margin: 0 auto;
+		height: 655px;
+	}
+	#comu-container{
+		background-color: #F9F9F9;
+		min-width: 100vw;
+	}
+	.comu-container{
+		width: 1024px;
+		margin: 0 auto;
+		height: 655px;
+	}
+	#ask-container{
+		background-color: #F0EFEB;
+		min-width: 100vw;
+	}
+	.ask-container{
+		width: 1024px;
+		margin: 0 auto;
+		height: 655px;
+	}
+	.f-d-7{
+		display : flex;
+		width: 700px;
+	}
+	.f-d-3{
+		display: flex;
+		width: 324px;
+	}
+	.top-text-div{
+		margin-top: 55%;
+		color: orange
+	}
+	.btm-text-div{
+		margin-top: 5%;
+		font-size: 2em;
+		font-weight: bolder;
+	}
+	.btm-btn-div input[type="button"]{
+		margin-top : 5%;
+		width: 150px;
+		height: 40px;
+		line-height: 40px;
+		font-size: 1.2em;
+		background-color: #5E5756;
+		color: #fff;
+		border: 1px solid #5E5756;
+		border-radius: 5px;
+	}
 </style>
 <script>
 	'use strict';
@@ -135,7 +193,48 @@
 			<div id="damoa-ct-img"><img src="${ctp}/data/images/다모아 캐릭터.png" height="655px;"/></div>
 		</div>
 	</div>
-	<div style="height: 1000px;"></div>
+	<div id="used-container">
+		<div class="f-d used-container">
+			<div class="f-d-7">
+				<img src="${ctp}/data/images/중고.png" width="700px" height="655px">
+			</div>
+			<div class="f-d-3 ">
+				<div style="width: 100%; padding: 30px; text-align: right">
+					<div class="top-text-div">중고거래</div>
+					<div class="btm-text-div">행복을 나누는<br/> 중고거래</div>
+					<div class="btm-btn-div"><input type="button" value="중고거래" onclick="location.href='${ctp}/used/usedMain'" /></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="comu-container">
+		<div class="f-d comu-container">
+			<div class="f-d-3">
+				<div style="width: 100%; padding: 30px;">
+					<div class="top-text-div">커뮤니티</div>
+					<div class="btm-text-div">당신의 즐거운<br/> 일상을 공유</div>
+					<div class="btm-btn-div"><input type="button" value="커뮤니티" onclick="location.href='${ctp}/community/communityMain'" /></div>
+				</div>
+			</div>
+			<div class="f-d-7">
+				<img src="${ctp}/data/images/커뮤.png" width="700px" height="655px">
+			</div>
+		</div>
+	</div>
+	<div id="ask-container">
+		<div class="f-d ask-container">
+			<div class="f-d-7">
+				<img src="${ctp}/data/images/문의.png" width="700px" height="655px">
+			</div>
+			<div class="f-d-3">
+				<div style="width: 100%; padding: 30px; text-align: right">
+					<div class="top-text-div">자주하는 질문</div>
+					<div class="btm-text-div">'다모아'에<br/> ■ ■가 궁금해</div>
+					<div class="btm-btn-div"><input type="button" value="자주하는 질문" onclick="location.href='${ctp}/board/FAQList'" /></div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 <jsp:include page="/WEB-INF/views/include/footer.jsp" />
 </body>

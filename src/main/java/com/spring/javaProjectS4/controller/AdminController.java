@@ -27,6 +27,7 @@ import com.spring.javaProjectS4.service.AdminService;
 import com.spring.javaProjectS4.vo.AnswerVO;
 import com.spring.javaProjectS4.vo.AskVO;
 import com.spring.javaProjectS4.vo.BtmCategoryVO;
+import com.spring.javaProjectS4.vo.EmoticonVO;
 import com.spring.javaProjectS4.vo.EventMailVO;
 import com.spring.javaProjectS4.vo.FAQVO;
 import com.spring.javaProjectS4.vo.MainAdvertisementVO;
@@ -1063,7 +1064,18 @@ public class AdminController {
 		// map에 등록된 제일 최신 1개 가져오기
 		MapVO mapVO = adminService.getMapOne();
 		
-		model.addAttribute("mapVO",mapVO);
+		if(mapVO == null) {
+			mapVO =new MapVO();
+			mapVO.setAddress("충청북도 청주시 서원구 사직대로 109 4층");
+			mapVO.setPlace("다모아");
+			mapVO.setLatitude(36.63510174438098);
+			mapVO.setLongitude(127.45952955343128);
+			model.addAttribute("mapVO",mapVO);
+		}
+		else {
+			model.addAttribute("mapVO",mapVO);
+		}
+		
 		return "admin/address/addressInput";
 	}
 	
@@ -1076,6 +1088,47 @@ public class AdminController {
 		
 		if(res != 0) return "1";
 		else return "2";
+	}
+	
+	// 채팅 이모티콘 등록 페이지 이동
+	@RequestMapping(value = "/chatEmoticon", method = RequestMethod.GET)
+	public String emoticonGet(Model model) {
+		
+		List<EmoticonVO> emoVOS = adminService.getEmoticonList();
+		
+		model.addAttribute("emoVOS",emoVOS);
+		model.addAttribute("menuCk","이모티콘");
+		return "admin/chat/emoticon";
+	}
+	
+	// 채팅 이모티콘 등록 처리
+	@RequestMapping(value = "/chatEmoticon", method = RequestMethod.POST)
+	public String emoticonPost(MultipartHttpServletRequest img) {
+		
+		String imgStr = "";
+		int res = adminService.setEmoticonInput(img,imgStr);
+		
+		if(res != 0) return "redirect:/message/emoticonInputY";
+		else return "redirect:/message/emoticonInputN";
+	}
+	
+	// 채팅 이모티콘 삭제 처리
+	@ResponseBody
+	@RequestMapping(value = "/emoticonDel", method = RequestMethod.POST)
+	public String emoticonDelPost(@RequestParam(name="idx",defaultValue = "0",required = false) int idx, String img) {
+		
+		int res = adminService.setEmoticonDel(idx,img);
+		
+		if(res != 0) return "1";
+		else return "2";
+	}
+	
+	// 커뮤니티 신고 리스트 화면 이동
+	@RequestMapping(value = "/communityReportList", method = RequestMethod.GET)
+	public String communityReportListGet(Model model) {
+		
+		model.addAttribute("menuCk","커뮤니티신고");
+		return "admin/community/communityReportList";
 	}
 	
 	// 메일 전송을 위한 메소드

@@ -66,7 +66,7 @@
  		color : #fff;
  		text-decoration: none;
  	}
- 	#admin-member-inner-menu a div, #admin-board-inner-menu a div, #admin-notice-inner-menu a div, #admin-advertisement-inner-menu a div, #admin-ask-inner-menu a div{
+ 	#admin-member-inner-menu a div, #admin-board-inner-menu a div, #admin-notice-inner-menu a div, #admin-advertisement-inner-menu a div, #admin-ask-inner-menu a div, #admin-chat-inner-menu a div{
  		padding-left: 50px;
  		font-size: 1.2em;
  	}
@@ -85,10 +85,12 @@
 		$("#admin-board-inner-menu").hide();
 		$("#admin-notice-inner-menu").hide();
 		$("#admin-advertisement-inner-menu").hide();
+		$("#admin-chat-inner-menu").hide();
 		$("#admin-ask-inner-menu").hide();
 		$("#member-menu-up").hide();
 		$("#board-menu-up").hide();
 		$("#notice-menu-up").hide();
+		$("#chat-menu-up").hide();
 		$("#advertisement-menu-up").hide();
 		$("#ask-menu-up").hide();
 		if('${menuCk}' == '회원리스트' || '${menuCk}' == '회원검색리스트' || '${menuCk}' == '회원탈퇴신청'){
@@ -111,10 +113,15 @@
 			$("#ask-menu-up").show();
 			$("#admin-ask-inner-menu").show();
 		}
-		else if('${menuCk}' == '카테고리관리' || '${menuCk}' == '중고거래신고관리'){
+		else if('${menuCk}' == '카테고리관리' || '${menuCk}' == '중고거래신고관리' || '${menuCk}' =='커뮤니티신고'){
 			$("#board-menu-down").hide();
 			$("#board-menu-up").show();
 			$("#admin-board-inner-menu").show();
+		}
+		else if('${menuCk}' == '이모티콘'){
+			$("#chat-menu-down").hide();
+			$("#chat-menu-up").show();
+			$("#admin-chat-inner-menu").show();
 		}
 	});
 	
@@ -138,6 +145,10 @@
 		$("#ask-menu-down").show();
 		$("#ask-menu-up").hide();
 		$("#admin-ask-inner-menu").slideUp();
+		
+		$("#chat-menu-down").show();
+		$("#chat-menu-up").hide();
+		$("#admin-chat-inner-menu").slideUp();
 	}
 	
 	function memberManagementUp(){
@@ -166,6 +177,10 @@
 		$("#ask-menu-down").show();
 		$("#ask-menu-up").hide();
 		$("#admin-ask-inner-menu").slideUp();
+		
+		$("#chat-menu-down").show();
+		$("#chat-menu-up").hide();
+		$("#admin-chat-inner-menu").slideUp();
 	}
 	
 	function boardManagementUp(){
@@ -194,6 +209,10 @@
 		$("#ask-menu-down").show();
 		$("#ask-menu-up").hide();
 		$("#admin-ask-inner-menu").slideUp();
+
+		$("#chat-menu-down").show();
+		$("#chat-menu-up").hide();
+		$("#admin-chat-inner-menu").slideUp();
 	}
 	
 	function noticeManagementUp(){
@@ -222,6 +241,10 @@
 		$("#ask-menu-down").show();
 		$("#ask-menu-up").hide();
 		$("#admin-ask-inner-menu").slideUp();
+
+		$("#chat-menu-down").show();
+		$("#chat-menu-up").hide();
+		$("#admin-chat-inner-menu").slideUp();
 	}
 	
 	function advertisementManagementUp(){
@@ -250,12 +273,48 @@
 		$("#ask-menu-down").hide();
 		$("#ask-menu-up").show();
 		$("#admin-ask-inner-menu").slideDown();
+		
+		$("#chat-menu-down").show();
+		$("#chat-menu-up").hide();
+		$("#admin-chat-inner-menu").slideUp();
 	}
 	
 	function askManagementUp(){
 		$("#ask-menu-down").show();
 		$("#ask-menu-up").hide();
 		$("#admin-ask-inner-menu").slideUp();
+	}
+	
+	function chatManagementDown(){
+		$("#member-menu-down").show();
+		$("#member-menu-up").hide();
+		$("#admin-member-inner-menu").slideUp();
+		
+		$("#board-menu-down").show();
+		$("#board-menu-up").hide();
+		$("#admin-board-inner-menu").slideUp();
+		
+		$("#notice-menu-down").show();
+		$("#notice-menu-up").hide();
+		$("#admin-notice-inner-menu").slideUp();
+		
+		$("#advertisement-menu-down").show();
+		$("#advertisement-menu-up").hide();
+		$("#admin-advertisement-inner-menu").slideUp();
+		
+		$("#ask-menu-down").show();
+		$("#ask-menu-up").hide();
+		$("#admin-ask-inner-menu").slideUp();
+		
+		$("#chat-menu-down").hide();
+		$("#chat-menu-up").show();
+		$("#admin-chat-inner-menu").slideDown();
+	}
+	
+	function chatManagementUp(){
+		$("#chat-menu-down").show();
+		$("#chat-menu-up").hide();
+		$("#admin-chat-inner-menu").slideUp();
 	}
 </script>
 <div id="admin-left-nav">
@@ -283,8 +342,9 @@
 			<a href="javascript:boardManagementUp()"><div class="admin-inner-menu"><i class="fa-solid fa-angle-down"></i> 게시판 관리</div></a>
 		</div>
 		<div id="admin-board-inner-menu">
-			<a href="${ctp}/admin/categoryManag"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> 카테고리 관리</div></a>
+			<a href="${ctp}/admin/categoryManag"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> 중고거래 카테고리 관리</div></a>
 			<a href="${ctp}/admin/usedReportList"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> 중고거래 신고 관리</div></a>
+			<a href="${ctp}/admin/communityReportList"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> 커뮤니티 신고 관리</div></a>
 		</div>
 		<div id="notice-menu-down">
 			<a href="javascript:noticeManagementDown()"><div class="admin-inner-menu-n"><i class="fa-solid fa-chevron-right"></i> 공지 관리</div></a>
@@ -320,6 +380,16 @@
 		</div>
 		<div id="admin-ask-inner-menu">
 			<a href="${ctp}/admin/askStatusNo"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> 답변대기 문의</div></a>
+			<a href="${ctp}/admin/askStatusYes"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> 완료 문의 삭제</div></a>
+		</div>
+		<div id="chat-menu-down">
+			<a href="javascript:chatManagementDown()"><div class="admin-inner-menu-n"><i class="fa-solid fa-chevron-right"></i> 채팅 관리</div></a>
+		</div>
+		<div id="chat-menu-up">
+			<a href="javascript:chatManagementUp()"><div class="admin-inner-menu"><i class="fa-solid fa-angle-down"></i> 채팅 관리</div></a>
+		</div>
+		<div id="admin-chat-inner-menu">
+			<a href="${ctp}/admin/chatEmoticon"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> 이모티콘</div></a>
 			<a href="${ctp}/admin/askStatusYes"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> 완료 문의 삭제</div></a>
 		</div>
 		<div >

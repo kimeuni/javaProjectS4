@@ -82,6 +82,22 @@ public class MessageController {
 			model.addAttribute("msg", "글이 등록에 실패하였습니다.");
 			model.addAttribute("url","community/communityMain");
 		}
+		else if(msgFalg.equals("emoticonInputY")) {
+			model.addAttribute("msg", "이모티콘 이미지가 등록되었습니다.");
+			model.addAttribute("url","admin/chatEmoticon");
+		}
+		else if(msgFalg.equals("emoticonInputN")) {
+			model.addAttribute("msg", "이모티콘 이미지 등록에 실패하였습니다.");
+			model.addAttribute("url","admin/chatEmoticon");
+		}
+		else if(msgFalg.equals("headerImgInputY")) {
+			model.addAttribute("msg", "헤더 이미지가 변경되었습니다.");
+			model.addAttribute("url","community/communityProfile?mid="+mid);
+		}
+		else if(msgFalg.equals("headerImgInputY")) {
+			model.addAttribute("msg", "헤더 이미지 변경에 실패하였습니다.");
+			model.addAttribute("url","community/communityProfile?mid="+mid);
+		}
 		return "include/message";
 	}
 }

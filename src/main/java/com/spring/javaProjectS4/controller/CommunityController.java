@@ -204,8 +204,44 @@ public class CommunityController {
 	@ResponseBody
 	@RequestMapping(value = "/communityReplyDel", method = RequestMethod.POST)
 	public String communityReplyDelPost(@RequestParam(name="idx",defaultValue = "",required = false) int idx) {
+		int res = 0;
 		
-		int res = communityService.setCommunityReplyDel(idx);
+		// 해당 댓글의 정보 모두 가져오기
+		ReplyVO reVO = communityService.getCommunityOneIdxReply(idx);
+		
+		int parentsReplyIdxCnt = 0;
+		// 대댓글이 있는지 확인
+		parentsReplyIdxCnt = communityService.getParentsReplyIdx(idx);
+			
+		System.out.println(reVO);
+		System.out.println(parentsReplyIdxCnt);
+		if(parentsReplyIdxCnt == 0) {
+			int parentsReplyIdxCnts = communityService.getParentsReplyIdx(reVO.getParentsReplyIdx());
+			ReplyVO rerVO = communityService.getCommunityOneIdxReply(reVO.getParentsReplyIdx());
+			System.out.println(parentsReplyIdxCnts);
+			System.out.println(reVO.getParentsReplyIdx());
+			//System.out.println(rerVO.getContent());
+			if(parentsReplyIdxCnts == 1 && reVO.getParentsReplyIdx() != 0 && rerVO != null && rerVO.getContent().equals("해당 댓글은 삭제되었습니다.")) {
+				System.out.println("들어오는가..");
+				// 대댓글 삭제
+				res = communityService.setCommunityReplyDel(idx);
+				
+				// 원본 댓글 삭제
+				res = communityService.setCommunityReplyDel(reVO.getParentsReplyIdx());
+					
+			}
+			else {
+				// 대댓글이 없을 경우 바로 삭제
+				res = communityService.setCommunityReplyDel(idx);
+			}
+		}
+		else {
+			if(reVO.getParentsReplyIdx() == 0) {
+				// 부모idx가 없는.. (원본 댓글일 경우)
+				// 대댓글이 있을 때 대댓글이 아닌, 원래 댓글을 삭제할 시 '삭제되었습니다.' 로 내용 업데이트 처리
+				res = communityService.getCommunityReplyDelTextUpdate(idx);
+			}
+		}
 		
 		if(res != 0) return "1";
 		else return "2";
@@ -244,7 +280,19 @@ public class CommunityController {
 		else return "2";
 	}
 	
-	// 커뮤니티 프로필
+	// 커뮤니티 상세보기 댓글 신고
+	@ResponseBody
+	@RequestMapping(value = "/communityReplyReport", method = RequestMethod.POST)
+	public String communityReplyReportPost(@RequestParam(name="idx",defaultValue = "",required = false) int idx,
+			String mid, String sMid, String reason) {
+		
+		int res = communityService.communityReportInput(idx,mid,sMid,reason,"Reply");
+		
+		if(res !=0 ) return "1";
+		else return "2";
+	}
+	
+	// 커뮤니티 프로필 화면 이동
 	@RequestMapping(value = "/communityProfile", method = RequestMethod.GET)
 	public String communityProfileGet(Model model, String mid,HttpSession session,
 			@RequestParam(name="idx",defaultValue = "0",required = false) int idx,
@@ -280,5 +328,101 @@ public class CommunityController {
 		model.addAttribute("idx",idx);
 		model.addAttribute("pageSize",pageSize);
 		return "community/communityProfile";
+	}
+	
+	// 커뮤니티 프로필 헤더 이미지 변경
+	@RequestMapping(value = "/communityProfile", method = RequestMethod.POST)
+	public String communityProfilePost(String proMid,Model model,
+			MultipartHttpServletRequest headerImgs) {
+		
+		// 수정 전 헤더 이미지 가져와서 기본 헤더가 아닐시 삭제처리
+		CommunityProfileVO proVO = communityService.getCommunityProfileMid(proMid);
+		if(!proVO.getHeaderImg().equals("기본헤더.png")) {
+			communityService.setHeaderImgDel(proVO.getHeaderImg());
+		}
+		
+		String headerImg = "";
+		int res = communityService.setComuProHeaderImgUpdate(headerImgs,headerImg,proMid);
+		
+		model.addAttribute("mid",proMid);
+		if(res != 0) return "redirect:/message/headerImgInputY";
+		else return "redirect:/message/headerImgInputN";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/communitySogeUpdate", method = RequestMethod.POST)
+	public String communitySogeUpdatePost(String communityIntroduce, String mid) {
+		
+		int res = communityService.setComuProSogeUpdate(communityIntroduce, mid);
+		
+		if(res != 0) return "1";
+		else return "2";
+	}
+
+	// 팔로우 하기, 팔로우 취소
+	@ResponseBody
+	@RequestMapping(value = "/communityFollow",method = RequestMethod.POST)
+	public String usedFollowPost(String followerMid,String followingMid,String flag) {
+		int res = 0;
+		if(flag.equals("No")) {
+			// 팔로우 게시물 알림이 있으면 모두 삭제
+			communityService.setFollowUsedAlarmDel(followerMid,followingMid);
+			res = communityService.setFollowDelete(followerMid,followingMid);
+		}
+		else if(flag.equals("Yes")){
+			res = communityService.setFollowInput(followerMid,followingMid);
+		}
+		
+		if(res != 0) return "1";
+		else return "2";
+	}
+
+	// 팔로우 알람 Y N 변경 처리
+	@ResponseBody
+	@RequestMapping(value = "/followAlarmYN", method = RequestMethod.POST)
+	public String followAlarmYNPost(String sMid ,String followingMid, String flag) {
+		int res = 0;
+		if(flag.equals("N")) {
+			res = communityService.setFollowAlarmN(sMid,followingMid);
+		}
+		else if(flag.equals("Y")) {
+			res = communityService.setFollowAlarmY(sMid,followingMid);
+		}
+		
+		if(res != 0 ) return "1";
+		else return "2";
+	}
+	
+	// 북마크 화면으로 이동하기
+	@RequestMapping(value = "/communityBookmark", method = RequestMethod.GET)
+	public String communityBookmarkGet(String mid,Model model,
+			@RequestParam(name="pag",defaultValue = "1",required = false) int pag,
+			@RequestParam(name="pageSize",defaultValue = "15",required = false) int pageSize
+			) {
+		
+		PageVO pageVO = pageProcess.totRecCnt(pag, pageSize, "bookmark", "", mid);
+		List<CommunityVO> comVOS = communityService.getComuBookmarkMidList(pageVO.getStartIndexNo(),pageSize,mid);
+		
+		model.addAttribute("pageVO",pageVO);
+		model.addAttribute("comVOS",comVOS);
+		model.addAttribute("bookmarkCnt",comVOS.size());
+		return "community/communityBookmark";
+	}
+	
+	// 커뮤니티 지역 검색
+	@RequestMapping(value = "/communityRegion", method = RequestMethod.GET)
+	public String communityRegionGet(Model model, String region, HttpSession session,
+			@RequestParam(name="pag",defaultValue = "1",required = false) int pag,
+			@RequestParam(name="pageSize",defaultValue = "15",required = false) int pageSize
+			) {
+		String sMid = session.getAttribute("sMid")== null ? "" : (String)session.getAttribute("sMid");
+		
+		PageVO pageVO = pageProcess.totRecCnt(pag, pageSize, "comuRegion", "", region);
+		List<CommunityVO> comVOS = communityService.getComuRegionList(region,sMid,pageVO.getStartIndexNo(),pageSize);
+		
+		model.addAttribute("pageVO",pageVO);
+		model.addAttribute("comVOS",comVOS);
+		model.addAttribute("region",region);
+		return "community/communityRegion";
 	}
 }

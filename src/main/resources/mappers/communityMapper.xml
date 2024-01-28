@@ -70,6 +70,45 @@
 	<select id="getFollowerMid" resultType="com.spring.javaProjectS4.vo.FollowVO">
 		select * from followS where followerMid = #{sMid} and followingMid = #{mid};
 	</select>
+	<select id="getParentsReplyIdx" resultType="int">
+		select count(*) from replyS where parentsReplyIdx = #{idx} and parentsReplyIdx > 0;
+	</select>
+	<select id="getCommunityOneIdxReply" resultType="com.spring.javaProjectS4.vo.ReplyVO">
+		select * from ReplyS where idx = #{idx};
+	</select>
+	<select id="getCommunityBookmarkMidRecCnt" resultType="int">
+		select count(*) from communityS comu, bookmarkS b where b.bookmarkMid = #{searchString} and comu.userDel = 'N' and b.part = 'community' and comu.idx = b.partIdx;
+	</select>
+	<select id="getComuBookmarkMidList"  resultType="com.spring.javaProjectS4.vo.CommunityVO">
+		select comu.*,timestampdiff(second,cDate,now()) as second_diff,
+		timestampdiff(minute,cDate,now()) as minute_diff,
+		timestampdiff(hour,cDate,now()) as hour_diff,
+		(select profile from memberS mem where comu.mid = mem.mid ) as profile,
+		(select nickName from memberS mem where comu.mid = mem.mid ) as nickName,
+		(select count(*) from goodS gds where gds.part = 'community' and gds.partIdx = comu.idx and gds.goodMid = #{mid} ) as midGoodCheck,
+		(select count(*) from goods gds where gds.part = 'community' and gds.partIdx = comu.idx and gds.userDel = 'N') as goodCnt,
+		(select count(*) from replyS rps where rps.part = 'community' and rps.partIdx = comu.idx and rps.userDel = 'N') as replyCnt,
+		(select count(*) from bookmarkS bms where bms.part = 'community' and bms.partIdx = comu.idx and bms.bookmarkMid = #{mid} ) as midBookmarkCheck,
+		(select count(*) from bookmarkS bms where bms.part = 'community' and bms.partIdx = comu.idx and bms.userDel = 'N') as bookmarkCnt
+		from communityS comu, bookmarkS b where bookmarkMid = #{mid} and b.part = 'community' and comu.idx = b.partIdx and 
+		comu.userDel = 'N' order by idx desc limit #{startIndexNo},#{pageSize};
+	</select>
+	<select id="getComuRegionList" resultType="com.spring.javaProjectS4.vo.CommunityVO">
+		select *,timestampdiff(second,cDate,now()) as second_diff,
+		timestampdiff(minute,cDate,now()) as minute_diff,
+		timestampdiff(hour,cDate,now()) as hour_diff,
+		(select profile from memberS mem where comu.mid = mem.mid ) as profile,
+		(select nickName from memberS mem where comu.mid = mem.mid ) as nickName,
+		(select count(*) from goodS gds where gds.part = 'community' and gds.partIdx = comu.idx and gds.goodMid = #{sMid} ) as midGoodCheck,
+		(select count(*) from goods gds where gds.part = 'community' and gds.partIdx = comu.idx and gds.userDel = 'N') as goodCnt,
+		(select count(*) from replyS rps where rps.part = 'community' and rps.partIdx = comu.idx and rps.userDel = 'N') as replyCnt,
+		(select count(*) from bookmarkS bms where bms.part = 'community' and bms.partIdx = comu.idx and bms.bookmarkMid = #{sMid} ) as midBookmarkCheck,
+		(select count(*) from bookmarkS bms where bms.part = 'community' and bms.partIdx = comu.idx and bms.userDel = 'N') as bookmarkCnt
+		from communityS comu where userDel = 'N' and region = #{region} order by idx desc limit #{startIndexNo},#{pageSize};
+	</select>
+	<select id="getComuRegionRecCnt" resultType="int">
+		select count(*) from communityS where userDel = 'N' and region = #{searchString};
+	</select>
 	
 	<insert id="setCommunityInput">
 		insert into communityS values (default,#{mid},#{content},#{imgsStr},default,#{region},default);
@@ -88,6 +127,9 @@
 	</insert>
 	<insert id="communityReportInput">
 		insert into communityReportS values (default,#{part},#{idx},#{mid},#{sMid},default,#{reason});
+	</insert>
+	<insert id="setFollowInput">
+		insert into followS values (default,#{followerMid},#{followingMid},default,default);
 	</insert>
 	
 	<delete id="setGoodNo">
@@ -111,4 +153,26 @@
 	<delete id="setCommunityReplyDel">
 		delete from replyS where idx = #{idx};
 	</delete>
+	<delete id="setFollowUsedAlarmDel">
+		delete from followUsedAlarmS where alarmMid = #{followerMid} and UpUsedMid = #{followingMid};
+	</delete>
+	<delete id="setFollowDelete">
+		delete from followS where followerMid = #{followerMid} and followingMid = #{followingMid};
+	</delete>
+	
+	<update id="getCommunityReplyDelTextUpdate">
+		update rePlyS set content = '해당 댓글은 삭제되었습니다.' where idx = #{idx};
+	</update>
+	<update id="setComuProHeaderImgUpdate">
+		update communityProfileS set headerImg = #{headerImg} where mid = #{mid};
+	</update>
+	<update id="setComuProSogeUpdate">
+		update communityProfileS set communityIntroduce = #{communityIntroduce} where mid = #{mid};
+	</update>
+	<update id="setFollowAlarmN">
+		update followS set alarm = 'N' where followerMid = #{sMid} and followingMid = #{followingMid};
+	</update>
+	<update id="setFollowAlarmY">
+		update followS set alarm = 'Y' where followerMid = #{sMid} and followingMid = #{followingMid};
+	</update>
 </mapper>

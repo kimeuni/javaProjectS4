@@ -2,11 +2,12 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <c:set var="ctp" value="${pageContext.request.contextPath}"/>
+<% pageContext.setAttribute("newLine", "\n"); %>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>${proVO.nickName} @${proVO.mid}</title>
+    <title>커뮤니티 | ${region}</title>
     <jsp:include page="/WEB-INF/views/include/bs4.jsp" />
     <style>
     	#community-main-container{
@@ -207,15 +208,16 @@
 			color: #000;
 			text-align: center;
 		}
-		.f-d-menu{
+		.f-d-menu a{
+			display : flex;
 			height: 60px;
-			display: flex;
 			width: 100%;
-			justify-content: left;
+			justify-content: center;
 			font-size: 1.5em;
 			line-height: 60px;
 			border-left: 1px solid #ddd;
-			padding-left: 35px;
+			text-decoration: none;
+			color: #000;
 		}
 		.checked-yes{
 			background-color: #fff;
@@ -360,199 +362,6 @@
 			border-radius: 5px;
 			text-decoration: none;
 		}
-		.comu-main-go a{
-			display: flex;
-			width: 50px;
-			font-size: 1.1em;
-			height: 40px;
-			justify-content: center;
-			text-decoration: none;
-			color: #000;
-			margin-top: 19px;
-			padding-right: 20px;
-		}
-		.pro-header-img-div{
-			list-style: none;
-			margin: 0px;
-			padding: 0px;
-		}
-		.pro-header-img-div ul{
-			list-style: none;
-			margin: 0px;
-			padding: 0px;
-		}
-		.pro-header-img-div{
-			position: relative;
-		}
-		.pro-header-img-div:hover .pro-header-file-div{
-			display: block;
-		}
-		.pro-header-file-div img{
-			width: 100%;
-			height: 100%;
-			cursor: pointer;
-		}
-		.pro-header-file-div input[type="button"]{
-			height: 1px;
-    		width: 1px;
-    		margin: -1px;
-    		overflow: hidden;
-			position: absolute;
-			border: 0px;
-			background-color: rgba(0,0,0,0);
-		}
-		.pro-header-file-div{
-			position: absolute;
-			width: 100px;
-			height: 100px;
-			top: 25%;
-			left : 40%;
-			display: none;
-		}
-		.pro-profile-text-div{
-			padding: 20px
-		}
-		.f-follow{
-			display : flex;
-			margin-left: auto;
-			line-height: 55px;
-			text-align: center;
-			justify-content: center;
-		}
-		.f-follow a{
-			padding: 3px;
-			border: 1px solid;
-			width: 100px;
-			line-height: 30px;
-			text-decoration: none;
-			color: #000;
-			border-radius: 5px;
-		}
-		.store-info-str{
-			padding-right: 20px;
-		}
-		#f-follow-alarm{
-			display : flex;
-			line-height: 55px;
-			padding-left: 20px;
-			text-align: center;
-		}
-		#f-follow-alarm a{
-			width: 30px;
-			height: 30px;
-			line-height : 30px;
-			border: 1px solid;
-			text-decoration: none;
-			color: #000;
-			margin: 10px;
-		}
-		.f-alarm-ok{
-			background-color: #faf1f2;
-			color: red !important;
-			border: 1px solid red !important;
-		}
-		.used-shop-go-btn{
-			display : flex;
-			line-height: 55px;
-			text-align: center;
-			justify-content: flex-end; 
-			margin-left: auto;
-		}
-		.used-shop-go-btn a{
-			padding: 10px;
-			border: 1px solid #5E5756;
-			width: 100px;
-			line-height: 30px !important;
-			text-decoration: none;
-			color: #fff;
-			border-radius: 5px;
-			background-color: #5E5756
-		}
-		.used-shop-go-btn .pro-soge-update-show a,.used-shop-go-btn .pro-soge-update-close a{
-			margin-right : 10px;
-			background-color : #fff;
-			border: 1px solid #5E5756;
-			color: #000;
-		}
-		.pro-soge-update-close a{
-			background-color: #EBDDCC !important;
-		}
-		.pro-nickName-div{
-			font-weight: bold;
-			font-size: 1.2em;
-			margin-top: 10px;
-			margin-bottom: 5px;
-		}
-		.header-img-container-f{
-			position: fixed;
-			top:25%;
-			left: 50%;
-    		transform: translate(-50%, 0);
-			width: 1000px;
-			border: 1px solid gray;
-			background-color:#fff;
-		}
-		#file-btns-div b{
-    		height: 25px;
-    		width: 70px;
-    		border: 1px solid;
-    		padding: 10px;
-    		cursor: pointer;
-    		background-color: #fff;
-    		margin-right: 10px;
-    	}
-    	#file-btns-div a{
-    		color: gray;
-    		text-decoration: none;
-    	}
-    	#file-btns-div input[type="file"]{
-    		position : absolute;
-    		height: 1px;
-    		width: 1px;
-    		margin: -1px;
-    		overflow: hidden;
-    	}
-    	.file-btn-div{
-    		display: inline-block;
-    	}
-    	#headerImg-demo{
-    		margin: 10px 0px;
-    	}
-    	#img-url-div input[type="text"]{
-    		width: 350px;
-    		height : 35px;
-    		border: 1px solid gray;
-    		padding: 0px 10px;
-    		margin-bottom: 20px;
-    	}
-    	#img-url-div input[type="button"]{
-    		width: 350px;
-    		height : 35px;
-    		background-color: #eee;
-    		border: 1px solid gray;
-    		font-weight: bold;
-    	}
-    	.c-h-div-btn {
-    		display : flex;
-    		margin-left: auto; 
-    	}
-    	.c-h-div-btn a{
-    		width: 100px;
-    		display: flex;
-    		height: 35px;
-    		line-height: 35px;
-    		justify-content: center;
-    		border: 1px solid;
-    		text-decoration: none;
-    		color: #000;
-    		margin-right: 10px;
-    		margin-bottom: 10px;
-    	}
-    	.pro-comuSoge-div{
-    		max-height: 150px;
-    		overflow: auto;
-    		padding: 10px 0px;
-    	}
     </style>
     <script>
     	'use strict'
@@ -849,194 +658,28 @@
         		});
         	}
         }
-        
-		//헤더 이미지 DB에서 띄우기
-    	$(function() {
-    		let headerImgs = $("#headerImgs").val();
-    		if(headerImgs == ""){
-	   			$("#headerImges").attr("src", '${ctp}/data/communityProfile/${proVO.headerImg}');
-    		}
-    	});
-    
-	    // 선택한 이미지 화면에 출력 (미리보기)
-	    function imgCheck(e){
-	    	if(e.files && e.files[0]){
-	    		let reader = new FileReader();
-				reader.onload = function(e){
-					document.getElementById("headerImges").src = e.target.result;
-				}
-				reader.readAsDataURL(e.files[0]);
-			}
-	    }
-        
-        // 헤더 변경 화면 감추기
-        $(function() {
-        	$(".header-img-container-f").hide();
-        });
-        
-        // 헤더 변경 화면 보여주기
-        function headerImgShow(){
-        	$(".header-img-container-f").show();
-        }
-        
-        // 헤더 등록
-	    function headerImgInput(){
-	    	let headerImg = document.getElementById("headerImgs").value;
-	  		
-	    	if(headerImg.trim() == ""){
-	    		alert("이미지를 등록해주세요.");
-	    		return false;
-	    	}
-	  		else if(headerImg.trim() != "") {
-		    	let ext = headerImg.substring(headerImg.lastIndexOf(".")+1).toLowerCase();
-		    	let maxSize = 1024 * 1024 * 10;
-		    	let fileSize = document.getElementById("headerImgs").files[0].size;
-		  		// 업로드 가능한 확장명 파일
-		  		if(ext != 'jpg' && ext != 'gif'&& ext != 'png' && ext != 'jpeg'){
-					alert("업로드 가능한 파일은 'jpg/gif/png/jpeg'만 가능합니다.")
-					return false;
-				}
-				// 파일 용량 체크
-				else if(fileSize > maxSize) {
-					alert("업로드할 파일의 최대용량은 10MByte입니다.");
-					return false;
-				}
-		    	else {
-		    		headerForm.submit();
-		    	}
-	  		}
-	    }
-        
-        function closeHeader(){
-        	$(".header-img-container-f").hide();
-        }
-        
-        // 프로필 소개 수정
-        $(function(){
-        	$(".pro-soge-update-close").hide();
-        	$(".pro-comuSoge-input").hide();
-        });
-        
-        function proSogeUpdateShow(){
-        	$(".pro-soge-update-close").show();
-        	$(".pro-comuSoge-input").show();
-        	$(".pro-soge-update-show").hide();
-        }
-        function proSogeUpdateClose(){
-        	$(".pro-soge-update-show").show();
-        	$(".pro-soge-update-close").hide();
-        	$(".pro-comuSoge-input").hide();
-        	
-        	let communityIntroduce = $("#communityIntroduce").val();
-        	let mid = '${sMid}';
-
-        	let query = {
-        		mid : mid,
-        		communityIntroduce : communityIntroduce
-        	}
-        	$.ajax({
-        		url : "${ctp}/community/communitySogeUpdate",
-        		type : "post",
-        		data : query,
-        		success : function(res){
-        			if(res == "1") location.reload();
-        			else if(res == "2") alert("프로필 소개 수정에 실패하였습니다.")
-        		},
-        		error : function(){
-        			alert("전송오류")
-        		}
-        	});
-        }
-
-		// 팔로우 취소
-		function followNo(followingMid){
-			let query = {
-					followerMid : '${sMid}',
-					followingMid : followingMid,
-					flag : "No"
-			}
-			$.ajax({
-				url : "${ctp}/community/communityFollow",
-				type : "post",
-				data : query,
-				success : function(res){
-					if(res == "1") location.reload();
-					else if(res == "2") alert("팔로우 취소에 실패하였습니다.");
-				},
-				error : function(){
-					alert("전송오류");
-				}
-			});
-		}
-		
-		// 팔로우 하기
-		function followYes(followingMid){
-			let query = {
-					followerMid : '${sMid}',
-					followingMid : followingMid,
-					flag : "Yes"
-			}
-			$.ajax({
-				url : "${ctp}/community/communityFollow",
-				type : "post",
-				data : query,
-				success : function(res){
-					if(res == "1") location.reload();
-					else if(res == "2") alert("팔로우에 실패하였습니다.");
-				},
-				error : function(){
-					alert("전송오류");
-				}
-			});
-		}
-		
-
-		// 해당 알림 N
-		function fAlarmNo(sMid,followingMid){
-			let query = {
-				sMid : sMid,
-				followingMid : followingMid,
-				flag : 'N'
-			}
-			$.ajax({
-				url : "${ctp}/community/followAlarmYN",
-				type : "post",
-				data : query,
-				success : function(res){
-					if(res == "1") location.reload();
-					else if(res == "2") alert("알림 끄기에 실패하였습니다.")
-				},
-				error : function(){
-					alert("전송오류")
-				}
-			});
-		}
-		
-		// 해당 알림 Y
-		function fAlarmYes(sMid,followingMid){
-			let query = {
-				sMid : sMid,
-				followingMid : followingMid,
-				flag : 'Y'
-			}
-			$.ajax({
-				url : "${ctp}/community/followAlarmYN",
-				type : "post",
-				data : query,
-				success : function(res){
-					if(res == "1") location.reload();
-					else if(res == "2") alert("알림 켜기에 실패하였습니다.")
-				},
-				error : function(){
-					alert("전송오류")
-				}
-			});
-		}
     </script>
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/include/header.jsp" />
 <div id="community-main-container">
+    <div id="community-main-img-container">
+    	<div id="community-main-img-text-div">
+    		<div id="community-text-left">
+    			<div id="community-text-div">
+	    			당신의 즐거운<br/> 일상을 공유
+    			</div>
+    			<div id="community-usedinput-btn">
+    				<c:if test="${sMid != null }">
+	    				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">글 올리기</button>
+	    			</c:if>
+   				</div>
+    		</div>
+    		<div id="community-img-right">
+    			<img src="${ctp}/data/images/다모아_커뮤니티.png" width="100%" height="315px" />
+    		</div>
+    	</div>
+    </div>
     <!-- 커뉴니티 글 보이기 -->
     <div id="community-list-container">
     	<div class="f-d">
@@ -1056,87 +699,16 @@
 	    	<div class="f-d-8" >
 	    		<div style="width: 100%">
     				<div class="f-d f-sc">
-    					<div class="f-d-menu checked-yes">
-    						<c:if test="${empty flag}">
-	    						<div class="comu-main-go"><a href="${ctp}/community/communityMain"><i class="fa-solid fa-angle-left"></i></a></div>
-    						</c:if>
-    						<c:if test="${flag == 'comuContent'}">
-	    						<div class="comu-main-go"><a href="${ctp}/community/communityContent?pag=${pag}&pageSize=${pageSize}&idx=${idx}"><i class="fa-solid fa-angle-left"></i></a></div>
-    						</c:if>
-    						<div>${proVO.nickName} &nbsp;&nbsp; <span style="color: gray; font-size: 0.8em;">${proVO.comuCnt} 게시물</span></div>
-    					</div>
-    				</div>
-    				<div class="f-d">
-    					<div style="width: 100%">
-	    					<div>
-	    						<c:if test="${sMid == proVO.mid }">
-	    							<ul class="pro-header-img-div">
-	    								<li> <img src="${ctp}/data/communityProfile/${proVO.headerImg}" width="100%" height="250px" />
-	    									<ul class="pro-header-file-div">
-	    										<li>
-	    											<label for="headerImg"><img src="${ctp}/data/communityProfile/추가.png"></label>
-	    											<input type="button" name="headerImg" id="headerImg" onclick="headerImgShow()">
-	    										</li>
-	    									</ul>
-	    								</li>
-	    							</ul>
-	    						</c:if>
-	    						<c:if test="${sMid != proVO.mid }">
-		    						<img src="${ctp}/data/communityProfile/${proVO.headerImg}" width="100%" height="250px" />
-	    						</c:if>
+    					<c:if test="${sMid != null }">
+	    					<div class="f-d-3-menu checked-no"><a href="${ctp}/community/communityMain">전체</a></div>
+	    					<div class="f-d-3-menu checked-yes"><a href="${ctp}/community/communityRegion?region=${region}">지역</a></div>
+	    					<div class="f-d-3-menu checked-no"><a href="">팔로우</a></div>
+    					</c:if>
+    					<c:if test="${sMid == null }">
+    						<div style="width: 100%">
+		    					<div class="f-d-menu checked-yes"><a href="${ctp}/community/communityMain">전체</a></div>
     						</div>
-    						<div class="pro-profile-text-div">
-	    						<div class="f-d">
-			    					<div class="pro-img-div">
-			    						<img src="${ctp}/data/member/${proVO.profile}" width="80px" height="80px">
-		    						</div>
-	    							<div>
-	    								<c:if test="${sMid != proVO.mid && sMid != null}">
-	    									<div class="f-d">
-											<c:if test="${empty fVO }">
-		    									<div class="f-d" style="justify-content: flex-end;">
-													<div class="f-follow" style="margin-left: 10px;"><a href="javascript:followYes('${proVO.mid}')"><i class="fa-solid fa-user-plus"></i> 팔로우</a></div>
-												</div>
-											</c:if>
-											<c:if test="${!empty fVO }">
-												<div id="f-follow-alarm">
-													<c:if test="${fVO.alarm == 'Y' }">
-														<a href="javascript:fAlarmNo('${sMid}','${proVO.mid}')" class="f-alarm-ok"><div><i class="fa-regular fa-bell-slash"></i></div></a>
-													</c:if>
-													<c:if test="${fVO.alarm != 'Y' }">
-														<a href="javascript:fAlarmYes('${sMid}','${proVO.mid}')"><div><i class="fa-solid fa-bell"></i></div></a>
-													</c:if>
-												</div>
-												<div class="f-d " style="justify-content: flex-end; margin: auto; margin-left: auto">
-													<div class="f-follow"><a href="javascript:followNo('${proVO.mid}')"><i class="fa-solid fa-user-check"></i> 팔로잉</a></div>
-												</div>
-											</c:if>
-											</div>
-										</c:if>
-	    							</div>
-	    							<div class="used-shop-go-btn">
-	    								<c:if test="${sMid == proVO.mid }">
-		    								<div class="pro-soge-update-show"><a href="javascript:proSogeUpdateShow()">프로필 소개 수정</a></div>
-		    								<div class="pro-soge-update-close"><a href="javascript:proSogeUpdateClose()">프로필 소개 저장</a></div>
-	    								</c:if>
-	    								<div><a href="${ctp}/used/usedStore?mid=${proVO.mid}">상점보기 <i class="fa-solid fa-right-to-bracket"></i></a></div>
-    								</div>
-	    						</div>
-		    					<div class="pro-nickName-div">${proVO.nickName }</div>
-		    					<div class="pro-mid-div" >@${proVO.mid }</div>
-		    					<div class="pro-comuSoge-div" >${proVO.communityIntroduce }</div>
-		    					<div class="pro-comuSoge-input" ><textarea rows="4" id="communityIntroduce" name="communityIntroduce" style="width: 100%">${proVO.communityIntroduce }</textarea> </div>
-		    					<div class="f-d">
-		    						<div>팔로우 중</div>
-		    						<div>팔로워</div>
-		    					</div>
-	    					</div>
-    					</div>
-    				</div>
-    				<div class="f-d">
-   						<div class="f-d-3-menu checked-ok"><a href="${ctp}/community/communityProfile?mid=${proVO.mid }">게시물</a></div>
-   						<div class="f-d-3-menu checked-no"><a href="">미디어</a></div>
-   						<div class="f-d-3-menu checked-no"><a href="">좋아요</a></div>
+    					</c:if>
     				</div>
 		    		<c:forEach var="comVO" items="${comVOS }">
 		    			<c:set var="img" value="${comVO.imgs.split('/')}" />
@@ -1162,7 +734,7 @@
 		    			<div class="f-d btb pd comu-content">
 		    				<div class="f-d-1-img profile-img">
 		    					<div>
-				    				<a href=""><img src="${ctp}/data/member/${comVO.profile}" ></a>
+				    				<a href="${ctp}/community/communityProfile?mid=${comVO.mid}"><img src="${ctp}/data/member/${comVO.profile}" ></a>
 		    					</div>
 		    				</div>
 		    				<div class="f-d-9 pd-i">
@@ -1180,7 +752,7 @@
 		    						</div>
 		    						<div class="f-d pt-2 comu-content-inner">
 		    							<div style="width: 100%">
-			    							<a href="communityContent?idx=${comVO.idx}&pag=${pageVO.pag }&pageSize=${pageVO.pageSize}&flag=profile&mid=${comVO.mid}">${comVO.content }</a>
+			    							<a href="communityContent?idx=${comVO.idx}&pag=${pageVO.pag }&pageSize=${pageVO.pageSize}">${comVO.content }</a>
 		    							</div>
 	    							</div>
 		    						<div class="f-d pt-2 ">
@@ -1192,10 +764,10 @@
 		    							<c:if test="${fn:length(img) == 2 && !empty img[0]}">
 		    								<div class="f-d heit">
 		    									<div class="f-d-5">
-				    								<div class=""><a href="${ctp}/data/community/${img[0]}" target="_blank"><img src="${ctp}/data/community/${img[0]}" width="100%" /></a></div>
+				    								<div ><a href="${ctp}/data/community/${img[0]}" target="_blank"><img src="${ctp}/data/community/${img[0]}" width="100%" /></a></div>
 		    									</div>
 		    									<div class="f-d-5">
-				    								<div class=""><a href="${ctp}/data/community/${img[1]}" target="_blank"><img src="${ctp}/data/community/${img[1]}" width="100%"/></a></div>
+				    								<div ><a href="${ctp}/data/community/${img[1]}" target="_blank"><img src="${ctp}/data/community/${img[1]}" width="100%"/></a></div>
 		    									</div>
 		    								</div>
 		    							</c:if>
@@ -1224,7 +796,8 @@
 			    							<div class="f-d-3 replyhover " style="color: #aaa"><a><i class="fa-regular fa-comment"> ${comVO.replyCnt }</i></a></div>
 		    							</c:if>
 		    							<c:if test="${sMid != null }">
-			    							<div class="f-d-3 replyhover reply-input"><button type="button" data-toggle="modal" data-target="#replyModal" onclick="modalView('${comVO.nickName}','${comVO.mid }','${comVO.idx }','${fn:replace(comVO.content,'<br/>',' ') }','${comVO.profile }')"><i class="fa-regular fa-comment"></i> ${comVO.replyCnt }</button></div>
+		    								<c:set var="content" value="${fn:replace(comVO.content,'<br/>', ' ') }"/>
+			    							<div class="f-d-3 replyhover reply-input"><button type="button" data-toggle="modal" data-target="#replyModal" onclick="modalView('${comVO.nickName}','${comVO.mid }','${comVO.idx }','${content}','${comVO.profile }')"><i class="fa-regular fa-comment"></i> ${comVO.replyCnt }</button></div>
 		    							</c:if>
 		    							<c:if test="${comVO.midGoodCheck == 0 }">
 			    							<div class="f-d-3 goodhover"><a href="javascript:goodYes(${comVO.idx})"><i class="fa-regular fa-heart"></i> ${comVO.goodCnt }</a></div>
@@ -1246,14 +819,14 @@
 			    <br/>
 				<div class="text-center">
 					<ul class="pagination justify-content-center">
-					    <c:if test="${pageVO.pag > 1}"><li class="page-item"><a class="page-link text-secondary" href="communityProfile?pag=1&pageSize=${pageVO.pageSize}&mid=${mid}"><i class="fa-solid fa-angles-left"></i></a></li></c:if>
-					  	<c:if test="${pageVO.curBlock > 0}"><li class="page-item"><a class="page-link text-secondary" href="communityProfile?pag=${(pageVO.curBlock-1)*pageVO.blockSize+1}&pageSize=${pageVO.pageSize}&mid=${mid}"><i class="fa-solid fa-angle-left"></i></a></li></c:if>
+					    <c:if test="${pageVO.pag > 1}"><li class="page-item"><a class="page-link text-secondary" href="communityRegion?pag=1&pageSize=${pageVO.pageSize}&region=${region}"><i class="fa-solid fa-angles-left"></i></a></li></c:if>
+					  	<c:if test="${pageVO.curBlock > 0}"><li class="page-item"><a class="page-link text-secondary" href="communityRegion?pag=${(pageVO.curBlock-1)*pageVO.blockSize+1}&pageSize=${pageVO.pageSize}&region=${region}"><i class="fa-solid fa-angle-left"></i></a></li></c:if>
 					  	<c:forEach var="i" begin="${(pageVO.curBlock*pageVO.blockSize)+1}" end="${(pageVO.curBlock*pageVO.blockSize)+pageVO.blockSize}" varStatus="st">
-						    <c:if test="${i <= pageVO.totPage && i == pageVO.pag}"><li class="page-item active"><a class="page-link bg-secondary border-secondary" href="communityProfile?pag=${i}&pageSize=${pageVO.pageSize}&mid=${mid}">${i}</a></li></c:if>
-						    <c:if test="${i <= pageVO.totPage && i != pageVO.pag}"><li class="page-item"><a class="page-link text-secondary" href="communityProfile?pag=${i}&pageSize=${pageVO.pageSize}&mid=${mid}">${i}</a></li></c:if>
+						    <c:if test="${i <= pageVO.totPage && i == pageVO.pag}"><li class="page-item active"><a class="page-link bg-secondary border-secondary" href="communityRegion?pag=${i}&pageSize=${pageVO.pageSize}&region=${region}">${i}</a></li></c:if>
+						    <c:if test="${i <= pageVO.totPage && i != pageVO.pag}"><li class="page-item"><a class="page-link text-secondary" href="communityRegion?pag=${i}&pageSize=${pageVO.pageSize}&region=${region}">${i}</a></li></c:if>
 					  	</c:forEach>
-					  	<c:if test="${pageVO.curBlock < pageVO.lastBlock}"><li class="page-item"><a class="page-link text-secondary" href="communityProfile?pag=${(pageVO.curBlock+1)*pageVO.blockSize+1}&pageSize=${pageVO.pageSize}&mid=${mid}"><i class="fa-solid fa-angle-right"></i></a></li></c:if>
-					  	<c:if test="${pageVO.pag < pageVO.totPage}"><li class="page-item"><a class="page-link text-secondary" href="communityProfile?pag=${pageVO.totPage}&pageSize=${pageVO.pageSize}&mid=${mid}"><i class="fa-solid fa-angles-right"></i></a></li></c:if>
+					  	<c:if test="${pageVO.curBlock < pageVO.lastBlock}"><li class="page-item"><a class="page-link text-secondary" href="communityRegion?pag=${(pageVO.curBlock+1)*pageVO.blockSize+1}&pageSize=${pageVO.pageSize}&region=${region}"><i class="fa-solid fa-angle-right"></i></a></li></c:if>
+					  	<c:if test="${pageVO.pag < pageVO.totPage}"><li class="page-item"><a class="page-link text-secondary" href="communityRegion?pag=${pageVO.totPage}&pageSize=${pageVO.pageSize}&region=${region}"><i class="fa-solid fa-angles-right"></i></a></li></c:if>
 					</ul>
 				</div>
 	    		</div>
@@ -1385,45 +958,6 @@
     	<input type="hidden" id="communityReportMid">
     </div>
   </div>
-</div>
-
-<!-- 헤더 변경 화면 -->
-<div class="header-img-container-f">
-	<form name="headerForm" method="post" enctype="multipart/form-data" >
-		<div class="f-d">
-			<div style="width: 100%">
-				<div class="text-center"><h3>헤더 이미지 변경</h3></div>
-				<div class="text-center">
-					헤더 이미지는 900px x 250px 을 권장합니다.
-				</div>
-				<hr/>
-				<div id="file-btns-div" style="margin-left: 20px;">
-					<div class="file-btn-div">
-						<label for="headerImgs">
-							<b>사진 등록</b>
-						</label>
-						<input type="file" name="headerImgs" id="headerImgs" onchange="imgCheck(this)" />
-					</div>
-					<div class="file-btn-div">
-						<a href="javascript:location.reload()">
-							<b>삭제</b>
-						</a>
-					</div>
-				</div>
-				<div id="headerImg-demo" class="text-center">
-					<img id="headerImges"  style="border: 1px solid;" height="250px" width="900px">
-				</div>
-				<hr/>
-				<div class="f-d">
-					<div class="c-h-div-btn">
-						<a href="javascript:closeHeader()">창닫기</a>
-						<a href="javascript:headerImgInput()">헤더 변경하기</a>
-					</div>
-				</div>
-			</div>
-		</div>
-		<input type="hidden" id="proMid" name="proMid" value="${proVO.mid }" />
-	</form>
 </div>
 <jsp:include page="/WEB-INF/views/include/footer.jsp" />
 <script>

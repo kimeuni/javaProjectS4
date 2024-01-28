@@ -23,6 +23,7 @@ import com.spring.javaProjectS4.dao.AdminDAO;
 import com.spring.javaProjectS4.vo.AnswerVO;
 import com.spring.javaProjectS4.vo.AskVO;
 import com.spring.javaProjectS4.vo.BtmCategoryVO;
+import com.spring.javaProjectS4.vo.EmoticonVO;
 import com.spring.javaProjectS4.vo.EventMailVO;
 import com.spring.javaProjectS4.vo.FAQVO;
 import com.spring.javaProjectS4.vo.MainAdvertisementVO;
@@ -322,7 +323,7 @@ public class AdminServiceImpl implements AdminService {
 			saveFileName = sdf.format(date) + "_" + uuid + "_" + fileImg.getOriginalFilename();
 			
 			
-			writeFile(fileImg,saveFileName);
+			writeFile(fileImg,saveFileName,"mainAd");
 			
 			mImg= saveFileName;
 			res = adminDAO.setAdInput(mImg, url);
@@ -335,9 +336,15 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	// 파일 서버 폴더에 저장
-	private void writeFile(MultipartFile fileImg, String saveFileName) throws IOException {
+	private void writeFile(MultipartFile fileImg, String saveFileName, String str) throws IOException {
 		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
-		String realPath = request.getSession().getServletContext().getRealPath("/resources/data/advertisement/");
+		String realPath = "";
+		if(str.equals("mainAd")) {
+			realPath = request.getSession().getServletContext().getRealPath("/resources/data/advertisement/");
+		}
+		else if(str.equals("emoticon")) {
+			realPath = request.getSession().getServletContext().getRealPath("/resources/data/emoticon/");
+		}
 		
 		byte[] data = fileImg.getBytes();
 		FileOutputStream fos = new FileOutputStream(realPath + saveFileName);
@@ -588,6 +595,49 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public MapVO getMapOne() {
 		return adminDAO.getMapOne();
+	}
+
+	@Override
+	public int setEmoticonInput(MultipartHttpServletRequest img, String imgStr) {
+		int res = 0;
+		try {
+			MultipartFile fileImg = img.getFile("img");
+			
+			String saveFileName = "";
+			// 저장되는 파일명 중복되지 않도록 처리 (날짜 + 랜덤 2자리 숫자 + 원본 파일명)
+			Date date = new Date();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmmss");
+			UUID uid = UUID.randomUUID();
+			String uuid = uid.toString().substring(0,2);
+			saveFileName = sdf.format(date) + "_" + uuid + "_" + fileImg.getOriginalFilename();
+			
+			
+			writeFile(fileImg,saveFileName,"emoticon");
+			
+			imgStr= saveFileName;
+			res = adminDAO.setEmoticonInput(imgStr);
+		} catch (IOException e) {
+			System.out.println("IO오류" + e.getMessage());
+			e.printStackTrace();
+		}
+		return res;
+	}
+
+	@Override
+	public List<EmoticonVO> getEmoticonList() {
+		return adminDAO.getEmoticonList();
+	}
+
+	@Override
+	public int setEmoticonDel(int idx, String img) {
+		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
+		String realPath = request.getSession().getServletContext().getRealPath("/resources/data/emoticon/");
+		String oFilePath = "";
+		
+		oFilePath = realPath + img;
+		
+		fileDelete(oFilePath);
+		return adminDAO.setEmoticonDel(idx);
 	}
 
 }

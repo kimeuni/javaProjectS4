@@ -50,6 +50,7 @@ public class HomeController {
 		// 로그인한 유저 광고 체크
 		UserShowAdvertisementVO userAdVO = homeService.getUserShowAd(mid);
 		
+		model.addAttribute("damoa","damoa");
 		model.addAttribute("mainAdVO",mainAdVO);
 		model.addAttribute("userAdVO",userAdVO);
 		
@@ -135,8 +136,18 @@ public class HomeController {
 	@RequestMapping(value = "/address", method = RequestMethod.GET)
 	public String addressGet(Model model) {
 		MapVO mapVO = homeService.getMapOne();
-		
-		model.addAttribute("mapVO",mapVO);
+
+		if(mapVO == null) {
+			mapVO =new MapVO();
+			mapVO.setAddress("충청북도 청주시 서원구 사직대로 109 4층");
+			mapVO.setPlace("다모아");
+			mapVO.setLatitude(36.63510174438098);
+			mapVO.setLongitude(127.45952955343128);
+			model.addAttribute("mapVO",mapVO);
+		}
+		else {
+			model.addAttribute("mapVO",mapVO);
+		}
 		return "address/address";
 	}
 	

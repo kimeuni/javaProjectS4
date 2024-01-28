@@ -230,8 +230,6 @@ public class UsedController {
 	@ResponseBody
 	@RequestMapping(value = "/usedFollow",method = RequestMethod.POST)
 	public String usedFollowPost(String followerMid,String followingMid,String flag) {
-		System.out.println(followerMid);
-		System.out.println(followingMid);
 		int res = 0;
 		if(flag.equals("No")) {
 			// 팔로우 게시물 알림이 있으면 모두 삭제
