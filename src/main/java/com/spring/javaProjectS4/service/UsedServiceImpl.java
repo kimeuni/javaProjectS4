@@ -311,4 +311,9 @@ public class UsedServiceImpl implements UsedService {
 	public void setfollowUsedAlarmDel(int idx) {
 		usedDAO.setfollowUsedAlarmDel( idx);
 	}
+
+	@Override
+	public List<UsedVO> getUsedRegionList(int startIndexNo, int pageSize, String region) {
+		return usedDAO.getUsedRegionList( startIndexNo, pageSize, region);
+	}
 }

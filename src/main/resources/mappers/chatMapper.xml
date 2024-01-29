@@ -7,5 +7,27 @@
 	<select id="getChatGroupCheck" resultType="com.spring.javaProjectS4.vo.ChatGroupVO">
 		select * from chatGroupS where (mid1 = #{mid} or mid2 = #{mid}) and (mid1 = #{sMid} or mid2 = #{sMid}); 
 	</select>
+	<select id="getUsedIdx" resultType="com.spring.javaProjectS4.vo.UsedVO">
+		select * from usedS where idx = #{usedIdx};
+	</select>
+	<select id="getChatGroupList" resultType="com.spring.javaProjectS4.vo.ChatGroupVO">
+		select *,(select imgs from usedS u where cg.usedIdx = u.idx) as imgs,
+		(select nickName from memberS mem where mem.mid = cg.mid1) as nickName1,
+		(select nickName from memberS mem where mem.mid = cg.mid2) as nickName2,
+		(select profile from memberS mem where mem.mid = cg.mid1) as profile1,
+		(select profile from memberS mem where mem.mid = cg.mid2) as profile2,
+		(select chat from chatS c where cg.idx = c.chatIdx order by idx desc limit 1 ) as chat,
+		(select chatDate from chatS c where cg.idx = c.chatIdx order by idx desc limit 1 ) as cDate
+		from chatGroupS cg where cg.mid1 = #{myMid} or cg.mid2 = #{myMid}
+	</select>
+	<select id="getMemberMid" resultType="com.spring.javaProjectS4.vo.MemberVO">
+		select * from memberS where mid = #{mid};
+	</select>
 	
+	<insert id="setChatGroupInput">
+		insert into chatgroupS values (default,#{usedIdx},#{mid},#{sMid});
+	</insert>
+	<insert id="setFirstChat">
+		insert into chatS values (default,#{idx},#{mid},#{sMid},0,#{title},default,default,#{whoMid});
+	</insert>
 </mapper>

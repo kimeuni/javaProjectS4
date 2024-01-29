@@ -72,6 +72,41 @@ public class UsedController {
 		return "used/usedMain";
 	}
 	
+	// 중고거래-지역 화면 이동
+	@RequestMapping(value = "/usedRegion", method = RequestMethod.GET)
+	public String usedRegionGet(Model model,HttpSession session, String regionStr,
+			@RequestParam(name="pag",defaultValue = "1", required = false) int pag,
+			@RequestParam(name="pageSize",defaultValue = "40", required = false) int pageSize
+			) {
+		List<TopCategoryVO> tVOS = usedService.getTopCategoryList();
+		List<MidCategoryVO> mVOS = usedService.getMidCategoryList();
+		List<BtmCategoryVO> bVOS = usedService.getBtmCategoryList();
+		
+		PageVO pageVO = pageProcess.totRecCnt(pag, pageSize, "used", "region", regionStr);
+		List<UsedVO> usedVOS = usedService.getUsedRegionList(pageVO.getStartIndexNo(),pageSize,regionStr);
+		
+		String mid = session.getAttribute("sMid")== null ? "" : (String)session.getAttribute("sMid");
+		
+		// 지역 찾기 (서울/충남/충북 등..)
+		if(!mid.equals("")) {
+			MemberVO mVO = usedService.getMemberMid(mid);
+			String [] region1 = null;
+			region1 = mVO.getAddress().split("/");
+			String[] region2 = region1[1].split(" ");
+			String region = region2[0];
+			
+			model.addAttribute("region",region);
+		}
+		
+		model.addAttribute("tVOS",tVOS);
+		model.addAttribute("mVOS",mVOS);
+		model.addAttribute("bVOS",bVOS);
+		model.addAttribute("pageVO",pageVO);
+		model.addAttribute("usedVOS",usedVOS);
+		
+		return "used/usedRegion";
+	}
+	
 	// 중고거래 상품 등록 화면 이동
 	@RequestMapping(value ="/usedInput",method = RequestMethod.GET)
 	public String usedInputGet(Model model) {

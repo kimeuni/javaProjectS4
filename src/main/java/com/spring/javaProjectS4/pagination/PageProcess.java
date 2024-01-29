@@ -91,6 +91,9 @@ public class PageProcess {
 			else if(part.equals("sale")) {
 				totRecCnt = usedDAO.getSaleUsedMidRecCnt(searchString);
 			}
+			else if(part.equals("region")) {
+				totRecCnt = usedDAO.getUsedRegionRecCnt(searchString);
+			}
 		}
 		if(section.equals("usedLike")) {
 			if(part.equals("")) {
@@ -151,6 +154,11 @@ public class PageProcess {
 		if(section.equals("comuRegion")) {
 			if(part.equals("")) {
 				totRecCnt = communityDAO.getComuRegionRecCnt(searchString);
+			}
+		}
+		if(section.equals("adminUserReport")) {
+			if(part.equals("")) {
+				totRecCnt = adminDAO.getUserReportRecCnt();
 			}
 		}
 		

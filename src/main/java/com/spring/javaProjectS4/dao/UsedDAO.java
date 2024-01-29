@@ -112,5 +112,9 @@ public interface UsedDAO {
 	public void setUsedReportNoDelete(@Param("idx") int idx);
 
 	public void setfollowUsedAlarmDel(@Param("idx") int idx);
+
+	public int getUsedRegionRecCnt(@Param("searchString") String searchString);
+
+	public List<UsedVO> getUsedRegionList(@Param("startIndexNo") int startIndexNo,@Param("pageSize") int pageSize,@Param("region") String region);
 	
 }

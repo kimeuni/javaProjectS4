@@ -54,17 +54,55 @@
     	.emo-s input[type="radio"]{
     		display: none;
     	}
+    	.chat-input-btn a{
+    		display: flex;
+    		width: 7%;
+    		padding: 10px;
+    		text-decoration: none;
+    		color: #000;
+    	}
     	.chat-input-btn{
     		position:relative;
     		border-bottom: 1px solid #ddd;
     		border-top: 1px solid #ddd;
     	}
     	.chat-input-btn input[type="text"]{
-    		width: 80%;
+    		width: 93%;
     		padding-left: 10px;
     		border: 1px solid #ddd;
     		border-radius: 5px;
     		outline: none;
+    	}
+    	.chat-height{
+    		height: 410px;
+    		overflow: auto;
+    	}
+    	.f-d-7{
+    		display: flex;
+    		width: 70%;
+    	}
+    	.inner-r-chat{
+    		border: 1px solid #ddd;
+    		max-width: 100%;
+    		padding: 7px;
+    		border-radius: 10px;
+    		background-color: #eee;
+    	}
+    	.f-end{
+    		justify-content: flex-end;
+    	}
+    	.f-start{
+    		justify-content: flex-start;
+    	}
+    	.inner-l-chat{
+    		border: 1px solid #aaa;
+    		max-width: 100%;
+    		padding: 7px;
+    		border-radius: 10px;
+    	}
+    	.f-d-l{
+    		margin-right: auto;
+    		margin-left: 3px;
     	}
     </style>
     <script>
@@ -104,9 +142,34 @@
 					</div>
 				</div>
 			</div>
-			<div class="p-2" style="height: 420px;">
+			<div class="p-2 chat-height">
 				<div class="f-d">
-					<div></div>
+					<div style="width: 100%">
+						<!-- 오른쪽 -->
+						<div class="f-d-7 f-d-r text-right mb-2">
+							<div style="width: 100%">
+								안읽음 2024-01-30-10:10
+								<div class="f-d f-end">
+									<div class="inner-r-chat">
+										안농 <br/>
+										만나서 반가웡!!  asdasdsadsadssad dsad sad sad asdsad
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- 왼쪽 -->
+						<div class="f-d-7 f-d-l mb-2">
+							<div style="width: 100%">
+								<div class="text-left">2024-01-30-10:10 안읽음</div>
+								<div class="f-d f-start">
+									<div class="inner-l-chat text-left">
+										안농 <br/>
+										만나서 반가웡!!  asdasdsadsadssad dsad sad sad asdsad
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 			<div id="emoticon-demo"></div>

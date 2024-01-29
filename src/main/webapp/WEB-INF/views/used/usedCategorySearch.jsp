@@ -6,7 +6,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>중고거래</title>
+    <title>중고거래 | 카테고리</title>
     <jsp:include page="/WEB-INF/views/include/bs4.jsp" />
     <style>
     	#used-main-container{

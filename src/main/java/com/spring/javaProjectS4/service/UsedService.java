@@ -102,5 +102,8 @@ public interface UsedService {
 
 	public void setfollowUsedAlarmDel(int idx);
 
+	public List<UsedVO> getUsedRegionList(int startIndexNo, int pageSize, String region);
+
+
 
 }

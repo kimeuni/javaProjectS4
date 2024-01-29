@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <c:set var="ctp" value="${pageContext.request.contextPath}"/>
 <style>
 	#select-chat{
@@ -64,31 +65,55 @@
 </style>
 <div id="select-chat">전체대화</div>
 <div id="chat-list-div">
-	<div class="f-d chat-g-hover">
-		<div class="f-d-2">
-			<a href=""><div class="c-m-profile-img"><img src="${ctp}/data/images/다모아 캐릭터.png" ></div></a>
-		</div>
-		<div class="f-d-6">
-			<div style="width: 100%">
-				<div class="f-d p-2 chat-a-go">
-					<div style="width: 100%">
-						<a href="">
-							<div class="c-g-nick-div-b">닉네임</div>
-							<div class="f-d">
-								<div class="f-6">
-									<div>채팅 내용...</div>
+	<c:forEach var="cgVO" items="${cgVOS }">
+		<c:set var="img" value="${fn:split(cgVO.imgs,'/') }" />
+		<div class="f-d chat-g-hover">
+			<div class="f-d-2">
+				<div class="c-m-profile-img">
+					<c:if test="${memVO.profile == cgVO.profile1 }">
+						<img src="${ctp}/data/member/${cgVO.profile2}" >
+					</c:if>
+					<c:if test="${memVO.profile == cgVO.profile2 }">
+						<img src="${ctp}/data/member/${cgVO.profile1}" >
+					</c:if>
+				</div>
+			</div>
+			<div class="f-d-6">
+				<div style="width: 100%">
+					<div class="f-d p-2 chat-a-go">
+						<div style="width: 100%">
+							<a href="${ctp}/chat/chatContent?usedIdx=${cgVO.usedIdx}&mid=${cgVO.mid1}&sMid=${cgVO.mid2}">
+								<div class="c-g-nick-div-b">
+									<c:if test="${memVO.nickName == cgVO.nickName1 }">
+										${cgVO.nickName2}
+									</c:if>
+									<c:if test="${memVO.nickName == cgVO.nickName2 }">
+										${cgVO.nickName1}
+									</c:if>
 								</div>
-								<div class="f-4">
-									<div class="f-d-r">2024-01-29</div>
+								<div class="f-d">
+									<div class="f-6">
+										<div>
+											<c:if test="${fn:length(cgVO.chat) >12 }">
+												${fn:substring(cgVO.chat,0,12)}...
+											</c:if>
+											<c:if test="${fn:length(cgVO.chat) <=12 }">
+												${cgVO.chat }
+											</c:if>
+										</div>
+									</div>
+									<div class="f-4">
+										<div class="f-d-r">${fn:substring(cgVO.CDate,0,10)}</div>
+									</div>
 								</div>
-							</div>
-						</a>
+							</a>
+						</div>
 					</div>
 				</div>
 			</div>
+			<div class="f-d-2">
+				<div class="c-used-img"><img src="${ctp}/data/used/${img[0]}" ></div>
+			</div>
 		</div>
-		<div class="f-d-2">
-			<div class="c-used-img"><img src="${ctp}/data/images/다모아 캐릭터.png" ></div>
-		</div>
-	</div>
+	</c:forEach>
 </div>

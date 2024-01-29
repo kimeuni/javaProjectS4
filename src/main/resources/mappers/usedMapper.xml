@@ -107,6 +107,15 @@
 	<select id="getUsedMidListCnt" resultType="int">
 		select count(*) from usedS where mid = #{mid};
 	</select>
+	<select id="getUsedRegionRecCnt" resultType="int">
+		select count(*) from usedS where region = #{searchString} and userDel = 'N';
+	</select>
+	<select id="getUsedRegionList" resultType="com.spring.javaProjectS4.vo.UsedVO">
+		select *,timestampdiff(second,uploadDate,now()) as second_diff,timestampdiff(minute,uploadDate,now()) as minute_diff,
+			timestampdiff(hour,uploadDate,now()) as hour_diff, timestampdiff(day,uploadDate,now()) as day_diff, 
+			timestampdiff(month,uploadDate,now()) as month_diff, timestampdiff(year,uploadDate,now()) as year_diff
+			from usedS where userDel = 'N' and region = #{region} order by uploadDate desc limit #{startIndexNo},#{pageSize};
+	</select>
 	
 	<insert id="setUsedInput">
 		insert into usedS values (default,#{imgsStr},#{title},#{topCategoryIdx},#{midCategoryIdx},#{btmCategoryIdx},#{region},#{usedState},#{exchange},#{money},#{delivery},#{content},#{mid},default,default,default,default,default);

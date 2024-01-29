@@ -116,11 +116,57 @@ public class AdminController {
 		
 		List<MemberVO> mVOS = adminService.getUserDelList(pageVO.getStartIndexNo(),pageSize);
 		
+		model.addAttribute("pageVO",pageVO);
 		model.addAttribute("mVOS",mVOS);
 		model.addAttribute("menuCk","회원탈퇴신청");
 		return "admin/member/userDelList";
 	}
 	
+	// 관리자-신고 회원 리스트 화면 이동
+	@RequestMapping(value = "/memberReport",method = RequestMethod.GET)
+	public String memberReportGet(Model model,
+			@RequestParam(name="pag", defaultValue = "1", required = false) int pag,
+			@RequestParam(name="pageSize", defaultValue = "10", required = false) int pageSize
+			) {
+		
+		PageVO pageVO = pageProcess.totRecCnt(pag, pageSize, "adminUserReport", "", "");
+		
+		List<MemberVO> mVOS = adminService.getUserReportList(pageVO.getStartIndexNo(),pageSize);
+		
+		model.addAttribute("pageVO",pageVO);
+		model.addAttribute("mVOS",mVOS);
+		model.addAttribute("menuCk","회원신고리스트");
+		return "admin/member/userReport";
+	}
+	
+	// 관리자-신고 누적 신고수 10 개 영구정지 처리
+	@ResponseBody
+	@RequestMapping(value = "/memberReport", method = RequestMethod.POST)
+	public String memberReportPost(String mid) {
+		
+		String[] midArr = null;
+		if(mid.indexOf("/") != -1) {
+			midArr = mid.split("/");
+			
+			// 영구정지 처리
+			for(int i=0; i<midArr.length; i++) {
+				
+				// 메인광고 삭제
+				//adminService.setUserShowDelMid(midArr[i]);
+				
+				// 계정 영구정지
+				adminService.setUserAccountRUpdate(midArr[i]);
+			}
+			return "1";
+		}
+		else {
+			// 메인광고 삭제
+			//adminService.setUserShowDelMid(mid);
+			// 계정 영구정지
+			adminService.setUserAccountRUpdate(mid);
+			return "1";
+		}
+	}
 	// 관리자-탈퇴회원 30일 지난 계정 삭제
 	@ResponseBody
 	@RequestMapping(value = "/memberUserDel", method = RequestMethod.POST)

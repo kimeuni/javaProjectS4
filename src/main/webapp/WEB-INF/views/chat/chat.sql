@@ -33,3 +33,11 @@ create table chatS(
 );
 
 drop table chatS;
+
+
+select *,(select imgs from usedS u where cg.usedIdx = u.idx) as imgs,
+(select nickName from memberS mem where mem.mid = cg.mid1) as nickName1,
+(select nickName from memberS mem where mem.mid = cg.mid2) as nickName2,
+(select chat from chatS c where cg.idx = c.chatIdx order by idx desc limit 1 ) as chat,
+(select chatDate from chatS c where cg.idx = c.chatIdx order by idx desc limit 1 ) as cDate
+from chatGroupS cg where cg.mid1 = 'admin' or cg.mid2 = 'admin'

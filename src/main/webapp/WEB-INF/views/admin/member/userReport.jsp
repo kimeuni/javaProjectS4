@@ -210,26 +210,26 @@
     		}
     	}
     	
-    	// 계정삭제 버튼으로 개별 삭제
-    	function accountDel(mid,nickName){
-    		let ans = confirm(nickName+"님의 계정을 삭제하시겠습니까?");
+    	// 영구정지 버튼으로 개별 영구정지
+    	function userReportBtn(mid,nickName){
+    		let ans = confirm(nickName+"님의 계정을 영구정지 처리 하시겠습니까?");
     		if(ans){
     			$.ajax({
-    				url : "${ctp}/admin/memberUserDel",
+    				url : "${ctp}/admin/memberReport",
     				type : "post",
     				data : {mid : mid},
     				success : function(res){
-    					alert("삭제되었습니다.");
+    					alert("영구정지 처리되었습니다.");
 						location.reload();
     				},
     				error : function(){
-    					alert("전송오류(userDelList.jsp)")
+    					alert("전송오류")
     				}
     			});
     		}
     	}
     	
-    	// 선택 삭제
+    	// 선택 정지
     	function choiceDel(){
     		let mid = '';
     		let nickName = '';
@@ -247,22 +247,22 @@
     		nickName = nickName.substring(0,nickName.length-1);
     		
     		if(mid.trim() == ""){
-    			alert("삭제할 계정을 선택해주세요.");
+    			alert("영구 정지 처리할 계정을 선택해주세요.");
     			return false;
     		}
     		
-    		let ans = confirm(nickName+"님의 계정을 삭제하시겠습니까?");
+    		let ans = confirm(nickName+"님의 계정을 영구정지 처리 하시겠습니까?");
     		if(ans){
     			$.ajax({
-    				url : "${ctp}/admin/memberUserDel",
+    				url : "${ctp}/admin/memberReport",
     				type : "post",
     				data : {mid : mid},
     				success : function(res){
-						alert("삭제되었습니다.");
+						alert("영구정지 처리되었습니다.");
 						location.reload();
     				},
     				error : function(){
-    					alert("전송오류(userDelList.jsp)")
+    					alert("전송오류")
     				}
     			});
     		}
@@ -273,14 +273,14 @@
 <jsp:include page="/WEB-INF/views/include/adminMenu.jsp" />
 	<div id="admin-memberListcontainer">
 		<div id="admin-memberList-right-content">
-			<div id="top-menu-str">탈퇴 신청 회원 리스트</div>
+			<div id="top-menu-str">회원 신고 관리</div>
 			<div id="admin-memberList-right-inner-content">
 				<div id="admin-memberList-inner-content">
-					<div id="admin-userDelList-menu-str">탈퇴 신청 회원 리스트 <i class="fa-solid fa-users-slash"></i></div>
+					<div id="admin-userDelList-menu-str">회원 신고 관리 리스트 <i class="fa-solid fa-users-slash"></i></div>
 					<hr/>
 						<div style="text-align: left">
-							1. 탈퇴 후 30일이 지나면 <span style="color: red">계정 삭제</span> 해주세요.<br/>
-							2. 30일이 지난 계정은 <span style="color: red">분홍색으로 제일 상단에 표시</span>됩니다.
+							1. 총 신고 개수가 <span style="color: red">10개가 누적</span>되면 해당 유저를 <span style="color: red">영구정지 처리</span>해주세요. <br/>
+							2. 총 신고 개수가 10개면 제일 상단에 분홍색으로 표시됩니다.
 						</div>
 					<hr/>
 					<div id="go-btn-div">
@@ -288,11 +288,11 @@
 							<a href="${ctp}/admin/memberList">회원 리스트 이동 <i class="fa-solid fa-right-from-bracket"></i></a>
 						</div>
 						<div id="memberReport-go">
-							<a href="${ctp}/admin/memberReport">회원 신고 관리 이동<i class="fa-solid fa-right-from-bracket"></i></a>
+							<a href="${ctp}/admin/memberUserDel">회원 탈퇴 신청 이동<i class="fa-solid fa-right-from-bracket"></i></a>
 						</div>
 					</div>
 					<div id="choice-Del-btn">
-						<a href="javascript:choiceDel()">선택 삭제</a>
+						<a href="javascript:choiceDel()">선택 정지</a>
 					</div>
 						<table class="table table-hover text-center">
 							<thead>
@@ -302,32 +302,32 @@
 									<th>닉네임</th>
 									<th>이메일</th>
 									<th>가입일</th>
-									<th>탈퇴 경과</th>
-									<th>계정 삭제</th>
+									<th>총 신고 수</th>
+									<th>영구정지</th>
 								</tr>
 							</thead>
 							<tbody>
 								<c:forEach var="mVO" items="${mVOS}" varStatus="st">
-									<c:if test="${mVO.date_diff > 30 }">
+									<c:if test="${mVO.totReportCnt >= 10 }">
 										<tr style="background-color: #F08282; color: #fff">
 											<th><input type="checkbox" name="ckS" class="ckS" value="${mVO.mid}/${mVO.nickName}"/></th>
 											<td>${mVO.name}</td>
 											<td>${mVO.nickName}</td>
 											<td>${mVO.email}</td>
 											<td>${fn:substring(mVO.startDate,0,10)}</td>
-											<td>${mVO.date_diff}</td>
-											<td><button onclick="accountDel('${mVO.mid}','${mVO.nickName}')">계정 삭제</button></td>
+											<td>${mVO.totReportCnt}</td>
+											<td><button onclick="userReportBtn('${mVO.mid}','${mVO.nickName}')">영구정지</button></td>
 										</tr>
 									</c:if>
-									<c:if test="${mVO.date_diff <= 30 }">
+									<c:if test="${mVO.totReportCnt < 10 }">
 										<tr>
 											<td>x</td>
 											<td>${mVO.name}</td>
 											<td>${mVO.nickName}</td>
 											<td>${mVO.email}</td>
 											<td>${fn:substring(mVO.startDate,0,10)}</td>
-											<td>${mVO.date_diff}</td>
-											<td>삭제 불가</td>
+											<td>${mVO.totReportCnt}</td>
+											<td>영구정지 불가</td>
 										</tr>
 									</c:if>
 								</c:forEach>
@@ -336,14 +336,14 @@
 					<br/>
 					<div class="text-center">
 						<ul class="pagination justify-content-center">
-						    <c:if test="${pageVO.pag > 1}"><li class="page-item"><a class="page-link text-secondary" href="memberUserDel?pag=1&pageSize=${pageVO.pageSize}"><i class="fa-solid fa-angles-left"></i></a></li></c:if>
-						  	<c:if test="${pageVO.curBlock > 0}"><li class="page-item"><a class="page-link text-secondary" href="memberUserDel?pag=${(pageVO.curBlock-1)*pageVO.blockSize+1}&pageSize=${pageVO.pageSize}"><i class="fa-solid fa-angle-left"></i></a></li></c:if>
+						    <c:if test="${pageVO.pag > 1}"><li class="page-item"><a class="page-link text-secondary" href="memberReport?pag=1&pageSize=${pageVO.pageSize}"><i class="fa-solid fa-angles-left"></i></a></li></c:if>
+						  	<c:if test="${pageVO.curBlock > 0}"><li class="page-item"><a class="page-link text-secondary" href="memberReport?pag=${(pageVO.curBlock-1)*pageVO.blockSize+1}&pageSize=${pageVO.pageSize}"><i class="fa-solid fa-angle-left"></i></a></li></c:if>
 						  	<c:forEach var="i" begin="${(pageVO.curBlock*pageVO.blockSize)+1}" end="${(pageVO.curBlock*pageVO.blockSize)+pageVO.blockSize}" varStatus="st">
-							    <c:if test="${i <= pageVO.totPage && i == pageVO.pag}"><li class="page-item active"><a class="page-link bg-secondary border-secondary" href="memberUserDel?pag=${i}&pageSize=${pageVO.pageSize}">${i}</a></li></c:if>
-							    <c:if test="${i <= pageVO.totPage && i != pageVO.pag}"><li class="page-item"><a class="page-link text-secondary" href="memberUserDel?pag=${i}&pageSize=${pageVO.pageSize}">${i}</a></li></c:if>
+							    <c:if test="${i <= pageVO.totPage && i == pageVO.pag}"><li class="page-item active"><a class="page-link bg-secondary border-secondary" href="memberReport?pag=${i}&pageSize=${pageVO.pageSize}">${i}</a></li></c:if>
+							    <c:if test="${i <= pageVO.totPage && i != pageVO.pag}"><li class="page-item"><a class="page-link text-secondary" href="memberReport?pag=${i}&pageSize=${pageVO.pageSize}">${i}</a></li></c:if>
 						  	</c:forEach>
-						  	<c:if test="${pageVO.curBlock < pageVO.lastBlock}"><li class="page-item"><a class="page-link text-secondary" href="memberUserDel?pag=${(pageVO.curBlock+1)*pageVO.blockSize+1}&pageSize=${pageVO.pageSize}"><i class="fa-solid fa-angle-right"></i></a></li></c:if>
-						  	<c:if test="${pageVO.pag < pageVO.totPage}"><li class="page-item"><a class="page-link text-secondary" href="memberUserDel?pag=${pageVO.totPage}&pageSize=${pageVO.pageSize}"><i class="fa-solid fa-angles-right"></i></a></li></c:if>
+						  	<c:if test="${pageVO.curBlock < pageVO.lastBlock}"><li class="page-item"><a class="page-link text-secondary" href="memberReport?pag=${(pageVO.curBlock+1)*pageVO.blockSize+1}&pageSize=${pageVO.pageSize}"><i class="fa-solid fa-angle-right"></i></a></li></c:if>
+						  	<c:if test="${pageVO.pag < pageVO.totPage}"><li class="page-item"><a class="page-link text-secondary" href="memberReport?pag=${pageVO.totPage}&pageSize=${pageVO.pageSize}"><i class="fa-solid fa-angles-right"></i></a></li></c:if>
 						</ul>
 					</div>
 				</div>

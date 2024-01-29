@@ -169,5 +169,9 @@ public interface AdminService {
 
 	public int setEmoticonDel(int idx, String img);
 
+	public List<MemberVO> getUserReportList(int startIndexNo, int pageSize);
+
+	public void setUserAccountRUpdate(String mid);
+
 
 }

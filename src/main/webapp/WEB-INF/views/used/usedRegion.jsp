@@ -6,7 +6,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>중고거래</title>
+    <title>중고거래 | ${region}</title>
     <jsp:include page="/WEB-INF/views/include/bs4.jsp" />
     <style>
     	#used-main-container{
@@ -314,8 +314,9 @@
     		</div>
     	</div>
     </div>
-    <h2 class="used-list-container mg-10">최근 등록 상품</h2>
+    <h2 class="used-list-container mg-10">내 지역 거래 | ${region}</h2>
     <div class="used-list-container">
+    	<c:if test="${empty usedVOS}"><div>해당 지역(${region})에서 작성한 중고거래 상품이 존재하지 않습니다.</div></c:if>
     	<c:forEach var="usedVO" items="${usedVOS}">
     		<c:set var="sImg" value="${usedVO.imgs.split('/')}" />
 	    	<div class="used-list-content-div">

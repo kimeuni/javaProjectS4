@@ -180,6 +180,12 @@ public interface AdminDAO {
 
 	public int setEmoticonDel(@Param("idx") int idx);
 
+	public List<MemberVO> getUserReportList(@Param("startIndexNo") int startIndexNo,@Param("pageSize") int pageSize);
+
+	public int getUserReportRecCnt();
+
+	public void setUserAccountRUpdate(@Param("mid") String mid);
+
 
 
 }

@@ -126,6 +126,12 @@
 	<select id="getEmoticonList" resultType="com.spring.javaProjectS4.vo.EmoticonVO">
 		select * from emoticonS order by idx desc;
 	</select>
+	<select id="getUserReportList" resultType="com.spring.javaProjectS4.vo.MemberVO">
+		select * from memberS where totReportCnt > 0 and userDel = 'N' order by totReportCnt desc limit #{startIndexNo},#{pageSize};
+	</select>
+	<select id="getUserReportRecCnt" resultType="int">
+		select count(*) from memberS where totReportCnt > 0 and userDel = 'N';
+	</select>
 	
 	
 	<insert id="setNoticeInput">
@@ -185,6 +191,9 @@
 	</update>
 	<update id="setAskStatusUpdate">
 		update askS set status = '답변완료' where idx = #{idx};
+	</update>
+	<update id="setUserAccountRUpdate">
+		update memberS set userDel = 'R' where mid = #{mid};
 	</update>
 	
 	<delete id="setUserAccountDel">

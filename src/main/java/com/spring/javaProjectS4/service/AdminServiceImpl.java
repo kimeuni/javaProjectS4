@@ -640,4 +640,14 @@ public class AdminServiceImpl implements AdminService {
 		return adminDAO.setEmoticonDel(idx);
 	}
 
+	@Override
+	public List<MemberVO> getUserReportList(int startIndexNo, int pageSize) {
+		return adminDAO.getUserReportList( startIndexNo, pageSize);
+	}
+
+	@Override
+	public void setUserAccountRUpdate(String mid) {
+		adminDAO.setUserAccountRUpdate( mid);
+	}
+
 }

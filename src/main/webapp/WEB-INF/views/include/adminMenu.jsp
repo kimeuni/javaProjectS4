@@ -93,7 +93,7 @@
 		$("#chat-menu-up").hide();
 		$("#advertisement-menu-up").hide();
 		$("#ask-menu-up").hide();
-		if('${menuCk}' == '회원리스트' || '${menuCk}' == '회원검색리스트' || '${menuCk}' == '회원탈퇴신청'){
+		if('${menuCk}' == '회원리스트' || '${menuCk}' == '회원검색리스트' || '${menuCk}' == '회원탈퇴신청' || '${menuCk}' == '회원신고리스트'){
 			$("#member-menu-down").hide();
 			$("#member-menu-up").show();
 			$("#admin-member-inner-menu").show();
@@ -355,8 +355,6 @@
 		<div id="admin-notice-inner-menu">
 			<a href="${ctp}/admin/noticeInput"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> 공지 작성</div></a>
 			<a href="${ctp}/admin/noticeManagement"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> 공지 관리</div></a>
-			<a href="${ctp}/admin/eventInput"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> 이벤트 등록</div></a>
-			<a href="${ctp}/admin/noticeManagement"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> 이벤트 관리</div></a>
 			<a href="${ctp}/admin/FAQInput"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> FAQ 등록</div></a>
 			<a href="${ctp}/admin/FAQManagement"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> FAQ 관리</div></a>
 		</div>
