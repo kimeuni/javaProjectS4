@@ -41,7 +41,8 @@
 		select * from usedS where mid = #{mid} and state = '판매중' limit #{startIndexNo},#{pageSize};
 	</select>
 	<select id="getFollowerList" resultType="com.spring.javaProjectS4.vo.FollowVO" >
-		select * from followS where followingMid = #{mid};
+		select fo.* from followS fo, memberS mem where fo.followingMid = #{mid} and mem.userDel = 'N' 
+		and fo.followingMid = mem.mid;
 	</select>
 	<select id="getFollowingList" resultType="com.spring.javaProjectS4.vo.FollowVO" >
 		select fo.* from followS fo, memberS mem where fo.followerMid = #{mid} and mem.userDel = 'N' 

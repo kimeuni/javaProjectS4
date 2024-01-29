@@ -15,6 +15,7 @@ create table communityS(
 
 drop table communityS;
 
+
 select *,timestampdiff(second,cDate,now()) as second_diff,
 		timestampdiff(minute,cDate,now()) as minute_diff,
 		timestampdiff(hour,cDate,now()) as hour_diff,
@@ -27,11 +28,6 @@ select *,timestampdiff(second,cDate,now()) as second_diff,
 		(select count(*) from bookmarkS bms where bms.part = 'community' and bms.partIdx = comu.idx and bms.userDel = 'N') as bookmarkCnt
 		from communityS comu where userDel = 'N' and comu.mid = 'admin' order by idx desc ;
 
-select * from communityS comu where mid =(select bookmarkMid from bookmarkS b where bookmarkMid = 'admin' and b.part = 'community' and comu.idx = b.partIdx ) and comu.userDel = 'N';		
-
-select bookmarkMid,comu.* from communityS comu, bookmarkS b where bookmarkMid = 'admin' and b.part = 'community' and comu.idx = b.partIdx
-
-select count(*) from communityS comu, bookmarkS b where b.bookmarkMid = 'admin' and comu.userDel = 'N' and b.part = 'community' and comu.idx = b.partIdx;
 
 -- 좋아요
 create table goodS(

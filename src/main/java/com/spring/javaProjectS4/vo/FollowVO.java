@@ -13,4 +13,8 @@ public class FollowVO {
 	private String followingMid;
 	private String alarm;
 	private String followAlarm;
+	
+	private String profile;
+	private String nickName;
+	private String communityIntroduce;
 }

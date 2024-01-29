@@ -82,6 +82,28 @@
     	.inner-flex-end{
     		margin-left: auto;
     	}
+    	.item-box{
+		    position: relative;
+		}
+		  
+		.sold-out{
+		    position: absolute;
+		    left: 0px;
+		    top: 0px;
+		    width: 100%;
+		    height: 100%;
+		    display: table;
+		    background: rgba(0, 0, 0, 0.4);
+		    color: #fff;
+		}
+		
+		.sold-out > p{
+		    display: table-cell;
+		    vertical-align: middle;
+		    text-align: center;
+		    font-size: 1.2em;
+		    font-weight: bold;
+		}
 	</style>
 </head>
 <body>
@@ -140,7 +162,25 @@
 					<c:set var="sImg" value="${usedVO.imgs.split('/')}" />
 					<div class="used-list-content-div">
 						<div class="line-b">
-				    		<div><a href="${ctp}/used/usedContent?idx=${usedVO.idx}"><img src="${ctp}/data/used/${sImg[0]}" width="100%" height="218px"></a></div>
+							<div class="item-box">
+							    <div class="image">
+							    	<a href="${ctp}/used/usedContent?idx=${usedVO.idx}"><img src="${ctp}/data/used/${sImg[0]}" width="218px" height="218px"></a>
+							    </div>
+							    <c:if test="${usedVO.state == '예약중' }">
+							    	<a href="${ctp}/used/usedContent?idx=${usedVO.idx}">
+									    <div class="sold-out">
+									    	<p>예약중</p>
+									    </div>
+								    </a>
+							    </c:if>
+							    <c:if test="${usedVO.state == '판매완료' }">
+							    	<a href="${ctp}/used/usedContent?idx=${usedVO.idx}">
+									    <div class="sold-out">
+									    	<p>판매완료</p>
+									    </div>
+								    </a>
+							    </c:if>
+							</div>
 				    		<div class="mt-1">
 					    		<div class="mt-5">
 					    			<c:if test="${fn:length(usedVO.title) >13 }">

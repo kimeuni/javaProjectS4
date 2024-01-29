@@ -321,5 +321,30 @@ public class CommunityServiceImpl implements CommunityService {
 		return communityDAO.getComuRegionList( region,sMid,startIndexNo,pageSize);
 	}
 
+	@Override
+	public List<FollowVO> getFollowingListMid(String mid) {
+		return communityDAO.getFollowingListMid( mid);
+	}
+
+	@Override
+	public List<FollowVO> getFollowerListMid(String mid) {
+		return communityDAO.getFollowerListMid( mid);
+	}
+
+	@Override
+	public List<CommunityVO> getCommunityMediaMidList(String mid, String sMid, int startIndexNo, int pageSize) {
+		return communityDAO.getCommunityMediaMidList( mid, sMid, startIndexNo, pageSize);
+	}
+
+	@Override
+	public List<CommunityVO> getCommunityGoodMidList(String mid, String sMid, int startIndexNo, int pageSize) {
+		return communityDAO.getCommunityGoodMidList( mid, sMid, startIndexNo, pageSize);
+	}
+
+	@Override
+	public List<CommunityVO> getComuFollowingList(String sMid, int startIndexNo, int pageSize) {
+		return communityDAO.getComuFollowingList( sMid, startIndexNo, pageSize);
+	}
+
 	
 }

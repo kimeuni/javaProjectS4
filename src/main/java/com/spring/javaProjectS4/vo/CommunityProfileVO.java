@@ -17,4 +17,6 @@ public class CommunityProfileVO {
 	private String nickName;
 	
 	private int comuCnt; // 해당 유저가 올린 글 게수
+	private int mediCnt;
+	private int goodCnt;
 }

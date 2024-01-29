@@ -88,5 +88,19 @@ public interface CommunityDAO {
 
 	public int getComuRegionRecCnt(@Param("searchString") String searchString);
 
+	public List<FollowVO> getFollowingListMid(@Param("mid") String mid);
+
+	public List<FollowVO> getFollowerListMid(@Param("mid") String mid);
+
+	public List<CommunityVO> getCommunityMediaMidList(@Param("mid") String mid,@Param("sMid") String sMid,@Param("startIndexNo") int startIndexNo,@Param("pageSize") int pageSize);
+
+	public int getCommunityMediaMidRecCnt(@Param("searchString") String searchString);
+
+	public int getCommunityGoodMidRecCnt(@Param("searchString") String searchString);
+
+	public List<CommunityVO> getCommunityGoodMidList(@Param("mid") String mid,@Param("sMid") String sMid,@Param("startIndexNo") int startIndexNo,@Param("pageSize") int pageSize);
+
+	public List<CommunityVO> getComuFollowingList(@Param("sMid") String sMid,@Param("startIndexNo") int startIndexNo,@Param("pageSize") int pageSize);
+
 
 }

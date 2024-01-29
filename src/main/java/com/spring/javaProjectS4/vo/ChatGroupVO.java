@@ -10,6 +10,6 @@ import lombok.ToString;
 public class ChatGroupVO {
 	private int idx;
 	private int usedIdx;
-	private String usedMid;
-	private String myMid;
+	private String mid1;
+	private String mid2;
 }

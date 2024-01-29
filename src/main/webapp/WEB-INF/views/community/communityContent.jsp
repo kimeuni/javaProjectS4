@@ -792,6 +792,18 @@
     					<c:if test="${flag == 'profile'}">
 	    					<div class="comu-main-go"><a href="${ctp}/community/communityProfile?pag=${pag}&pageSize=${pageSize}&mid=${mid}"><i class="fa-solid fa-angle-left"></i></a></div>
     					</c:if>
+    					<c:if test="${flag == 'region'}">
+	    					<div class="comu-main-go"><a href="${ctp}/community/communityRegion?pag=${pag}&pageSize=${pageSize}&region=${region}"><i class="fa-solid fa-angle-left"></i></a></div>
+    					</c:if>
+    					<c:if test="${flag == 'book'}">
+	    					<div class="comu-main-go"><a href="${ctp}/community/communityBookmark?pag=${pag}&pageSize=${pageSize}&mid=${mid}"><i class="fa-solid fa-angle-left"></i></a></div>
+    					</c:if>
+    					<c:if test="${flag == 'media'}">
+	    					<div class="comu-main-go"><a href="${ctp}/community/communityMedia?pag=${pag}&pageSize=${pageSize}&mid=${mid}"><i class="fa-solid fa-angle-left"></i></a></div>
+    					</c:if>
+    					<c:if test="${flag == 'good'}">
+	    					<div class="comu-main-go"><a href="${ctp}/community/communityGood?pag=${pag}&pageSize=${pageSize}&mid=${mid}"><i class="fa-solid fa-angle-left"></i></a></div>
+    					</c:if>
     					<div class="f-d-menu" style="background-color: #fff">커뮤니티 상세보기</div>
     				</div>
 		    			<c:set var="img" value="${comVO.imgs.split('/')}" />
@@ -898,7 +910,7 @@
 			    					<div class="f-d bt-1 pt-2 pb-2">
 				    					<div class="f-d-1-img profile-img">
 					    					<div>
-							    				<a href=""><img src="${ctp}/data/member/${memVO.profile}" ></a>
+							    				<img src="${ctp}/data/member/${memVO.profile}" >
 					    					</div>
 					    				</div>
 					    				<div class="f-d-9 pd-i">
@@ -941,7 +953,7 @@
 			    					<div class="f-d bt-1 pt-2 pb-2">
 				    					<div class="f-d-1-img profile-img">
 					    					<div>
-							    				<a href=""><img src="${ctp}/data/member/${reVO.profile}" ></a>
+							    				<a href="${ctp}/community/communityProfile?mid=${reVO.mid}"><img src="${ctp}/data/member/${reVO.profile}" ></a>
 					    					</div>
 					    				</div>
 					    				<div class="f-d-9 pd-i">
@@ -984,7 +996,7 @@
 			    					<div class="f-d bt-1 pt-2 pb-2 pl-5" id="replyDemo${reVO.idx}" style="display: none;">
 				    					<div class="f-d-1-img profile-img">
 					    					<div>
-							    				<a href=""><img src="${ctp}/data/member/${memVO.profile}" ></a>
+							    				<a href="${ctp}/community/communityProfile?mid=${reVO.mid}"><img src="${ctp}/data/member/${memVO.profile}" ></a>
 					    					</div>
 					    				</div>
 					    				<div class="f-d-9 pd-i">
@@ -1008,7 +1020,7 @@
 			    					<div class="f-d bt-1 pt-2 pb-2 pl-5">
 				    					<div class="f-d-1-img profile-img">
 					    					<div>
-							    				<a href=""><img src="${ctp}/data/member/${rerVO.profile}" ></a>
+							    				<a href="${ctp}/community/communityProfile?mid=${rerVO.mid}"><img src="${ctp}/data/member/${rerVO.profile}" ></a>
 					    					</div>
 					    				</div>
 					    				<div class="f-d-9 pd-i">
@@ -1079,7 +1091,7 @@
 <div class="modal fade" id="myModal">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
-    	<form name="communityForm" method="post" enctype="multipart/form-data">
+    	<form name="communityForm" method="post" enctype="multipart/form-data" action="communityMain">
 	    	<div class="f-d mgp-top">
 	    		<div class="pl-2">커뮤니티 작성하기</div>
 	    		<div style="color: #aaa; margin-left: auto; margin-right: 15px;">-이미지 최대 4개</div>

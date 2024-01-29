@@ -136,6 +136,12 @@ public class PageProcess {
 			if(part.equals("")) {
 				totRecCnt = communityDAO.getCommunityMidRecCnt(searchString);
 			}
+			else if(part.equals("Media")) {
+				totRecCnt = communityDAO.getCommunityMediaMidRecCnt(searchString);
+			}
+			else if(part.equals("good")) {
+				totRecCnt = communityDAO.getCommunityGoodMidRecCnt(searchString);
+			}
 		}
 		if(section.equals("bookmark")) {
 			if(part.equals("")) {

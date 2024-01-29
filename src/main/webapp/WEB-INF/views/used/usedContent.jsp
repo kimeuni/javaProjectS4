@@ -211,6 +211,29 @@
 		#otherWhy{
 			resize: none;
 		}
+		
+		.item-box{
+		    position: relative;
+		}
+		  
+		.sold-out{
+		    position: absolute;
+		    left: 0px;
+		    top: 0px;
+		    width: 100%;
+		    height: 100%;
+		    display: table;
+		    background: rgba(0, 0, 0, 0.4);
+		    color: #fff;
+		}
+		
+		.sold-out > p{
+		    display: table-cell;
+		    vertical-align: middle;
+		    text-align: center;
+		    font-size: 1.2em;
+		    font-weight: bold;
+		}
     </style>
     <script>
     	'use strict'
@@ -390,6 +413,24 @@
 				});
 			}
 		}
+		
+		//채팅하기
+		function chatGoBtn(usedIdx,mid,state){
+			let sMid = '${sMid}';
+			
+			if(sMid.trim() == ""){
+				alert("로그인 후 이용 가능합니다.");
+				location.href="${ctp}/member/login";
+				return false;
+			}
+			else if(state != '판매중'){
+				alert("판매중이 아닌 상품은 채팅을 할 수 없습니다.");
+				return false;
+			}
+			else {
+				location.href='${ctp}/chat/chatContent?usedIdx='+usedIdx+'&mid='+mid+'&sMid='+sMid;
+			}
+		}
     </script>
 </head>
 <body>
@@ -406,12 +447,25 @@
 		<div class="used-content-flex-left">
 			<div class="w3-content w3-display-container">
 				<c:set var="imgss" value="${fn:split(usedVO.imgs,'/') }"/>
-				<c:forEach var="imgs"  items="${imgss}">
-					<img class="mySlides" src="${ctp}/data/used/${imgs}" height="350px" style="width:350px">
-				</c:forEach>
-				
-				<button class="w3-button w3-display-left" onclick="plusDivs(-1)">&#10094;</button>
-				<button class="w3-button w3-display-right" onclick="plusDivs(+1)">&#10095;</button>
+				<div class="item-box">
+				    <div class="image">
+					<c:forEach var="imgs"  items="${imgss}">
+						<img class="mySlides" src="${ctp}/data/used/${imgs}" height="350px" style="width:350px">
+					</c:forEach>
+				    </div>
+				    <c:if test="${usedVO.state == '예약중' }">
+					    <div class="sold-out">
+					    	<p>예약중</p>
+					    </div>
+				    </c:if>
+				    <c:if test="${usedVO.state == '판매완료' }">
+					    <div class="sold-out">
+					    	<p>판매완료</p>
+					    </div>
+				    </c:if>
+					<button class="w3-button w3-display-left" onclick="plusDivs(-1)">&#10094;</button>
+					<button class="w3-button w3-display-right" onclick="plusDivs(+1)">&#10095;</button>
+				</div>
 			</div>
 		</div>
 		<div class="used-content-flex-right">
@@ -455,7 +509,7 @@
 						</c:if>
 					</c:if>
 					<c:if test="${sMid != usedVO.mid }">
-						<div class="u-btns-flex"><a href="" class="chat-btn"><i class="fa-solid fa-comments"></i> 채팅하기</a></div>
+						<div class="u-btns-flex"><a href="javascript:chatGoBtn('${usedVO.idx}','${usedVO.mid}','${usedVO.state }')" class="chat-btn"><i class="fa-solid fa-comments"></i> 채팅하기</a></div>
 					</c:if>
 					<c:if test="${sMid != usedVO.mid }">
 						<div class="u-btns-flex"><a href="javascript:cpCheck()" class="report-btn"><i class="fa-solid fa-triangle-exclamation"></i> 신고</a></div>

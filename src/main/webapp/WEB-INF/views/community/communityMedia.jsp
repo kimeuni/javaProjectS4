@@ -2,7 +2,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <c:set var="ctp" value="${pageContext.request.contextPath}"/>
-<% pageContext.setAttribute("newLine", "\n"); %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -625,6 +624,19 @@
     		font-size: 1.5em;
     		font-weight: bold;
     	}
+    	.f-w{
+    		flex-wrap: wrap;
+    	}
+    	.f-d-4{
+    		display: flex;
+    		width: 25%;
+    		padding: 10px;
+    	}
+    	.f-d-4 img{
+    		width: 204.5px;
+    		height: 204.5px;
+    		border: 1px solid #ccc;
+    	}
     </style>
     <script>
     	'use strict'
@@ -648,20 +660,6 @@
     			}
     		});
     	});
-    	// 댓글 글자 길이 체크
-    	$(function() {
-    		$("#rContent").on("keyup",function() {
-	    		let content = $("#rContent").val();
-    			str = '('+ content.length +'/140)';
-    			$(".content-reply-cnt").html(str);
-    			
-    			if(content.length > 140){
-	    			$(".content-reply-cnt").html("(140/140)");
-    				alert("내용은 140글자까지 가능합니다.")
-    				$("#rContent").val(content.substring(0,140));
-    			}
-    		});
-    	});
     	
     	// 게시글 등록하기
     	function communityUpload(){
@@ -676,56 +674,6 @@
     			document.getElementById("imgs").removeAttribute("disabled");
     			
     			communityForm.submit();
-    		}
-    	}
-    	
-    	// 댓글 모달에 값 넘기기
-    	function modalView(nickName, mid,idx,content,img){
-    		
-    		console.log(nickName);
-    		console.log(mid);
-    		console.log(idx);
-    		console.log(content);
-    		console.log(img);
-    		
-    		content = content.replaceAll("<", "&lt;");
-    		content = content.replaceAll(">", "&gt;");
-    		
-    		$("#rMid").html(mid);
-    		$("#rNickName").html(nickName);
-    		$("#rContentM").html(content);
-    		$("#rIdx").val(idx);
-    		$("#imgSrc").attr("src","${ctp}/data/member/"+img);
-    	}
-    	
-    	// 댓글 업로드
-    	function replyUpload(){
-    		let content = $("#rContent").val();
-    		let idx = $("#rIdx").val();
-    		let mid = "${sMid}";
-    		
-    		if(content.trim() == ""){
-    			alert("댓글을 입력해주세요.");
-    			$("#rContent").focus();
-    		}
-    		else {
-    			let query = {
-    				content : content,
-    				idx : idx,
-    				mid : mid
-    			}
-    			$.ajax({
-    				url : "${ctp}/community/communityReplyInput",
-    				type : "post",
-    				data : query,
-    				success : function(res){
-    					if(res == "1") location.reload();
-    					else if(res == "2") alert("댓글 게시에 실패하였습니다.");
-    				},
-    				error : function(){
-    					alert("전송오류")
-    				}
-    			});
     		}
     	}
     	
@@ -859,69 +807,6 @@
     		location.href="${ctp}/used/usedMain"
     	}
     	
-    	// 글 삭제
-    	function cDelBtn(idx){
-    		let ans = confirm("해당 글을 삭제하시겠습니까?");
-    		if(ans){
-    			$.ajax({
-    				url : "${ctp}/community/communityDel",
-    				type : "post",
-    				data : {idx : idx},
-    				success : function(res){
-    					if(res == "1") location.reload();
-    					else if(res == "2") alert("게시글 삭제에 실패하였습니다.");
-    				},
-    				error : function(){
-    					alert("전송오류")
-    				}
-    			});
-    		}
-    	}
-    	
-    	// 게시글 신고 모달창 값 전달
-        function reportContentModal(idx,mid,nickName){
-        	$("#communityReportIdx").val(idx);
-        	$("#communityReportMid").val(mid);
-        	$(".communityReportMid").html(mid);
-        	$("#communityReportNickName").html(nickName);
-        }
-
-        // 게시글 신고
-        function communityReportBtn(){
-        	let idx = $("#communityReportIdx").val();
-        	let mid = $("#communityReportMid").val();
-        	let reason = $("#communityReportSelect").val();
-        	let sMid = '${sMid}';
-        	
-        	if(reason.trim() == ""){
-        		alert("신고 이유를 선택해주세요.");
-        		return false;
-        	}
-        	else {
-        		let query = {
-        			idx : idx,
-        			mid : mid,
-        			reason : reason,
-        			sMid : sMid
-        		}
-        		$.ajax({
-        			url : "${ctp}/community/communityContentReport",
-        			type : "post",
-        			data :query,
-        			success : function(res){
-        				if(res == "1") {
-        					alert("신고처리 되었습니다.");
-        					location.reload();
-        				}
-        				else if(res == "2") alert("신고처리에 실패하였습니다.");
-        			},
-        			error : function(){
-        				alert("전송오류");
-        			}
-        		});
-        	}
-        }
-        
 		//헤더 이미지 DB에서 띄우기
     	$(function() {
     		let headerImgs = $("#headerImgs").val();
@@ -1160,7 +1045,7 @@
     						<c:if test="${flag == 'comuContent'}">
 	    						<div class="comu-main-go"><a href="${ctp}/community/communityContent?pag=${pag}&pageSize=${pageSize}&idx=${idx}"><i class="fa-solid fa-angle-left"></i></a></div>
     						</c:if>
-    						<div>${proVO.nickName} &nbsp;&nbsp; <span style="color: gray; font-size: 0.8em;">${proVO.comuCnt} 게시물</span></div>
+    						<div>${proVO.nickName} &nbsp;&nbsp; <span style="color: gray; font-size: 0.8em;">${proVO.mediCnt} 미디어</span></div>
     					</div>
     				</div>
     				<div class="f-d">
@@ -1231,116 +1116,17 @@
     					</div>
     				</div>
     				<div class="f-d">
-   						<div class="f-d-3-menu checked-ok"><a href="${ctp}/community/communityProfile?mid=${proVO.mid }">게시물</a></div>
-   						<div class="f-d-3-menu checked-no"><a href="${ctp}/community/communityMedia?mid=${proVO.mid }">미디어</a></div>
+   						<div class="f-d-3-menu checked-no"><a href="${ctp}/community/communityProfile?mid=${proVO.mid }">게시물</a></div>
+   						<div class="f-d-3-menu checked-ok"><a href="${ctp}/community/communityMedia?mid=${proVO.mid }">미디어</a></div>
    						<div class="f-d-3-menu checked-no"><a href="${ctp}/community/communityGood?mid=${proVO.mid }">좋아요</a></div>
     				</div>
-	    			<c:if test="${empty comVOS}"><div class="no-comVOS">올린 글이 존재하지 않습니다.</div></c:if>
-		    		<c:forEach var="comVO" items="${comVOS }">
-		    			<c:set var="img" value="${comVO.imgs.split('/')}" />
-		    			<div class="f-d">
-	    					<c:if test="${sMid != null }">
-		    				<div class="report-del-container">
-		    					<ul class="ul-report-del-btn">
-		    						<li>
-					    				<a href="javascript:menuC()" class="menu-c"><i class="fa-solid fa-bars"></i></a>
-					    				<ul class="inner-li-report-del-btn">
-					    					<c:if test="${sMid == comVO.mid }">
-						    					<li><a href="javascript:cDelBtn(${comVO.idx })">삭제</a></li>
-					    					</c:if>
-					    					<c:if test="${sMid != comVO.mid }">
-						    					<li><a href="#" onclick="reportContentModal('${comVO.idx}','${comVO.mid}','${comVO.nickName}')" data-toggle="modal" data-target="#reportContentModal">신고</a></li>
-					    					</c:if>
-					    				</ul>
-		    						</li>
-		    					</ul>
-		    				</div>
-	    					</c:if>
-	    				</div>
-		    			<div class="f-d btb pd comu-content">
-		    				<div class="f-d-1-img profile-img">
-		    					<div>
-				    				<a href="${ctp}/community/communityProfile?mid=${comVO.mid}"><img src="${ctp}/data/member/${comVO.profile}" ></a>
-		    					</div>
-		    				</div>
-		    				<div class="f-d-9 pd-i">
-		    					<div style="width: 100%">
-		    						<div class="f-d">
-				    					<div class="pr-1">${comVO.nickName }</div>
-				    					<div style="color: #aaa">@${comVO.mid}</div>
-				    					<div style="margin-left: auto;color: gray">
-				    						<c:if test="${comVO.second_diff <= 59}"><div class="inner-flex-end">${comVO.second_diff}초</div></c:if>
-							    			<c:if test="${comVO.second_diff > 59 && comVO.minute_diff <= 59}"><div class="inner-flex-end">${comVO.minute_diff}분</div></c:if>
-							    			<c:if test="${comVO.minute_diff > 59 && comVO.hour_diff <=23}"><div class="inner-flex-end">${comVO.hour_diff}시간</div></c:if>
-							    			<c:if test="${comVO.hour_diff > 23}"><div class="inner-flex-end">${fn:substring(comVO.CDate,0,10)}</div></c:if>
-				    						
-				    					</div>
-		    						</div>
-		    						<div class="f-d pt-2 comu-content-inner">
-		    							<div style="width: 100%">
-			    							<a href="communityContent?idx=${comVO.idx}&pag=${pageVO.pag }&pageSize=${pageVO.pageSize}&flag=profile&mid=${comVO.mid}">${comVO.content }</a>
-		    							</div>
-	    							</div>
-		    						<div class="f-d pt-2 ">
-		    							<c:if test="${empty img}">
-		    							</c:if>
-		    							<c:if test="${fn:length(img) == 1 && !empty img[0]}">
-		    								<div class="heit"><a href="${ctp}/data/community/${img[0]}" target="_blank"><img src="${ctp}/data/community/${img[0]}" width="100%"/></a></div>
-		    							</c:if>
-		    							<c:if test="${fn:length(img) == 2 && !empty img[0]}">
-		    								<div class="f-d heit">
-		    									<div class="f-d-5">
-				    								<div class=""><a href="${ctp}/data/community/${img[0]}" target="_blank"><img src="${ctp}/data/community/${img[0]}" width="100%" /></a></div>
-		    									</div>
-		    									<div class="f-d-5">
-				    								<div class=""><a href="${ctp}/data/community/${img[1]}" target="_blank"><img src="${ctp}/data/community/${img[1]}" width="100%"/></a></div>
-		    									</div>
-		    								</div>
-		    							</c:if>
-		    							<c:if test="${fn:length(img) == 3 && !empty img[0]}">
-		    								<div class="f-d-5 heit">
-			    								<div class=><a href="${ctp}/data/community/${img[0]}" target="_blank"><img src="${ctp}/data/community/${img[0]}" width="100%" /></a></div>
-		    								</div>
-		    								<div class="f-d-5 heit" >
-			    								<a href="${ctp}/data/community/${img[1]}" target="_blank" class="heit-150"><img src="${ctp}/data/community/${img[1]}" width="100%" /></a>
-			    								<a href="${ctp}/data/community/${img[2]}" target="_blank" class="heit-150"><img src="${ctp}/data/community/${img[2]}" width="100%" /></a>
-		    								</div>
-		    							</c:if>
-		    							<c:if test="${fn:length(img) == 4 && !empty img[0]}">
-		    								<div class="f-d-5 heit">
-			    								<a href="${ctp}/data/community/${img[0]}" target="_blank" class="heit-150"><img src="${ctp}/data/community/${img[0]}" width="100%" /></a>
-			    								<a href="${ctp}/data/community/${img[1]}" target="_blank" class="heit-150"><img src="${ctp}/data/community/${img[1]}" width="100%" /></a>
-		    								</div>
-		    								<div class="f-d-5 heit" >
-			    								<a href="${ctp}/data/community/${img[2]}" target="_blank" class="heit-150"><img src="${ctp}/data/community/${img[2]}" width="100%" /></a>
-			    								<a href="${ctp}/data/community/${img[3]}" target="_blank" class="heit-150"><img src="${ctp}/data/community/${img[3]}" width="100%" /></a>
-		    								</div>
-		    							</c:if>
-		    						</div>
-		    						<div class="f-d mt-2 reply-good-bookmark-btn">
-		    							<c:if test="${sMid == null }">
-			    							<div class="f-d-3 replyhover " style="color: #aaa"><a><i class="fa-regular fa-comment"> ${comVO.replyCnt }</i></a></div>
-		    							</c:if>
-		    							<c:if test="${sMid != null }">
-			    							<div class="f-d-3 replyhover reply-input"><button type="button" data-toggle="modal" data-target="#replyModal" onclick="modalView('${comVO.nickName}','${comVO.mid }','${comVO.idx }','${fn:replace(comVO.content,newLine,'') }','${comVO.profile }')"><i class="fa-regular fa-comment"></i> ${comVO.replyCnt }</button></div>
-		    							</c:if>
-		    							<c:if test="${comVO.midGoodCheck == 0 }">
-			    							<div class="f-d-3 goodhover"><a href="javascript:goodYes(${comVO.idx})"><i class="fa-regular fa-heart"></i> ${comVO.goodCnt }</a></div>
-		    							</c:if>
-		    							<c:if test="${comVO.midGoodCheck == 1 }">
-			    							<div class="f-d-3 goodhover" style="color: pink"><a href="javascript:goodNo(${comVO.idx})"><i class="fa-solid fa-heart"></i> ${comVO.goodCnt }</a></div>
-		    							</c:if>
-		    							<c:if test="${comVO.midBookmarkCheck == 0 }">
-			    							<div class="f-d-3"><a href="javascript:bookmarkYes(${comVO.idx})"><i class="fa-regular fa-bookmark"></i> ${comVO.bookmarkCnt }</a></div>
-		    							</c:if>
-		    							<c:if test="${comVO.midBookmarkCheck == 1 }">
-			    							<div class="f-d-3" style="color: blue"><a href="javascript:bookmarkNo(${comVO.idx})"><i class="fa-solid fa-bookmark"></i> ${comVO.bookmarkCnt }</a></div>
-		    							</c:if>
-		    						</div>
-		    					</div>
-		    				</div>
-		    			</div>
-		    		</c:forEach>
+	    			<c:if test="${empty comVOS}"><div class="no-comVOS">올린 미디어가 존재하지 않습니다.</div></c:if>
+	    			<div class="f-d f-w">
+			    		<c:forEach var="comVO" items="${comVOS }">
+			    			<c:set var="img" value="${comVO.imgs.split('/')}" />
+			    				<div class="f-d-4"><a href="communityContent?idx=${comVO.idx}&pag=${pageVO.pag }&pageSize=${pageVO.pageSize}&flag=media&mid=${comVO.mid}"><img src="${ctp}/data/community/${img[0]}"></a></div>
+			    		</c:forEach>
+	    			</div>
 			    <br/>
 				<div class="text-center">
 					<ul class="pagination justify-content-center">
@@ -1400,94 +1186,9 @@
   </div>
 </div>
 
-<!-- 댓글 -->
-<div class="modal fade" id="replyModal">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-    	<div class="f-d ">
-	    	<div style="width: 100%;">
-	    		<!-- <div class="p-3" style="color: #aaa"><span id="rNickName"></span>(@<span id="rMid"></span><span>)님께 답변</span></div> -->
-	    		<div class="f-d btb pd comu-content">
-		    		<div class="f-d-1-img profile-img">
-	   					<div>
-		    				<img id="imgSrc"/>
-	   					</div>
-	   				</div>
-	   				<div class="f-d-9 pd-i">
-	   					<div style="width: 100%">
-	   						<div class="f-d">
-		    					<div class="pr-1"><span id="rNickName"></span></div>
-		    					<div style="color: #aaa">@<span id="rMid"></span></div>
-	   						</div>
-	   						<div class="f-d pt-2 comu-content-inner">
-	   							<div style="width: 100%">
-	    							<span id="rContentM"></span>
-	   							</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="pl-3 pt-3">답글 달기</div>
-	    		<div class="f-d pd-1">
-		      		<div class="f-d-1">
-		      			<img src="${ctp}/data/member/${memVO.profile}" width="90px" height="90px" style="border-radius: 100%" >
-		      		</div>
-		      		<div class="f-d-9 f-a f-b-ddd">
-		      			<div style="width: 100%">
-		      				<div class="f-d">
-			      				<textarea rows="5" style="width: 100%" name="rContent" required id="rContent" maxlength="140" placeholder="답글 게시하기"></textarea>
-		      				</div>
-		      			</div>
-		      		</div>
-		      	</div>
-	      		<div class="f-d f-b-ddd pl-4">
-			  		<div class="content-reply-cnt">(0/140)</div>
-			  		<div class="content-upload-btn"><a href="javascript:replyUpload()" >게시하기</a></div>
-		      	</div>
-		      	<input type="hidden" id="rIdx" name="rIdx" />
-	    	</div>
-    	</div>
-    </div>
-  </div>
-</div>
-
-<!-- 글 신고 -->
-<div class="modal fade" id="reportContentModal">
-  <div class="modal-dialog">
-    <div class="modal-content">
-    	<div class="f-d p-4">
-    		<div style="width: 100%">
-    		<div class="pb-2"><span id="communityReportNickName"></span><span style="color: #aaa"> (@<span class="communityReportMid"></span>)</span>님의 글을 신고</div>
-    		<div>이 게시물에 어떤 문제가 있나요?</div>
-    		<hr/>
-	    		<div class="select-report-community">
-	    			<select name="communityReportSelect" id="communityReportSelect">
-	    				<option value="">신고할 내용을 선택해주세요.</option>
-	    				<option value="불법촬영">전자통신사업법에 의거하여 불법촬영등 신고</option>
-	    				<option value="관심없음">관심없는 게시물</option>
-	    				<option value="스팸">의심스럽거나 스팸</option>
-	    				<option value="민감한사진">민감한 사진을 보여주고 있음</option>
-	    				<option value="유해한내용">가학적이거나 유해한 내용</option>
-	    				<option value="오해소지">오해의 소지가 있음</option>
-	    				<option value="자해자살표현">자해 또는 자살 의도를 표현하고 있음</option>
-	    			</select>
-	    		</div>
-			<div class="mt-3 ">
-				<div class="f-d communitiy-report-btns">
-					<a href="javascript:communityReportBtn()">신고 하기</a>
-				</div>
-			</div>
-    		</div>
-    	</div>
-    	<input type="hidden" id="communityReportIdx">
-    	<input type="hidden" id="communityReportMid">
-    </div>
-  </div>
-</div>
-
 <!-- 헤더 변경 화면 -->
 <div class="header-img-container-f">
-	<form name="headerForm" method="post" enctype="multipart/form-data" >
+	<form name="headerForm" method="post" enctype="multipart/form-data" action="communityProfile">
 		<div class="f-d">
 			<div style="width: 100%">
 				<div class="text-center"><h3>헤더 이미지 변경</h3></div>
@@ -1542,10 +1243,10 @@
 									<div>${fingVO.nickName}</div>
 									<div style="color: #aaa"> @${fingVO.followingMid}</div>
 									<div class="intro-div">
-										<c:if test="${fn:length(fingVO.communityIntroduce) > 20 }">
-											${fn:substring(fingVO.communityIntroduce,0,20)}...
+										<c:if test="${fn:length(fingVO.communityIntroduce) > 11 }">
+											${fn:substring(fingVO.communityIntroduce,0,11)}...
 										</c:if> 
-										<c:if test="${fn:length(fingVO.communityIntroduce) <= 20 }">
+										<c:if test="${fn:length(fingVO.communityIntroduce) <= 11 }">
 											${fingVO.communityIntroduce}
 										</c:if> 
 									</div>
@@ -1581,10 +1282,10 @@
 									<div>${ferVO.nickName}</div>
 									<div style="color: #aaa"> @${ferVO.followerMid}</div>
 									<div class="intro-div">
-										<c:if test="${fn:length(ferVO.communityIntroduce) > 20 }">
-											${fn:substring(ferVO.communityIntroduce,0,20)}...
+										<c:if test="${fn:length(ferVO.communityIntroduce) > 11 }">
+											${fn:substring(ferVO.communityIntroduce,0,11)}...
 										</c:if> 
-										<c:if test="${fn:length(ferVO.communityIntroduce) <= 20 }">
+										<c:if test="${fn:length(ferVO.communityIntroduce) <= 11 }">
 											${ferVO.communityIntroduce}
 										</c:if> 
 									</div>

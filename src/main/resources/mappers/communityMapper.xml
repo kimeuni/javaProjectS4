@@ -64,7 +64,9 @@
 	<select id="getCommunityProfileMid" resultType="com.spring.javaProjectS4.vo.CommunityProfileVO">
 		select *,(select profile from memberS mem where mem.mid = prof.mid ) as profile,
 		(select nickName from memberS mem where mem.mid = prof.mid) as nickName,
-		(select count(*) from communityS comu where comu.mid = prof.mid) as comuCnt
+		(select count(*) from communityS comu where comu.mid = prof.mid) as comuCnt,
+		(select count(*) from communityS comu where comu.mid = prof.mid and imgs != '') as mediCnt,
+		(select count(*) from goodS g, memberS mem where goodMid = #{mid} and g.goodMid = mem.mid and mem.userDel = 'N') as goodCnt
 		 from communityProfileS prof where mid = #{mid};
 	</select>
 	<select id="getFollowerMid" resultType="com.spring.javaProjectS4.vo.FollowVO">
@@ -108,6 +110,55 @@
 	</select>
 	<select id="getComuRegionRecCnt" resultType="int">
 		select count(*) from communityS where userDel = 'N' and region = #{searchString};
+	</select>
+	<select id="getFollowingListMid" resultType="com.spring.javaProjectS4.vo.FollowVO">
+		select fo.*,(select profile from memberS mem where fo.followingMid = mem.mid ) as profile,
+		(select nickName from memberS mem where fo.followingMid = mem.mid ) as nickName,
+		(select communityIntroduce from communityProfileS mem where fo.followingMid = mem.mid ) as communityIntroduce
+		 from followS fo, memberS mem where followerMid = #{mid} and mem.userDel = 'N' 
+		and fo.followerMid = mem.mid;
+	</select>
+	<select id="getFollowerListMid" resultType="com.spring.javaProjectS4.vo.FollowVO">
+		select fo.*,(select profile from memberS mem where fo.followerMid = mem.mid ) as profile,
+		(select nickName from memberS mem where fo.followerMid = mem.mid ) as nickName,
+		(select communityIntroduce from communityProfileS mem where fo.followerMid = mem.mid ) as communityIntroduce
+		 from followS fo, memberS mem where followingMid = #{mid} and mem.userDel = 'N' 
+		and fo.followingMid = mem.mid;
+	</select>
+	<select id="getCommunityMediaMidList" resultType="com.spring.javaProjectS4.vo.CommunityVO">
+		select * from communityS comu where userDel = 'N' and comu.mid = #{mid} and imgs != '' order by idx desc limit #{startIndexNo},#{pageSize};
+	</select>
+	<select id="getCommunityMediaMidRecCnt" resultType="int">
+		select count(*) from communityS where mid = #{searchString} and imgs != '';
+	</select>
+	<select id="getCommunityGoodMidRecCnt" resultType="int">
+		select count(*) from goodS g, memberS mem where goodMid = #{searchString} and g.goodMid = mem.mid and mem.userDel = 'N' ;
+	</select>
+	<select id="getCommunityGoodMidList" resultType="com.spring.javaProjectS4.vo.CommunityVO">
+		select comu.*,timestampdiff(second,cDate,now()) as second_diff,
+		timestampdiff(minute,cDate,now()) as minute_diff,
+		timestampdiff(hour,cDate,now()) as hour_diff,
+		(select profile from memberS mem where comu.mid = mem.mid ) as profile,
+		(select nickName from memberS mem where comu.mid = mem.mid ) as nickName,
+		(select count(*) from goodS gds where gds.part = 'community' and gds.partIdx = comu.idx and gds.goodMid = #{sMid} ) as midGoodCheck,
+		(select count(*) from goods gds where gds.part = 'community' and gds.partIdx = comu.idx and gds.userDel = 'N') as goodCnt,
+		(select count(*) from replyS rps where rps.part = 'community' and rps.partIdx = comu.idx and rps.userDel = 'N') as replyCnt,
+		(select count(*) from bookmarkS bms where bms.part = 'community' and bms.partIdx = comu.idx and bms.bookmarkMid = #{sMid} ) as midBookmarkCheck
+		from communityS comu, goodS g where goodMid = #{mid} and g.part = 'community' and comu.idx = g.partIdx and 
+		comu.userDel = 'N' order by idx desc limit #{startIndexNo},#{pageSize};
+	</select>
+	<select id="getComuFollowingList"  resultType="com.spring.javaProjectS4.vo.CommunityVO">
+		select comu.*,timestampdiff(second,cDate,now()) as second_diff,
+		timestampdiff(minute,cDate,now()) as minute_diff,
+		timestampdiff(hour,cDate,now()) as hour_diff,
+		(select profile from memberS mem where comu.mid = mem.mid ) as profile,
+		(select nickName from memberS mem where comu.mid = mem.mid ) as nickName,
+		(select count(*) from goodS gds where gds.part = 'community' and gds.partIdx = comu.idx and gds.goodMid = #{sMid} ) as midGoodCheck,
+		(select count(*) from goods gds where gds.part = 'community' and gds.partIdx = comu.idx and gds.userDel = 'N') as goodCnt,
+		(select count(*) from replyS rps where rps.part = 'community' and rps.partIdx = comu.idx and rps.userDel = 'N') as replyCnt,
+		(select count(*) from bookmarkS bms where bms.part = 'community' and bms.partIdx = comu.idx and bms.bookmarkMid = #{sMid} ) as midBookmarkCheck,
+		(select count(*) from bookmarkS bms where bms.part = 'community' and bms.partIdx = comu.idx and bms.userDel = 'N') as bookmarkCnt
+		from communityS comu, followS fo where comu.userDel = 'N' and fo.followerMid = #{sMid} and comu.mid = fo.followingMid order by idx desc limit #{startIndexNo},#{pageSize};
 	</select>
 	
 	<insert id="setCommunityInput">

@@ -663,23 +663,6 @@
 <body>
 <jsp:include page="/WEB-INF/views/include/header.jsp" />
 <div id="community-main-container">
-    <div id="community-main-img-container">
-    	<div id="community-main-img-text-div">
-    		<div id="community-text-left">
-    			<div id="community-text-div">
-	    			당신의 즐거운<br/> 일상을 공유
-    			</div>
-    			<div id="community-usedinput-btn">
-    				<c:if test="${sMid != null }">
-	    				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">글 올리기</button>
-	    			</c:if>
-   				</div>
-    		</div>
-    		<div id="community-img-right">
-    			<img src="${ctp}/data/images/다모아_커뮤니티.png" width="100%" height="315px" />
-    		</div>
-    	</div>
-    </div>
     <!-- 커뉴니티 글 보이기 -->
     <div id="community-list-container">
     	<div class="f-d">
@@ -745,7 +728,7 @@
 		    						</div>
 		    						<div class="f-d pt-2 comu-content-inner">
 		    							<div style="width: 100%">
-			    							<a href="communityContent?idx=${comVO.idx}&pag=${pageVO.pag }&pageSize=${pageVO.pageSize}">${comVO.content }</a>
+			    							<a href="communityContent?idx=${comVO.idx}&pag=${pageVO.pag }&pageSize=${pageVO.pageSize}&flag=book&mid=${mid}">${comVO.content }</a>
 		    							</div>
 	    							</div>
 		    						<div class="f-d pt-2 ">
@@ -832,7 +815,7 @@
 <div class="modal fade" id="myModal">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
-    	<form name="communityForm" method="post" enctype="multipart/form-data">
+    	<form name="communityForm" method="post" enctype="multipart/form-data" action="communityMain">
 	    	<div class="f-d mgp-top">
 	    		<div class="pl-2">커뮤니티 작성하기</div>
 	    		<div style="color: #aaa; margin-left: auto; margin-right: 15px;">-이미지 최대 4개</div>

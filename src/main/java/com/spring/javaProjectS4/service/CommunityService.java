@@ -83,5 +83,15 @@ public interface CommunityService {
 
 	public List<CommunityVO> getComuRegionList(String region, String sMid, int startIndexNo, int pageSize);
 
+	public List<FollowVO> getFollowingListMid(String mid);
+
+	public List<FollowVO> getFollowerListMid(String mid);
+
+	public List<CommunityVO> getCommunityMediaMidList(String mid, String sMid, int startIndexNo, int pageSize);
+
+	public List<CommunityVO> getCommunityGoodMidList(String mid, String sMid, int startIndexNo, int pageSize);
+
+	public List<CommunityVO> getComuFollowingList(String sMid, int startIndexNo, int pageSize);
+
 
 }

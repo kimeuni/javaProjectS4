@@ -2,7 +2,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <c:set var="ctp" value="${pageContext.request.contextPath}"/>
-<% pageContext.setAttribute("newLine", "\n"); %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -1160,7 +1159,7 @@
     						<c:if test="${flag == 'comuContent'}">
 	    						<div class="comu-main-go"><a href="${ctp}/community/communityContent?pag=${pag}&pageSize=${pageSize}&idx=${idx}"><i class="fa-solid fa-angle-left"></i></a></div>
     						</c:if>
-    						<div>${proVO.nickName} &nbsp;&nbsp; <span style="color: gray; font-size: 0.8em;">${proVO.comuCnt} 게시물</span></div>
+    						<div>${proVO.nickName} &nbsp;&nbsp; <span style="color: gray; font-size: 0.8em;">${proVO.goodCnt} 좋아요</span></div>
     					</div>
     				</div>
     				<div class="f-d">
@@ -1231,9 +1230,9 @@
     					</div>
     				</div>
     				<div class="f-d">
-   						<div class="f-d-3-menu checked-ok"><a href="${ctp}/community/communityProfile?mid=${proVO.mid }">게시물</a></div>
+   						<div class="f-d-3-menu checked-no"><a href="${ctp}/community/communityProfile?mid=${proVO.mid }">게시물</a></div>
    						<div class="f-d-3-menu checked-no"><a href="${ctp}/community/communityMedia?mid=${proVO.mid }">미디어</a></div>
-   						<div class="f-d-3-menu checked-no"><a href="${ctp}/community/communityGood?mid=${proVO.mid }">좋아요</a></div>
+   						<div class="f-d-3-menu checked-ok"><a href="${ctp}/community/communityGood?mid=${proVO.mid }">좋아요</a></div>
     				</div>
 	    			<c:if test="${empty comVOS}"><div class="no-comVOS">올린 글이 존재하지 않습니다.</div></c:if>
 		    		<c:forEach var="comVO" items="${comVOS }">
@@ -1278,7 +1277,7 @@
 		    						</div>
 		    						<div class="f-d pt-2 comu-content-inner">
 		    							<div style="width: 100%">
-			    							<a href="communityContent?idx=${comVO.idx}&pag=${pageVO.pag }&pageSize=${pageVO.pageSize}&flag=profile&mid=${comVO.mid}">${comVO.content }</a>
+			    							<a href="communityContent?idx=${comVO.idx}&pag=${pageVO.pag }&pageSize=${pageVO.pageSize}&flag=good&mid=${proVO.mid}">${comVO.content }</a>
 		    							</div>
 	    							</div>
 		    						<div class="f-d pt-2 ">
@@ -1322,7 +1321,7 @@
 			    							<div class="f-d-3 replyhover " style="color: #aaa"><a><i class="fa-regular fa-comment"> ${comVO.replyCnt }</i></a></div>
 		    							</c:if>
 		    							<c:if test="${sMid != null }">
-			    							<div class="f-d-3 replyhover reply-input"><button type="button" data-toggle="modal" data-target="#replyModal" onclick="modalView('${comVO.nickName}','${comVO.mid }','${comVO.idx }','${fn:replace(comVO.content,newLine,'') }','${comVO.profile }')"><i class="fa-regular fa-comment"></i> ${comVO.replyCnt }</button></div>
+			    							<div class="f-d-3 replyhover reply-input"><button type="button" data-toggle="modal" data-target="#replyModal" onclick="modalView('${comVO.nickName}','${comVO.mid }','${comVO.idx }','${fn:replace(comVO.content,'<br/>',' ') }','${comVO.profile }')"><i class="fa-regular fa-comment"></i> ${comVO.replyCnt }</button></div>
 		    							</c:if>
 		    							<c:if test="${comVO.midGoodCheck == 0 }">
 			    							<div class="f-d-3 goodhover"><a href="javascript:goodYes(${comVO.idx})"><i class="fa-regular fa-heart"></i> ${comVO.goodCnt }</a></div>
@@ -1410,7 +1409,7 @@
 	    		<div class="f-d btb pd comu-content">
 		    		<div class="f-d-1-img profile-img">
 	   					<div>
-		    				<img id="imgSrc"/>
+		    				<a href=""><img id="imgSrc"/></a>
 	   					</div>
 	   				</div>
 	   				<div class="f-d-9 pd-i">
@@ -1487,7 +1486,7 @@
 
 <!-- 헤더 변경 화면 -->
 <div class="header-img-container-f">
-	<form name="headerForm" method="post" enctype="multipart/form-data" >
+	<form name="headerForm" method="post" enctype="multipart/form-data" action="communityProfile">
 		<div class="f-d">
 			<div style="width: 100%">
 				<div class="text-center"><h3>헤더 이미지 변경</h3></div>

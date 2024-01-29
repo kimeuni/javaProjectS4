@@ -36,7 +36,7 @@ public class CommunityController {
 	@RequestMapping(value = "/communityMain", method = RequestMethod.GET)
 	public String communityMainGet(Model model,HttpSession session,
 			@RequestParam(name="pag",defaultValue = "1",required = false)int pag,
-			@RequestParam(name="pageSize",defaultValue = "2",required = false)int pageSize
+			@RequestParam(name="pageSize",defaultValue = "15",required = false)int pageSize
 			) {
 		// 로그인한 사람의 아이디로 계정 정보 가져오기
 		String sMid = session.getAttribute("sMid")== null ? "" : (String)session.getAttribute("sMid");
@@ -79,6 +79,7 @@ public class CommunityController {
 		content = content.replace("<", "&lt;");
 		content = content.replace(">", "&gt;");
 		content = content.replace("\n", "<br/>");
+		content = content.replace(System.getProperty("line.separator").toString(), "");
 		
 		String imgsStr = "";
 		// 등록하기
@@ -91,7 +92,7 @@ public class CommunityController {
 	// 좋아요 하기 및 취소
 	@ResponseBody
 	@RequestMapping(value = "/communityGood", method = RequestMethod.POST)
-	public String communityGoodPost(@RequestParam(name="idx",defaultValue = "",required = false) int idx,
+	public String communityGoodPost(@RequestParam(name="idx",defaultValue = "0",required = false) int idx,
 			String mid, String flag, String part
 			) {
 		int res = 0;
@@ -111,7 +112,7 @@ public class CommunityController {
 	// 북마크 하기 및 취소
 	@ResponseBody
 	@RequestMapping(value = "/communityBookmark", method = RequestMethod.POST)
-	public String communityBookmarkPost(@RequestParam(name="idx",defaultValue = "",required = false) int idx,
+	public String communityBookmarkPost(@RequestParam(name="idx",defaultValue = "0",required = false) int idx,
 			String mid, String flag, String part
 			) {
 		int res = 0;
@@ -131,7 +132,7 @@ public class CommunityController {
 	// 커뮤니티 댓글 달기
 	@ResponseBody
 	@RequestMapping(value = "/communityReplyInput", method = RequestMethod.POST)
-	public String communityReplyInputPost(@RequestParam(name="idx",defaultValue = "",required = false) int idx,
+	public String communityReplyInputPost(@RequestParam(name="idx",defaultValue = "0",required = false) int idx,
 			String mid, String content) {
 		
 		content = content.replace("<", "&lt;");
@@ -146,7 +147,7 @@ public class CommunityController {
 	// 커뮤니티 글 삭제
 	@ResponseBody
 	@RequestMapping(value = "/communityDel", method = RequestMethod.POST)
-	public String communityDelPost(@RequestParam(name="idx",defaultValue = "",required = false) int idx) {
+	public String communityDelPost(@RequestParam(name="idx",defaultValue = "0",required = false) int idx) {
 		CommunityVO comVO = communityService.getCommunityIdx(idx);
 		
 		// 댓글 삭제
@@ -170,9 +171,10 @@ public class CommunityController {
 	public String communityContentGet(Model model,HttpSession session,
 			@RequestParam(name="idx",defaultValue = "0",required = false) int idx,
 			@RequestParam(name="pag",defaultValue = "1",required = false) int pag,
-			@RequestParam(name="pageSize",defaultValue = "2",required = false) int pageSize,
+			@RequestParam(name="pageSize",defaultValue = "15",required = false) int pageSize,
 			@RequestParam(name="flag",defaultValue = "",required = false) String flag,
-			@RequestParam(name="mid",defaultValue = "",required = false) String mid
+			@RequestParam(name="mid",defaultValue = "",required = false) String mid,
+			@RequestParam(name="region",defaultValue = "",required = false) String region
 			) {
 		// 로그인한 사람의 아이디로 계정 정보 가져오기
 		String sMid = session.getAttribute("sMid")== null ? "" : (String)session.getAttribute("sMid");
@@ -195,6 +197,7 @@ public class CommunityController {
 		model.addAttribute("rerVOS",rerVOS);
 		model.addAttribute("flag",flag);
 		model.addAttribute("mid",mid);
+		model.addAttribute("region",region);
 		model.addAttribute("pag",pag);
 		model.addAttribute("pageSize",pageSize);
 		return "community/communityContent";
@@ -203,7 +206,7 @@ public class CommunityController {
 	// 커뮤니티 상세보기 - 댓글 삭제 처리
 	@ResponseBody
 	@RequestMapping(value = "/communityReplyDel", method = RequestMethod.POST)
-	public String communityReplyDelPost(@RequestParam(name="idx",defaultValue = "",required = false) int idx) {
+	public String communityReplyDelPost(@RequestParam(name="idx",defaultValue = "0",required = false) int idx) {
 		int res = 0;
 		
 		// 해당 댓글의 정보 모두 가져오기
@@ -252,8 +255,8 @@ public class CommunityController {
 	@ResponseBody
 	@RequestMapping(value = "/communityRerplyInput",method = RequestMethod.POST)
 	public String communityRerplyInputPost(
-			@RequestParam(name="comuIdx",defaultValue = "",required = false) int comuIdx,
-			@RequestParam(name="reIdx",defaultValue = "",required = false) int reIdx,
+			@RequestParam(name="comuIdx",defaultValue = "0",required = false) int comuIdx,
+			@RequestParam(name="reIdx",defaultValue = "0",required = false) int reIdx,
 			String mid, String content
 			) {
 		
@@ -270,7 +273,7 @@ public class CommunityController {
 	// 커뮤니티 글 신고
 	@ResponseBody
 	@RequestMapping(value = "/communityContentReport", method = RequestMethod.POST)
-	public String communityContentReportPost(@RequestParam(name="idx",defaultValue = "",required = false) int idx,
+	public String communityContentReportPost(@RequestParam(name="idx",defaultValue = "0",required = false) int idx,
 			String mid, String sMid, String reason
 			) {
 		
@@ -283,7 +286,7 @@ public class CommunityController {
 	// 커뮤니티 상세보기 댓글 신고
 	@ResponseBody
 	@RequestMapping(value = "/communityReplyReport", method = RequestMethod.POST)
-	public String communityReplyReportPost(@RequestParam(name="idx",defaultValue = "",required = false) int idx,
+	public String communityReplyReportPost(@RequestParam(name="idx",defaultValue = "0",required = false) int idx,
 			String mid, String sMid, String reason) {
 		
 		int res = communityService.communityReportInput(idx,mid,sMid,reason,"Reply");
@@ -297,7 +300,7 @@ public class CommunityController {
 	public String communityProfileGet(Model model, String mid,HttpSession session,
 			@RequestParam(name="idx",defaultValue = "0",required = false) int idx,
 			@RequestParam(name="pag",defaultValue = "1",required = false) int pag,
-			@RequestParam(name="pageSize",defaultValue = "2",required = false) int pageSize,
+			@RequestParam(name="pageSize",defaultValue = "15",required = false) int pageSize,
 			@RequestParam(name="flag",defaultValue = "",required = false) String flag
 			) {
 		// 로그인한 사람의 아이디로 계정 정보 가져오기
@@ -318,16 +321,119 @@ public class CommunityController {
 			model.addAttribute("fVO",fVO);
 		}
 		
+		// 팔로우 중인 사람 리스트 가져오기
+		List<FollowVO> fingVOS = communityService.getFollowingListMid(mid);
+		// 팔로워인 사람 리스트 가져오기
+		List<FollowVO> ferVOS = communityService.getFollowerListMid(mid);
+		
 		model.addAttribute("mid",mid);
 		model.addAttribute("flag",flag);
 		model.addAttribute("memVO",memVO);
 		model.addAttribute("proVO",proVO);
 		model.addAttribute("comVOS",comVOS);
 		model.addAttribute("pageVO",pageVO);
+		model.addAttribute("fingVOS",fingVOS);
+		model.addAttribute("fingCnt",fingVOS.size());
+		model.addAttribute("ferVOS",ferVOS);
+		model.addAttribute("ferCnt",ferVOS.size());
 		model.addAttribute("pag",pag);
 		model.addAttribute("idx",idx);
 		model.addAttribute("pageSize",pageSize);
 		return "community/communityProfile";
+	}
+	
+	// 커뮤니티 프로필-미디어 화면 이동
+	@RequestMapping(value = "/communityMedia", method = RequestMethod.GET)
+	public String communityMediaGet(Model model, String mid,HttpSession session,
+			@RequestParam(name="idx",defaultValue = "0",required = false) int idx,
+			@RequestParam(name="pag",defaultValue = "1",required = false) int pag,
+			@RequestParam(name="pageSize",defaultValue = "15",required = false) int pageSize,
+			@RequestParam(name="flag",defaultValue = "",required = false) String flag
+			) {
+		// 로그인한 사람의 아이디로 계정 정보 가져오기
+		String sMid = session.getAttribute("sMid")== null ? "" : (String)session.getAttribute("sMid");
+		MemberVO memVO = communityService.getMemberMid(sMid);
+		
+		// 해당 프로필 회원 정보
+		CommunityProfileVO proVO = communityService.getCommunityProfileMid(mid); 
+		
+		// 해당 멤버가 적은 글 리스트 목록
+		PageVO pageVO = pageProcess.totRecCnt(pag, pageSize, "communityProfile", "Media", mid);
+		List<CommunityVO> comVOS = communityService.getCommunityMediaMidList(mid,sMid,pageVO.getStartIndexNo(),pageSize);
+		
+		// 해당 상점 팔로우한 사람 확인용 (로그인 한 사람만)
+		if(!mid.equals("")) {
+			FollowVO fVO = communityService.getFollowerMid(sMid,mid);
+			
+			model.addAttribute("fVO",fVO);
+		}
+		
+		// 팔로우 중인 사람 리스트 가져오기
+		List<FollowVO> fingVOS = communityService.getFollowingListMid(mid);
+		// 팔로워인 사람 리스트 가져오기
+		List<FollowVO> ferVOS = communityService.getFollowerListMid(mid);
+		
+		model.addAttribute("mid",mid);
+		model.addAttribute("flag",flag);
+		model.addAttribute("memVO",memVO);
+		model.addAttribute("proVO",proVO);
+		model.addAttribute("comVOS",comVOS);
+		model.addAttribute("pageVO",pageVO);
+		model.addAttribute("fingVOS",fingVOS);
+		model.addAttribute("fingCnt",fingVOS.size());
+		model.addAttribute("ferVOS",ferVOS);
+		model.addAttribute("ferCnt",ferVOS.size());
+		model.addAttribute("pag",pag);
+		model.addAttribute("idx",idx);
+		model.addAttribute("pageSize",pageSize);
+		return "community/communityMedia";
+	}
+	
+	// 커뮤니티 프로필-좋아요 화면 이동
+	@RequestMapping(value = "/communityGood", method = RequestMethod.GET)
+	public String communityGoodGet(Model model, String mid,HttpSession session,
+			@RequestParam(name="idx",defaultValue = "0",required = false) int idx,
+			@RequestParam(name="pag",defaultValue = "1",required = false) int pag,
+			@RequestParam(name="pageSize",defaultValue = "15",required = false) int pageSize,
+			@RequestParam(name="flag",defaultValue = "",required = false) String flag
+			) {
+		// 로그인한 사람의 아이디로 계정 정보 가져오기
+		String sMid = session.getAttribute("sMid")== null ? "" : (String)session.getAttribute("sMid");
+		MemberVO memVO = communityService.getMemberMid(sMid);
+		
+		// 해당 프로필 회원 정보
+		CommunityProfileVO proVO = communityService.getCommunityProfileMid(mid); 
+		
+		// 해당 멤버가 좋아요한 리스트 목록
+		PageVO pageVO = pageProcess.totRecCnt(pag, pageSize, "communityProfile", "good", mid);
+		List<CommunityVO> comVOS = communityService.getCommunityGoodMidList(mid,sMid,pageVO.getStartIndexNo(),pageSize);
+		
+		// 해당 상점 팔로우한 사람 확인용 (로그인 한 사람만)
+		if(!mid.equals("")) {
+			FollowVO fVO = communityService.getFollowerMid(sMid,mid);
+			
+			model.addAttribute("fVO",fVO);
+		}
+		
+		// 팔로우 중인 사람 리스트 가져오기
+		List<FollowVO> fingVOS = communityService.getFollowingListMid(mid);
+		// 팔로워인 사람 리스트 가져오기
+		List<FollowVO> ferVOS = communityService.getFollowerListMid(mid);
+		
+		model.addAttribute("mid",mid);
+		model.addAttribute("flag",flag);
+		model.addAttribute("memVO",memVO);
+		model.addAttribute("proVO",proVO);
+		model.addAttribute("comVOS",comVOS);
+		model.addAttribute("pageVO",pageVO);
+		model.addAttribute("fingVOS",fingVOS);
+		model.addAttribute("fingCnt",fingVOS.size());
+		model.addAttribute("ferVOS",ferVOS);
+		model.addAttribute("ferCnt",ferVOS.size());
+		model.addAttribute("pag",pag);
+		model.addAttribute("idx",idx);
+		model.addAttribute("pageSize",pageSize);
+		return "community/communityGood";
 	}
 	
 	// 커뮤니티 프로필 헤더 이미지 변경
@@ -395,34 +501,71 @@ public class CommunityController {
 	
 	// 북마크 화면으로 이동하기
 	@RequestMapping(value = "/communityBookmark", method = RequestMethod.GET)
-	public String communityBookmarkGet(String mid,Model model,
+	public String communityBookmarkGet(String mid,Model model, HttpSession session,
 			@RequestParam(name="pag",defaultValue = "1",required = false) int pag,
 			@RequestParam(name="pageSize",defaultValue = "15",required = false) int pageSize
 			) {
+		// 로그인한 사람의 아이디로 계정 정보 가져오기
+		String sMid = session.getAttribute("sMid")== null ? "" : (String)session.getAttribute("sMid");
+		
+		MemberVO memVO = communityService.getMemberMid(sMid);
 		
 		PageVO pageVO = pageProcess.totRecCnt(pag, pageSize, "bookmark", "", mid);
 		List<CommunityVO> comVOS = communityService.getComuBookmarkMidList(pageVO.getStartIndexNo(),pageSize,mid);
 		
 		model.addAttribute("pageVO",pageVO);
 		model.addAttribute("comVOS",comVOS);
+		model.addAttribute("mid",mid);
+		model.addAttribute("memVO",memVO);
 		model.addAttribute("bookmarkCnt",comVOS.size());
 		return "community/communityBookmark";
 	}
 	
-	// 커뮤니티 지역 검색
+	// 커뮤니티 지역 화면 이동
 	@RequestMapping(value = "/communityRegion", method = RequestMethod.GET)
 	public String communityRegionGet(Model model, String region, HttpSession session,
 			@RequestParam(name="pag",defaultValue = "1",required = false) int pag,
 			@RequestParam(name="pageSize",defaultValue = "15",required = false) int pageSize
 			) {
 		String sMid = session.getAttribute("sMid")== null ? "" : (String)session.getAttribute("sMid");
-		
+		// 로그인한 사람의 아이디로 계정 정보 가져오기
+		MemberVO memVO = communityService.getMemberMid(sMid);
 		PageVO pageVO = pageProcess.totRecCnt(pag, pageSize, "comuRegion", "", region);
 		List<CommunityVO> comVOS = communityService.getComuRegionList(region,sMid,pageVO.getStartIndexNo(),pageSize);
 		
 		model.addAttribute("pageVO",pageVO);
 		model.addAttribute("comVOS",comVOS);
+		model.addAttribute("memVO",memVO);
 		model.addAttribute("region",region);
 		return "community/communityRegion";
+	}
+	
+	// 커뮤니티 팔로우중 화면 이동
+	@RequestMapping(value = "/communityFollowList", method = RequestMethod.GET)
+	public String communityFollowListGet(Model model, HttpSession session,
+			@RequestParam(name="pag",defaultValue = "1",required = false) int pag,
+			@RequestParam(name="pageSize",defaultValue = "15",required = false) int pageSize
+			) {
+		String sMid = session.getAttribute("sMid")== null ? "" : (String)session.getAttribute("sMid");
+		// 로그인한 사람의 아이디로 계정 정보 가져오기
+		MemberVO memVO = communityService.getMemberMid(sMid);
+		PageVO pageVO = pageProcess.totRecCnt(pag, pageSize, "following", "", sMid);
+		List<CommunityVO> comVOS = communityService.getComuFollowingList(sMid,pageVO.getStartIndexNo(),pageSize);
+		
+		// 지역 찾기 (서울/충남/충북 등..)
+		if(!sMid.equals("")) {
+			MemberVO mVO = communityService.getMemberMid(sMid);
+			String [] region1 = null;
+			region1 = mVO.getAddress().split("/");
+			String[] region2 = region1[1].split(" ");
+			String region = region2[0];
+			
+			model.addAttribute("region",region);
+		}
+		
+		model.addAttribute("pageVO",pageVO);
+		model.addAttribute("comVOS",comVOS);
+		model.addAttribute("memVO",memVO);
+		return "community/communityFollowList";
 	}
 }

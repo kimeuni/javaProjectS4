@@ -702,7 +702,7 @@
     					<c:if test="${sMid != null }">
 	    					<div class="f-d-3-menu checked-yes"><a href="${ctp}/community/communityMain">전체</a></div>
 	    					<div class="f-d-3-menu checked-no"><a href="${ctp}/community/communityRegion?region=${region}">지역</a></div>
-	    					<div class="f-d-3-menu checked-no"><a href="">팔로우</a></div>
+	    					<div class="f-d-3-menu checked-no"><a href="${ctp}/community/communityFollowList">팔로우 중</a></div>
     					</c:if>
     					<c:if test="${sMid == null }">
     						<div style="width: 100%">

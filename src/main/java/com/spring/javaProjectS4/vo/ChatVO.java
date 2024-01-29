@@ -10,10 +10,10 @@ import lombok.ToString;
 public class ChatVO {
 	private int idx;
 	private int chatIdx;
-	private String usedMid;
-	private String myMid;
+	private String mid1;
+	private String mid2;
+	private String emoticonIdx;
 	private String chat;
-	private String emoticon;
 	private String alarm;
 	private String chatDate;
 	private String whoChatMid;

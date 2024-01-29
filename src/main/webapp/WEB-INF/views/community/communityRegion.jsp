@@ -702,7 +702,7 @@
     					<c:if test="${sMid != null }">
 	    					<div class="f-d-3-menu checked-no"><a href="${ctp}/community/communityMain">전체</a></div>
 	    					<div class="f-d-3-menu checked-yes"><a href="${ctp}/community/communityRegion?region=${region}">지역</a></div>
-	    					<div class="f-d-3-menu checked-no"><a href="">팔로우</a></div>
+	    					<div class="f-d-3-menu checked-no"><a href="${ctp}/community/communityFollowList">팔로우 중</a></div>
     					</c:if>
     					<c:if test="${sMid == null }">
     						<div style="width: 100%">
@@ -752,7 +752,7 @@
 		    						</div>
 		    						<div class="f-d pt-2 comu-content-inner">
 		    							<div style="width: 100%">
-			    							<a href="communityContent?idx=${comVO.idx}&pag=${pageVO.pag }&pageSize=${pageVO.pageSize}">${comVO.content }</a>
+			    							<a href="communityContent?idx=${comVO.idx}&pag=${pageVO.pag }&pageSize=${pageVO.pageSize}&flag=region&region=${region}">${comVO.content }</a>
 		    							</div>
 	    							</div>
 		    						<div class="f-d pt-2 ">
@@ -839,7 +839,7 @@
 <div class="modal fade" id="myModal">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
-    	<form name="communityForm" method="post" enctype="multipart/form-data">
+    	<form name="communityForm" method="post" enctype="multipart/form-data" action="communityMain">
 	    	<div class="f-d mgp-top">
 	    		<div class="pl-2">커뮤니티 작성하기</div>
 	    		<div style="color: #aaa; margin-left: auto; margin-right: 15px;">-이미지 최대 4개</div>
