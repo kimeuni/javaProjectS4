@@ -47,4 +47,13 @@
 		<url-pattern>/*</url-pattern>		
 	</filter-mapping>
 
+	<!-- 에러 페이지 설정 -->
+	<error-page>
+		<error-code>404</error-code>
+		<location>/errorPage/error404</location>
+	</error-page>
+	<error-page>
+		<error-code>500</error-code>
+		<location>/errorPage/error500</location>
+	</error-page>
 </web-app>

@@ -6,7 +6,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>신고 회원 리스트</title>
+    <title>채팅 기록 삭제</title>
     <jsp:include page="/WEB-INF/views/include/bs4.jsp" />
     <style>
     	body{
@@ -153,34 +153,6 @@
     		});
     	});
     	
-    	// 개별 검색
-    	function searchMembers(){
-    		let searchString = $("#searchString").val();
-    		let part = $("#part").val();
-    		
-    		if(searchString.trim() == ""){
-    			alert("검색할 단어를 입력하세요.");
-    			$("#searchString").focus();
-    			return false;
-    		}
-    		else if(part.trim() == ""){
-    			alert("검색한 구분을 선택해주세요.");
-    			return false;
-    		}
-    		else {
-    			location.href='${ctp}/admin/memberSearchList?searchString='+searchString+"&part="+part;
-    		}
-    	}
-    	
-    	$(function() {
-    		$("#searchString").on("keydown",function(e) {
-    			if(e.keyCode == 13){
-    				searchMembers();
-    			}
-    		});
-    	});
-    	
-
     	// 선택박스 전부 선택하면 전체체크박스 체크, 전체 체크 아닐시 해제
     	$(function() {
     		$(".ckS").on("change", function() {
@@ -210,16 +182,16 @@
     		}
     	}
     	
-    	// 영구정지 버튼으로 개별 영구정지
-    	function userReportBtn(mid,nickName){
-    		let ans = confirm(nickName+"님의 계정을 영구정지 처리 하시겠습니까?");
+    	// 계정삭제 버튼으로 개별 삭제
+    	function chattingDel(idx){
+    		let ans = confirm("채팅을 삭제하시겠습니까?");
     		if(ans){
     			$.ajax({
-    				url : "${ctp}/admin/memberReport",
+    				url : "${ctp}/admin/chattingDel",
     				type : "post",
-    				data : {mid : mid},
+    				data : {idx : idx},
     				success : function(res){
-    					alert("영구정지 처리되었습니다.");
+    					alert("삭제되었습니다.");
 						location.reload();
     				},
     				error : function(){
@@ -229,36 +201,32 @@
     		}
     	}
     	
-    	// 선택 정지
+    	// 선택 삭제
     	function choiceDel(){
-    		let mid = '';
-    		let nickName = '';
+    		let idx = '';
     		
     		$("input[name=ckS]:checked").each(function(){
     			let str = $(this).val().split("/");
-				let midStr = str[0];
-				let nickStr = str[1];
+				let idxStr = str[0];
 				
-				mid += midStr+"/";
-				nickName += nickStr+"/";
+				idx += idxStr+"/";
 			})
 			
-    		mid = mid.substring(0,mid.length-1);
-    		nickName = nickName.substring(0,nickName.length-1);
+    		idx = idx.substring(0,idx.length-1);
     		
-    		if(mid.trim() == ""){
-    			alert("영구 정지 처리할 계정을 선택해주세요.");
+    		if(idx.trim() == ""){
+    			alert("삭제할 채팅을 선택해주세요.");
     			return false;
     		}
     		
-    		let ans = confirm(nickName+"님의 계정을 영구정지 처리 하시겠습니까?");
+    		let ans = confirm("채팅을 삭제하시겠습니까?");
     		if(ans){
     			$.ajax({
-    				url : "${ctp}/admin/memberReport",
+    				url : "${ctp}/admin/chattingDel",
     				type : "post",
-    				data : {mid : mid},
+    				data : {idx : idx},
     				success : function(res){
-						alert("영구정지 처리되었습니다.");
+						alert("삭제되었습니다.");
 						location.reload();
     				},
     				error : function(){
@@ -273,61 +241,56 @@
 <jsp:include page="/WEB-INF/views/include/adminMenu.jsp" />
 	<div id="admin-memberListcontainer">
 		<div id="admin-memberList-right-content">
-			<div id="top-menu-str">회원 신고 관리</div>
+			<div id="top-menu-str">채팅 기록 삭제</div>
 			<div id="admin-memberList-right-inner-content">
 				<div id="admin-memberList-inner-content">
-					<div id="admin-userDelList-menu-str">회원 신고 관리 리스트 <i class="fa-solid fa-users-slash"></i></div>
+					<div id="admin-userDelList-menu-str">채팅 기록 삭제 <i class="fa-solid fa-users-slash"></i></div>
 					<hr/>
 						<div style="text-align: left">
-							1. 총 신고 개수가 <span style="color: red">10개가 누적</span>되면 해당 유저를 <span style="color: red">영구정지 처리</span>해주세요. <br/>
-							2. 총 신고 개수가 10개면 제일 상단에 분홍색으로 표시됩니다.
+							1. 6개월이 지난 채팅은 삭제 처리 해주세요.
 						</div>
 					<hr/>
 					<div id="go-btn-div">
 						<div id="memberList-go">
-							<a href="${ctp}/admin/memberList">회원 리스트 이동 <i class="fa-solid fa-right-from-bracket"></i></a>
-						</div>
-						<div id="memberReport-go">
-							<a href="${ctp}/admin/memberUserDel">회원 탈퇴 신청 이동<i class="fa-solid fa-right-from-bracket"></i></a>
+							<a href="${ctp}/admin/chatEmoticon">이모티콘 등록 이동 <i class="fa-solid fa-right-from-bracket"></i></a>
 						</div>
 					</div>
 					<div id="choice-Del-btn">
-						<a href="javascript:choiceDel()">선택 정지</a>
+						<a href="javascript:choiceDel()">선택 삭제</a>
 					</div>
 						<table class="table table-hover text-center">
 							<thead>
 								<tr>
 									<th><input type="checkbox" name="ckAll" id="ckAll" value="all" onclick="checkAll()"/></th>
-									<th>성명</th>
-									<th>닉네임</th>
-									<th>이메일</th>
-									<th>가입일</th>
-									<th>총 신고 수</th>
-									<th>영구정지</th>
+									<th>채팅</th>
+									<th>이모티콘</th>
+									<th>계정 삭제</th>
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach var="mVO" items="${mVOS}" varStatus="st">
-									<c:if test="${mVO.totReportCnt >= 10 }">
+								<c:forEach var="cVO" items="${cVOS}" varStatus="st">
+									<c:if test="${cVO.date_diff > 180 }">
 										<tr style="background-color: #F08282; color: #fff">
-											<th><input type="checkbox" name="ckS" class="ckS" value="${mVO.mid}/${mVO.nickName}"/></th>
-											<td>${mVO.name}</td>
-											<td>${mVO.nickName}</td>
-											<td>${mVO.email}</td>
-											<td>${fn:substring(mVO.startDate,0,10)}</td>
-											<td>${mVO.totReportCnt}</td>
-											<td><button onclick="userReportBtn('${mVO.mid}','${mVO.nickName}')">영구정지</button></td>
+											<th><input type="checkbox" name="ckS" class="ckS" value="${cVO.idx}"/></th>
+											<td>${cVO.chat}</td>
+											<td>
+												<c:if test="${cVO.emoticon != '0' }">
+													<img src="${ctp}/data/emoticon/${cVO.emoticon}" height="40px" width="40px" />
+												</c:if>
+											</td>
+											<td><button onclick="chattingDel(${cVO.idx})">채팅 삭제</button></td>
 										</tr>
 									</c:if>
-									<c:if test="${mVO.totReportCnt < 10 }">
+									<c:if test="${cVO.date_diff <= 180}">
 										<tr>
 											<td>x</td>
-											<td>${mVO.name}</td>
-											<td>${mVO.nickName}</td>
-											<td>${mVO.email}</td>
-											<td>${fn:substring(mVO.startDate,0,10)}</td>
-											<td>${mVO.totReportCnt}</td>
-											<td>영구정지 불가</td>
+											<td>${cVO.chat}</td>
+											<td>
+												<c:if test="${cVO.emoticon != '0' }">
+													<img src="${ctp}/data/emoticon/${cVO.emoticon}" height="40px" width="40px" />
+												</c:if>
+											</td>
+											<td>삭제 불가</td>
 										</tr>
 									</c:if>
 								</c:forEach>
@@ -336,14 +299,14 @@
 					<br/>
 					<div class="text-center">
 						<ul class="pagination justify-content-center">
-						    <c:if test="${pageVO.pag > 1}"><li class="page-item"><a class="page-link text-secondary" href="memberReport?pag=1&pageSize=${pageVO.pageSize}"><i class="fa-solid fa-angles-left"></i></a></li></c:if>
-						  	<c:if test="${pageVO.curBlock > 0}"><li class="page-item"><a class="page-link text-secondary" href="memberReport?pag=${(pageVO.curBlock-1)*pageVO.blockSize+1}&pageSize=${pageVO.pageSize}"><i class="fa-solid fa-angle-left"></i></a></li></c:if>
+						    <c:if test="${pageVO.pag > 1}"><li class="page-item"><a class="page-link text-secondary" href="memberUserDel?pag=1&pageSize=${pageVO.pageSize}"><i class="fa-solid fa-angles-left"></i></a></li></c:if>
+						  	<c:if test="${pageVO.curBlock > 0}"><li class="page-item"><a class="page-link text-secondary" href="memberUserDel?pag=${(pageVO.curBlock-1)*pageVO.blockSize+1}&pageSize=${pageVO.pageSize}"><i class="fa-solid fa-angle-left"></i></a></li></c:if>
 						  	<c:forEach var="i" begin="${(pageVO.curBlock*pageVO.blockSize)+1}" end="${(pageVO.curBlock*pageVO.blockSize)+pageVO.blockSize}" varStatus="st">
-							    <c:if test="${i <= pageVO.totPage && i == pageVO.pag}"><li class="page-item active"><a class="page-link bg-secondary border-secondary" href="memberReport?pag=${i}&pageSize=${pageVO.pageSize}">${i}</a></li></c:if>
-							    <c:if test="${i <= pageVO.totPage && i != pageVO.pag}"><li class="page-item"><a class="page-link text-secondary" href="memberReport?pag=${i}&pageSize=${pageVO.pageSize}">${i}</a></li></c:if>
+							    <c:if test="${i <= pageVO.totPage && i == pageVO.pag}"><li class="page-item active"><a class="page-link bg-secondary border-secondary" href="memberUserDel?pag=${i}&pageSize=${pageVO.pageSize}">${i}</a></li></c:if>
+							    <c:if test="${i <= pageVO.totPage && i != pageVO.pag}"><li class="page-item"><a class="page-link text-secondary" href="memberUserDel?pag=${i}&pageSize=${pageVO.pageSize}">${i}</a></li></c:if>
 						  	</c:forEach>
-						  	<c:if test="${pageVO.curBlock < pageVO.lastBlock}"><li class="page-item"><a class="page-link text-secondary" href="memberReport?pag=${(pageVO.curBlock+1)*pageVO.blockSize+1}&pageSize=${pageVO.pageSize}"><i class="fa-solid fa-angle-right"></i></a></li></c:if>
-						  	<c:if test="${pageVO.pag < pageVO.totPage}"><li class="page-item"><a class="page-link text-secondary" href="memberReport?pag=${pageVO.totPage}&pageSize=${pageVO.pageSize}"><i class="fa-solid fa-angles-right"></i></a></li></c:if>
+						  	<c:if test="${pageVO.curBlock < pageVO.lastBlock}"><li class="page-item"><a class="page-link text-secondary" href="memberUserDel?pag=${(pageVO.curBlock+1)*pageVO.blockSize+1}&pageSize=${pageVO.pageSize}"><i class="fa-solid fa-angle-right"></i></a></li></c:if>
+						  	<c:if test="${pageVO.pag < pageVO.totPage}"><li class="page-item"><a class="page-link text-secondary" href="memberUserDel?pag=${pageVO.totPage}&pageSize=${pageVO.pageSize}"><i class="fa-solid fa-angles-right"></i></a></li></c:if>
 						</ul>
 					</div>
 				</div>

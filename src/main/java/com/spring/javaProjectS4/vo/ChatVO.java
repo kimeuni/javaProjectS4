@@ -12,9 +12,11 @@ public class ChatVO {
 	private int chatIdx;
 	private String mid1;
 	private String mid2;
-	private String emoticonIdx;
+	private String emoticon;
 	private String chat;
 	private String alarm;
 	private String chatDate;
 	private String whoChatMid;
+	
+	private String date_diff;
 }

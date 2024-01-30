@@ -151,5 +151,16 @@ public class HomeController {
 		return "address/address";
 	}
 	
+	// 에러 페이지
+	@RequestMapping(value = "/errorPage/error404", method = RequestMethod.GET)
+	public String error404Get() {
+		return "errorPage/error404";
+	}
+	
+	// 에러 페이지
+	@RequestMapping(value = "/errorPage/error500", method = RequestMethod.GET)
+	public String error500Get() {
+		return "errorPage/error500";
+	}
 	
 }

@@ -182,6 +182,9 @@
 							// 관리자 화면 이동
 							location.href='${ctp}/admin/adminMain';
 						}
+						else if(res == "4"){
+							location.href='${ctp}/member/userUserDelR';
+						}
 						else {
 							// 계정 비활성 && 30일 이내 시 계정 복구창 이동
 							let arr = new Array();

@@ -160,6 +160,10 @@ public class MemberController {
 		else if(vo.getUserDel().equals("Y") && vo.getDate_diff() > 30) {
 			return "1";
 		}
+		// 계정 영구정지 처리
+		else if(vo.getUserDel().equals("R")) {
+			return "4";
+		}
 		// 비밀번호가 같지 않을 시
 		else if(vo.getMid().equals(mid)) {
 			// 암호화된 비밀번호와 매치시켜서 같은지 확인
@@ -327,6 +331,10 @@ public class MemberController {
 			model.addAttribute("lastDate",vo.getLastDate());
 			
 			return "member/accountRestore";
+		}
+		// 해당 계정 영구 정지 처리
+		else if(vo.getUserDel().equals("R")) {
+			return "member/userUserDelR";
 		}
 		
 		model.addAttribute("vo", vo);
@@ -954,6 +962,12 @@ public class MemberController {
 		int res = memberService.setProfileNoImgUpdate("no_img.png",mid);
 		if(res != 0 ) return "1";
 		else return "2";
+	}
+	
+	// 영구 정지 화면 이동
+	@RequestMapping(value = "/userUserDelR", method = RequestMethod.GET)
+	public String userUserDelRGet() {
+		return "member/userUserDelR";
 	}
 	
 	// 메일 전송을 위한 메소드

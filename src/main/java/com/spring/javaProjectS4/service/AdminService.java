@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.spring.javaProjectS4.vo.AnswerVO;
 import com.spring.javaProjectS4.vo.AskVO;
 import com.spring.javaProjectS4.vo.BtmCategoryVO;
+import com.spring.javaProjectS4.vo.ChatVO;
 import com.spring.javaProjectS4.vo.EmoticonVO;
 import com.spring.javaProjectS4.vo.EventMailVO;
 import com.spring.javaProjectS4.vo.FAQVO;
@@ -172,6 +173,10 @@ public interface AdminService {
 	public List<MemberVO> getUserReportList(int startIndexNo, int pageSize);
 
 	public void setUserAccountRUpdate(String mid);
+
+	public List<ChatVO> getChattingList(int startIndexNo, int pageSize);
+
+	public void setChattingDel(int idx);
 
 
 }

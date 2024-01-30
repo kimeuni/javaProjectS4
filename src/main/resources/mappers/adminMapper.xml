@@ -132,6 +132,9 @@
 	<select id="getUserReportRecCnt" resultType="int">
 		select count(*) from memberS where totReportCnt > 0 and userDel = 'N';
 	</select>
+	<select id="getChattingList" resultType="com.spring.javaProjectS4.vo.ChatVO">
+		select *,timestampdiff(day,chatDate,now()) as date_diff from chatS order by chatDate limit #{startIndexNo},#{pageSize};
+	</select>
 	
 	
 	<insert id="setNoticeInput">
@@ -255,5 +258,8 @@
 	</delete>
 	<delete id="setEmoticonDel">
 		delete from emoticonS where idx = #{idx};
+	</delete>
+	<delete id="setChattingDel">
+		delete from chatS where idx = #{idx};
 	</delete>
 </mapper>

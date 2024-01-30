@@ -23,6 +23,25 @@
 	<select id="getMemberMid" resultType="com.spring.javaProjectS4.vo.MemberVO">
 		select * from memberS where mid = #{mid};
 	</select>
+	<select id="getInnerChatInfo" resultType="com.spring.javaProjectS4.vo.ChatGroupVO">
+		select cg.*,(select imgs from usedS u where cg.usedIdx = u.idx) as imgs,
+		(select title from usedS u where cg.usedIdx = u.idx) as title,
+		(select money from usedS u where cg.usedIdx = u.idx) as money,
+		(select nickName from memberS mem where mem.mid = cg.mid1) as nickName1,
+		(select nickName from memberS mem where mem.mid = cg.mid2) as nickName2,
+		(select lastDate from memberS mem where mem.mid = cg.mid1) as lastDate1,
+		(select lastDate from memberS mem where mem.mid = cg.mid2) as lastDate2
+		from chatGroupS cg where cg.usedIdx = #{usedIdx} 
+		and (cg.mid1 = #{mid} or cg.mid2 = #{mid}) and (cg.mid1 = #{sMid} or cg.mid2 = #{sMid}) group by cg.idx;
+	</select>
+	<select id="getChatting" resultType="com.spring.javaProjectS4.vo.ChatVO">
+		select * from chatS where (mid1 = #{mid} or mid2 = #{mid}) and (mid1 = #{sMid} or mid2 = #{sMid});
+	</select>
+	<select id="getChatList" resultType="com.spring.javaProjectS4.vo.ChatVO">
+		<if test="su == 30"> select * from chatS where idx > (select max(idx) - #{su} from chatS) 
+		and (mid1 = #{mid1} or mid2 = #{mid1}) and (mid1 = #{mid2} or mid2 = #{mid2}) order by idx; </if>
+		<if test="su != 30"> select * from chatS where idx > #{su} and (mid1 = #{mid1} or mid2 = #{mid1}) and (mid1 = #{mid2} or mid2 = #{mid2}) order by idx; </if>
+	</select>
 	
 	<insert id="setChatGroupInput">
 		insert into chatgroupS values (default,#{usedIdx},#{mid},#{sMid});
@@ -30,4 +49,11 @@
 	<insert id="setFirstChat">
 		insert into chatS values (default,#{idx},#{mid},#{sMid},0,#{title},default,default,#{whoMid});
 	</insert>
+	<insert id="setChatInput">
+		insert into chatS values (default,#{chatIdx},#{mid1},#{mid2},#{emoticon},#{chat},default,default,#{whoMid});
+	</insert>
+	
+	<update id="setUsedIdxUpdateChatG">
+		update chatGroupS set usedIdx = #{usedIdx} where (mid1 = #{mid} or mid2 = #{mid}) and (mid1 = #{sMid} or mid2 = #{sMid});
+	</update>
 </mapper>

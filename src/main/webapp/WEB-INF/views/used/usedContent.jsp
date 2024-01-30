@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:set var="ctp" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
 <html>
@@ -471,7 +472,7 @@
 		<div class="used-content-flex-right">
 			<div style="width: 100%;">
 				<div class="u-title">${usedVO.title}</div>
-				<div class="u-money">${usedVO.money }원</div>
+				<div class="u-money"><fmt:formatNumber value="${usedVO.money }"/>원</div>
 				<hr />
 				<div class="f-d">
 					<div class="str-w2"><i class="fa-solid fa-heart"></i> ${usedVO.totLike }</div>

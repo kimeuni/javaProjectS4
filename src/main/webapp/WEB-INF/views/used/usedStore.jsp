@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:set var="ctp" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
 <html>
@@ -191,7 +192,7 @@
 					    			</c:if> 
 					    		</div>
 					    		<div class="inner-flex-div mt-5">
-					    			<div>${usedVO.money}원</div>
+					    			<div><fmt:formatNumber value="${usedVO.money}" />원</div>
 					    			<c:if test="${usedVO.second_diff <= 59}"><div class="inner-flex-end">${usedVO.second_diff}초 전</div></c:if>
 					    			<c:if test="${usedVO.second_diff > 59 && usedVO.minute_diff <= 59}"><div class="inner-flex-end">${usedVO.minute_diff}분 전</div></c:if>
 					    			<c:if test="${usedVO.minute_diff > 59 && usedVO.hour_diff <=23}"><div class="inner-flex-end">${usedVO.hour_diff}시간 전</div></c:if>

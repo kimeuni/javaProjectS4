@@ -66,7 +66,7 @@
  		color : #fff;
  		text-decoration: none;
  	}
- 	#admin-member-inner-menu a div, #admin-board-inner-menu a div, #admin-notice-inner-menu a div, #admin-advertisement-inner-menu a div, #admin-ask-inner-menu a div, #admin-chat-inner-menu a div{
+ 	#admin-member-inner-menu a div, #admin-board-inner-menu a div, #admin-notice-inner-menu a div, #admin-advertisement-inner-menu a div, #admin-ask-inner-menu a div, #admin-chat-inner-menu a div,  #admin-error-inner-menu a div{
  		padding-left: 50px;
  		font-size: 1.2em;
  	}
@@ -87,11 +87,13 @@
 		$("#admin-advertisement-inner-menu").hide();
 		$("#admin-chat-inner-menu").hide();
 		$("#admin-ask-inner-menu").hide();
+		$("#admin-error-inner-menu").hide();
 		$("#member-menu-up").hide();
 		$("#board-menu-up").hide();
 		$("#notice-menu-up").hide();
 		$("#chat-menu-up").hide();
 		$("#advertisement-menu-up").hide();
+		$("#error-menu-up").hide();
 		$("#ask-menu-up").hide();
 		if('${menuCk}' == '회원리스트' || '${menuCk}' == '회원검색리스트' || '${menuCk}' == '회원탈퇴신청' || '${menuCk}' == '회원신고리스트'){
 			$("#member-menu-down").hide();
@@ -118,10 +120,15 @@
 			$("#board-menu-up").show();
 			$("#admin-board-inner-menu").show();
 		}
-		else if('${menuCk}' == '이모티콘'){
+		else if('${menuCk}' == '이모티콘' || '${menuCk}' == '채팅삭제'){
 			$("#chat-menu-down").hide();
 			$("#chat-menu-up").show();
 			$("#admin-chat-inner-menu").show();
+		}
+		else if('${menuCk}' == '에러페이지'){
+			$("#error-menu-down").hide();
+			$("#error-menu-up").show();
+			$("#admin-error-inner-menu").show();
 		}
 	});
 	
@@ -149,6 +156,10 @@
 		$("#chat-menu-down").show();
 		$("#chat-menu-up").hide();
 		$("#admin-chat-inner-menu").slideUp();
+		
+		$("#error-menu-down").show();
+		$("#error-menu-up").hide();
+		$("#admin-error-inner-menu").slideUp();
 	}
 	
 	function memberManagementUp(){
@@ -181,6 +192,10 @@
 		$("#chat-menu-down").show();
 		$("#chat-menu-up").hide();
 		$("#admin-chat-inner-menu").slideUp();
+		
+		$("#error-menu-down").show();
+		$("#error-menu-up").hide();
+		$("#admin-error-inner-menu").slideUp();
 	}
 	
 	function boardManagementUp(){
@@ -213,6 +228,10 @@
 		$("#chat-menu-down").show();
 		$("#chat-menu-up").hide();
 		$("#admin-chat-inner-menu").slideUp();
+		
+		$("#error-menu-down").show();
+		$("#error-menu-up").hide();
+		$("#admin-error-inner-menu").slideUp();
 	}
 	
 	function noticeManagementUp(){
@@ -245,12 +264,16 @@
 		$("#chat-menu-down").show();
 		$("#chat-menu-up").hide();
 		$("#admin-chat-inner-menu").slideUp();
+		
+		$("#error-menu-down").show();
+		$("#error-menu-up").hide();
+		$("#admin-error-inner-menu").slideUp();
 	}
 	
 	function advertisementManagementUp(){
 		$("#advertisement-menu-down").show();
 		$("#advertisement-menu-up").hide();
-		$("#admin-advertisement-inner-menu").slideUp();		
+		$("#admin-advertisement-inner-menu").slideUp();
 	}
 	
 	function askManagementDown(){
@@ -277,6 +300,10 @@
 		$("#chat-menu-down").show();
 		$("#chat-menu-up").hide();
 		$("#admin-chat-inner-menu").slideUp();
+		
+		$("#error-menu-down").show();
+		$("#error-menu-up").hide();
+		$("#admin-error-inner-menu").slideUp();
 	}
 	
 	function askManagementUp(){
@@ -309,12 +336,52 @@
 		$("#chat-menu-down").hide();
 		$("#chat-menu-up").show();
 		$("#admin-chat-inner-menu").slideDown();
+		
+		$("#error-menu-down").show();
+		$("#error-menu-up").hide();
+		$("#admin-error-inner-menu").slideUp();
 	}
 	
 	function chatManagementUp(){
 		$("#chat-menu-down").show();
 		$("#chat-menu-up").hide();
 		$("#admin-chat-inner-menu").slideUp();
+	}
+	
+	function errorManagementDown(){
+		$("#member-menu-down").show();
+		$("#member-menu-up").hide();
+		$("#admin-member-inner-menu").slideUp();
+		
+		$("#board-menu-down").show();
+		$("#board-menu-up").hide();
+		$("#admin-board-inner-menu").slideUp();
+		
+		$("#notice-menu-down").show();
+		$("#notice-menu-up").hide();
+		$("#admin-notice-inner-menu").slideUp();
+		
+		$("#advertisement-menu-down").show();
+		$("#advertisement-menu-up").hide();
+		$("#admin-advertisement-inner-menu").slideUp();
+		
+		$("#ask-menu-down").show();
+		$("#ask-menu-up").hide();
+		$("#admin-ask-inner-menu").slideUp();
+		
+		$("#chat-menu-down").show();
+		$("#chat-menu-up").hide();
+		$("#admin-chat-inner-menu").slideUp();
+		
+		$("#error-menu-down").hide();
+		$("#error-menu-up").show();
+		$("#admin-error-inner-menu").slideDown();
+	}
+	
+	function errorManagementUp(){
+		$("#error-menu-down").show();
+		$("#error-menu-up").hide();
+		$("#admin-error-inner-menu").slideUp();
 	}
 </script>
 <div id="admin-left-nav">
@@ -388,7 +455,17 @@
 		</div>
 		<div id="admin-chat-inner-menu">
 			<a href="${ctp}/admin/chatEmoticon"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> 이모티콘</div></a>
-			<a href="${ctp}/admin/askStatusYes"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> 완료 문의 삭제</div></a>
+			<a href="${ctp}/admin/chattingDel"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> 채팅 기록 삭제</div></a>
+		</div>
+		<div id="error-menu-down">
+			<a href="javascript:errorManagementDown()"><div class="admin-inner-menu-n"><i class="fa-solid fa-chevron-right"></i> 에러 페이지</div></a>
+		</div>
+		<div id="error-menu-up">
+			<a href="javascript:errorManagementUp()"><div class="admin-inner-menu"><i class="fa-solid fa-angle-down"></i> 에러 페이지</div></a>
+		</div>
+		<div id="admin-error-inner-menu">
+			<a href="${ctp}/admin/error404"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> 400에러</div></a>
+			<a href="${ctp}/admin/error500"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> 500에러</div></a>
 		</div>
 		<div >
 			<a href="${ctp}/admin/delTitleInput"><div class="admin-inner-menu-n">탈퇴 목록 등록</div></a>
@@ -398,9 +475,6 @@
 		</div>
 		<div>
 			<a href="${ctp}/admin/addressInput"><div class="admin-inner-menu-n">찾아오는 길 등록</div></a>
-		</div>
-		<div>
-			<a href="${ctp}/admin/adminMain"><div class="admin-inner-menu-n">통계</div></a>
 		</div>
 	</div>
 </div>

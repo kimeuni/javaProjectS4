@@ -20,4 +20,9 @@ public class ChatGroupVO {
 	private String profile2;
 	private String chat;
 	private String cDate;
+	
+	private String title;
+	private String money;
+	private String lastDate1;
+	private String lastDate2;
 }

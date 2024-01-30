@@ -27,6 +27,7 @@ import com.spring.javaProjectS4.service.AdminService;
 import com.spring.javaProjectS4.vo.AnswerVO;
 import com.spring.javaProjectS4.vo.AskVO;
 import com.spring.javaProjectS4.vo.BtmCategoryVO;
+import com.spring.javaProjectS4.vo.ChatVO;
 import com.spring.javaProjectS4.vo.EmoticonVO;
 import com.spring.javaProjectS4.vo.EventMailVO;
 import com.spring.javaProjectS4.vo.FAQVO;
@@ -56,7 +57,14 @@ public class AdminController {
 	
 	// 관리자 메인 홈 이동
 	@RequestMapping(value = "/adminMain", method = RequestMethod.GET)
-	public String adminMainGet() {
+	public String adminMainGet(Model model,@RequestParam(name="pag", defaultValue = "1", required = false) int pag,
+			@RequestParam(name="pageSize", defaultValue = "10", required = false) int pageSize) {
+		
+		PageVO pageVO = pageProcess.totRecCnt(pag, pageSize, "adminMemberList", "", "");
+		
+		List<MemberVO> memVOS = adminService.getMemberList(pageVO.getStartIndexNo(),pageSize);
+		
+		model.addAttribute("memVOS",memVOS);
 		return "admin/adminMain";
 	}
 	
@@ -1177,71 +1185,121 @@ public class AdminController {
 		return "admin/community/communityReportList";
 	}
 	
-	// 메일 전송을 위한 메소드
-		private String mailSend(String email, String title, String mailFlag, String flag) throws MessagingException {
-			HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
-			String content = "";
-			
-			// 이미지 있는 곳 src='cid:' 로 바꿔주기
-			mailFlag = mailFlag.replaceAll("src=\"/javaProjectS4/data/mail/", "src=\"cid:");
-			// 이미지 크기 고정
-			mailFlag = mailFlag.replaceAll("height:([0-9]*)px; width:([0-9]*)px", "height:800px; width:650px");
-			
-			System.out.println(mailFlag);
-			
-			MimeMessage message = mailSender.createMimeMessage();
-			MimeMessageHelper messageHelper = new MimeMessageHelper(message, true,"UTF-8");
-			
-			messageHelper.setTo(email);
-			messageHelper.setSubject(title);
-			messageHelper.setText(content);
-			
-			// 메일 내용
-			content = content.replace("\n", "<br/>");
-			content += "<table style='width:650px'>";
-			content += "<tr style='text-align:right; background-color: #5E5756;'><th><a href='' style='color:#fff'>다모아 바로가기</a></th></tr>";
-			content += "<tr><td><img src='cid:MailMain.png' width='650px'></td></tr>";
-			content += "<tr><td style='height:20px'></td></tr>";
-			// 작성한 내용
-			if(flag.equals("eventMail")) {
-				content += "<tr><td>"+ mailFlag +"</td></tr>";
+	// 채팅 기록 삭제 화면 이동
+	@RequestMapping(value = "/chattingDel", method = RequestMethod.GET)
+	public String chattingDelGet(Model model,
+			@RequestParam(name="pag", defaultValue = "1", required = false) int pag,
+			@RequestParam(name="pageSize", defaultValue = "10", required = false) int pageSize
+			) {
+		
+		PageVO pageVO = pageProcess.totRecCnt(pag, pageSize, "chattingDel", "", "");
+		List<ChatVO> cVOS = adminService.getChattingList(pageVO.getStartIndexNo(),pageSize);
+		
+		model.addAttribute(pageVO);
+		model.addAttribute("cVOS",cVOS);
+		model.addAttribute("menuCk","채팅삭제");
+		return "admin/chat/chattingDel";
+	}
+	
+	// 채팅 기록 삭제 처리
+	@ResponseBody
+	@RequestMapping(value = "/chattingDel", method = RequestMethod.POST)
+	public String chattingDelPost(@RequestParam(name="idx", defaultValue = "0", required = false) String idx) {
+
+		String[] idxArr = null;
+		if(idx.indexOf("/") != -1) {
+			idxArr = idx.split("/");
+			// 삭제
+			for(int i=0; i<idxArr.length; i++) {
+				adminService.setChattingDel(Integer.parseInt(idxArr[i]));
 			}
-			content += "<tr><td style='height:20px'></td></tr>";
-			content += "<tr><td style='height:20px; background-color: #5E5756;'></td></tr>";
-			content += "</table>";
-			
-			messageHelper.setText(content,true);
-			
-			FileSystemResource file = new FileSystemResource(request.getSession().getServletContext().getRealPath("/resources/data/images/MailMain.png")); 
-			messageHelper.addInline("MailMain.png", file);
-			
-			// 이메일 전송하는 이미지 보여주기 처리
-			if(flag.equals("eventMail")) {
-				
-				
-				if(mailFlag.indexOf("src=\"cid:") != -1) {
-					// src부터 시작하여 임시 파일 저장된 곳의 파일 이름 시작 index 번호
-					int position = 9;
-					
-					String nextImg = mailFlag.substring(mailFlag.indexOf("src=\"cid:") + position);
-					boolean sw = true;
-					
-					System.out.println("이미지 : " + nextImg);
-					while(sw) {
-						String imgFile = nextImg.substring(0,nextImg.indexOf("\""));
-						
-						System.out.println(imgFile);
-						
-						file = new FileSystemResource(request.getSession().getServletContext().getRealPath("/resources/data/mail/"+imgFile));
-						
-						messageHelper.addInline(imgFile, file);
-						if(nextImg.indexOf("src=\"cid:") == -1) sw = false;
-						else nextImg = nextImg.substring(nextImg.indexOf("src=\"cid:") + position);
-					}
-				}
-			}
-			
-			mailSender.send(message);
 			return "1";
 		}
+		else {
+			adminService.setChattingDel(Integer.parseInt(idx));
+			return "1";
+		}
+	}
+	
+	// 404 에러 페이지 이동
+	@RequestMapping(value = "/error404", method = RequestMethod.GET)
+	public String error404Get(Model model) {
+		model.addAttribute("menuCk","에러페이지");
+		return "admin/errorPage/error404ad";
+	}
+	
+	// 500 에러 페이지 이동
+	@RequestMapping(value = "/error500", method = RequestMethod.GET)
+	public String error500Get(Model model) {
+		model.addAttribute("menuCk","에러페이지");
+		return "admin/errorPage/error500ad";
+	}
+	
+	// 메일 전송을 위한 메소드
+	private String mailSend(String email, String title, String mailFlag, String flag) throws MessagingException {
+		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
+		String content = "";
+		
+		// 이미지 있는 곳 src='cid:' 로 바꿔주기
+		mailFlag = mailFlag.replaceAll("src=\"/javaProjectS4/data/mail/", "src=\"cid:");
+		// 이미지 크기 고정
+		mailFlag = mailFlag.replaceAll("height:([0-9]*)px; width:([0-9]*)px", "height:800px; width:650px");
+		
+		System.out.println(mailFlag);
+		
+		MimeMessage message = mailSender.createMimeMessage();
+		MimeMessageHelper messageHelper = new MimeMessageHelper(message, true,"UTF-8");
+		
+		messageHelper.setTo(email);
+		messageHelper.setSubject(title);
+		messageHelper.setText(content);
+		
+		// 메일 내용
+		content = content.replace("\n", "<br/>");
+		content += "<table style='width:650px'>";
+		content += "<tr style='text-align:right; background-color: #5E5756;'><th><a href='' style='color:#fff'>다모아 바로가기</a></th></tr>";
+		content += "<tr><td><img src='cid:MailMain.png' width='650px'></td></tr>";
+		content += "<tr><td style='height:20px'></td></tr>";
+		// 작성한 내용
+		if(flag.equals("eventMail")) {
+			content += "<tr><td>"+ mailFlag +"</td></tr>";
+		}
+		content += "<tr><td style='height:20px'></td></tr>";
+		content += "<tr><td style='height:20px; background-color: #5E5756;'></td></tr>";
+		content += "</table>";
+		
+		messageHelper.setText(content,true);
+		
+		FileSystemResource file = new FileSystemResource(request.getSession().getServletContext().getRealPath("/resources/data/images/MailMain.png")); 
+		messageHelper.addInline("MailMain.png", file);
+		
+		// 이메일 전송하는 이미지 보여주기 처리
+		if(flag.equals("eventMail")) {
+			
+			
+			if(mailFlag.indexOf("src=\"cid:") != -1) {
+				// src부터 시작하여 임시 파일 저장된 곳의 파일 이름 시작 index 번호
+				int position = 9;
+				
+				String nextImg = mailFlag.substring(mailFlag.indexOf("src=\"cid:") + position);
+				boolean sw = true;
+				
+				System.out.println("이미지 : " + nextImg);
+				while(sw) {
+					String imgFile = nextImg.substring(0,nextImg.indexOf("\""));
+					
+					System.out.println(imgFile);
+					
+					file = new FileSystemResource(request.getSession().getServletContext().getRealPath("/resources/data/mail/"+imgFile));
+					
+					messageHelper.addInline(imgFile, file);
+					if(nextImg.indexOf("src=\"cid:") == -1) sw = false;
+					else nextImg = nextImg.substring(nextImg.indexOf("src=\"cid:") + position);
+				}
+			}
+		}
+		
+		mailSender.send(message);
+		return "1";
+	}
 }

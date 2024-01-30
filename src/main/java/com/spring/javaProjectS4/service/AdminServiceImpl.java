@@ -23,6 +23,7 @@ import com.spring.javaProjectS4.dao.AdminDAO;
 import com.spring.javaProjectS4.vo.AnswerVO;
 import com.spring.javaProjectS4.vo.AskVO;
 import com.spring.javaProjectS4.vo.BtmCategoryVO;
+import com.spring.javaProjectS4.vo.ChatVO;
 import com.spring.javaProjectS4.vo.EmoticonVO;
 import com.spring.javaProjectS4.vo.EventMailVO;
 import com.spring.javaProjectS4.vo.FAQVO;
@@ -648,6 +649,16 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public void setUserAccountRUpdate(String mid) {
 		adminDAO.setUserAccountRUpdate( mid);
+	}
+
+	@Override
+	public List<ChatVO> getChattingList(int startIndexNo, int pageSize) {
+		return adminDAO.getChattingList(startIndexNo,pageSize);
+	}
+
+	@Override
+	public void setChattingDel(int idx) {
+		adminDAO.setChattingDel( idx);
 	}
 
 }

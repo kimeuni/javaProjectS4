@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:set var="ctp" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
 <html>
@@ -367,7 +368,7 @@
 						</select>
 					</td>
 					<td><a href="${ctp}/used/usedContent?idx=${usedVO.idx}">${usedVO.title}</a></td>
-					<td>${usedVO.money}원</td>
+					<td><fmt:formatNumber value="${usedVO.money}" />원</td>
 					<td>${usedVO.totLike}</td>
 					<td>${fn:substring(usedVO.uploadDate,0,16)}</td>
 					<td>
