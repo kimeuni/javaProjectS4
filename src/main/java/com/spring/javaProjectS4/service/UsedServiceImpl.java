@@ -316,4 +316,24 @@ public class UsedServiceImpl implements UsedService {
 	public List<UsedVO> getUsedRegionList(int startIndexNo, int pageSize, String region) {
 		return usedDAO.getUsedRegionList( startIndexNo, pageSize, region);
 	}
+
+	@Override
+	public List<UsedVO> getUsedTopCList(int startIndexNo, int pageSize, int top) {
+		return usedDAO.getUsedTopCList( startIndexNo, pageSize, top);
+	}
+
+	@Override
+	public List<UsedVO> getUsedMidCList(int startIndexNo, int pageSize, int mid) {
+		return usedDAO.getUsedMidCList( startIndexNo, pageSize, mid);
+	}
+
+	@Override
+	public List<UsedVO> getUsedBtmCList(int startIndexNo, int pageSize, int btm) {
+		return usedDAO.getUsedBtmCList( startIndexNo, pageSize, btm);
+	}
+
+	@Override
+	public void setAlarmN(int idx) {
+		usedDAO.setAlarmN( idx);
+	}
 }

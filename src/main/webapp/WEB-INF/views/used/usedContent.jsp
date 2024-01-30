@@ -156,7 +156,7 @@
     		flex-flow: wrap;
     	}
     	.f-w-5 img{
-    		width: 100%;
+    		width: 138px;
     		height: 138px;
     	}
     	.see-more-btn{
@@ -532,9 +532,9 @@
 				<hr/>
 					<div>
 						<div class="categry-str"><i class="fa-solid fa-rectangle-list"></i>카테고리</div>
-						<c:if test="${midCategoryName == '0' && btmCategoryName == '0' }"><a href=""> ${topCategoryName} &nbsp;<i class="fa-solid fa-chevron-right"></i></a></c:if>
-						<c:if test="${midCategoryName != '0' && btmCategoryName == '0' }"><a href=""> ${midCategoryName} &nbsp;<i class="fa-solid fa-chevron-right"></i></a></c:if>
-						<c:if test="${midCategoryName != '0' && btmCategoryName != '0' }"><a href=""> ${btmCategoryName} &nbsp;<i class="fa-solid fa-chevron-right"></i></a></c:if>
+						<c:if test="${midCategoryName == '0' && btmCategoryName == '0' }"><a href="${ctp}/used/usedCategorySearch?top=${top}&mid=${mid}&btm=${btm}"> ${topCategoryName} &nbsp;<i class="fa-solid fa-chevron-right"></i></a></c:if>
+						<c:if test="${midCategoryName != '0' && btmCategoryName == '0' }"><a href="${ctp}/used/usedCategorySearch?top=${top}&mid=${mid}&btm=${btm}"> ${midCategoryName} &nbsp;<i class="fa-solid fa-chevron-right"></i></a></c:if>
+						<c:if test="${midCategoryName != '0' && btmCategoryName != '0' }"><a href="${ctp}/used/usedCategorySearch?top=${top}&mid=${mid}&btm=${btm}"> ${btmCategoryName} &nbsp;<i class="fa-solid fa-chevron-right"></i></a></c:if>
 					</div>
 				<hr/>
 			</div>

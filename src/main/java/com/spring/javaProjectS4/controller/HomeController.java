@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
@@ -25,11 +26,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.spring.javaProjectS4.pagination.PageProcess;
+import com.spring.javaProjectS4.pagination.PageVO;
 import com.spring.javaProjectS4.service.HomeService;
 import com.spring.javaProjectS4.vo.UserShowAdvertisementVO;
+import com.spring.javaProjectS4.vo.LikeVO;
 import com.spring.javaProjectS4.vo.MainAdvertisementVO;
 import com.spring.javaProjectS4.vo.MapVO;
 import com.spring.javaProjectS4.vo.MemberVO;
+import com.spring.javaProjectS4.vo.UsedVO;
 
 @Controller
 public class HomeController {
@@ -37,6 +42,9 @@ public class HomeController {
 	//private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	@Autowired
 	HomeService homeService;
+	
+	@Autowired
+	PageProcess pageProcess;
 	
 	// 메인 홈
 	@RequestMapping(value = {"/", "/damoa"}, method = RequestMethod.GET)
@@ -53,6 +61,16 @@ public class HomeController {
 		model.addAttribute("damoa","damoa");
 		model.addAttribute("mainAdVO",mainAdVO);
 		model.addAttribute("userAdVO",userAdVO);
+		
+		// 알림 띄우기
+		String alarmMyMid = session.getAttribute("sMid")== null ? "" : (String)session.getAttribute("sMid");
+		//1. 찜 알림
+		List<LikeVO> likeAlarm = homeService.getLikeAlarm(alarmMyMid);
+		
+		// 2. 팔로우한 사람 게시글 올라온 알림
+		
+		
+		model.addAttribute("likeAlarm",likeAlarm);
 		
 		return "mainHome";
 	}
@@ -163,4 +181,10 @@ public class HomeController {
 		return "errorPage/error500";
 	}
 	
+	
+	// 전체 검색
+	@RequestMapping(value = "/mainSearch", method = RequestMethod.GET)
+	public String mainSearchGet(Model model,String str) {
+		return "mainSearch";
+	}
 }

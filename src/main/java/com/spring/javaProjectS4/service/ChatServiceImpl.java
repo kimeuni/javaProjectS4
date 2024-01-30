@@ -78,7 +78,6 @@ public class ChatServiceImpl implements ChatService {
 	public String getThirty(String mid1, String mid2) {
 		
 		ArrayList<ChatVO> vos = chatDAO.getChatList(30,mid1,mid2);
-		System.out.println("vos : " + vos);
 		ChatVO vo = new ChatVO();
 		
 		StringBuffer res = new StringBuffer();
@@ -106,16 +105,13 @@ public class ChatServiceImpl implements ChatService {
 			res.append("{\"value\":\""+vo.getWhoChatMid()+"\"}]");
 			if(i != (vos.size()-1)) res.append(",");
 		}
-		System.out.println(vos + "ddd");
 		res.append("],\"last\":\""+vos.get(vos.size()-1).getIdx()+"\"}");
-		System.out.println(res.toString() + "제이슨");
 		return res.toString();
 	}
 
 	@Override
 	public String getListIdx(String listType, String mid1, String mid2) {
 		ArrayList<ChatVO> vos = chatDAO.getChatList(Integer.parseInt(listType), mid1, mid2);	// 마지막자료를 기준으로 처리.(마지막 자료 이후것을 가져오게한다.)
-		System.out.println(vos);
 		ChatVO vo = new ChatVO();
 		
 		StringBuffer res = new StringBuffer();
@@ -145,12 +141,15 @@ public class ChatServiceImpl implements ChatService {
 		}
 		if(vos.size() != 0) {
 			res.append("],\"last\":\""+vos.get(vos.size()-1).getIdx()+"\"}");
-			System.out.println(vos + "1");
 		}
 		else {
 			res.append("],\"last\":\""+listType+"\"}");
-			System.out.println(vos + "2");
 		}
 		return res.toString();
+	}
+
+	@Override
+	public void setChattingAlarmN(String mid, String sMid, String myMid) {
+		chatDAO.setChattingAlarmN( mid, sMid,myMid);
 	}
 }

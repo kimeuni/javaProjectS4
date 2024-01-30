@@ -104,6 +104,14 @@ public interface UsedService {
 
 	public List<UsedVO> getUsedRegionList(int startIndexNo, int pageSize, String region);
 
+	public List<UsedVO> getUsedTopCList(int startIndexNo, int pageSize, int top);
+
+	public List<UsedVO> getUsedMidCList(int startIndexNo, int pageSize, int mid);
+
+	public List<UsedVO> getUsedBtmCList(int startIndexNo, int pageSize, int btm);
+
+	public void setAlarmN(int idx);
+
 
 
 }

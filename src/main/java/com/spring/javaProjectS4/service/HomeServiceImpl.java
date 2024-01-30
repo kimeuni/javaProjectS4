@@ -4,6 +4,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +18,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.spring.javaProjectS4.dao.HomeDAO;
 import com.spring.javaProjectS4.vo.UserShowAdvertisementVO;
+import com.spring.javaProjectS4.vo.LikeVO;
 import com.spring.javaProjectS4.vo.MainAdvertisementVO;
 import com.spring.javaProjectS4.vo.MapVO;
 import com.spring.javaProjectS4.vo.MemberVO;
@@ -107,6 +109,11 @@ public class HomeServiceImpl implements HomeService {
 	@Override
 	public MapVO getMapOne() {
 		return homeDAO.getMapOne();
+	}
+
+	@Override
+	public List<LikeVO> getLikeAlarm(String alarmMyMid) {
+		return homeDAO.getLikeAlarm( alarmMyMid);
 	}
 
 }

@@ -176,14 +176,14 @@
         // 앞에서 가져온 내용을 출력시킬 준비처리..
         function addChar(emoticon, chat, alarm, chatDate,whoMid) {
         	console.log(chat);
-        	if('${memVO.mid}' == '${sMid}'){
+        	if(whoMid == '${sMid}'){
 	        	$("#chatList").append(
 	        		'<div class="f-d-7 f-d-r text-right mb-2">'+
 						'<div style="width: 100%">' +
-							'<div><span>'+alarm+'</span> <span>'+ chatDate +'</span></div>'+
+							'<div><span style="color:orange">'+alarm+'</span> <span>'+ chatDate +'</span></div>'+
 							'<div class="f-d f-end">'+
 								'<div class="inner-r-chat">'+
-									'<div><img src="${ctp}/data/emoticon/'+ emoticon +'" width="50%" height="50%"></div>'+
+									(emoticon== 0? "" : '<div><img src="${ctp}/data/emoticon/'+ emoticon +'" width="50%" height="50%"></div>')+
 									'<div>'+chat+'</div>'+
 								'</div>'+
 							'</div>'+
@@ -195,10 +195,10 @@
 				$("#chatList").append(
 				'<div class="f-d-7 f-d-l mb-2">'+
 					'<div style="width: 100%">'+
-						'<div class="text-left"><span>'+ chatDate +'</span> <span>'+alarm+'</span></div>'+
+						'<div class="text-left"><span>'+ chatDate +'</span> <span style="color:orange">'+alarm+'</span></div>'+
 						'<div class="f-d f-start">'+
 							'<div class="inner-l-chat text-left">'+
-								'<div><img src="${ctp}/data/emoticon/'+ emoticon +'" width="50%" height="50%"></div>'+
+								(emoticon== 0? "" : '<div><img src="${ctp}/data/emoticon/'+ emoticon +'" width="50%" height="50%"></div>')+
 								'<div>'+chat+'</div>'+
 							'</div>'+
 						'</div>'+
@@ -317,7 +317,7 @@
 							<div class="f-d-1"><a href="${ctp}/used/usedContent?idx=${cgVO.usedIdx}"><img src="${ctp}/data/used/${img[0]}" width="40px" height="40px"></a></div>
 							<div class="f-d-9 pl-2">
 								<div style="width: 100%">
-									<div>${cgVO.title }</div>
+									<div>${fn:substring(cgVO.title,0,30)}...</div>
 									<div><fmt:formatNumber value="${cgVO.money }"/>원</div>
 								</div>
 							</div>

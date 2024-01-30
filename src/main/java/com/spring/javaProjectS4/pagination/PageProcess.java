@@ -94,6 +94,15 @@ public class PageProcess {
 			else if(part.equals("region")) {
 				totRecCnt = usedDAO.getUsedRegionRecCnt(searchString);
 			}
+			else if(part.equals("topC")) {
+				totRecCnt = usedDAO.getUsedTopcRecCnt(Integer.parseInt(searchString));
+			}
+			else if(part.equals("midC")) {
+				totRecCnt = usedDAO.getUsedMidCRecCnt(Integer.parseInt(searchString));
+			}
+			else if(part.equals("btmC")) {
+				totRecCnt = usedDAO.getUsedBtmCRecCnt(Integer.parseInt(searchString));
+			}
 		}
 		if(section.equals("usedLike")) {
 			if(part.equals("")) {

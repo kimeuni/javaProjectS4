@@ -116,6 +116,33 @@
 			timestampdiff(month,uploadDate,now()) as month_diff, timestampdiff(year,uploadDate,now()) as year_diff
 			from usedS where userDel = 'N' and region = #{region} order by uploadDate desc limit #{startIndexNo},#{pageSize};
 	</select>
+	<select id="getUsedTopCList" resultType="com.spring.javaProjectS4.vo.UsedVO">
+		select *,timestampdiff(second,uploadDate,now()) as second_diff,timestampdiff(minute,uploadDate,now()) as minute_diff,
+			timestampdiff(hour,uploadDate,now()) as hour_diff, timestampdiff(day,uploadDate,now()) as day_diff, 
+			timestampdiff(month,uploadDate,now()) as month_diff, timestampdiff(year,uploadDate,now()) as year_diff
+			from usedS where userDel = 'N' and topCategoryIdx = #{top} order by uploadDate desc limit #{startIndexNo},#{pageSize};
+	</select>
+	<select id="getUsedMidCList" resultType="com.spring.javaProjectS4.vo.UsedVO">
+		select *,timestampdiff(second,uploadDate,now()) as second_diff,timestampdiff(minute,uploadDate,now()) as minute_diff,
+			timestampdiff(hour,uploadDate,now()) as hour_diff, timestampdiff(day,uploadDate,now()) as day_diff, 
+			timestampdiff(month,uploadDate,now()) as month_diff, timestampdiff(year,uploadDate,now()) as year_diff
+			from usedS where userDel = 'N' and midCategoryIdx = #{mid} order by uploadDate desc limit #{startIndexNo},#{pageSize};
+	</select>
+	<select id="getUsedBtmCList" resultType="com.spring.javaProjectS4.vo.UsedVO">
+		select *,timestampdiff(second,uploadDate,now()) as second_diff,timestampdiff(minute,uploadDate,now()) as minute_diff,
+			timestampdiff(hour,uploadDate,now()) as hour_diff, timestampdiff(day,uploadDate,now()) as day_diff, 
+			timestampdiff(month,uploadDate,now()) as month_diff, timestampdiff(year,uploadDate,now()) as year_diff
+			from usedS where userDel = 'N' and btmCategoryIdx = #{btm} order by uploadDate desc limit #{startIndexNo},#{pageSize};
+	</select>
+	<select id="getUsedTopcRecCnt" resultType="int">
+		select count(*) from usedS where topCategoryIdx = #{searchString} and userDel = 'N';
+	</select>
+	<select id="getUsedMidCRecCnt" resultType="int">
+		select count(*) from usedS where midCategoryIdx = #{searchString} and userDel = 'N';
+	</select>
+	<select id="getUsedBtmCRecCnt" resultType="int">
+		select count(*) from usedS where btmCategoryIdx = #{searchString} and userDel = 'N';
+	</select>
 	
 	<insert id="setUsedInput">
 		insert into usedS values (default,#{imgsStr},#{title},#{topCategoryIdx},#{midCategoryIdx},#{btmCategoryIdx},#{region},#{usedState},#{exchange},#{money},#{delivery},#{content},#{mid},default,default,default,default,default);
@@ -175,5 +202,8 @@
 	</update>
 	<update id="setStateUpdate">
 		update usedS set state = #{state} where idx = #{idx};
+	</update>
+	<update id="setAlarmN">
+		update likeS set alarm = 'N' where usedIdx = #{idx};
 	</update>
 </mapper>

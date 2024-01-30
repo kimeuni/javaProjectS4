@@ -37,8 +37,8 @@
     	#admin-main-right-inner-content{
     		margin: 0 auto;
     		width: 90%;
-    		margin-top: 80px; 
-    		margin-bottom: 20px; 
+    		margin-top: 75px; 
+    		margin-bottom: 10px; 
     	}
     	#admin-main-menu{
     		margin: 0 auto;
@@ -107,6 +107,11 @@
     		padding-bottom: 5px;
     		color: blue
     	}
+    	.i-size{
+    		text-align : center;
+    		padding-top:15px;
+    		font-size: 2.5em;
+    	}
     </style>
     
 </head>
@@ -119,22 +124,46 @@
 				<div class="f-d">
 					<div class="f-d-4 ">
 						<div class="top-go-btn-container">
-							ddd
+							<div style="width: 100%">
+								<div class="i-size"><i class="fa-regular fa-comments"></i></div>
+								<hr/>
+								<div class="text-right pr-3">미응답 1:1 문의</div>
+								<div class="text-right pr-3">n건</div>
+								<div class="text-right pr-3"><input type="button" value="1:1문의 이동" onclick="location.href='${ctp}/admin/askStatusNo'"></div>
+							</div>
 						</div>
 					</div>
 					<div class="f-d-4">
 						<div class="top-go-btn-container">
-							ddd
+							<div style="width: 100%">
+								<div class="i-size"><i class="fa-solid fa-user-slash"></i></div>
+								<hr/>
+								<div class="text-right pr-3">탈퇴 회원 삭제 처리</div>
+								<div class="text-right pr-3">n건</div>
+								<div class="text-right pr-3"><input type="button" value="탈퇴신청 관리 이동" onclick="location.href='${ctp}/admin/memberUserDel'"></div>
+							</div>
 						</div>
 					</div>
 					<div class="f-d-4">
 						<div class="top-go-btn-container">
-							ddd
+							<div style="width: 100%">
+								<div class="i-size"><i class="fa-solid fa-triangle-exclamation"></i></div>
+								<hr/>
+								<div class="text-right pr-3">신고된 중고거래</div>
+								<div class="text-right pr-3">n건</div>
+								<div class="text-right pr-3"><input type="button" value="중고거래 신고관리 이동" onclick="location.href='${ctp}/admin/usedReportList'"></div>
+							</div>
 						</div>
 					</div>
 					<div class="f-d-4">
 						<div class="top-go-btn-container">
-							ddd
+							<div style="width: 100%">
+								<div class="i-size"><i class="fa-solid fa-face-smile"></i></div>
+								<hr/>
+								<div class="text-right pr-3">이모티콘 등록</div>
+								<div class="text-right pr-3">등록된 이모티콘 : n건</div>
+								<div class="text-right pr-3"><input type="button" value="이모티콘 등록 이동" onclick="location.href='${ctp}/admin/chatEmoticon'"></div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -150,7 +179,7 @@
 						</div>
 							<div class="piechart">
 								<div class="text-r">탈퇴 사유</div>
-								<div id="piechart" ></div>
+								<div id="piechart_3d""></div>
 							</div>
 						</div>
 					</div>
@@ -167,7 +196,7 @@
 							</div>
 								<div class="m-4">
 									<table class="table table-bordered text-center">
-										<tr>
+										<tr class="table-dark text-dark">
 											<th>성명</th>
 											<th>닉네임</th>
 											<th>이메일</th>
@@ -204,37 +233,37 @@
 		data.addColumn('number', 'Value'); 
 		data.addColumn({type:'string', role:'tooltip'});var ivalue = new Array();
 		
-		data.addRows([[{v:'KR-11', f:'서울'},0,'명']]);
+		data.addRows([[{v:'KR-11', f:'서울'},${regionVO.seoulCnt},'${regionVO.seoulCnt}명']]);
 		
-		data.addRows([[{v:'KR-26', f:'부산'},1,'명']]);
+		data.addRows([[{v:'KR-26', f:'부산'},${regionVO.busanCnt},'${regionVO.busanCnt}명']]);
 		
-		data.addRows([[{v:'KR-27',f:'대구'},2,'명']]);
+		data.addRows([[{v:'KR-27',f:'대구'},${regionVO.daeguCnt},'${regionVO.daeguCnt}명']]);
 		
-		data.addRows([[{v:'KR-30',f:'대전'},3,'명']]);
+		data.addRows([[{v:'KR-30',f:'대전'},${regionVO.daejeonCnt},'${regionVO.daejeonCnt}명']]);
 		
-		data.addRows([[{v:'KR-29',f:'광주'},4,'명']]);
+		data.addRows([[{v:'KR-29',f:'광주'},${regionVO.gwangjuCnt},'${regionVO.gwangjuCnt}명']]);
 		
-		data.addRows([[{v:'KR-28',f:'인천'},5,'명']]);
+		data.addRows([[{v:'KR-28',f:'인천'},${regionVO.incheonCnt},'${regionVO.incheonCnt}명']]);
 		
-		data.addRows([[{v:'KR-31',f:'울산'},6,'명']]);
+		data.addRows([[{v:'KR-31',f:'울산'},${regionVO.ulsanCnt},'${regionVO.ulsanCnt}명']]);
 		
-		data.addRows([[{v:'KR-43',f:'충청북도'},7,'명']]);
+		data.addRows([[{v:'KR-43',f:'충청북도'},${regionVO.chungbukCnt},'${regionVO.chungbukCnt}명']]);
 		
-		data.addRows([[{v:'KR-44',f:'충청남도'},52,'명']]);
+		data.addRows([[{v:'KR-44',f:'충청남도'},${regionVO.chungnamCnt},'${regionVO.chungnamCnt}명']]);
 		
-		data.addRows([[{v:'KR-42',f:'강원도'},9,'명']]);
+		data.addRows([[{v:'KR-42',f:'강원도'},${regionVO.gangwonCnt},'${regionVO.gangwonCnt}명']]);
 		
-		data.addRows([[{v:'KR-41',f:'경기도'},10,'명']]);
+		data.addRows([[{v:'KR-41',f:'경기도'},${regionVO.gyeonggiCnt},'${regionVO.gyeonggiCnt}명']]);
 		
-		data.addRows([[{v:'KR-47',f:'경상북도'},11,'명']]);
+		data.addRows([[{v:'KR-47',f:'경상북도'},${regionVO.gyeongbukCnt},'${regionVO.gyeongbukCnt}명']]);
 		
-		data.addRows([[{v:'KR-48',f:'경상남도'},12,'명']]);
+		data.addRows([[{v:'KR-48',f:'경상남도'},${regionVO.gyeongnamCnt},'${regionVO.gyeongnamCnt}명']]);
 		
-		data.addRows([[{v:'KR-49',f:'제주'},13,'명']]);
+		data.addRows([[{v:'KR-49',f:'제주'},${regionVO.jejuCnt},'${regionVO.jejuCnt}명']]);
 		
-		data.addRows([[{v:'KR-45',f:'전라북도'},14,'명']]);
+		data.addRows([[{v:'KR-45',f:'전라북도'},${regionVO.jeonbukCnt},'${regionVO.jeonbukCnt}명']]);
 		
-		data.addRows([[{v:'KR-46',f:'전라남도'},15,'명']]);
+		data.addRows([[{v:'KR-46',f:'전라남도'},${regionVO.jeonnamCnt},'${regionVO.jeonnamCnt}명']]);
 	
 		var options = {
 			legend: 'none',	
@@ -247,7 +276,7 @@
 			region:'KR', 
 			keepAspectRatio: true,
 			tooltip: {textStyle: {color: '#444444'}, trigger:'focus'},
-	    	colorAxis: {colors: ['#00853f', 'black', '#e31b23']}
+	    	colorAxis: {colors: ['#FFFFFF', '#6DD5FA', '#2980B9']}
 		};
 		
 	  
@@ -264,26 +293,28 @@
 		});
 		chart.draw(data, options);
 	}
-   </script>
+	</script>
     <script type="text/javascript">
       google.charts.load("current", {packages:["corechart"]});
       google.charts.setOnLoadCallback(drawChart);
       function drawChart() {
         var data = google.visualization.arrayToDataTable([
-          ['Language', 'Speakers (in millions)'],
-          ['German',  5.85],
-          ['French',  1.66],
-          ['Italian', 0.316],
-          ['Romansh', 0.0791]
+          ['Task', 'Hours per Day'],
+          ['${rtVO.title1}',${rtVO.cnt1}],
+          ['${rtVO.title2}',${rtVO.cnt2}],
+          ['${rtVO.title3}',${rtVO.cnt3}],
+          ['${rtVO.title4}',${rtVO.cnt4}],
+          ['${rtVO.title5}',${rtVO.cnt5}],
+          ['${rtVO.title6}',${rtVO.cnt6}],
+          ['${rtVO.title7}',${rtVO.cnt7}],
+          ['${rtVO.title8}',${rtVO.cnt8}],
         ]);
 
-      var options = {
-        legend: 'none',
-        pieSliceText: 'label',
-        pieStartAngle: 100,
-      };
+        var options = {
+          is3D: true,
+        };
 
-        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+        var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
         chart.draw(data, options);
       }
     </script>

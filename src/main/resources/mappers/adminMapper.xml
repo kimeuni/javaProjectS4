@@ -135,6 +135,44 @@
 	<select id="getChattingList" resultType="com.spring.javaProjectS4.vo.ChatVO">
 		select *,timestampdiff(day,chatDate,now()) as date_diff from chatS order by chatDate limit #{startIndexNo},#{pageSize};
 	</select>
+	<select id="getMemberRegionCnt" resultType="com.spring.javaProjectS4.vo.MemberVO">
+		select (select count(*) from memberS where address like concat('%','인천','%')) as incheonCnt,
+		(select count(*) from memberS where address like concat('%','서울','%') ) as seoulCnt,
+		(select count(*) from memberS where address like concat('%','경기','%') ) as gyeonggiCnt,
+		(select count(*) from memberS where address like concat('%','강원도특별자치도','%') ) as gangwonCnt,
+		(select count(*) from memberS where address like concat('%','충남','%') ) as chungnamCnt,
+		(select count(*) from memberS where address like concat('%','충북','%') ) as chungbukCnt,
+		(select count(*) from memberS where address like concat('%','경북','%') ) as gyeongbukCnt,
+		(select count(*) from memberS where address like concat('%','경남','%') ) as gyeongnamCnt,
+		(select count(*) from memberS where address like concat('%','부산','%') ) as busanCnt,
+		(select count(*) from memberS where address like concat('%','울산','%') ) as ulsanCnt,
+		(select count(*) from memberS where address like concat('%','대구','%') ) as daeguCnt,
+		(select count(*) from memberS where address like concat('%','전북특별자치도','%') ) as jeonbukCnt,
+		(select count(*) from memberS where address like concat('%','전남','%') ) as jeonnamCnt,
+		(select count(*) from memberS where address like concat('%','제주특별자치도','%') ) as jejuCnt,
+		(select count(*) from memberS where address like concat('%','광주','%') ) as gwangjuCnt,
+		(select count(*) from memberS where address like concat('%','대전','%') ) as daejeonCnt
+		 from memberS limit 1;
+	</select>
+	<select id="getReasonTitleCnt" resultType="com.spring.javaProjectS4.vo.ReasonTitleVO">
+		select (select count(*) from userdelReasonS where titleCode = 'A0001') as cnt1,
+			(select title from reasonTitleS where Code = 'A0001') as title1,
+			(select count(*) from userdelReasonS where titleCode = 'A0002') as cnt2,
+			(select title from reasonTitleS where Code = 'A0002') as title2,
+			(select count(*) from userdelReasonS where titleCode = 'A0003') as cnt3,
+			(select title from reasonTitleS where Code = 'A0003') as title3,
+			(select count(*) from userdelReasonS where titleCode = 'A0004') as cnt4,
+			(select title from reasonTitleS where Code = 'A0004') as title4,
+			(select count(*) from userdelReasonS where titleCode = 'A0005') as cnt5,
+			(select title from reasonTitleS where Code = 'A0005') as title5,
+			(select count(*) from userdelReasonS where titleCode = 'A0006') as cnt6,
+			(select title from reasonTitleS where Code = 'A0006') as title6,
+			(select count(*) from userdelReasonS where titleCode = 'A0007') as cnt7,
+			(select title from reasonTitleS where Code = 'A0007') as title7,
+			(select count(*) from userdelReasonS where titleCode = 'A9999') as cnt8,
+			(select title from reasonTitleS where Code = 'A9999') as title8
+			from reasonTitleS limit 1;
+	</select>
 	
 	
 	<insert id="setNoticeInput">

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <c:set var="ctp" value="${pageContext.request.contextPath}"/>
 <!-- 폰트어썸 -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
@@ -103,16 +104,16 @@
 		min-width: 120px;
 	}
 	#inner-alarm{
-		width: 300px;
-		height: 170px;
+		width: 400px;
+		height: 220px;
 		overflow: auto;
 	}
 	#alarm-ul{
-		width: 302px;
-		height: 172px;
+		width: 402px;
+		height: 222px;
 		position: absolute;
 		top: 40px;
-		right: -100px;
+		right: -135px;
 	}
 	
 	/* 2번째 nav */
@@ -168,6 +169,9 @@
 	#inner-alarm hr{
 		margin: 3px 10px;
 	}
+	.alarm-hover:hover{
+		background-color: #eee;
+	}
 </style>
 <script>
 	$(window).scroll(function() {
@@ -187,6 +191,27 @@
     	
    		childWindow = window.open(url,winName,opt)
 	}
+	
+	// 메인 서치
+	function mainSearch(){
+		let str = $("#searchN").val()
+		if(str.trim() == ""){
+			alert("검색할 단어를 적어주세요.")
+			$("#searchN").focus();
+			return false
+		}
+		else{
+			location.href="${ctp}/mainSearch?str="+searchN;
+		}
+	}
+	
+	$(function() {
+		$("#searchN").on("keydown",function(e){
+			if(e.keyCode == 13){
+				mainSearch();
+			}
+		});
+	});
 </script>
 	<header>
 		<div class="lnb-inner">
@@ -216,7 +241,42 @@
 								<li id="inner-alarm">
 									알림
 									<hr/>
-									
+									<c:if test="${!empty likeAlarm}">
+										<c:forEach var="like" items="${likeAlarm }">
+											<c:set var="img" value="${fn:split(like.imgs,'/') }" />
+											<div class="alarm-hover">
+												<a href="${ctp}/used/usedContent?idx=${like.usedIdx}&flag=alarm">
+													<div class="text-left pl-2">내 상품 찜 알림</div>
+													<div style="display: flex; font-size: 0.7em; margin: 0px;padding: 0px">
+														<div style="display: flex; width: 80%">
+															<div>내 <${like.title}> 상품이 ${like.likeCnt}건의 새로운 찜을 받았습니다.</div>
+														</div>
+														<div style="display: flex; width: 20%; justify-content: center">
+															<img src="${ctp}/data/used/${img[0]}" height="50px" width="50px">
+														</div>
+													</div>
+												</a>
+											</div>
+										</c:forEach>
+									</c:if>
+									<c:if test="${!empty likeAlarm}">
+										<c:forEach var="like" items="${likeAlarm }">
+											<c:set var="img" value="${fn:split(like.imgs,'/') }" />
+											<div class="alarm-hover">
+												<a href="${ctp}/used/usedContent?idx=${like.usedIdx}&flag=alarm">
+													<div class="text-left pl-2">팔로우 중인 유저 상품</div>
+													<div style="display: flex; font-size: 0.7em; margin: 0px;padding: 0px">
+														<div style="display: flex; width: 80%">
+															<div>내가 팔로우중인 ''님이 []상품을 올렸습니다.</div>
+														</div>
+														<div style="display: flex; width: 20%; justify-content: center">
+															<img src="${ctp}/data/used/${img[0]}" height="50px" width="50px">
+														</div>
+													</div>
+												</a>
+											</div>
+										</c:forEach>
+									</c:if>
 								</li>
 							</ul>
 						</li>
@@ -258,12 +318,14 @@
 								</ul>
 							</nav>
 						</div>
+						<%-- 
 						<div style="display: flex;">
 							<div id="header-search-span">
 					            <input type="text" name="searchN" id="searchN" value="${search}"  />
 					            <a href="javascript:mainSearch()" style="padding: 10px;"><i class="fa-solid fa-magnifying-glass" ></i></a>
 				            </div>
 						</div>
+						 --%>
 					</div>
 				</div>
 			</div>

@@ -56,4 +56,7 @@
 	<update id="setUsedIdxUpdateChatG">
 		update chatGroupS set usedIdx = #{usedIdx} where (mid1 = #{mid} or mid2 = #{mid}) and (mid1 = #{sMid} or mid2 = #{sMid});
 	</update>
+	<update id="setChattingAlarmN">
+		update chatS set alarm='N' where whoChatMid != #{myMid} and (mid1 = #{mid} or mid2 = #{mid}) and (mid1 = #{sMid} or mid2 = #{sMid});
+	</update>
 </mapper>

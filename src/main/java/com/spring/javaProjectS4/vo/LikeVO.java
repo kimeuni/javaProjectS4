@@ -12,4 +12,8 @@ public class LikeVO {
 	private int usedIdx;
 	private String likeMid;
 	private String alarm;
+	
+	private String title;
+	private String imgs;
+	private int likeCnt;
 }

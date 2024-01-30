@@ -661,4 +661,14 @@ public class AdminServiceImpl implements AdminService {
 		adminDAO.setChattingDel( idx);
 	}
 
+	@Override
+	public MemberVO getMemberRegionCnt() {
+		return adminDAO.getMemberRegionCnt();
+	}
+
+	@Override
+	public ReasonTitleVO getReasonTitleCnt() {
+		return adminDAO.getReasonTitleCnt();
+	}
+
 }

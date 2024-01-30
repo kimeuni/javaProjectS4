@@ -116,5 +116,19 @@ public interface UsedDAO {
 	public int getUsedRegionRecCnt(@Param("searchString") String searchString);
 
 	public List<UsedVO> getUsedRegionList(@Param("startIndexNo") int startIndexNo,@Param("pageSize") int pageSize,@Param("region") String region);
+
+	public List<UsedVO> getUsedTopCList(@Param("startIndexNo") int startIndexNo,@Param("pageSize") int pageSize,@Param("top") int top);
+
+	public List<UsedVO> getUsedMidCList(@Param("startIndexNo") int startIndexNo,@Param("pageSize") int pageSize,@Param("mid") int mid);
+
+	public List<UsedVO> getUsedBtmCList(@Param("startIndexNo") int startIndexNo,@Param("pageSize") int pageSize,@Param("btm") int btm);
+
+	public int getUsedTopcRecCnt(@Param("searchString") int searchString);
+
+	public int getUsedMidCRecCnt(@Param("searchString") int parseInt);
+
+	public int getUsedBtmCRecCnt(@Param("searchString") int parseInt);
+
+	public void setAlarmN(int idx);
 	
 }

@@ -411,7 +411,9 @@
 		<div id="admin-board-inner-menu">
 			<a href="${ctp}/admin/categoryManag"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> 중고거래 카테고리 관리</div></a>
 			<a href="${ctp}/admin/usedReportList"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> 중고거래 신고 관리</div></a>
+			<%-- 
 			<a href="${ctp}/admin/communityReportList"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> 커뮤니티 신고 관리</div></a>
+			 --%>
 		</div>
 		<div id="notice-menu-down">
 			<a href="javascript:noticeManagementDown()"><div class="admin-inner-menu-n"><i class="fa-solid fa-chevron-right"></i> 공지 관리</div></a>

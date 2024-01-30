@@ -60,10 +60,19 @@ public class AdminController {
 	public String adminMainGet(Model model,@RequestParam(name="pag", defaultValue = "1", required = false) int pag,
 			@RequestParam(name="pageSize", defaultValue = "10", required = false) int pageSize) {
 		
+		// 회원 리스트
 		PageVO pageVO = pageProcess.totRecCnt(pag, pageSize, "adminMemberList", "", "");
-		
 		List<MemberVO> memVOS = adminService.getMemberList(pageVO.getStartIndexNo(),pageSize);
 		
+		// 지역별 회원수
+		MemberVO regionVO = adminService.getMemberRegionCnt();
+		
+		// 탈퇴 이유 통계
+		ReasonTitleVO rtVO = adminService.getReasonTitleCnt();
+		
+		
+		model.addAttribute("rtVO",rtVO);
+		model.addAttribute("regionVO",regionVO);
 		model.addAttribute("memVOS",memVOS);
 		return "admin/adminMain";
 	}

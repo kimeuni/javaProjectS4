@@ -373,7 +373,9 @@
 					<td>${fn:substring(usedVO.uploadDate,0,16)}</td>
 					<td>
 						<div class="del-b"><a href="javascript:deleteBtn(${usedVO.idx})">삭제</a></div>
+						<!-- 
 						<div class="update-b"><a href="javascript:">수정</a></div>
+						 -->
 						<div class="up-b"><a href="javascript:upUpdateBtn(${usedVO.idx})">UP</a></div>
 					</td>
 				</tr>

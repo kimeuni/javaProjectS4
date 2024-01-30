@@ -2,8 +2,11 @@ package com.spring.javaProjectS4.service;
 
 import com.spring.javaProjectS4.vo.UserShowAdvertisementVO;
 
+import java.util.List;
+
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.spring.javaProjectS4.vo.LikeVO;
 import com.spring.javaProjectS4.vo.MainAdvertisementVO;
 import com.spring.javaProjectS4.vo.MapVO;
 import com.spring.javaProjectS4.vo.MemberVO;
@@ -22,4 +25,6 @@ public interface HomeService {
 			String reportShop, String imgStr);
 
 	public MapVO getMapOne();
+
+	public List<LikeVO> getLikeAlarm(String alarmMyMid);
 }

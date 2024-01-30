@@ -44,4 +44,22 @@ public class MemberVO {
 	private int start_date_diff; // 상점 오픈 일
 	private int usedCnt;	// 총 올린 글 수
 	private int followerCnt;	// 총 팔로워 수
+	
+	// 지역별 cnt
+	private int seoulCnt;
+	private int incheonCnt;
+	private int gyeonggiCnt;
+	private int gangwonCnt;
+	private int chungnamCnt;
+	private int chungbukCnt;
+	private int gyeongbukCnt;
+	private int gyeongnamCnt;
+	private int busanCnt;
+	private int ulsanCnt;
+	private int daeguCnt;
+	private int jeonbukCnt;
+	private int jeonnamCnt;
+	private int jejuCnt;
+	private int gwangjuCnt;
+	private int daejeonCnt;
 }

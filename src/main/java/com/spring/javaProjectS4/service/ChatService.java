@@ -36,4 +36,6 @@ public interface ChatService {
 
 	public String getListIdx(String listType, String mid1, String mid2);
 
+	public void setChattingAlarmN(String mid, String sMid, String myMid);
+
 }

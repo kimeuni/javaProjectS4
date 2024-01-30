@@ -33,6 +33,7 @@ public class ChatController {
 			@RequestParam(name="usedIdx",defaultValue = "0",required = false) int usedIdx,
 			String mid, String sMid
 			) {
+		String myMid = session.getAttribute("sMid")== null ? "" : (String)session.getAttribute("sMid");
 		// 만들어진 채팅 그룹이 있는 지 확인
 		if(usedIdx != 0) {
 			ChatGroupVO cgChaeck = chatService.getChatGroupCheck(usedIdx,mid,sMid);
@@ -53,6 +54,9 @@ public class ChatController {
 				String chat = "상품명 < "+usedVO.getTitle()+" >에 대한 이야기를 시작해보세요!";
 				chatService.setFirstChat(chat,mid,sMid,whoMid,cgChaeck.getIdx());
 				
+				// 채팅방 들어왔을 때 알림 n 처리
+				chatService.setChattingAlarmN(mid,sMid,myMid);
+				
 				ChatGroupVO cgVO = chatService.getInnerChatInfo(usedIdx,mid,sMid); 
 				model.addAttribute("cgVO",cgVO);
 				
@@ -61,6 +65,8 @@ public class ChatController {
 			}
 			else {
 				if(cgChaeck.getUsedIdx() == usedIdx) {
+					// 채팅방 들어왔을 때 알림 n 처리
+					chatService.setChattingAlarmN(mid,sMid,myMid);
 					// 같은 중고거래를 한 방이 있으면..
 					ChatGroupVO cgVO = chatService.getInnerChatInfo(usedIdx,mid,sMid); 
 					model.addAttribute("cgVO",cgVO);
@@ -84,6 +90,9 @@ public class ChatController {
 					String chat = "상품명 < "+usedVO.getTitle()+" >에 대한 이야기를 시작해보세요!";
 					chatService.setFirstChat(chat,mid,sMid,whoMid,cgChaeck.getIdx());
 					
+					// 채팅방 들어왔을 때 알림 n 처리
+					chatService.setChattingAlarmN(mid,sMid,myMid);
+					
 					ChatGroupVO cgVO = chatService.getInnerChatInfo(usedIdx,mid,sMid); 
 					model.addAttribute("cgVO",cgVO);
 					
@@ -94,7 +103,6 @@ public class ChatController {
 		}
 		
 		// 채팅 리스트 가져오기
-		String myMid = session.getAttribute("sMid")== null ? "" : (String)session.getAttribute("sMid");
 		MemberVO memVO = chatService.getMemberMid(myMid);
 		List<ChatGroupVO> cgVOS = chatService.getChatGroupList(myMid);
 		

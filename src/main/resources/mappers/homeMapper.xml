@@ -13,6 +13,10 @@
 	<select id="getMapOne" resultType="com.spring.javaProjectS4.vo.MapVO">
 		select * from mapS order by idx desc limit 1;
 	</select>
+	<select id="getLikeAlarm" resultType="com.spring.javaProjectS4.vo.LikeVO">
+		select lk.*,usd.title,usd.imgs, (select count(*) from likeS lks where usd.idx = lks.usedIdx and alarm = 'Y') as likeCnt
+		from usedS usd, likeS lk where usd.mid = #{alarmMyMid} and usd.idx = lk.usedIdx and lk.alarm = 'Y' group by usd.idx
+	</select>
 	
 	<insert id="setAskInput">
 		insert into askS values (default,#{mid},#{title},#{content},#{imgStr},#{category},default,default,#{reportShop})

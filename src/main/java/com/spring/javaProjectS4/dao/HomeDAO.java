@@ -1,8 +1,11 @@
 package com.spring.javaProjectS4.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 import com.spring.javaProjectS4.vo.UserShowAdvertisementVO;
+import com.spring.javaProjectS4.vo.LikeVO;
 import com.spring.javaProjectS4.vo.MainAdvertisementVO;
 import com.spring.javaProjectS4.vo.MapVO;
 import com.spring.javaProjectS4.vo.MemberVO;
@@ -21,5 +24,7 @@ public interface HomeDAO {
 			@Param("category") String category, @Param("reportShop") String reportShop, @Param("imgStr") String imgStr);
 
 	public MapVO getMapOne();
+
+	public List<LikeVO> getLikeAlarm(@Param("alarmMyMid") String alarmMyMid);
 
 }

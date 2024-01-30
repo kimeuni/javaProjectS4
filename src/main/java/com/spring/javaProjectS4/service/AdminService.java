@@ -178,5 +178,9 @@ public interface AdminService {
 
 	public void setChattingDel(int idx);
 
+	public MemberVO getMemberRegionCnt();
+
+	public ReasonTitleVO getReasonTitleCnt();
+
 
 }

@@ -47,3 +47,7 @@ select cg.*,(select imgs from usedS u where cg.usedIdx = u.idx) as imgs,
 		(select lastDate from memberS mem where mem.mid = cg.mid2) as lastDate2
 		from chatGroupS cg where usedIdx = 12
 		and (cg.mid1 = 'axdc1234' or cg.mid2 = 'axdc1234') and (cg.mid1 = 'admin' or cg.mid2 = 'admin') group by cg.idx;
+		
+		
+		select lk.*,usd.title,usd.imgs, (select count(*) from likeS lks where usd.idx = lks.usedIdx and alarm = 'Y') as likeCnt
+		from usedS usd, likeS lk where usd.mid = 'axdc1234' and usd.idx = lk.usedIdx group by usd.idx

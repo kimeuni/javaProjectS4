@@ -37,4 +37,6 @@ public interface ChatDAO {
 
 	public ArrayList<ChatVO> getChatList(@Param("su") int su,@Param("mid1") String mid1,@Param("mid2") String mid2);
 
+	public void setChattingAlarmN(@Param("mid") String mid,@Param("sMid") String sMid,@Param("myMid") String myMid);
+
 }

@@ -191,6 +191,10 @@ public interface AdminDAO {
 
 	public void setChattingDel(@Param("idx") int idx);
 
+	public MemberVO getMemberRegionCnt();
+
+	public ReasonTitleVO getReasonTitleCnt();
+
 
 
 }

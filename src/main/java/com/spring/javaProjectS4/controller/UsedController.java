@@ -107,6 +107,84 @@ public class UsedController {
 		return "used/usedRegion";
 	}
 	
+	// 중고거래-카테고리 화면 이동
+	@RequestMapping(value = "/usedCategorySearch", method = RequestMethod.GET)
+	public String usedCategorySearchGet(Model model,HttpSession session, String regionStr,
+			@RequestParam(name="top",defaultValue = "0", required = false) String top,
+			@RequestParam(name="mid",defaultValue = "0", required = false) String mid,
+			@RequestParam(name="btm",defaultValue = "0", required = false) String btm,
+			@RequestParam(name="pag",defaultValue = "1", required = false) int pag,
+			@RequestParam(name="pageSize",defaultValue = "40", required = false) int pageSize
+			) {
+		List<TopCategoryVO> tVOS = usedService.getTopCategoryList();
+		List<MidCategoryVO> mVOS = usedService.getMidCategoryList();
+		List<BtmCategoryVO> bVOS = usedService.getBtmCategoryList();
+		
+		PageVO pageVO = null;
+		List<UsedVO> usedVOS = null;
+		if(mid.equals("0") & btm.equals("0")) {
+			pageVO = pageProcess.totRecCnt(pag, pageSize, "used", "topC", top);
+			usedVOS = usedService.getUsedTopCList(pageVO.getStartIndexNo(),pageSize,Integer.parseInt(top));
+		}
+		else if(!mid.equals("0") & btm.equals("0")) {
+			pageVO = pageProcess.totRecCnt(pag, pageSize, "used", "midC", mid);
+			usedVOS = usedService.getUsedMidCList(pageVO.getStartIndexNo(),pageSize,Integer.parseInt(mid));
+		}
+		else if(!mid.equals("0") & !btm.equals("0")) {
+			pageVO = pageProcess.totRecCnt(pag, pageSize, "used", "btmC", btm);
+			usedVOS = usedService.getUsedBtmCList(pageVO.getStartIndexNo(),pageSize,Integer.parseInt(btm));
+		}
+		
+		String sMid = session.getAttribute("sMid")== null ? "" : (String)session.getAttribute("sMid");
+		
+		// 지역 찾기 (서울/충남/충북 등..)
+		if(!sMid.equals("")) {
+			MemberVO mVO = usedService.getMemberMid(sMid);
+			String [] region1 = null;
+			region1 = mVO.getAddress().split("/");
+			String[] region2 = region1[1].split(" ");
+			String region = region2[0];
+			
+			model.addAttribute("region",region);
+		}
+		
+		// 카테고리
+		String topCategoryName = "0";
+		String midCategoryName = "0";
+		String btmCategoryName = "0";
+		for(int i=0; i<tVOS.size(); i++) {
+			if(Integer.parseInt(top) == tVOS.get(i).getIdx()) {
+				topCategoryName = tVOS.get(i).getTopCategoryName();
+				break;
+			}
+		}
+		for(int i=0; i<mVOS.size(); i++) {
+			if(Integer.parseInt(mid) == mVOS.get(i).getIdx()) {
+				midCategoryName = mVOS.get(i).getMidCategoryName();
+				break;
+			}
+		}
+		for(int i=0; i<bVOS.size(); i++) {
+			if(Integer.parseInt(btm) == bVOS.get(i).getIdx()) {
+				btmCategoryName = bVOS.get(i).getBtmCategoryName();
+				break;
+			}
+		}
+		
+		model.addAttribute("top",Integer.parseInt(top));
+		model.addAttribute("mid",Integer.parseInt(mid));
+		model.addAttribute("btm",Integer.parseInt(btm));
+		model.addAttribute("topCategoryName",topCategoryName);
+		model.addAttribute("midCategoryName",midCategoryName);
+		model.addAttribute("btmCategoryName",btmCategoryName);
+		model.addAttribute("tVOS",tVOS);
+		model.addAttribute("mVOS",mVOS);
+		model.addAttribute("bVOS",bVOS);
+		model.addAttribute("pageVO",pageVO);
+		model.addAttribute("usedVOS",usedVOS);
+		return "used/usedCategorySearch";
+	}
+	
 	// 중고거래 상품 등록 화면 이동
 	@RequestMapping(value ="/usedInput",method = RequestMethod.GET)
 	public String usedInputGet(Model model) {
@@ -178,6 +256,7 @@ public class UsedController {
 	// 중고거래 글 상세보기
 	@RequestMapping(value = "/usedContent", method = RequestMethod.GET)
 	public String usedContentGet(Model model, HttpSession session,
+			@RequestParam(name="flag",defaultValue = "",required = false) String flag,
 			@RequestParam(name="idx",defaultValue = "0",required = false) int idx,
 			@RequestParam(name="pag",defaultValue = "1",required = false) int pag,
 			@RequestParam(name="pageSize",defaultValue = "40",required = false) int pageSize
@@ -185,6 +264,11 @@ public class UsedController {
 		List<TopCategoryVO> tVOS = usedService.getTopCategoryList();
 		List<MidCategoryVO> mVOS = usedService.getMidCategoryList();
 		List<BtmCategoryVO> bVOS = usedService.getBtmCategoryList();
+		
+		if(flag.equals("alarm")) {
+			// 알림 n 처리
+			usedService.setAlarmN(idx);
+		}
 		
 		// 조회수 처리
 		ArrayList<String> boardContentIdx = (ArrayList)session.getAttribute("sBoardContentIdx");
@@ -248,6 +332,9 @@ public class UsedController {
 		// 로그인한 사람이 해당 해당 글을 찜했는지 확인
 		LikeVO likeVO = usedService.getUsedContentLikeMidCheck(idx, mid);
 		
+		model.addAttribute("top",usedVO.getTopCategoryIdx());
+		model.addAttribute("mid",usedVO.getMidCategoryIdx());
+		model.addAttribute("btm",usedVO.getBtmCategoryIdx());
 		model.addAttribute("usedVO",usedVO);
 		model.addAttribute("memVO",memVO);
 		model.addAttribute("saleUsedVOS",saleUsedVOS);
