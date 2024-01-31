@@ -143,7 +143,8 @@
 		(select count(*) from goodS gds where gds.part = 'community' and gds.partIdx = comu.idx and gds.goodMid = #{sMid} ) as midGoodCheck,
 		(select count(*) from goods gds where gds.part = 'community' and gds.partIdx = comu.idx and gds.userDel = 'N') as goodCnt,
 		(select count(*) from replyS rps where rps.part = 'community' and rps.partIdx = comu.idx and rps.userDel = 'N') as replyCnt,
-		(select count(*) from bookmarkS bms where bms.part = 'community' and bms.partIdx = comu.idx and bms.bookmarkMid = #{sMid} ) as midBookmarkCheck
+		(select count(*) from bookmarkS bms where bms.part = 'community' and bms.partIdx = comu.idx and bms.bookmarkMid = #{sMid} ) as midBookmarkCheck,
+		(select count(*) from bookmarkS bms where bms.part = 'community' and bms.partIdx = comu.idx and bms.userDel = 'N') as bookmarkCnt
 		from communityS comu, goodS g where goodMid = #{mid} and g.part = 'community' and comu.idx = g.partIdx and 
 		comu.userDel = 'N' order by idx desc limit #{startIndexNo},#{pageSize};
 	</select>

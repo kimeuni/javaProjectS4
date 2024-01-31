@@ -75,4 +75,28 @@ public interface MemberService {
 
 	public void setCommunityProfileInput(String mid);
 
+	public void setUsedUserDelY(String mid);
+
+	public void setStoreSUserDelY(String mid);
+
+	public void setCommunityUserDelY(String mid);
+
+	public void setReplySUserDelY(String mid);
+
+	public void setGoodSUserDelY(String mid);
+
+	public void setBookmarkUserDelY(String mid);
+
+	public void setUsedUserDelN(String mid);
+
+	public void setStoreSUserDelN(String mid);
+
+	public void setCommunityUserDelN(String mid);
+
+	public void setReplySUserDelN(String mid);
+
+	public void setGoodSUserDelN(String mid);
+
+	public void setBookmarkUserDelN(String mid);
+
 }

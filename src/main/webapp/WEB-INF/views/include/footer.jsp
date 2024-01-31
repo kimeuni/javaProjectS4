@@ -56,7 +56,7 @@
 					<div><a href="${ctp}/board/noticeList">공지사항</a></div> &nbsp;&nbsp;|&nbsp;&nbsp;
 					<div><a href="${ctp}/board/FAQList">자주하는 질문</a></div> &nbsp;&nbsp;|&nbsp;&nbsp;
 					<div><a href="${ctp}/addressdd">404에러</a></div> &nbsp;&nbsp;|&nbsp;&nbsp;
-					<div><a href="${ctp}/address">500에러</a></div> 
+					<div><a href="${ctp}/error500s">500에러</a></div> 
 				</div>
 			</div>
 			<hr/>

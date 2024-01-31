@@ -14,8 +14,23 @@
 		select * from mapS order by idx desc limit 1;
 	</select>
 	<select id="getLikeAlarm" resultType="com.spring.javaProjectS4.vo.LikeVO">
-		select lk.*,usd.title,usd.imgs, (select count(*) from likeS lks where usd.idx = lks.usedIdx and alarm = 'Y') as likeCnt
+		select lk.*,usd.title,usd.imgs, 
+		(select count(*) from likeS lks where usd.idx = lks.usedIdx and alarm = 'Y' and likeMid in (select mid from memberS where userDel = 'N')) as likeCnt
 		from usedS usd, likeS lk where usd.mid = #{alarmMyMid} and usd.idx = lk.usedIdx and lk.alarm = 'Y' group by usd.idx
+	</select>
+	<select id="getFollowUsedAlarm" resultType="com.spring.javaProjectS4.vo.FollowUsedAlarmVO">
+		select fo.*,usd.title,usd.imgs,
+		(select nickName from memberS mem where fo.upUsedMid = mem.mid) as nickName
+		from followUsedAlarmS fo, usedS usd, memberS mem where alarmMid = #{alarmMyMid} and usd.idx = fo.usedIdx and
+		upUsedMid in (select mid from memberS where userDel = 'N') group by fo.idx
+	</select>
+	<select id="getReportShopList" resultType="com.spring.javaProjectS4.vo.ChatGroupVO">
+		select cg.* from memberS mem, chatGroupS cg where 
+		cg.mid1 in (select mid from memberS where userDel ='N') and 
+		cg.mid2 in (select mid from memberS where userDel ='N') and (cg.mid1 = #{mid} or cg.mid2 = #{mid}) group by cg.idx
+	</select>
+	<select id="geterror">
+		select * from member;
 	</select>
 	
 	<insert id="setAskInput">

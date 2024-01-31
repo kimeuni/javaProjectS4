@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.spring.javaProjectS4.vo.ChatGroupVO;
+import com.spring.javaProjectS4.vo.FollowUsedAlarmVO;
 import com.spring.javaProjectS4.vo.LikeVO;
 import com.spring.javaProjectS4.vo.MainAdvertisementVO;
 import com.spring.javaProjectS4.vo.MapVO;
@@ -27,4 +29,10 @@ public interface HomeService {
 	public MapVO getMapOne();
 
 	public List<LikeVO> getLikeAlarm(String alarmMyMid);
+
+	public List<FollowUsedAlarmVO> getFollowUsedAlarm(String alarmMyMid);
+
+	public List<ChatGroupVO> getReportShopList(String mid);
+
+	public void geterror();
 }

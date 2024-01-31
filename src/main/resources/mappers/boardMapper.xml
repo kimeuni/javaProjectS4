@@ -5,7 +5,7 @@
 		select *,timestampdiff(hour,nDate,now()) as hour_diff,dateDiff(now(),nDate) as date_diff from noticeS where openSw = 'Y' order by nDate desc limit #{startIndexNo},#{pageSize};
 	</select>
 	<select id="getNoticeSearchList" resultType="com.spring.javaProjectS4.vo.NoticeVO">
-		select *,timestampdiff(hour,nDate,now()) as hour_diff,dateDiff(now(),nDate) as date_diff from noticeS where openSw = 'Y' and ${part} like concat('%',#{searchString},'%') order by idx desc limit #{startIndexNo},#{pageSize};
+		select *,timestampdiff(hour,nDate,now()) as hour_diff,dateDiff(now(),nDate) as date_diff from noticeS where openSw = 'Y' and ${part} like concat('%',#{searchString},'%') order by nDate desc limit #{startIndexNo},#{pageSize};
 	</select>
 	<select id="getFAQList" resultType="com.spring.javaProjectS4.vo.FAQVO">
 		select * from FAQS order by idx desc limit #{startIndexNo},#{pageSize};

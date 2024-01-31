@@ -18,6 +18,8 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.spring.javaProjectS4.dao.HomeDAO;
 import com.spring.javaProjectS4.vo.UserShowAdvertisementVO;
+import com.spring.javaProjectS4.vo.ChatGroupVO;
+import com.spring.javaProjectS4.vo.FollowUsedAlarmVO;
 import com.spring.javaProjectS4.vo.LikeVO;
 import com.spring.javaProjectS4.vo.MainAdvertisementVO;
 import com.spring.javaProjectS4.vo.MapVO;
@@ -114,6 +116,21 @@ public class HomeServiceImpl implements HomeService {
 	@Override
 	public List<LikeVO> getLikeAlarm(String alarmMyMid) {
 		return homeDAO.getLikeAlarm( alarmMyMid);
+	}
+
+	@Override
+	public List<FollowUsedAlarmVO> getFollowUsedAlarm(String alarmMyMid) {
+		return homeDAO.getFollowUsedAlarm( alarmMyMid);
+	}
+
+	@Override
+	public List<ChatGroupVO> getReportShopList(String mid) {
+		return homeDAO.getReportShopList( mid);
+	}
+
+	@Override
+	public void geterror() {
+		homeDAO.geterror();
 	}
 
 }

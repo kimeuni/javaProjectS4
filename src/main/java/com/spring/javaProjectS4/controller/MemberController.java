@@ -688,6 +688,24 @@ public class MemberController {
 			// userDel Y로 업데이트처리
 			memberService.setUserDelUpdateY(mid);
 			
+			// used userDel Y로 업데이트
+			memberService.setUsedUserDelY(mid);
+			
+			// StoreS userDel Y로 업데이트
+			memberService.setStoreSUserDelY(mid);
+			
+			// Community userDel Y로 업데이트
+			memberService.setCommunityUserDelY(mid);
+			
+			// replyS userDel Y로 업데이트
+			memberService.setReplySUserDelY(mid);
+			
+			// goodS userDel Y로 업데이트
+			memberService.setGoodSUserDelY(mid);
+			
+			// bookmarkS userDel Y로 업데이트 
+			memberService.setBookmarkUserDelY(mid);
+			
 			// 탈퇴 이유 등록(A9999=기타)
 			if(whyDel.equals("A9999")) {
 				memberService.setUserDelReason(whyDel,why);
@@ -795,6 +813,26 @@ public class MemberController {
 		int res = 0;
 		System.out.println(mid + "/" + token);
 		
+
+		// used userDel N로 업데이트
+		memberService.setUsedUserDelN(mid);
+		
+		// StoreS userDel N로 업데이트
+		memberService.setStoreSUserDelN(mid);
+		
+		// Community userDel N로 업데이트
+		memberService.setCommunityUserDelN(mid);
+		
+		// replyS userDel N로 업데이트
+		memberService.setReplySUserDelN(mid);
+		
+		// goodS userDel N로 업데이트
+		memberService.setGoodSUserDelN(mid);
+		
+		// bookmarkS userDel N로 업데이트 
+		memberService.setBookmarkUserDelN(mid);
+		
+		// member userDel N으로 업데이트처리
 		res = memberService.setUserDelUpdateN(mid,token);
 		
 		if(res != 0) {

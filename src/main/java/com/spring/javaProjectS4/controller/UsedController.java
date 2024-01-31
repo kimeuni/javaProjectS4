@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.spring.javaProjectS4.pagination.PageProcess;
 import com.spring.javaProjectS4.pagination.PageVO;
+import com.spring.javaProjectS4.service.HomeService;
 import com.spring.javaProjectS4.service.UsedService;
 import com.spring.javaProjectS4.vo.BtmCategoryVO;
 import com.spring.javaProjectS4.vo.FollowUsedAlarmVO;
@@ -36,6 +37,9 @@ public class UsedController {
 	
 	@Autowired
 	PageProcess pageProcess;
+	
+	@Autowired
+	HomeService homeService;
 	
 	// 중고거래 메인화면 이동
 	@RequestMapping(value = "/usedMain", method = RequestMethod.GET)
@@ -68,6 +72,17 @@ public class UsedController {
 		model.addAttribute("bVOS",bVOS);
 		model.addAttribute("pageVO",pageVO);
 		model.addAttribute("usedVOS",usedVOS);
+		
+		// 알림 띄우기
+		String alarmMyMid = session.getAttribute("sMid")== null ? "" : (String)session.getAttribute("sMid");
+		//1. 찜 알림
+		List<LikeVO> likeAlarm = homeService.getLikeAlarm(alarmMyMid);
+		
+		// 2. 팔로우한 사람 게시글 올라온 알림
+		List<FollowUsedAlarmVO> foAlarm = homeService.getFollowUsedAlarm(alarmMyMid);
+		
+		model.addAttribute("likeAlarm",likeAlarm);
+		model.addAttribute("foAlarm",foAlarm);
 		
 		return "used/usedMain";
 	}
@@ -103,6 +118,17 @@ public class UsedController {
 		model.addAttribute("bVOS",bVOS);
 		model.addAttribute("pageVO",pageVO);
 		model.addAttribute("usedVOS",usedVOS);
+
+		// 알림 띄우기
+		String alarmMyMid = session.getAttribute("sMid")== null ? "" : (String)session.getAttribute("sMid");
+		//1. 찜 알림
+		List<LikeVO> likeAlarm = homeService.getLikeAlarm(alarmMyMid);
+		
+		// 2. 팔로우한 사람 게시글 올라온 알림
+		List<FollowUsedAlarmVO> foAlarm = homeService.getFollowUsedAlarm(alarmMyMid);
+		
+		model.addAttribute("likeAlarm",likeAlarm);
+		model.addAttribute("foAlarm",foAlarm);
 		
 		return "used/usedRegion";
 	}
@@ -182,12 +208,23 @@ public class UsedController {
 		model.addAttribute("bVOS",bVOS);
 		model.addAttribute("pageVO",pageVO);
 		model.addAttribute("usedVOS",usedVOS);
+
+		// 알림 띄우기
+		String alarmMyMid = session.getAttribute("sMid")== null ? "" : (String)session.getAttribute("sMid");
+		//1. 찜 알림
+		List<LikeVO> likeAlarm = homeService.getLikeAlarm(alarmMyMid);
+		
+		// 2. 팔로우한 사람 게시글 올라온 알림
+		List<FollowUsedAlarmVO> foAlarm = homeService.getFollowUsedAlarm(alarmMyMid);
+		
+		model.addAttribute("likeAlarm",likeAlarm);
+		model.addAttribute("foAlarm",foAlarm);
 		return "used/usedCategorySearch";
 	}
 	
 	// 중고거래 상품 등록 화면 이동
 	@RequestMapping(value ="/usedInput",method = RequestMethod.GET)
-	public String usedInputGet(Model model) {
+	public String usedInputGet(Model model, HttpSession session) {
 		List<TopCategoryVO> tVOS = usedService.getTopCategoryList();
 		List<MidCategoryVO> mVOS = usedService.getMidCategoryList();
 		List<BtmCategoryVO> bVOS = usedService.getBtmCategoryList();
@@ -195,6 +232,17 @@ public class UsedController {
 		model.addAttribute("tVOS",tVOS);
 		model.addAttribute("mVOS",mVOS);
 		model.addAttribute("bVOS",bVOS);
+
+		// 알림 띄우기
+		String alarmMyMid = session.getAttribute("sMid")== null ? "" : (String)session.getAttribute("sMid");
+		//1. 찜 알림
+		List<LikeVO> likeAlarm = homeService.getLikeAlarm(alarmMyMid);
+		
+		// 2. 팔로우한 사람 게시글 올라온 알림
+		List<FollowUsedAlarmVO> foAlarm = homeService.getFollowUsedAlarm(alarmMyMid);
+		
+		model.addAttribute("likeAlarm",likeAlarm);
+		model.addAttribute("foAlarm",foAlarm);
 		return "used/usedInput";
 	}
 	
@@ -345,6 +393,17 @@ public class UsedController {
 		model.addAttribute("topCategoryName",topCategoryName);
 		model.addAttribute("midCategoryName",midCategoryName);
 		model.addAttribute("btmCategoryName",btmCategoryName);
+
+		// 알림 띄우기
+		String alarmMyMid = session.getAttribute("sMid")== null ? "" : (String)session.getAttribute("sMid");
+		//1. 찜 알림
+		List<LikeVO> likeAlarm = homeService.getLikeAlarm(alarmMyMid);
+		
+		// 2. 팔로우한 사람 게시글 올라온 알림
+		List<FollowUsedAlarmVO> foAlarm = homeService.getFollowUsedAlarm(alarmMyMid);
+		
+		model.addAttribute("likeAlarm",likeAlarm);
+		model.addAttribute("foAlarm",foAlarm);
 		return "used/usedContent";
 	}
 	
@@ -441,7 +500,17 @@ public class UsedController {
 		model.addAttribute("topC",topC);
 		model.addAttribute("midC",midC);
 		model.addAttribute("btmC",btmC);
+
+		// 알림 띄우기
+		String alarmMyMid = session.getAttribute("sMid")== null ? "" : (String)session.getAttribute("sMid");
+		//1. 찜 알림
+		List<LikeVO> likeAlarm = homeService.getLikeAlarm(alarmMyMid);
 		
+		// 2. 팔로우한 사람 게시글 올라온 알림
+		List<FollowUsedAlarmVO> foAlarm = homeService.getFollowUsedAlarm(alarmMyMid);
+		
+		model.addAttribute("likeAlarm",likeAlarm);
+		model.addAttribute("foAlarm",foAlarm);
 		return "used/usedStore";
 	}
 	
@@ -494,7 +563,17 @@ public class UsedController {
 		model.addAttribute("usedCnt",usedCnt); // 총 상품수
 		model.addAttribute("likeCnt",likeVOS.size()); //총 찜 수
 		model.addAttribute("usedLikeVOS",usedLikeVOS);
+
+		// 알림 띄우기
+		String alarmMyMid = session.getAttribute("sMid")== null ? "" : (String)session.getAttribute("sMid");
+		//1. 찜 알림
+		List<LikeVO> likeAlarm = homeService.getLikeAlarm(alarmMyMid);
 		
+		// 2. 팔로우한 사람 게시글 올라온 알림
+		List<FollowUsedAlarmVO> foAlarm = homeService.getFollowUsedAlarm(alarmMyMid);
+		
+		model.addAttribute("likeAlarm",likeAlarm);
+		model.addAttribute("foAlarm",foAlarm);
 		return "used/usedStoreLike";
 	}
 	
@@ -550,7 +629,17 @@ public class UsedController {
 		model.addAttribute("likeCnt",likeVOS.size()); //총 찜 수
 		model.addAttribute("fingMemVOS",fingMemVOS);
 		model.addAttribute("fingUsedVOS",fingUsedVOS);
+
+		// 알림 띄우기
+		String alarmMyMid = session.getAttribute("sMid")== null ? "" : (String)session.getAttribute("sMid");
+		//1. 찜 알림
+		List<LikeVO> likeAlarm = homeService.getLikeAlarm(alarmMyMid);
 		
+		// 2. 팔로우한 사람 게시글 올라온 알림
+		List<FollowUsedAlarmVO> foAlarm = homeService.getFollowUsedAlarm(alarmMyMid);
+		
+		model.addAttribute("likeAlarm",likeAlarm);
+		model.addAttribute("foAlarm",foAlarm);
 		return "used/usedStoreFollowing";
 	}
 
@@ -602,7 +691,17 @@ public class UsedController {
 		model.addAttribute("usedCnt",usedCnt); // 총 상품수
 		model.addAttribute("likeCnt",likeVOS.size()); //총 찜 수
 		model.addAttribute("ferMemVOS",ferMemVOS);
+
+		// 알림 띄우기
+		String alarmMyMid = session.getAttribute("sMid")== null ? "" : (String)session.getAttribute("sMid");
+		//1. 찜 알림
+		List<LikeVO> likeAlarm = homeService.getLikeAlarm(alarmMyMid);
 		
+		// 2. 팔로우한 사람 게시글 올라온 알림
+		List<FollowUsedAlarmVO> foAlarm = homeService.getFollowUsedAlarm(alarmMyMid);
+		
+		model.addAttribute("likeAlarm",likeAlarm);
+		model.addAttribute("foAlarm",foAlarm);
 		return "used/usedStoreFollower";
 	}
 	
@@ -649,7 +748,17 @@ public class UsedController {
 		model.addAttribute("pageVO",pageVO);
 		model.addAttribute("usedCnt",usedCnt); // 총 상품수
 		model.addAttribute("likeCnt",likeVOS.size()); //총 찜 수
+
+		// 알림 띄우기
+		String alarmMyMid = session.getAttribute("sMid")== null ? "" : (String)session.getAttribute("sMid");
+		//1. 찜 알림
+		List<LikeVO> likeAlarm = homeService.getLikeAlarm(alarmMyMid);
 		
+		// 2. 팔로우한 사람 게시글 올라온 알림
+		List<FollowUsedAlarmVO> foAlarm = homeService.getFollowUsedAlarm(alarmMyMid);
+		
+		model.addAttribute("likeAlarm",likeAlarm);
+		model.addAttribute("foAlarm",foAlarm);
 		return "used/usedStoreManagement";
 	}
 	

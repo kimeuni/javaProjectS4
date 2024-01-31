@@ -128,7 +128,7 @@
 								<div class="i-size"><i class="fa-regular fa-comments"></i></div>
 								<hr/>
 								<div class="text-right pr-3">미응답 1:1 문의</div>
-								<div class="text-right pr-3">n건</div>
+								<div class="text-right pr-3">${alarmVO.askCnt }건</div>
 								<div class="text-right pr-3"><input type="button" value="1:1문의 이동" onclick="location.href='${ctp}/admin/askStatusNo'"></div>
 							</div>
 						</div>
@@ -139,7 +139,7 @@
 								<div class="i-size"><i class="fa-solid fa-user-slash"></i></div>
 								<hr/>
 								<div class="text-right pr-3">탈퇴 회원 삭제 처리</div>
-								<div class="text-right pr-3">n건</div>
+								<div class="text-right pr-3">${alarmVO.userDelCnt }건</div>
 								<div class="text-right pr-3"><input type="button" value="탈퇴신청 관리 이동" onclick="location.href='${ctp}/admin/memberUserDel'"></div>
 							</div>
 						</div>
@@ -150,7 +150,7 @@
 								<div class="i-size"><i class="fa-solid fa-triangle-exclamation"></i></div>
 								<hr/>
 								<div class="text-right pr-3">신고된 중고거래</div>
-								<div class="text-right pr-3">n건</div>
+								<div class="text-right pr-3">${alarmVO.reportCnt }건</div>
 								<div class="text-right pr-3"><input type="button" value="중고거래 신고관리 이동" onclick="location.href='${ctp}/admin/usedReportList'"></div>
 							</div>
 						</div>
@@ -161,7 +161,7 @@
 								<div class="i-size"><i class="fa-solid fa-face-smile"></i></div>
 								<hr/>
 								<div class="text-right pr-3">이모티콘 등록</div>
-								<div class="text-right pr-3">등록된 이모티콘 : n건</div>
+								<div class="text-right pr-3">등록된 이모티콘 : ${alarmVO.emoticonCnt }건</div>
 								<div class="text-right pr-3"><input type="button" value="이모티콘 등록 이동" onclick="location.href='${ctp}/admin/chatEmoticon'"></div>
 							</div>
 						</div>

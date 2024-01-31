@@ -5,6 +5,8 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.spring.javaProjectS4.vo.UserShowAdvertisementVO;
+import com.spring.javaProjectS4.vo.ChatGroupVO;
+import com.spring.javaProjectS4.vo.FollowUsedAlarmVO;
 import com.spring.javaProjectS4.vo.LikeVO;
 import com.spring.javaProjectS4.vo.MainAdvertisementVO;
 import com.spring.javaProjectS4.vo.MapVO;
@@ -26,5 +28,11 @@ public interface HomeDAO {
 	public MapVO getMapOne();
 
 	public List<LikeVO> getLikeAlarm(@Param("alarmMyMid") String alarmMyMid);
+
+	public List<FollowUsedAlarmVO> getFollowUsedAlarm(@Param("alarmMyMid") String alarmMyMid);
+
+	public List<ChatGroupVO> getReportShopList(@Param("mid") String mid);
+
+	public void geterror();
 
 }

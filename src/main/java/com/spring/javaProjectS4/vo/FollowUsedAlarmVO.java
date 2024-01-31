@@ -12,4 +12,8 @@ public class FollowUsedAlarmVO {
 	private int usedIdx;
 	private String UpUsedMid;
 	private String alarmMid;
+	
+	private String nickName;
+	private String title;
+	private String imgs;
 }

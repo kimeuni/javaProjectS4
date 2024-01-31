@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.spring.javaProjectS4.pagination.PageProcess;
 import com.spring.javaProjectS4.pagination.PageVO;
 import com.spring.javaProjectS4.service.AdminService;
+import com.spring.javaProjectS4.vo.AlarmCntVO;
 import com.spring.javaProjectS4.vo.AnswerVO;
 import com.spring.javaProjectS4.vo.AskVO;
 import com.spring.javaProjectS4.vo.BtmCategoryVO;
@@ -70,7 +71,10 @@ public class AdminController {
 		// 탈퇴 이유 통계
 		ReasonTitleVO rtVO = adminService.getReasonTitleCnt();
 		
+		// 개수
+		AlarmCntVO alarmVO = adminService.getAlarmCnt();
 		
+		model.addAttribute("alarmVO",alarmVO);
 		model.addAttribute("rtVO",rtVO);
 		model.addAttribute("regionVO",regionVO);
 		model.addAttribute("memVOS",memVOS);

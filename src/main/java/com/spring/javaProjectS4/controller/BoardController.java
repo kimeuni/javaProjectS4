@@ -19,7 +19,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.spring.javaProjectS4.pagination.PageProcess;
 import com.spring.javaProjectS4.pagination.PageVO;
 import com.spring.javaProjectS4.service.BoardService;
+import com.spring.javaProjectS4.service.HomeService;
 import com.spring.javaProjectS4.vo.FAQVO;
+import com.spring.javaProjectS4.vo.FollowUsedAlarmVO;
+import com.spring.javaProjectS4.vo.LikeVO;
 import com.spring.javaProjectS4.vo.NoticeVO;
 
 @Controller
@@ -32,9 +35,12 @@ public class BoardController {
 	@Autowired
 	PageProcess pageProcess;
 	
+	@Autowired
+	HomeService homeService;
+	
 	// 공지사항 리스트 이동 및 화면에 띄울 리스트
 	@RequestMapping(value = "/noticeList", method = RequestMethod.GET)
-	public String adminMainGet(Model model,
+	public String adminMainGet(Model model, HttpSession session,
 			@RequestParam(name="pag", defaultValue = "1", required = false) int pag,
 			@RequestParam(name="pageSize", defaultValue = "10", required = false) int pageSize) {
 		
@@ -43,6 +49,17 @@ public class BoardController {
 		
 		model.addAttribute("vos",vos);
 		model.addAttribute("pageVO",pageVO);
+
+		// 알림 띄우기
+		String alarmMyMid = session.getAttribute("sMid")== null ? "" : (String)session.getAttribute("sMid");
+		//1. 찜 알림
+		List<LikeVO> likeAlarm = homeService.getLikeAlarm(alarmMyMid);
+		
+		// 2. 팔로우한 사람 게시글 올라온 알림
+		List<FollowUsedAlarmVO> foAlarm = homeService.getFollowUsedAlarm(alarmMyMid);
+		
+		model.addAttribute("likeAlarm",likeAlarm);
+		model.addAttribute("foAlarm",foAlarm);
 		
 		return "notice/noticeList";
 	}
@@ -94,12 +111,23 @@ public class BoardController {
 		model.addAttribute("searchString",searchString);
 		model.addAttribute("pag",pag);
 		model.addAttribute("pageSize",pageSize);
+
+		// 알림 띄우기
+		String alarmMyMid = session.getAttribute("sMid")== null ? "" : (String)session.getAttribute("sMid");
+		//1. 찜 알림
+		List<LikeVO> likeAlarm = homeService.getLikeAlarm(alarmMyMid);
+		
+		// 2. 팔로우한 사람 게시글 올라온 알림
+		List<FollowUsedAlarmVO> foAlarm = homeService.getFollowUsedAlarm(alarmMyMid);
+		
+		model.addAttribute("likeAlarm",likeAlarm);
+		model.addAttribute("foAlarm",foAlarm);
 		return "notice/noticeContent";
 	}
 
 	// 공지사항 검색
 	@RequestMapping(value = "/noticeSearch",method = RequestMethod.GET)
-	public String noticeSearchGet(Model model,String part, String searchString,
+	public String noticeSearchGet(Model model,String part, String searchString, HttpSession session,
 			@RequestParam(name="pag", defaultValue = "1", required = false) int pag,
 			@RequestParam(name="pageSize", defaultValue = "10", required = false) int pageSize
 			) {
@@ -112,12 +140,22 @@ public class BoardController {
 		model.addAttribute("part",part);
 		model.addAttribute("searchString",searchString);
 		
+		// 알림 띄우기
+		String alarmMyMid = session.getAttribute("sMid")== null ? "" : (String)session.getAttribute("sMid");
+		//1. 찜 알림
+		List<LikeVO> likeAlarm = homeService.getLikeAlarm(alarmMyMid);
+		
+		// 2. 팔로우한 사람 게시글 올라온 알림
+		List<FollowUsedAlarmVO> foAlarm = homeService.getFollowUsedAlarm(alarmMyMid);
+		
+		model.addAttribute("likeAlarm",likeAlarm);
+		model.addAttribute("foAlarm",foAlarm);
 		return "notice/noticeSearchList";
 	}
 	
 	// 자주하는 질문 화면 이동
 	@RequestMapping(value = "/FAQList",method = RequestMethod.GET)
-	public String FAQListGet(Model model,
+	public String FAQListGet(Model model,HttpSession session,
 			@RequestParam(name="pag", defaultValue = "1", required = false) int pag,
 			@RequestParam(name="pageSize", defaultValue = "10", required = false) int pageSize) {
 		
@@ -127,12 +165,23 @@ public class BoardController {
 		
 		model.addAttribute("pageVO",pageVO);
 		model.addAttribute("vos",vos);
+
+		// 알림 띄우기
+		String alarmMyMid = session.getAttribute("sMid")== null ? "" : (String)session.getAttribute("sMid");
+		//1. 찜 알림
+		List<LikeVO> likeAlarm = homeService.getLikeAlarm(alarmMyMid);
+		
+		// 2. 팔로우한 사람 게시글 올라온 알림
+		List<FollowUsedAlarmVO> foAlarm = homeService.getFollowUsedAlarm(alarmMyMid);
+		
+		model.addAttribute("likeAlarm",likeAlarm);
+		model.addAttribute("foAlarm",foAlarm);
 		return "notice/FAQList";
 	}
 	
 	// 자주하는 질문 카테고리 검색 화면 이동 및 처리
 	@RequestMapping(value = "/FAQCategorySearch" , method = RequestMethod.GET)
-	public String FAQCategorySearchGet(Model model, String part, String searchString,
+	public String FAQCategorySearchGet(Model model, String part, String searchString, HttpSession session,
 			@RequestParam(name="pag", defaultValue = "1", required = false) int pag,
 			@RequestParam(name="pageSize", defaultValue = "10", required = false) int pageSize) {
 		
@@ -143,13 +192,24 @@ public class BoardController {
 		model.addAttribute("vos",vos);
 		model.addAttribute("part",part);
 		model.addAttribute("searchString",searchString);
+
+		// 알림 띄우기
+		String alarmMyMid = session.getAttribute("sMid")== null ? "" : (String)session.getAttribute("sMid");
+		//1. 찜 알림
+		List<LikeVO> likeAlarm = homeService.getLikeAlarm(alarmMyMid);
+		
+		// 2. 팔로우한 사람 게시글 올라온 알림
+		List<FollowUsedAlarmVO> foAlarm = homeService.getFollowUsedAlarm(alarmMyMid);
+		
+		model.addAttribute("likeAlarm",likeAlarm);
+		model.addAttribute("foAlarm",foAlarm);
 		
 		return "notice/FAQCategorySearch";
 	}
 	
 	// 자주하는 질문 문자 검색 화면 이동 및 처리
 	@RequestMapping(value = "/FAQStringSearch" , method = RequestMethod.GET)
-	public String FAQStringSearchGet(Model model, String part, String searchString,
+	public String FAQStringSearchGet(Model model, String part, String searchString, HttpSession session,
 			@RequestParam(name="pag", defaultValue = "1", required = false) int pag,
 			@RequestParam(name="pageSize", defaultValue = "10", required = false) int pageSize) {
 		
@@ -160,6 +220,17 @@ public class BoardController {
 		model.addAttribute("vos",vos);
 		model.addAttribute("part",part);
 		model.addAttribute("searchString",searchString);
+
+		// 알림 띄우기
+		String alarmMyMid = session.getAttribute("sMid")== null ? "" : (String)session.getAttribute("sMid");
+		//1. 찜 알림
+		List<LikeVO> likeAlarm = homeService.getLikeAlarm(alarmMyMid);
+		
+		// 2. 팔로우한 사람 게시글 올라온 알림
+		List<FollowUsedAlarmVO> foAlarm = homeService.getFollowUsedAlarm(alarmMyMid);
+		
+		model.addAttribute("likeAlarm",likeAlarm);
+		model.addAttribute("foAlarm",foAlarm);
 		
 		return "notice/FAQStringSearch";
 	}

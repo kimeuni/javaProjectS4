@@ -104,4 +104,40 @@
 	<update id="setProfileNoImgUpdate">
 		update memberS set profile = #{profile} where mid = #{mid};
 	</update>
+	<update id="setUsedUserDelY">
+		update usedS set userDel = 'Y' where mid = #{mid};
+	</update>
+	<update id="setStoreSUserDelY">
+		update StoreS set userDel = 'Y' where mid = #{mid};
+	</update>
+	<update id="setCommunityUserDelY">
+		update CommunityS set userDel = 'Y' where mid = #{mid}
+	</update>
+	<update id="setReplySUserDelY">
+		update replyS set userDel = 'Y' where mid = #{mid}
+	</update>
+	<update id="setGoodSUserDelY">
+		update goodS set userDel = 'Y' where goodMid = #{mid};
+	</update>
+	<update id="setBookmarkUserDelY">
+		update bookmarkS set userDel = 'Y' where bookmarkMid = #{mid};
+	</update>
+	<update id="setUsedUserDelN">
+		update usedS set userDel = 'N' where mid = #{mid};
+	</update>
+	<update id="setStoreSUserDelN">
+		update StoreS set userDel = 'N' where mid = #{mid};
+	</update>
+	<update id="setCommunityUserDelN">
+		update CommunityS set userDel = 'N' where mid = #{mid}
+	</update>
+	<update id="setReplySUserDelN">
+		update replyS set userDel = 'N' where mid = #{mid}
+	</update>
+	<update id="setGoodSUserDelN">
+		update goodS set userDel = 'N' where goodMid = #{mid};
+	</update>
+	<update id="setBookmarkUserDelN">
+		update bookmarkS set userDel = 'N' where bookmarkMid = #{mid};
+	</update>
 </mapper>

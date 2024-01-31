@@ -246,7 +246,7 @@
 													</div>
 													<div class="member-str-input-div">
 														<div class="member-str">프로필 사진</div>
-														<div class="member-input"><img src="${ctp}/data/images/${mVO.profile}"></div>
+														<div class="member-input"><img src="${ctp}/data/member/${mVO.profile}"></div>
 													</div>
 													<div class="member-str-input-div">
 														<div class="member-str">아이디</div>

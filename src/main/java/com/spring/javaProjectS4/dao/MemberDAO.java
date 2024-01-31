@@ -77,4 +77,28 @@ public interface MemberDAO {
 
 	public void setCommunityProfileInput(@Param("mid") String mid);
 
+	public void setUsedUserDelY(@Param("mid") String mid);
+
+	public void setStoreSUserDelY(@Param("mid") String mid);
+
+	public void setCommunityUserDelY(@Param("mid") String mid);
+
+	public void setReplySUserDelY(@Param("mid") String mid);
+
+	public void setGoodSUserDelY(@Param("mid") String mid);
+
+	public void setBookmarkUserDelY(@Param("mid") String mid);
+
+	public void setUsedUserDelN(@Param("mid") String mid);
+
+	public void setStoreSUserDelN(@Param("mid") String mid);
+
+	public void setCommunityUserDelN(@Param("mid") String mid);
+
+	public void setReplySUserDelN(@Param("mid") String mid);
+
+	public void setGoodSUserDelN(@Param("mid") String mid);
+
+	public void setBookmarkUserDelN(@Param("mid") String mid);
+
 }

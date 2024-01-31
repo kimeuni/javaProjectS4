@@ -232,4 +232,64 @@ public class MemberServiceImpl implements MemberService {
 		memberDAO.setCommunityProfileInput(mid);
 	}
 
+	@Override
+	public void setUsedUserDelY(String mid) {
+		memberDAO.setUsedUserDelY( mid);
+	}
+
+	@Override
+	public void setStoreSUserDelY(String mid) {
+		memberDAO.setStoreSUserDelY( mid);
+	}
+
+	@Override
+	public void setCommunityUserDelY(String mid) {
+		memberDAO.setCommunityUserDelY( mid);
+	}
+
+	@Override
+	public void setReplySUserDelY(String mid) {
+		memberDAO.setReplySUserDelY( mid);
+	}
+
+	@Override
+	public void setGoodSUserDelY(String mid) {
+		memberDAO.setGoodSUserDelY(mid);
+	}
+
+	@Override
+	public void setBookmarkUserDelY(String mid) {
+		memberDAO.setBookmarkUserDelY(mid);
+	}
+
+	@Override
+	public void setUsedUserDelN(String mid) {
+		memberDAO.setUsedUserDelN( mid);
+	}
+
+	@Override
+	public void setStoreSUserDelN(String mid) {
+		memberDAO.setStoreSUserDelN(mid);
+	}
+
+	@Override
+	public void setCommunityUserDelN(String mid) {
+		memberDAO.setCommunityUserDelN(mid);
+	}
+
+	@Override
+	public void setReplySUserDelN(String mid) {
+		memberDAO.setReplySUserDelN(mid);
+	}
+
+	@Override
+	public void setGoodSUserDelN(String mid) {
+		memberDAO.setGoodSUserDelN(mid);
+	}
+
+	@Override
+	public void setBookmarkUserDelN(String mid) {
+		memberDAO.setBookmarkUserDelN(mid);
+	}
+
 }

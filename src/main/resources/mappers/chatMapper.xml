@@ -17,7 +17,8 @@
 		(select profile from memberS mem where mem.mid = cg.mid1) as profile1,
 		(select profile from memberS mem where mem.mid = cg.mid2) as profile2,
 		(select chat from chatS c where cg.idx = c.chatIdx order by idx desc limit 1 ) as chat,
-		(select chatDate from chatS c where cg.idx = c.chatIdx order by idx desc limit 1 ) as cDate
+		(select chatDate from chatS c where cg.idx = c.chatIdx order by idx desc limit 1 ) as cDate,
+		(select count(*) from chatS c where cg.idx = c.chatIdx and alarm = 'Y' and whoChatMid != #{myMid}) as chatAlarmCnt
 		from chatGroupS cg where cg.mid1 = #{myMid} or cg.mid2 = #{myMid}
 	</select>
 	<select id="getMemberMid" resultType="com.spring.javaProjectS4.vo.MemberVO">

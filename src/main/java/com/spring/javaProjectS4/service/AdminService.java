@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.spring.javaProjectS4.vo.AlarmCntVO;
 import com.spring.javaProjectS4.vo.AnswerVO;
 import com.spring.javaProjectS4.vo.AskVO;
 import com.spring.javaProjectS4.vo.BtmCategoryVO;
@@ -181,6 +182,8 @@ public interface AdminService {
 	public MemberVO getMemberRegionCnt();
 
 	public ReasonTitleVO getReasonTitleCnt();
+
+	public AlarmCntVO getAlarmCnt();
 
 
 }

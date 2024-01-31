@@ -292,7 +292,14 @@
 				<div>신고 상점명<span class="pli-c">＊</span></div>
 					<select name="reportShop"  id="reportShop">
 						<option value="">신고할 상점을 선택해 주세요.</option>
-						<option value="admin">관리자</option>
+						<c:forEach var="cgVO" items="${cgVOS }">
+							<c:if test="${cgVO.mid1 == sMid }">
+								<option value="${cgVO.mid2}">${cgVO.mid2}</option>
+							</c:if>
+							<c:if test="${cgVO.mid2 == sMid }">
+								<option value="${cgVO.mid1}">${cgVO.mid1}</option>
+							</c:if>
+						</c:forEach>
 					</select>
 				</div>
 				<div>문의 내용<span class="pli-c">＊</span><span id="content-text-cnt">(0/300)</span></div>

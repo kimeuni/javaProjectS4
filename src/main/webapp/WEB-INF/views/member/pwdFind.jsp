@@ -171,7 +171,6 @@
 				<div class="spinner-border"></div>
 				<div style="text-align:left">
 					<i class="fa-solid fa-check"></i>가입하신 이메일 주소로 임시 비밀번호를 발급해드립니다.<br/>
-					<i class="fa-solid fa-check"></i>아이디, 비밀번호 찾기가 어려울 경우 고객센터로 문의해주세요.<br/>
 				</div>
 				<div id="move-jsp">
 					<a href="login">로그인</a> |

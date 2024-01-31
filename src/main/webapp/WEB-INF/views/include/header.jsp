@@ -259,15 +259,15 @@
 											</div>
 										</c:forEach>
 									</c:if>
-									<c:if test="${!empty likeAlarm}">
-										<c:forEach var="like" items="${likeAlarm }">
-											<c:set var="img" value="${fn:split(like.imgs,'/') }" />
+									<c:if test="${!empty foAlarm}">
+										<c:forEach var="fo" items="${foAlarm }">
+											<c:set var="img" value="${fn:split(fo.imgs,'/') }" />
 											<div class="alarm-hover">
-												<a href="${ctp}/used/usedContent?idx=${like.usedIdx}&flag=alarm">
+												<a href="${ctp}/used/usedContent?idx=${fo.usedIdx}&flag=alarm">
 													<div class="text-left pl-2">팔로우 중인 유저 상품</div>
 													<div style="display: flex; font-size: 0.7em; margin: 0px;padding: 0px">
 														<div style="display: flex; width: 80%">
-															<div>내가 팔로우중인 ''님이 []상품을 올렸습니다.</div>
+															<div>내가 팔로우중인 <${fo.nickName}>님이 <${fo.title }>상품을 올렸습니다.</div>
 														</div>
 														<div style="display: flex; width: 20%; justify-content: center">
 															<img src="${ctp}/data/used/${img[0]}" height="50px" width="50px">

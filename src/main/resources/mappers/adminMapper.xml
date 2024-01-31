@@ -173,6 +173,13 @@
 			(select title from reasonTitleS where Code = 'A9999') as title8
 			from reasonTitleS limit 1;
 	</select>
+	<select id="getAlarmCnt" resultType="com.spring.javaProjectS4.vo.AlarmCntVO">
+		select (select count(*) from askS where status != '답변완료') as askCnt,
+		(select count(*) from memberS where timestampdiff(day,lastDate,now()) > 30) as userDelCnt,
+		(select count(*) from usedReportS) as reportCnt,
+		(select count(*) from emoticonS) as emoticonCnt
+		from askS limit 1;
+	</select>
 	
 	
 	<insert id="setNoticeInput">

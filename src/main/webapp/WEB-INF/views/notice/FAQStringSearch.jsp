@@ -218,7 +218,11 @@
 			</div>
 		</div>
 		<h3>'${searchString}' 검색결과</h3>
-		<c:if test="${empty vos }"><div id="search-no">검색하신 내용이 존재하지 않습니다.<br/><br/><a href="javascript:askInputOpen()">1:1 문의하러 가기</a></div></c:if>
+		<c:if test="${empty vos }"><div id="search-no">검색하신 내용이 존재하지 않습니다.<br/><br/>
+			<c:if test="${sMid != null }">
+				<a href="javascript:askInputOpen()">1:1 문의하러 가기</a></div>
+			</c:if>
+		</c:if>
 		<c:if test="${!empty  vos}">
 			<div class="accordion">
 				<c:forEach var="vo" items="${vos}" varStatus="st">

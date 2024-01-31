@@ -136,14 +136,19 @@ public class ChatController {
 	// 채팅 뿌리기
 	@ResponseBody
 	@RequestMapping(value = "/chattingList", method = RequestMethod.POST, produces="application/text; charset=utf8")
-	public String chattingListPost(String listType, String mid1, String mid2) {
+	public String chattingListPost(String listType, String mid1, String mid2, HttpSession session) {
+		String myMid = session.getAttribute("sMid")== null ? "" : (String)session.getAttribute("sMid");
 		if(listType == null || listType.equals("")) {
 			return "";
 		}
 		else if(listType.equals("thirty")) {
+			// 채팅방 들어왔을 때 알림 n 처리
+			chatService.setChattingAlarmN(mid1,mid2,myMid);
 			return chatService.getThirty(mid1,mid2);
 		}
 		else {
+			// 채팅방 들어왔을 때 알림 n 처리
+			chatService.setChattingAlarmN(mid1,mid2,myMid);
 			return chatService.getListIdx(listType,mid1,mid2);
 		}
 	}

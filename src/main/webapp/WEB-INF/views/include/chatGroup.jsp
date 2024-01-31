@@ -62,6 +62,18 @@
    		text-decoration: none;
    		color: #000;
    	}
+   	.c-alarm-cnt{
+   		border-radius: 100%;
+   		color: #fff;
+   		padding : 0px 8px;
+   		background-color: orange;
+   		height: 25px;
+   		line-height: 25px;
+   		margin-left: 10px;
+   		font-weight: bolder;
+   		font-size: 0.8em;
+   		vertical-align: middle;
+   	}
 </style>
 <div id="select-chat">전체대화</div>
 <div id="chat-list-div">
@@ -85,10 +97,20 @@
 							<a href="${ctp}/chat/chatContent?usedIdx=${cgVO.usedIdx}&mid=${cgVO.mid1}&sMid=${cgVO.mid2}">
 								<div class="c-g-nick-div-b">
 									<c:if test="${memVO.nickName == cgVO.nickName1 }">
-										${cgVO.nickName2}
+										<div class="f-d">
+											<div>${cgVO.nickName2}</div>
+											<c:if test="${cgVO.chatAlarmCnt >0 }">
+											<div class="c-alarm-cnt">${cgVO.chatAlarmCnt }</div>
+											</c:if>
+										</div>
 									</c:if>
 									<c:if test="${memVO.nickName == cgVO.nickName2 }">
-										${cgVO.nickName1}
+										<div class="f-d">
+											<div>${cgVO.nickName1}</div>
+											<c:if test="${cgVO.chatAlarmCnt >0 }">
+												<div class="c-alarm-cnt">${cgVO.chatAlarmCnt }</div>
+											</c:if>
+										</div>
 									</c:if>
 								</div>
 								<div class="f-d">

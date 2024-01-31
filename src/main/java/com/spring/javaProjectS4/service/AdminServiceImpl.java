@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.spring.javaProjectS4.dao.AdminDAO;
+import com.spring.javaProjectS4.vo.AlarmCntVO;
 import com.spring.javaProjectS4.vo.AnswerVO;
 import com.spring.javaProjectS4.vo.AskVO;
 import com.spring.javaProjectS4.vo.BtmCategoryVO;
@@ -669,6 +670,11 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public ReasonTitleVO getReasonTitleCnt() {
 		return adminDAO.getReasonTitleCnt();
+	}
+
+	@Override
+	public AlarmCntVO getAlarmCnt() {
+		return adminDAO.getAlarmCnt();
 	}
 
 }

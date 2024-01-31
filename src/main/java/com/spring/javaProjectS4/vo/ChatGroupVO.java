@@ -25,4 +25,6 @@ public class ChatGroupVO {
 	private String money;
 	private String lastDate1;
 	private String lastDate2;
+	
+	private int chatAlarmCnt;
 }

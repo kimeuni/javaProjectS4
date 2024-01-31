@@ -30,6 +30,8 @@ import com.spring.javaProjectS4.pagination.PageProcess;
 import com.spring.javaProjectS4.pagination.PageVO;
 import com.spring.javaProjectS4.service.HomeService;
 import com.spring.javaProjectS4.vo.UserShowAdvertisementVO;
+import com.spring.javaProjectS4.vo.ChatGroupVO;
+import com.spring.javaProjectS4.vo.FollowUsedAlarmVO;
 import com.spring.javaProjectS4.vo.LikeVO;
 import com.spring.javaProjectS4.vo.MainAdvertisementVO;
 import com.spring.javaProjectS4.vo.MapVO;
@@ -68,9 +70,10 @@ public class HomeController {
 		List<LikeVO> likeAlarm = homeService.getLikeAlarm(alarmMyMid);
 		
 		// 2. 팔로우한 사람 게시글 올라온 알림
-		
+		List<FollowUsedAlarmVO> foAlarm = homeService.getFollowUsedAlarm(alarmMyMid);
 		
 		model.addAttribute("likeAlarm",likeAlarm);
+		model.addAttribute("foAlarm",foAlarm);
 		
 		return "mainHome";
 	}
@@ -125,6 +128,10 @@ public class HomeController {
 		String mid = (String)session.getAttribute("sMid");
 		MemberVO vo = homeService.getMemberMid(mid);
 		
+		// 신고 상점 뿌리기
+		List<ChatGroupVO> cgVOS = homeService.getReportShopList(mid);
+		
+		model.addAttribute("cgVOS", cgVOS);
 		model.addAttribute("mVO", vo);
 		return "ask/askInput";
 	}
@@ -179,6 +186,13 @@ public class HomeController {
 	@RequestMapping(value = "/errorPage/error500", method = RequestMethod.GET)
 	public String error500Get() {
 		return "errorPage/error500";
+	}
+	
+	// 500에러 발생
+	@RequestMapping(value = "/error500s", method = RequestMethod.GET)
+	public String error500s() {
+		homeService.geterror();
+		return "mainHome";
 	}
 	
 	

@@ -16,9 +16,12 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.spring.javaProjectS4.pagination.PageProcess;
 import com.spring.javaProjectS4.pagination.PageVO;
 import com.spring.javaProjectS4.service.CommunityService;
+import com.spring.javaProjectS4.service.HomeService;
 import com.spring.javaProjectS4.vo.CommunityProfileVO;
 import com.spring.javaProjectS4.vo.CommunityVO;
+import com.spring.javaProjectS4.vo.FollowUsedAlarmVO;
 import com.spring.javaProjectS4.vo.FollowVO;
+import com.spring.javaProjectS4.vo.LikeVO;
 import com.spring.javaProjectS4.vo.MemberVO;
 import com.spring.javaProjectS4.vo.ReplyVO;
 
@@ -31,6 +34,9 @@ public class CommunityController {
 	
 	@Autowired
 	PageProcess pageProcess;
+	
+	@Autowired
+	HomeService homeService;
 	
 	// 커뮤니티 메인화면 이동
 	@RequestMapping(value = "/communityMain", method = RequestMethod.GET)
@@ -60,6 +66,17 @@ public class CommunityController {
 		model.addAttribute("pageVO",pageVO);
 		model.addAttribute("comVOS",comVOS);
 		model.addAttribute("memVO",memVO);
+		
+		// 알림 띄우기
+		String alarmMyMid = session.getAttribute("sMid")== null ? "" : (String)session.getAttribute("sMid");
+		//1. 찜 알림
+		List<LikeVO> likeAlarm = homeService.getLikeAlarm(alarmMyMid);
+		
+		// 2. 팔로우한 사람 게시글 올라온 알림
+		List<FollowUsedAlarmVO> foAlarm = homeService.getFollowUsedAlarm(alarmMyMid);
+		
+		model.addAttribute("likeAlarm",likeAlarm);
+		model.addAttribute("foAlarm",foAlarm);
 		return "community/communityMain";
 	}
 	
@@ -78,7 +95,6 @@ public class CommunityController {
 		
 		content = content.replace("<", "&lt;");
 		content = content.replace(">", "&gt;");
-		content = content.replace("\n", "<br/>");
 		content = content.replace(System.getProperty("line.separator").toString(), "");
 		
 		String imgsStr = "";
@@ -200,6 +216,17 @@ public class CommunityController {
 		model.addAttribute("region",region);
 		model.addAttribute("pag",pag);
 		model.addAttribute("pageSize",pageSize);
+
+		// 알림 띄우기
+		String alarmMyMid = session.getAttribute("sMid")== null ? "" : (String)session.getAttribute("sMid");
+		//1. 찜 알림
+		List<LikeVO> likeAlarm = homeService.getLikeAlarm(alarmMyMid);
+		
+		// 2. 팔로우한 사람 게시글 올라온 알림
+		List<FollowUsedAlarmVO> foAlarm = homeService.getFollowUsedAlarm(alarmMyMid);
+		
+		model.addAttribute("likeAlarm",likeAlarm);
+		model.addAttribute("foAlarm",foAlarm);
 		return "community/communityContent";
 	}
 	
@@ -339,6 +366,17 @@ public class CommunityController {
 		model.addAttribute("pag",pag);
 		model.addAttribute("idx",idx);
 		model.addAttribute("pageSize",pageSize);
+
+		// 알림 띄우기
+		String alarmMyMid = session.getAttribute("sMid")== null ? "" : (String)session.getAttribute("sMid");
+		//1. 찜 알림
+		List<LikeVO> likeAlarm = homeService.getLikeAlarm(alarmMyMid);
+		
+		// 2. 팔로우한 사람 게시글 올라온 알림
+		List<FollowUsedAlarmVO> foAlarm = homeService.getFollowUsedAlarm(alarmMyMid);
+		
+		model.addAttribute("likeAlarm",likeAlarm);
+		model.addAttribute("foAlarm",foAlarm);
 		return "community/communityProfile";
 	}
 	
@@ -386,6 +424,17 @@ public class CommunityController {
 		model.addAttribute("pag",pag);
 		model.addAttribute("idx",idx);
 		model.addAttribute("pageSize",pageSize);
+
+		// 알림 띄우기
+		String alarmMyMid = session.getAttribute("sMid")== null ? "" : (String)session.getAttribute("sMid");
+		//1. 찜 알림
+		List<LikeVO> likeAlarm = homeService.getLikeAlarm(alarmMyMid);
+		
+		// 2. 팔로우한 사람 게시글 올라온 알림
+		List<FollowUsedAlarmVO> foAlarm = homeService.getFollowUsedAlarm(alarmMyMid);
+		
+		model.addAttribute("likeAlarm",likeAlarm);
+		model.addAttribute("foAlarm",foAlarm);
 		return "community/communityMedia";
 	}
 	
@@ -433,6 +482,17 @@ public class CommunityController {
 		model.addAttribute("pag",pag);
 		model.addAttribute("idx",idx);
 		model.addAttribute("pageSize",pageSize);
+
+		// 알림 띄우기
+		String alarmMyMid = session.getAttribute("sMid")== null ? "" : (String)session.getAttribute("sMid");
+		//1. 찜 알림
+		List<LikeVO> likeAlarm = homeService.getLikeAlarm(alarmMyMid);
+		
+		// 2. 팔로우한 사람 게시글 올라온 알림
+		List<FollowUsedAlarmVO> foAlarm = homeService.getFollowUsedAlarm(alarmMyMid);
+		
+		model.addAttribute("likeAlarm",likeAlarm);
+		model.addAttribute("foAlarm",foAlarm);
 		return "community/communityGood";
 	}
 	
@@ -518,6 +578,17 @@ public class CommunityController {
 		model.addAttribute("mid",mid);
 		model.addAttribute("memVO",memVO);
 		model.addAttribute("bookmarkCnt",comVOS.size());
+
+		// 알림 띄우기
+		String alarmMyMid = session.getAttribute("sMid")== null ? "" : (String)session.getAttribute("sMid");
+		//1. 찜 알림
+		List<LikeVO> likeAlarm = homeService.getLikeAlarm(alarmMyMid);
+		
+		// 2. 팔로우한 사람 게시글 올라온 알림
+		List<FollowUsedAlarmVO> foAlarm = homeService.getFollowUsedAlarm(alarmMyMid);
+		
+		model.addAttribute("likeAlarm",likeAlarm);
+		model.addAttribute("foAlarm",foAlarm);
 		return "community/communityBookmark";
 	}
 	
@@ -537,6 +608,17 @@ public class CommunityController {
 		model.addAttribute("comVOS",comVOS);
 		model.addAttribute("memVO",memVO);
 		model.addAttribute("region",region);
+
+		// 알림 띄우기
+		String alarmMyMid = session.getAttribute("sMid")== null ? "" : (String)session.getAttribute("sMid");
+		//1. 찜 알림
+		List<LikeVO> likeAlarm = homeService.getLikeAlarm(alarmMyMid);
+		
+		// 2. 팔로우한 사람 게시글 올라온 알림
+		List<FollowUsedAlarmVO> foAlarm = homeService.getFollowUsedAlarm(alarmMyMid);
+		
+		model.addAttribute("likeAlarm",likeAlarm);
+		model.addAttribute("foAlarm",foAlarm);
 		return "community/communityRegion";
 	}
 	
@@ -566,6 +648,17 @@ public class CommunityController {
 		model.addAttribute("pageVO",pageVO);
 		model.addAttribute("comVOS",comVOS);
 		model.addAttribute("memVO",memVO);
+
+		// 알림 띄우기
+		String alarmMyMid = session.getAttribute("sMid")== null ? "" : (String)session.getAttribute("sMid");
+		//1. 찜 알림
+		List<LikeVO> likeAlarm = homeService.getLikeAlarm(alarmMyMid);
+		
+		// 2. 팔로우한 사람 게시글 올라온 알림
+		List<FollowUsedAlarmVO> foAlarm = homeService.getFollowUsedAlarm(alarmMyMid);
+		
+		model.addAttribute("likeAlarm",likeAlarm);
+		model.addAttribute("foAlarm",foAlarm);
 		return "community/communityFollowList";
 	}
 }
