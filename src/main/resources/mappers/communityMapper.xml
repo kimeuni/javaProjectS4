@@ -166,13 +166,13 @@
 		insert into communityS values (default,#{mid},#{content},#{imgsStr},default,#{region},default);
 	</insert>
 	<insert id="setGoodYes">
-		insert into goodS values (default,#{part},#{idx},#{mid},default,default)
+		insert into goodS values (default,#{part},#{idx},#{mid},default);
 	</insert>
 	<insert id="setBookmarkYes">
 		insert into bookmarkS values (default,#{part},#{idx},#{mid},default);
 	</insert>
 	<insert id="setReplyInput">
-		insert into replyS values (default,#{part},#{idx},#{mid},#{content},default,default,default,default);
+		insert into replyS values (default,#{part},#{idx},#{mid},#{content},default,default,default);
 	</insert>
 	<insert id="setCommunityReRplyInput">
 		insert into replyS values (default,'community',#{comuIdx},#{mid},#{content},default,#{reIdx},default,default);
