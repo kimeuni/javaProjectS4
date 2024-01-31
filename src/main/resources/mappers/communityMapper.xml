@@ -175,7 +175,7 @@
 		insert into replyS values (default,#{part},#{idx},#{mid},#{content},default,default,default);
 	</insert>
 	<insert id="setCommunityReRplyInput">
-		insert into replyS values (default,'community',#{comuIdx},#{mid},#{content},default,#{reIdx},default,default);
+		insert into replyS values (default,'community',#{comuIdx},#{mid},#{content},default,#{reIdx},default);
 	</insert>
 	<insert id="communityReportInput">
 		insert into communityReportS values (default,#{part},#{idx},#{mid},#{sMid},default,#{reason});
