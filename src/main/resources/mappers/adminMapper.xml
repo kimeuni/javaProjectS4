@@ -139,7 +139,7 @@
 		select (select count(*) from memberS where address like concat('%','인천','%')) as incheonCnt,
 		(select count(*) from memberS where address like concat('%','서울','%') ) as seoulCnt,
 		(select count(*) from memberS where address like concat('%','경기','%') ) as gyeonggiCnt,
-		(select count(*) from memberS where address like concat('%','강원도특별자치도','%') ) as gangwonCnt,
+		(select count(*) from memberS where address like concat('%','강원특별자치도','%') ) as gangwonCnt,
 		(select count(*) from memberS where address like concat('%','충남','%') ) as chungnamCnt,
 		(select count(*) from memberS where address like concat('%','충북','%') ) as chungbukCnt,
 		(select count(*) from memberS where address like concat('%','경북','%') ) as gyeongbukCnt,

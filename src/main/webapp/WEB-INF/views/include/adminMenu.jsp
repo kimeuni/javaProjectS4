@@ -466,7 +466,7 @@
 			<a href="javascript:errorManagementUp()"><div class="admin-inner-menu"><i class="fa-solid fa-angle-down"></i> 에러 페이지</div></a>
 		</div>
 		<div id="admin-error-inner-menu">
-			<a href="${ctp}/admin/error404"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> 400에러</div></a>
+			<a href="${ctp}/admin/error404"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> 404에러</div></a>
 			<a href="${ctp}/admin/error500"><div class="admin-inner-menu"><i class="fa-solid fa-chevron-down"></i> 500에러</div></a>
 		</div>
 		<div >

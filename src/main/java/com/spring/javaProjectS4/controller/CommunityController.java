@@ -93,9 +93,9 @@ public class CommunityController {
 		String[] region2 = region1[1].split(" ");
 		String region = region2[0];
 		
-		content = content.replace("<", "&lt;");
-		content = content.replace(">", "&gt;");
-		content = content.replace(System.getProperty("line.separator").toString(), "");
+		//content = content.replace("<", "&lt;");
+		//content = content.replace(">", "&gt;");
+		//content = content.replace(System.getProperty("line.separator").toString(), "");
 		
 		String imgsStr = "";
 		// 등록하기
