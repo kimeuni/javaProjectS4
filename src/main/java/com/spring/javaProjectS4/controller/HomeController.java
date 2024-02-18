@@ -148,10 +148,6 @@ public class HomeController {
 			@RequestParam(name = "imgStr",defaultValue = "", required = false) String imgStr
 			) {
 		
-		// 태그 변환
-		content = content.replace("<", "&lt;");
-		content = content.replace(">", "&gt;");
-		content = content.replace("\n", "<br/>");
 		
 		int res = homeService.setAskInput(mid,title,content,imgs,category,reportShop,imgStr);
 		if(res != 0 ) return "redirect:/message/askInputOk";

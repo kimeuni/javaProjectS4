@@ -403,9 +403,6 @@
     	// 게시글 등록하기
     	function communityUpload(){
     		let content = $("#content").val();
-    		content = content.replace(/(?:\r\n|\r|\n)/g,'<br/>');
-    		console.log(content);
-    		alert(content)
     		
     		if(content.trim() == ""){
     			alert("내용을 입력해주세요.");
@@ -414,6 +411,9 @@
     		}
     		else{
     			document.getElementById("imgs").removeAttribute("disabled");
+    			
+    			content = content.replace(/(?:\r\n|\r|\n)/g,'<br/>');
+    			communityForm.content.value = content
     			
     			communityForm.submit();
     		}

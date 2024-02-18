@@ -295,24 +295,25 @@
 	}
 	</script>
     <script type="text/javascript">
-      google.charts.load("current", {packages:["corechart"]});
+
+      google.charts.load('current', {'packages':['corechart']});
+
       google.charts.setOnLoadCallback(drawChart);
+
       function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-          ['Task', 'Hours per Day'],
-          ['${rtVO.title1}',${rtVO.cnt1}],
-          ['${rtVO.title2}',${rtVO.cnt2}],
-          ['${rtVO.title3}',${rtVO.cnt3}],
-          ['${rtVO.title4}',${rtVO.cnt4}],
-          ['${rtVO.title5}',${rtVO.cnt5}],
-          ['${rtVO.title6}',${rtVO.cnt6}],
-          ['${rtVO.title7}',${rtVO.cnt7}],
-          ['${rtVO.title8}',${rtVO.cnt8}],
+
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Topping');
+        data.addColumn('number', 'Slices');
+        data.addRows([
+          <c:forEach  var="rtV" items="${rtVO}">
+          	['${rtV.title}',${rtV.cnt}],
+          </c:forEach>
         ]);
 
-        var options = {
-          is3D: true,
-        };
+        var options = {'title' : '',
+                       'width':530,
+                       'height':200};
 
         var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
         chart.draw(data, options);

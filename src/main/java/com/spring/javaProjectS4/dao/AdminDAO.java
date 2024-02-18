@@ -194,7 +194,7 @@ public interface AdminDAO {
 
 	public MemberVO getMemberRegionCnt();
 
-	public ReasonTitleVO getReasonTitleCnt();
+	public List<ReasonTitleVO> getReasonTitleCnt();
 
 	public AlarmCntVO getAlarmCnt();
 

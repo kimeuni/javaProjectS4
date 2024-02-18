@@ -412,6 +412,9 @@
     		else{
     			document.getElementById("imgs").removeAttribute("disabled");
     			
+    			content = content.replace(/(?:\r\n|\r|\n)/g,'<br/>');
+    			communityForm.content.value = content
+    			
     			communityForm.submit();
     		}
     	}

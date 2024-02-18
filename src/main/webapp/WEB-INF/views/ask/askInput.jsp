@@ -239,10 +239,16 @@
 						return false;
 					}
 			    	else {
+			    		content = content.replace(/(?:\r\n|\r|\n)/g,'<br/>');
+			    		askForm.content.value = content
+			    		
 			    		askForm.submit();
 			    	}
 				}
 		    	else {
+		    		content = content.replace(/(?:\r\n|\r|\n)/g,'<br/>');
+		    		askForm.content.value = content
+		    		
 		    		askForm.submit();
 		    	}
 	  		}
@@ -252,10 +258,16 @@
 					return false;
 				}
 		    	else {
+		    		content = content.replace(/(?:\r\n|\r|\n)/g,'<br/>');
+		    		askForm.content.value = content
+		    		
 		    		askForm.submit();
 		    	}
 	  		}
 	  		else {
+	  			content = content.replace(/(?:\r\n|\r|\n)/g,'<br/>');
+	    		askForm.content.value = content
+	    		
 	    		askForm.submit();
 	  		}
 	    }

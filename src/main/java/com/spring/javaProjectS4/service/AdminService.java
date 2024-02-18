@@ -181,7 +181,7 @@ public interface AdminService {
 
 	public MemberVO getMemberRegionCnt();
 
-	public ReasonTitleVO getReasonTitleCnt();
+	public List<ReasonTitleVO> getReasonTitleCnt();
 
 	public AlarmCntVO getAlarmCnt();
 

@@ -668,7 +668,7 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public ReasonTitleVO getReasonTitleCnt() {
+	public List<ReasonTitleVO> getReasonTitleCnt() {
 		return adminDAO.getReasonTitleCnt();
 	}
 

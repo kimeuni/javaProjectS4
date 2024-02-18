@@ -69,7 +69,7 @@ public class AdminController {
 		MemberVO regionVO = adminService.getMemberRegionCnt();
 		
 		// 탈퇴 이유 통계
-		ReasonTitleVO rtVO = adminService.getReasonTitleCnt();
+		List<ReasonTitleVO> rtVO = adminService.getReasonTitleCnt();
 		
 		// 개수
 		AlarmCntVO alarmVO = adminService.getAlarmCnt();

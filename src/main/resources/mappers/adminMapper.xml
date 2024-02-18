@@ -133,7 +133,7 @@
 		select count(*) from memberS where totReportCnt > 0 and userDel = 'N';
 	</select>
 	<select id="getChattingList" resultType="com.spring.javaProjectS4.vo.ChatVO">
-		select *,timestampdiff(day,chatDate,now()) as date_diff from chatS order by chatDate limit #{startIndexNo},#{pageSize};
+		select *,timestampdiff(day,chatDate,now()) as date_diff from chatS order by chatDate;
 	</select>
 	<select id="getMemberRegionCnt" resultType="com.spring.javaProjectS4.vo.MemberVO">
 		select (select count(*) from memberS where address like concat('%','인천','%')) as incheonCnt,
@@ -155,23 +155,8 @@
 		 from memberS limit 1;
 	</select>
 	<select id="getReasonTitleCnt" resultType="com.spring.javaProjectS4.vo.ReasonTitleVO">
-		select (select count(*) from userdelReasonS where titleCode = 'A0001') as cnt1,
-			(select title from reasonTitleS where Code = 'A0001') as title1,
-			(select count(*) from userdelReasonS where titleCode = 'A0002') as cnt2,
-			(select title from reasonTitleS where Code = 'A0002') as title2,
-			(select count(*) from userdelReasonS where titleCode = 'A0003') as cnt3,
-			(select title from reasonTitleS where Code = 'A0003') as title3,
-			(select count(*) from userdelReasonS where titleCode = 'A0004') as cnt4,
-			(select title from reasonTitleS where Code = 'A0004') as title4,
-			(select count(*) from userdelReasonS where titleCode = 'A0005') as cnt5,
-			(select title from reasonTitleS where Code = 'A0005') as title5,
-			(select count(*) from userdelReasonS where titleCode = 'A0006') as cnt6,
-			(select title from reasonTitleS where Code = 'A0006') as title6,
-			(select count(*) from userdelReasonS where titleCode = 'A0007') as cnt7,
-			(select title from reasonTitleS where Code = 'A0007') as title7,
-			(select count(*) from userdelReasonS where titleCode = 'A9999') as cnt8,
-			(select title from reasonTitleS where Code = 'A9999') as title8
-			from reasonTitleS limit 1;
+		select (select count(*) from userdelReasonS urs where rt.code = urs.titleCode) as cnt,
+		 title from reasonTitleS rt ;
 	</select>
 	<select id="getAlarmCnt" resultType="com.spring.javaProjectS4.vo.AlarmCntVO">
 		select (select count(*) from askS where status != '답변완료') as askCnt,

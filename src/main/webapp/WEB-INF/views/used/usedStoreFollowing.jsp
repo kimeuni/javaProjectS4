@@ -152,7 +152,7 @@
 								</div>
 							</div>
 							<div class="f-d-8">
-								<c:forEach var="fingUsedVO" items="${fingUsedVOS }" begin="0" end="2">
+								<c:forEach var="fingUsedVO" items="${fingUsedVOS }" begin="0" end="2" >
 									<c:if test="${fingMemVO.mid == fingUsedVO.mid}">
 										<c:set var="sImg" value="${fingUsedVO.imgs.split('/')}"  />
 										<div class="u-img-p"><a href="${ctp}/used/usedContent?idx=${fingUsedVO.idx}"><img src="${ctp}/data/used/${sImg[0]}" width="190px" height="190px"></a></div>
